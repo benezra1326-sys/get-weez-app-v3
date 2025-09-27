@@ -33,8 +33,25 @@ export default function Sidebar({ user }) {
         zIndex: 40
       }}
     >
-      <div className="p-6 lg:p-8 xl:p-10">
-        <nav className="space-y-3">
+      <div className="p-8 lg:p-10 xl:p-12">
+        {/* Logo et titre */}
+        <div className="mb-8">
+          <div className="flex items-center mb-4">
+            <div 
+              className="w-12 h-12 rounded-2xl mr-4 shadow-glow"
+              style={{
+                background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
+                borderRadius: 'var(--radius-xl)'
+              }}
+            ></div>
+            <div>
+              <h2 className="text-xl font-bold text-gradient">Get Weez</h2>
+              <p className="text-sm text-text-secondary">Conciergerie Premium</p>
+            </div>
+          </div>
+        </div>
+        
+        <nav className="space-y-4">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = router.pathname === item.href
@@ -43,7 +60,7 @@ export default function Sidebar({ user }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center px-4 py-3 rounded-xl transition-all duration-300 group hover:scale-105 ${
+                className={`flex items-center px-6 py-4 rounded-2xl transition-all duration-300 group hover:scale-105 ${
                   isActive
                     ? 'shadow-lg'
                     : ''
@@ -66,13 +83,13 @@ export default function Sidebar({ user }) {
                 }}
               >
                 <Icon
-                  size={20}
-                  className="mr-3 transition-all duration-300"
+                  size={24}
+                  className="mr-4 transition-all duration-300"
                   style={{
                     color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-muted)'
                   }}
                 />
-                <span className="font-medium text-base">{item.label}</span>
+                <span className="font-medium text-lg">{item.label}</span>
                 {isActive && (
                   <div 
                     className="ml-auto w-2 h-2 rounded-full animate-pulse"
