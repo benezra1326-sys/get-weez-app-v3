@@ -217,7 +217,7 @@ export default function ChatInterface({ user }) {
               <MessageCircle size={24} className="sm:w-8 sm:h-8 text-white" />
             </div>
             <h3 className="text-heading-2 mb-2 sm:mb-3" style={{ color: 'var(--color-text-primary)' }}>
-              Commencez une conversation avec Get Weez
+              Commencez une conversation
             </h3>
             <p className="text-body-large" style={{ color: 'var(--color-text-secondary)' }}>
               Demandez une expérience exclusive à Marbella
