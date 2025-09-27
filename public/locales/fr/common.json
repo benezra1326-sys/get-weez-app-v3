@@ -1,0 +1,77 @@
+{
+  "navigation": {
+    "home": "Accueil",
+    "establishments": "Établissements",
+    "events": "Événements",
+    "subscriptions": "Abonnements",
+    "account": "Compte",
+    "help": "Aide",
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "logout": "Déconnexion"
+  },
+  "chat": {
+    "placeholder": "Écrivez ce dont vous avez besoin...",
+    "send": "Envoyer",
+    "sending": "Envoi...",
+    "loading": "Get Weez vous prépare une réponse...",
+    "empty_title": "Commencez une conversation avec Get Weez",
+    "empty_subtitle": "Demandez une expérience exclusive à Marbella",
+    "new_conversation": "Nouvelle conversation",
+    "conversation": "Conversation"
+  },
+  "subscriptions": {
+    "title": "Choisissez votre abonnement",
+    "subtitle": "Découvrez nos offres exclusives pour une expérience premium à Marbella",
+    "monthly": "Mensuel",
+    "annual": "Annuel",
+    "save": "Économisez",
+    "current_plan": "Plan actuel",
+    "popular": "Populaire",
+    "subscribe": "S'abonner",
+    "guest": "Invité",
+    "premium": "Premium",
+    "vip": "VIP"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "Inscription",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirm_password": "Confirmer le mot de passe",
+    "first_name": "Prénom",
+    "last_name": "Nom",
+    "phone": "Téléphone",
+    "social_login": "Connexion sociale",
+    "phone_auth": "Authentification par téléphone",
+    "email_auth": "Authentification par email"
+  },
+  "help": {
+    "title": "Centre d'aide",
+    "search_placeholder": "Rechercher dans l'aide...",
+    "faq": "Questions fréquentes",
+    "contact": "Nous contacter",
+    "terms": "Conditions générales",
+    "privacy": "Politique de confidentialité"
+  },
+  "common": {
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "success": "Succès",
+    "cancel": "Annuler",
+    "confirm": "Confirmer",
+    "save": "Enregistrer",
+    "edit": "Modifier",
+    "delete": "Supprimer",
+    "close": "Fermer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "sort": "Trier",
+    "view_all": "Voir tout",
+    "show_more": "Afficher plus",
+    "show_less": "Afficher moins"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "navigation": {
+    "home": "Home",
+    "establishments": "Establishments",
+    "events": "Events",
+    "subscriptions": "Subscriptions",
+    "account": "Account",
+    "help": "Help",
+    "login": "Login",
+    "register": "Register",
+    "logout": "Logout"
+  },
+  "chat": {
+    "placeholder": "Write what you need...",
+    "send": "Send",
+    "sending": "Sending...",
+    "loading": "Get Weez is preparing a response...",
+    "empty_title": "Start a conversation with Get Weez",
+    "empty_subtitle": "Request an exclusive experience in Marbella",
+    "new_conversation": "New conversation",
+    "conversation": "Conversation"
+  },
+  "subscriptions": {
+    "title": "Choose your subscription",
+    "subtitle": "Discover our exclusive offers for a premium experience in Marbella",
+    "monthly": "Monthly",
+    "annual": "Annual",
+    "save": "Save",
+    "current_plan": "Current plan",
+    "popular": "Popular",
+    "subscribe": "Subscribe",
+    "guest": "Guest",
+    "premium": "Premium",
+    "vip": "VIP"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "email": "Email",
+    "password": "Password",
+    "confirm_password": "Confirm password",
+    "first_name": "First name",
+    "last_name": "Last name",
+    "phone": "Phone",
+    "social_login": "Social login",
+    "phone_auth": "Phone authentication",
+    "email_auth": "Email authentication"
+  },
+  "help": {
+    "title": "Help Center",
+    "search_placeholder": "Search help...",
+    "faq": "Frequently asked questions",
+    "contact": "Contact us",
+    "terms": "Terms and conditions",
+    "privacy": "Privacy policy"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "edit": "Edit",
+    "delete": "Delete",
+    "close": "Close",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "view_all": "View all",
+    "show_more": "Show more",
+    "show_less": "Show less"
+  }
+}

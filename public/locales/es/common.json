@@ -1,0 +1,77 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "establishments": "Establecimientos",
+    "events": "Eventos",
+    "subscriptions": "Suscripciones",
+    "account": "Cuenta",
+    "help": "Ayuda",
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "logout": "Cerrar sesión"
+  },
+  "chat": {
+    "placeholder": "Escribe lo que necesitas...",
+    "send": "Enviar",
+    "sending": "Enviando...",
+    "loading": "Get Weez está preparando una respuesta...",
+    "empty_title": "Comienza una conversación con Get Weez",
+    "empty_subtitle": "Solicita una experiencia exclusiva en Marbella",
+    "new_conversation": "Nueva conversación",
+    "conversation": "Conversación"
+  },
+  "subscriptions": {
+    "title": "Elige tu suscripción",
+    "subtitle": "Descubre nuestras ofertas exclusivas para una experiencia premium en Marbella",
+    "monthly": "Mensual",
+    "annual": "Anual",
+    "save": "Ahorra",
+    "current_plan": "Plan actual",
+    "popular": "Popular",
+    "subscribe": "Suscribirse",
+    "guest": "Invitado",
+    "premium": "Premium",
+    "vip": "VIP"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "register": "Registrarse",
+    "email": "Email",
+    "password": "Contraseña",
+    "confirm_password": "Confirmar contraseña",
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "phone": "Teléfono",
+    "social_login": "Inicio de sesión social",
+    "phone_auth": "Autenticación por teléfono",
+    "email_auth": "Autenticación por email"
+  },
+  "help": {
+    "title": "Centro de ayuda",
+    "search_placeholder": "Buscar en la ayuda...",
+    "faq": "Preguntas frecuentes",
+    "contact": "Contáctanos",
+    "terms": "Términos y condiciones",
+    "privacy": "Política de privacidad"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Error",
+    "success": "Éxito",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "sort": "Ordenar",
+    "view_all": "Ver todo",
+    "show_more": "Mostrar más",
+    "show_less": "Mostrar menos"
+  }
+}
