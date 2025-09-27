@@ -12,9 +12,9 @@ export default function EstablishmentCard({ establishment, user, onReserve }) {
     >
       <div className="relative">
         <img 
-          src={establishment.image_url || `https://placehold.co/400x200/1a1a1a/E0E0E0?text=${encodeURIComponent(establishment.name)}`} 
+          src={establishment.image_url || `https://placehold.co/400x150/1a1a1a/E0E0E0?text=${encodeURIComponent(establishment.name)}`} 
           alt={establishment.name} 
-          className="w-full h-32 object-cover"
+          className="w-full h-24 object-cover"
         />
         {establishment.sponsored && (
           <div 
@@ -41,10 +41,10 @@ export default function EstablishmentCard({ establishment, user, onReserve }) {
           </button>
         )}
       </div>
-      <div className="p-4">
-        <div className="flex justify-between items-start mb-2">
+      <div className="p-3">
+        <div className="flex justify-between items-start mb-1">
           <h3 
-            className="text-lg font-bold"
+            className="text-base font-bold"
             style={{ color: 'var(--color-text-primary)' }}
           >
             {establishment.name}
@@ -60,8 +60,8 @@ export default function EstablishmentCard({ establishment, user, onReserve }) {
             <span className="text-sm">{establishment.rating}</span>
           </div>
         </div>
-        <div className="flex items-center text-sm mb-3" style={{ color: 'var(--color-text-secondary)' }}>
-          <MapPin size={14} className="mr-2" />
+        <div className="flex items-center text-xs mb-2" style={{ color: 'var(--color-text-secondary)' }}>
+          <MapPin size={12} className="mr-1" />
           <span>{establishment.zone}, Marbella</span>
         </div>
         <div className="flex justify-between items-center">
