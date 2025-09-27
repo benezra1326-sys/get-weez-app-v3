@@ -35,8 +35,8 @@ export default function Sidebar({ user }) {
     >
       <div className="p-8 lg:p-10 xl:p-12">
         {/* Logo et titre */}
-        <div className="mb-8">
-          <div className="flex items-center mb-4">
+        <div className="mb-12">
+          <div className="flex items-center mb-6">
             <div 
               className="w-12 h-12 rounded-2xl mr-4 shadow-glow"
               style={{
@@ -51,7 +51,7 @@ export default function Sidebar({ user }) {
           </div>
         </div>
         
-        <nav className="space-y-4">
+        <nav className="space-y-4 mt-6">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = router.pathname === item.href
