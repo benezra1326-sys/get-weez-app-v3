@@ -4,7 +4,7 @@ import { useTranslation } from 'next-i18next'
 import SidebarChat from './SidebarChat'
 import MobileChatOverlay from './MobileChatOverlay'
 import SuggestiveMessages from './SuggestiveMessages'
-import VoiceChatInterface from './VoiceChatInterface'
+import VoiceDictationButton from './VoiceDictationButton'
 import { useConversations } from '../../hooks/useConversations'
 import { ChatLoadingSpinner } from '../ui/LoadingSpinner'
 import { useToast } from '../ui/Toast'
@@ -16,7 +16,6 @@ export default function ChatInterface({ user }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [textareaRef, setTextareaRef] = useState(null)
   const [showSuggestiveMessages, setShowSuggestiveMessages] = useState(true)
-  const [showVoiceInterface, setShowVoiceInterface] = useState(false)
   const { showToast } = useToast()
   
   const {
@@ -37,8 +36,13 @@ export default function ChatInterface({ user }) {
     console.log('🔍 ChatInterface - Vérification des conversations...')
     console.log('🔍 Conversations:', conversations.length, 'Current ID:', currentConversationId)
     
+    // Si aucune conversation n'existe, en créer une
+    if (conversations.length === 0) {
+      console.log('✅ ChatInterface - Création d\'une nouvelle conversation')
+      createConversation('Nouvelle conversation')
+    }
     // Si des conversations existent mais aucune n'est sélectionnée, sélectionner la première
-    if (conversations.length > 0 && !currentConversationId) {
+    else if (conversations.length > 0 && !currentConversationId) {
       console.log('✅ ChatInterface - Sélection de la première conversation existante')
       selectConversation(conversations[0].id)
     }
@@ -72,20 +76,38 @@ export default function ChatInterface({ user }) {
     setShowSuggestiveMessages(false) // Masquer les messages suggestifs quand l'utilisateur tape
   }
 
-  // Fonction pour gérer les messages vocaux
-  const handleVoiceMessage = (message) => {
-    setInput(message)
+  // Fonction pour gérer la dictée vocale
+  const handleVoiceTranscript = (text) => {
+    setInput(prevInput => prevInput + text)
     setShowSuggestiveMessages(false)
   }
 
-  const handleVoiceResponse = (response) => {
-    // L'IA a répondu vocalement
-    console.log('Réponse vocale reçue:', response)
+  const handleInterimTranscript = (text) => {
+    // Optionnel : afficher la transcription en temps réel
+    console.log('Transcription intermédiaire:', text)
   }
 
   // Fonction pour envoyer un message
   const handleSend = async () => {
-    if (!input.trim() || isLoading || !currentConversationId) return
+    console.log('🔍 handleSend appelé')
+    console.log('📝 Input:', input)
+    console.log('⏳ Loading:', isLoading)
+    console.log('💬 Conversation ID:', currentConversationId)
+    
+    if (!input.trim()) {
+      console.log('❌ Input vide')
+      return
+    }
+    
+    if (isLoading) {
+      console.log('❌ Déjà en cours de chargement')
+      return
+    }
+    
+    if (!currentConversationId) {
+      console.log('❌ Pas de conversation active')
+      return
+    }
 
     const userMessage = {
       id: Date.now(),
@@ -325,26 +347,31 @@ export default function ChatInterface({ user }) {
                   lineHeight: '1.5'
                 }}
                 onKeyDown={(e) => {
+                  console.log('🔍 Touche pressée:', e.key, 'Shift:', e.shiftKey)
                   if (e.key === 'Enter' && !e.shiftKey) {
+                    console.log('✅ Entrée pressée, tentative d\'envoi')
                     e.preventDefault()
                     e.stopPropagation()
                     if (input.trim() && !isLoading) {
+                      console.log('🚀 Envoi du message')
                       handleSend()
-                    }
-                  }
-                }}
-                onKeyPress={(e) => {
-                  if (e.key === 'Enter' && !e.shiftKey) {
-                    e.preventDefault()
-                    e.stopPropagation()
-                    if (input.trim() && !isLoading) {
-                      handleSend()
+                    } else {
+                      console.log('❌ Conditions non remplies pour l\'envoi')
                     }
                   }
                 }}
                 rows={1}
                 disabled={isLoading}
               />
+              {/* Bouton de dictée vocale */}
+              <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+                <VoiceDictationButton
+                  onTranscript={handleVoiceTranscript}
+                  onInterimTranscript={handleInterimTranscript}
+                  disabled={isLoading}
+                />
+              </div>
+
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
@@ -365,26 +392,25 @@ export default function ChatInterface({ user }) {
             </div>
           </div>
           
-          {/* Interface vocale */}
-          {showVoiceInterface && (
-            <VoiceChatInterface
-              onVoiceMessage={handleVoiceMessage}
-              onVoiceResponse={handleVoiceResponse}
-            />
-          )}
 
-          {/* Bouton pour basculer l'interface vocale */}
+          {/* Bouton de test pour débogage */}
           <div className="mt-4 text-center">
             <button
-              onClick={() => setShowVoiceInterface(!showVoiceInterface)}
-              className="px-4 py-2 rounded-lg transition-all duration-200"
-              style={{
-                backgroundColor: showVoiceInterface ? 'var(--color-primary)' : 'var(--color-bg-secondary)',
-                color: showVoiceInterface ? 'white' : 'var(--color-text-primary)',
-                border: '1px solid var(--color-border)'
+              onClick={() => {
+                console.log('🧪 Test bouton - État actuel:')
+                console.log('📝 Input:', input)
+                console.log('⏳ Loading:', isLoading)
+                console.log('💬 Conversation ID:', currentConversationId)
+                console.log('📚 Messages:', messages.length)
+                if (input.trim() && !isLoading && currentConversationId) {
+                  handleSend()
+                } else {
+                  console.log('❌ Conditions non remplies pour l\'envoi')
+                }
               }}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2"
             >
-              {showVoiceInterface ? '🎤 Interface vocale active' : '🎤 Activer l\'agent vocal'}
+              🧪 Test Envoi
             </button>
           </div>
 
@@ -392,7 +418,8 @@ export default function ChatInterface({ user }) {
           <div className="mt-4 text-center">
             <p className="text-caption" style={{ color: 'var(--color-text-muted)' }}>
               Appuyez sur <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs">Entrée</kbd> pour envoyer, 
-              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">Maj+Entrée</kbd> pour une nouvelle ligne
+              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">Maj+Entrée</kbd> pour une nouvelle ligne,
+              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">🎤</kbd> pour dicter
             </p>
           </div>
         </div>
