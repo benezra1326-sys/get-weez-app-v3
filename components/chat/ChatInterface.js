@@ -105,8 +105,14 @@ export default function ChatInterface({ user }) {
     }
     
     if (!currentConversationId) {
-      console.log('❌ Pas de conversation active')
-      return
+      console.log('❌ Pas de conversation active, création d\'une nouvelle conversation')
+      try {
+        const newConversationId = createConversation('Nouvelle conversation')
+        console.log('✅ Nouvelle conversation créée:', newConversationId)
+      } catch (error) {
+        console.error('❌ Erreur création conversation:', error)
+        return
+      }
     }
 
     const userMessage = {
@@ -402,7 +408,8 @@ export default function ChatInterface({ user }) {
                 console.log('⏳ Loading:', isLoading)
                 console.log('💬 Conversation ID:', currentConversationId)
                 console.log('📚 Messages:', messages.length)
-                if (input.trim() && !isLoading && currentConversationId) {
+                console.log('📚 Conversations:', conversations.length)
+                if (input.trim() && !isLoading) {
                   handleSend()
                 } else {
                   console.log('❌ Conditions non remplies pour l\'envoi')
@@ -411,6 +418,19 @@ export default function ChatInterface({ user }) {
               className="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2"
             >
               🧪 Test Envoi
+            </button>
+            <button
+              onClick={() => {
+                console.log('🔧 Test Entrée simulé')
+                const event = new KeyboardEvent('keydown', {
+                  key: 'Enter',
+                  shiftKey: false
+                })
+                document.querySelector('textarea').dispatchEvent(event)
+              }}
+              className="px-4 py-2 bg-green-500 text-white rounded-lg"
+            >
+              🔧 Test Entrée
             </button>
           </div>
 
