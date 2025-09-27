@@ -9,6 +9,9 @@ export function useConversations() {
 
   // Charger les conversations depuis localStorage
   useEffect(() => {
+    // Vérifier si on est côté client
+    if (typeof window === 'undefined') return
+    
     const savedConversations = localStorage.getItem(STORAGE_KEY)
     if (savedConversations) {
       try {
@@ -31,6 +34,9 @@ export function useConversations() {
 
   // Sauvegarder les conversations dans localStorage
   useEffect(() => {
+    // Vérifier si on est côté client
+    if (typeof window === 'undefined') return
+    
     if (conversations.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations))
     }
@@ -74,8 +80,13 @@ export function useConversations() {
       // Limiter à 10 conversations maximum
       return updated.slice(0, 10)
     })
-    setCurrentConversationId(newConversation.id)
-    setIsCreating(false)
+    
+    // Utiliser setTimeout pour éviter les problèmes de state
+    setTimeout(() => {
+      setCurrentConversationId(newConversation.id)
+      setIsCreating(false)
+    }, 0)
+    
     return newConversation.id
   }
 
