@@ -19,8 +19,13 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
 
   return (
         <header
-          className="w-full flex items-center justify-between sticky top-0 z-50 glass"
           style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            position: 'sticky',
+            top: 0,
+            zIndex: 50,
             backgroundColor: 'var(--color-bg-secondary)',
             borderBottom: '1px solid var(--color-border)',
             paddingTop: 'var(--spacing-xl)',
@@ -31,7 +36,10 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             backdropFilter: 'blur(20px)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
             width: '100vw',
-            maxWidth: '100vw'
+            maxWidth: '100vw',
+            margin: 0,
+            left: 0,
+            right: 0
           }}
         >
       <div className="flex items-center">
