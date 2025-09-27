@@ -33,8 +33,8 @@ export default function Sidebar({ user }) {
         zIndex: 40
       }}
     >
-      <div className="p-6 lg:p-8 xl:p-10">
-        <nav className="space-y-3">
+      <div className="p-8 lg:p-10 xl:p-12">
+        <nav className="space-y-4">
           {navItems.map((item) => {
             const Icon = item.icon
             const isActive = router.pathname === item.href
@@ -43,7 +43,7 @@ export default function Sidebar({ user }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center px-4 py-3 rounded-2xl transition-all duration-300 group hover:scale-105 ${
+                className={`flex items-center px-6 py-4 rounded-2xl transition-all duration-300 group hover:scale-105 ${
                   isActive
                     ? 'shadow-lg'
                     : ''
@@ -65,14 +65,14 @@ export default function Sidebar({ user }) {
                   }
                 }}
               >
-                <Icon 
-                  size={20} 
+                <Icon
+                  size={24}
                   className="mr-4 transition-all duration-300"
                   style={{
                     color: isActive ? 'var(--color-text-primary)' : 'var(--color-text-muted)'
                   }}
                 />
-                <span className="font-medium">{item.label}</span>
+                <span className="font-medium text-lg">{item.label}</span>
                 {isActive && (
                   <div 
                     className="ml-auto w-2 h-2 rounded-full animate-pulse"
