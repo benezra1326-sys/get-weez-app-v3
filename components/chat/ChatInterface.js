@@ -28,12 +28,12 @@ export default function ChatInterface({ user }) {
 
   const messages = getCurrentMessages()
 
-  // Créer une nouvelle conversation si nécessaire
+  // Initialiser la conversation seulement au premier chargement
   useEffect(() => {
     console.log('🔍 ChatInterface - Vérification des conversations...')
     console.log('🔍 Conversations:', conversations.length, 'Current ID:', currentConversationId)
     
-    // Si aucune conversation n'existe, en créer une
+    // Si aucune conversation n'existe, en créer une SEULEMENT au premier chargement
     if (conversations.length === 0 && !currentConversationId) {
       console.log('✅ ChatInterface - Création d\'une nouvelle conversation')
       createConversation()
@@ -47,7 +47,7 @@ export default function ChatInterface({ user }) {
     else if (currentConversationId && conversations.some(conv => conv.id === currentConversationId)) {
       console.log('✅ ChatInterface - Conversation déjà active, pas d\'action nécessaire')
     }
-  }, [conversations.length, currentConversationId]) // Retirer les dépendances qui causent des re-renders
+  }, []) // Seulement au montage du composant
 
   // Fonction pour auto-resize du textarea
   const handleInputChange = (e) => {
@@ -178,14 +178,6 @@ export default function ChatInterface({ user }) {
               {conversations.find(c => c.id === currentConversationId)?.name || 'Nouvelle Conversation'}
             </h2>
           </div>
-          
-          <button
-            onClick={createConversation}
-            className="btn-premium flex items-center text-sm px-4 py-2"
-          >
-            <MessageCircle size={16} className="mr-2" />
-            Nouvelle
-          </button>
         </div>
 
         {/* Zone d'affichage des messages */}
