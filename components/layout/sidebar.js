@@ -15,7 +15,7 @@ export default function Sidebar({ user }) {
 
   return (
     <div 
-      className="hidden md:flex flex-col w-72 glass"
+      className="hidden md:flex flex-col w-72 bg-bg-secondary border-r border-border"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
         borderRight: '1px solid var(--color-border)'
@@ -27,7 +27,7 @@ export default function Sidebar({ user }) {
             className="w-12 h-12 rounded-2xl mr-4 shadow-glow animate-float"
             style={{ background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)' }}
           ></div>
-          <h1 className="text-2xl font-bold text-gradient">
+          <h1 className="text-2xl font-bold text-white">
             Get Weez
           </h1>
         </div>
@@ -41,9 +41,9 @@ export default function Sidebar({ user }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center px-5 py-4 rounded-2xl transition-all duration-300 group animate-hover-lift ${
+                className={`flex items-center px-5 py-4 rounded-2xl transition-all duration-300 group hover:scale-105 ${
                   isActive
-                    ? 'shadow-glow'
+                    ? 'shadow-lg'
                     : ''
                 }`}
                 style={{
@@ -73,7 +73,7 @@ export default function Sidebar({ user }) {
                 <span className="font-medium">{item.label}</span>
                 {isActive && (
                   <div 
-                    className="ml-auto w-2 h-2 rounded-full animate-pulse-slow"
+                    className="ml-auto w-2 h-2 rounded-full animate-pulse"
                     style={{ backgroundColor: 'var(--color-text-primary)' }}
                   ></div>
                 )}
@@ -85,7 +85,7 @@ export default function Sidebar({ user }) {
 
       {user ? (
         <div 
-          className="mt-auto p-6 glass"
+          className="mt-auto p-6 border-t border-border bg-bg-secondary"
           style={{ 
             borderTop: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-bg-secondary)'
@@ -116,9 +116,9 @@ export default function Sidebar({ user }) {
             </div>
           </div>
         </div>
-      ) : (
+        ) : (
         <div 
-          className="mt-auto p-6 glass"
+          className="mt-auto p-6 border-t border-border bg-bg-secondary"
           style={{ 
             borderTop: '1px solid var(--color-border)',
             backgroundColor: 'var(--color-bg-secondary)'
@@ -127,14 +127,14 @@ export default function Sidebar({ user }) {
           <div className="space-y-3">
             <Link 
               href="/login"
-              className="btn-secondary flex items-center animate-hover-lift"
+              className="flex items-center px-4 py-3 bg-surface border border-border rounded-lg hover:bg-surface-hover transition-all duration-300 hover:scale-105"
             >
               <LogIn size={20} className="mr-4" />
               Connexion
             </Link>
             <Link 
               href="/register"
-              className="btn-premium flex items-center animate-hover-lift"
+              className="flex items-center px-4 py-3 bg-primary text-white rounded-lg hover:bg-primary-dark transition-all duration-300 hover:scale-105"
             >
               <UserPlus size={20} className="mr-4" />
               Inscription
