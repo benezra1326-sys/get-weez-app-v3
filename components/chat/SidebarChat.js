@@ -53,12 +53,12 @@ export default function SidebarChat({
       </div>
 
       {/* Liste des conversations */}
-      <div className="flex-1 overflow-y-auto p-3 sm:p-4">
-        <div className="space-y-1 sm:space-y-2">
-          {conversations.map((conversation) => (
+      <div className="flex-1 overflow-y-auto p-2 sm:p-3">
+        <div className="space-y-1">
+          {conversations.slice(0, 8).map((conversation) => (
             <div
               key={conversation.id}
-              className={`group relative rounded-xl p-2 sm:p-3 cursor-pointer transition-all duration-200 ${
+              className={`group relative rounded-lg p-2 cursor-pointer transition-all duration-200 ${
                 currentConversationId === conversation.id
                   ? 'ring-2'
                   : 'hover:bg-gray-800/50'
@@ -73,9 +73,9 @@ export default function SidebarChat({
               }}
               onClick={() => onSelectConversation(conversation.id)}
             >
-              <div className="flex items-start space-x-2 sm:space-x-3">
+              <div className="flex items-start space-x-2">
                 <MessageSquare 
-                  size={14} 
+                  size={12} 
                   className="mt-1 flex-shrink-0" 
                   style={{ color: 'var(--color-text-muted)' }}
                 />

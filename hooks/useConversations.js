@@ -57,16 +57,23 @@ export function useConversations() {
     console.log('✅ Création d\'une nouvelle conversation')
     setIsCreating(true)
     
+    // Calculer le prochain numéro de conversation
+    const nextNumber = conversations.length + 1
+    
     const newConversation = {
       id: Date.now().toString(),
-      name: `Conversation ${conversations.length + 1}`,
+      name: `Conversation ${nextNumber}`,
       messages: [],
       lastMessage: '',
       createdAt: new Date().toISOString(),
       updatedAt: formatDate(new Date())
     }
     
-    setConversations(prev => [newConversation, ...prev])
+    setConversations(prev => {
+      const updated = [newConversation, ...prev]
+      // Limiter à 10 conversations maximum
+      return updated.slice(0, 10)
+    })
     setCurrentConversationId(newConversation.id)
     setIsCreating(false)
     return newConversation.id

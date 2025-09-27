@@ -47,7 +47,7 @@ export default function ChatInterface({ user }) {
     else if (currentConversationId && conversations.some(conv => conv.id === currentConversationId)) {
       console.log('✅ ChatInterface - Conversation déjà active, pas d\'action nécessaire')
     }
-  }, [conversations.length, currentConversationId]) // Retirer les dépendances qui causent des re-renders
+  }, [conversations.length, currentConversationId, createConversation, selectConversation]) // Ajouter les dépendances manquantes
 
   // Fonction pour auto-resize du textarea
   const handleInputChange = (e) => {
