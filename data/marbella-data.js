@@ -849,3 +849,366 @@ export const recommendations = {
     "Nobu Marbella - Restaurant japonais avec sushi et sashimi"
   ]
 }
+
+// Service EVG/EVJF complet pour Marbella
+export const evgServices = {
+  title: "Service EVG/EVJF Marbella",
+  description: "Organisation complète d'enterrements de vie de garçon/fille à Marbella",
+  
+  // Villas et hébergements pour EVG/EVJF
+  accommodations: [
+    {
+      id: "villa-marbella-club",
+      name: "Villa Marbella Club",
+      type: "Villa de luxe",
+      capacity: "8-12 personnes",
+      price: "€800-1200/nuit",
+      features: [
+        "Piscine privée avec bar de nage",
+        "Jardin paysager de 2000m²",
+        "Vue panoramique sur la mer",
+        "Spa privé avec sauna",
+        "Terrasse avec barbecue professionnel",
+        "Salle de jeux avec billard",
+        "Parking privé pour 6 voitures",
+        "WiFi haut débit",
+        "Climatisation dans toutes les pièces"
+      ],
+      location: "Golden Mile, Marbella",
+      contact: "+34 952 77 48 00",
+      website: "https://villamarbellaclub.com"
+    },
+    {
+      id: "villa-golden-mile",
+      name: "Villa Golden Mile",
+      type: "Villa ultra-luxe",
+      capacity: "12-16 personnes",
+      price: "€1500-2500/nuit",
+      features: [
+        "Piscine à débordement avec vue mer",
+        "Accès direct à la plage privée",
+        "Spa privé avec hammam",
+        "Cinéma privé",
+        "Cave à vin climatisée",
+        "Terrasse rooftop avec jacuzzi",
+        "Salle de sport privée",
+        "Service de conciergerie 24h/24",
+        "Chef privé disponible"
+      ],
+      location: "Golden Mile, Marbella",
+      contact: "+34 952 77 48 01",
+      website: "https://villagoldenmile.com"
+    },
+    {
+      id: "villa-puerto-banus",
+      name: "Villa Puerto Banús",
+      type: "Villa moderne",
+      capacity: "6-10 personnes",
+      price: "€600-900/nuit",
+      features: [
+        "Piscine avec éclairage LED",
+        "Jardin avec palmiers",
+        "Vue sur le port de Puerto Banús",
+        "Terrasse avec mobilier design",
+        "Cuisine équipée haut de gamme",
+        "Salle de détente",
+        "Parking privé",
+        "WiFi et climatisation"
+      ],
+      location: "Puerto Banús, Marbella",
+      contact: "+34 952 77 48 02",
+      website: "https://villapuertobanus.com"
+    }
+  ],
+
+  // Activités et expériences EVG/EVJF
+  activities: [
+    {
+      id: "activite-yacht",
+      name: "Croisière privée en yacht",
+      duration: "4-8 heures",
+      price: "€800-1500",
+      capacity: "8-12 personnes",
+      description: "Yacht privé avec capitaine, déjeuner à bord, équipement de plongée, musique et bar",
+      includes: [
+        "Yacht privé avec capitaine professionnel",
+        "Déjeuner gastronomique à bord",
+        "Équipement de plongée et snorkeling",
+        "Bar avec boissons premium",
+        "Système son professionnel",
+        "Équipement de sécurité",
+        "Photos et vidéos du voyage"
+      ],
+      contact: "+34 952 77 48 10"
+    },
+    {
+      id: "activite-golf",
+      name: "Tournoi de golf VIP",
+      duration: "6 heures",
+      price: "€200-400/personne",
+      capacity: "4-8 personnes",
+      description: "Tournoi de golf sur les plus beaux parcours de Marbella avec prix et récompenses",
+      includes: [
+        "Green fees sur parcours 18 trous",
+        "Location de matériel de golf",
+        "Caddy professionnel",
+        "Déjeuner au club house",
+        "Prix et récompenses",
+        "Photos du tournoi",
+        "Transport depuis la villa"
+      ],
+      contact: "+34 952 77 48 11"
+    },
+    {
+      id: "activite-spa",
+      name: "Journée spa et bien-être",
+      duration: "6 heures",
+      price: "€150-300/personne",
+      capacity: "4-8 personnes",
+      description: "Journée complète de détente dans un spa de luxe avec soins personnalisés",
+      includes: [
+        "Massage relaxant 60 minutes",
+        "Soin du visage personnalisé",
+        "Accès aux installations spa",
+        "Sauna et hammam",
+        "Déjeuner détox",
+        "Boissons détox",
+        "Transport depuis la villa"
+      ],
+      contact: "+34 952 77 48 12"
+    },
+    {
+      id: "activite-aventure",
+      name: "Aventure en montagne",
+      duration: "8 heures",
+      price: "€100-200/personne",
+      capacity: "6-12 personnes",
+      description: "Randonnée, via ferrata, et activités d'aventure dans les montagnes de Marbella",
+      includes: [
+        "Randonnée guidée en montagne",
+        "Via ferrata sécurisée",
+        "Équipement de sécurité",
+        "Guide professionnel",
+        "Pique-nique en altitude",
+        "Photos de l'aventure",
+        "Transport depuis la villa"
+      ],
+      contact: "+34 952 77 48 13"
+    }
+  ],
+
+  // Restaurants et bars pour EVG/EVJF
+  restaurants: [
+    {
+      id: "restaurant-evj-1",
+      name: "Dîner privé en villa",
+      type: "Service privé",
+      price: "€80-150/personne",
+      description: "Chef privé qui cuisine dans votre villa avec menu personnalisé",
+      includes: [
+        "Chef privé pour la soirée",
+        "Menu personnalisé selon vos goûts",
+        "Service en salle",
+        "Décoration de table",
+        "Boissons et vins",
+        "Nettoyage après le repas"
+      ],
+      contact: "+34 952 77 48 20"
+    },
+    {
+      id: "restaurant-evj-2",
+      name: "Restaurant VIP avec terrasse privée",
+      type: "Restaurant privé",
+      price: "€100-200/personne",
+      description: "Terrasse privée dans un restaurant de luxe avec menu dégustation",
+      includes: [
+        "Terrasse privée réservée",
+        "Menu dégustation 7 services",
+        "Accompagnement vin",
+        "Service dédié",
+        "Décoration personnalisée",
+        "Photos de la soirée"
+      ],
+      contact: "+34 952 77 48 21"
+    }
+  ],
+
+  // Soirées et clubs pour EVG/EVJF
+  nightlife: [
+    {
+      id: "club-evj-1",
+      name: "Soirée VIP en club privé",
+      type: "Club privé",
+      price: "€200-400/personne",
+      description: "Accès VIP à un club exclusif avec table réservée et bouteilles premium",
+      includes: [
+        "Table VIP réservée",
+        "Bouteilles premium (2-3 par personne)",
+        "Service dédié",
+        "Accès VIP sans attente",
+        "Photos de la soirée",
+        "Transport depuis la villa"
+      ],
+      contact: "+34 952 77 48 30"
+    },
+    {
+      id: "club-evj-2",
+      name: "Fête privée en villa",
+      type: "Événement privé",
+      price: "€150-300/personne",
+      description: "Fête privée dans votre villa avec DJ, bar mobile et décoration",
+      includes: [
+        "DJ professionnel",
+        "Bar mobile avec barman",
+        "Décoration thématique",
+        "Éclairage professionnel",
+        "Système son professionnel",
+        "Photos et vidéos de la soirée"
+      ],
+      contact: "+34 952 77 48 31"
+    }
+  ],
+
+  // Services de transport
+  transport: [
+    {
+      id: "transport-1",
+      name: "Transfert aéroport en limousine",
+      type: "Transport VIP",
+      price: "€150-300",
+      description: "Transfert depuis l'aéroport en limousine ou van de luxe",
+      includes: [
+        "Limousine ou van de luxe",
+        "Chauffeur professionnel",
+        "Boissons à bord",
+        "WiFi à bord",
+        "Accueil avec pancarte"
+      ],
+      contact: "+34 952 77 48 40"
+    },
+    {
+      id: "transport-2",
+      name: "Transport entre activités",
+      type: "Transport privé",
+      price: "€50-100/trajet",
+      description: "Transport privé entre toutes les activités de la journée",
+      includes: [
+        "Van ou minibus privé",
+        "Chauffeur dédié",
+        "Boissons à bord",
+        "WiFi à bord",
+        "Flexibilité des horaires"
+      ],
+      contact: "+34 952 77 48 41"
+    }
+  ],
+
+  // Services de décoration et organisation
+  decoration: [
+    {
+      id: "decoration-1",
+      name: "Décoration thématique villa",
+      type: "Décoration complète",
+      price: "€200-500",
+      description: "Décoration complète de la villa selon le thème choisi",
+      includes: [
+        "Décoration extérieure et intérieure",
+        "Ballons et guirlandes",
+        "Pancartes personnalisées",
+        "Éclairage décoratif",
+        "Installation et démontage",
+        "Photos de la décoration"
+      ],
+      contact: "+34 952 77 48 50"
+    },
+    {
+      id: "decoration-2",
+      name: "Décoration de table",
+      type: "Décoration de table",
+      price: "€50-150",
+      description: "Décoration de table pour les repas avec centre de table et accessoires",
+      includes: [
+        "Centre de table personnalisé",
+        "Nappes et serviettes",
+        "Vaisselle décorative",
+        "Bougies et éclairage",
+        "Accessoires thématiques",
+        "Installation et rangement"
+      ],
+      contact: "+34 952 77 48 51"
+    }
+  ],
+
+  // Packages complets EVG/EVJF
+  packages: [
+    {
+      id: "package-basic",
+      name: "Package EVG/EVJF Basique",
+      duration: "2 jours / 1 nuit",
+      price: "€300-500/personne",
+      includes: [
+        "Villa pour 8-12 personnes",
+        "Transfert aéroport",
+        "1 activité au choix",
+        "1 repas en villa",
+        "Transport entre activités",
+        "Organisation complète"
+      ],
+      contact: "+34 952 77 48 60"
+    },
+    {
+      id: "package-premium",
+      name: "Package EVG/EVJF Premium",
+      duration: "3 jours / 2 nuits",
+      price: "€500-800/personne",
+      includes: [
+        "Villa de luxe pour 8-16 personnes",
+        "Transfert aéroport en limousine",
+        "2 activités au choix",
+        "2 repas (1 en villa, 1 au restaurant)",
+        "1 soirée VIP en club",
+        "Transport privé",
+        "Décoration thématique",
+        "Organisation complète",
+        "Photos et vidéos"
+      ],
+      contact: "+34 952 77 48 61"
+    },
+    {
+      id: "package-luxury",
+      name: "Package EVG/EVJF Luxe",
+      duration: "4 jours / 3 nuits",
+      price: "€800-1200/personne",
+      includes: [
+        "Villa ultra-luxe pour 12-16 personnes",
+        "Transfert aéroport en limousine",
+        "3 activités au choix",
+        "3 repas (2 en villa, 1 au restaurant)",
+        "2 soirées (1 en club, 1 en villa)",
+        "Transport privé avec chauffeur",
+        "Décoration complète",
+        "Service de conciergerie 24h/24",
+        "Photos et vidéos professionnelles",
+        "Cadeaux de bienvenue",
+        "Organisation complète"
+      ],
+      contact: "+34 952 77 48 62"
+    }
+  ],
+
+  // Informations pratiques
+  practicalInfo: {
+    bestTime: "Avril à Octobre (meilleure météo)",
+    groupSize: "6-16 personnes (optimal 8-12)",
+    advanceBooking: "2-4 semaines à l'avance",
+    payment: "30% à la réservation, 70% 7 jours avant",
+    cancellation: "Annulation gratuite jusqu'à 7 jours avant",
+    languages: ["Français", "Anglais", "Espagnol", "Italien"],
+    contact: {
+      phone: "+34 952 77 48 00",
+      email: "evg@getweez.com",
+      whatsapp: "+34 952 77 48 00",
+      website: "https://getweez.com/evg"
+    }
+  }
+}
