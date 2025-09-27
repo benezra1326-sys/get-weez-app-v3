@@ -165,28 +165,72 @@ export default function Events({ user, setUser }) {
   }
 
   return (
-    <div className="flex flex-col h-screen overflow-hidden">
-      <Header 
-        user={user} 
-        setUser={setUser}
-        toggleMobileMenu={toggleMobileMenu} 
-        isMobileMenuOpen={isMobileMenuOpen} 
-      />
-      <MobileMenu 
-        isOpen={isMobileMenuOpen} 
-        onClose={() => setIsMobileMenuOpen(false)} 
-        user={user} 
-      />
-      
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar user={user} />
-        <main className="flex-1 overflow-y-auto">
-          <EventList 
-            events={events} 
-            user={user} 
-            onBecomeMember={handleBecomeMember}
-          />
-        </main>
+    <div 
+      style={{ 
+        width: '100vw', 
+        height: '100vh', 
+        margin: 0, 
+        padding: 0,
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0
+      }}
+    >
+      <div 
+        style={{ 
+          display: 'flex', 
+          flexDirection: 'column', 
+          height: '100vh', 
+          width: '100vw',
+          margin: 0,
+          padding: 0
+        }}
+      >
+        <Header 
+          user={user} 
+          setUser={setUser}
+          toggleMobileMenu={toggleMobileMenu} 
+          isMobileMenuOpen={isMobileMenuOpen} 
+        />
+        <MobileMenu 
+          isOpen={isMobileMenuOpen} 
+          onClose={() => setIsMobileMenuOpen(false)} 
+          user={user} 
+        />
+        
+        <div 
+          style={{ 
+            display: 'flex', 
+            flex: 1, 
+            overflow: 'hidden', 
+            width: '100vw',
+            height: 'calc(100vh - 8rem)'
+          }}
+        >
+          <div className="hidden lg:block">
+            <Sidebar user={user} />
+          </div>
+          
+          <main 
+            style={{ 
+              flex: 1,
+              overflowY: 'auto',
+              backgroundColor: 'var(--color-bg-primary)',
+              width: 'calc(100vw - 320px)',
+              height: '100%',
+              marginLeft: '320px',
+              padding: 'var(--spacing-xl)'
+            }}
+          >
+            <EventList 
+              events={events} 
+              user={user} 
+              onBecomeMember={handleBecomeMember}
+            />
+          </main>
+        </div>
       </div>
     </div>
   )

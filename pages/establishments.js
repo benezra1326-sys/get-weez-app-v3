@@ -157,12 +157,12 @@ export default function Establishments({ user, setUser }) {
           <main 
             style={{ 
               flex: 1,
-              overflow: 'hidden',
+              overflowY: 'auto',
               backgroundColor: 'var(--color-bg-primary)',
               width: 'calc(100vw - 320px)',
               height: '100%',
               marginLeft: '320px',
-              padding: '2rem'
+              padding: 'var(--spacing-xl)'
             }}
           >
             {/* Header avec recherche */}

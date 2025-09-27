@@ -75,7 +75,10 @@ export default function Home({ user, setUser }) {
               backgroundColor: 'var(--color-bg-primary)',
               width: 'calc(100vw - 320px)',
               height: '100%',
-              marginLeft: '320px'
+              marginLeft: '320px',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
           >
             <ChatInterface user={user} />
