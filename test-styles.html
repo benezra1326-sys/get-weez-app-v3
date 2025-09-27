@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Styles Get Weez</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="./styles/globals.css">
+</head>
+<body>
+    <div class="p-8" style="background: var(--color-bg-primary); min-height: 100vh;">
+        <h1 class="text-2xl font-bold text-white mb-4">Test des Styles Get Weez</h1>
+        
+        <!-- Test des classes personnalisées -->
+        <div class="glass p-6 rounded-xl mb-4">
+            <h2 class="text-gradient text-xl mb-2">Test Glass Effect</h2>
+            <p class="text-white">Ceci devrait avoir un effet glass morphism</p>
+        </div>
+        
+        <div class="card-premium p-6 mb-4">
+            <h2 class="text-white text-xl mb-2">Test Card Premium</h2>
+            <p class="text-white">Cette carte devrait avoir un design luxueux</p>
+        </div>
+        
+        <button class="btn-premium">Test Bouton Premium</button>
+        
+        <div class="mt-4">
+            <h3 class="text-white mb-2">Variables CSS :</h3>
+            <div style="background: var(--color-bg-secondary); padding: 1rem; border-radius: 8px;">
+                <p style="color: var(--color-text-primary);">Couleur primaire</p>
+                <p style="color: var(--color-text-secondary);">Couleur secondaire</p>
+                <p style="color: var(--color-primary);">Couleur brand</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
