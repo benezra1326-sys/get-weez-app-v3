@@ -314,7 +314,19 @@ export default function ChatInterface({ user }) {
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
-                    handleSend()
+                    e.stopPropagation()
+                    if (input.trim() && !isLoading) {
+                      handleSend()
+                    }
+                  }
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    if (input.trim() && !isLoading) {
+                      handleSend()
+                    }
                   }
                 }}
                 rows={1}
