@@ -18,20 +18,21 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
   }
 
   return (
-    <header 
-      className="w-full flex items-center justify-between sticky top-0 z-50 glass"
-      style={{ 
-        backgroundColor: 'var(--color-bg-secondary)', 
-        borderBottom: '1px solid var(--color-border)',
-        paddingTop: 'var(--spacing-xl)',
-        paddingBottom: 'var(--spacing-xl)',
-        paddingLeft: 'var(--spacing-xl)',
-        paddingRight: 'var(--spacing-xl)',
-        minHeight: '6rem',
-        backdropFilter: 'blur(20px)',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
-      }}
-    >
+        <header
+          className="w-full flex items-center justify-between sticky top-0 z-50 glass"
+          style={{
+            backgroundColor: 'var(--color-bg-secondary)',
+            borderBottom: '1px solid var(--color-border)',
+            paddingTop: 'var(--spacing-xl)',
+            paddingBottom: 'var(--spacing-xl)',
+            paddingLeft: 'var(--spacing-xl)',
+            paddingRight: 'var(--spacing-xl)',
+            minHeight: '8rem',
+            backdropFilter: 'blur(20px)',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+            width: '100%'
+          }}
+        >
       <div className="flex items-center">
         <button 
           onClick={toggleMobileMenu}
@@ -45,7 +46,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         </button>
         <Link href="/" className="flex items-center group animate-hover-lift">
           <div 
-            className="w-10 h-10 lg:w-12 lg:h-12 rounded-3xl mr-3 shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
+            className="w-16 h-16 lg:w-20 lg:h-20 rounded-3xl mr-4 shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
             style={{ 
               background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
               borderRadius: 'var(--radius-2xl)',
@@ -53,10 +54,10 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             }}
           ></div>
           <div className="flex flex-col">
-            <h1 className="text-xl lg:text-2xl font-bold text-gradient leading-tight">
+            <h1 className="text-3xl lg:text-4xl font-bold text-gradient leading-tight">
               Get Weez
             </h1>
-            <p className="text-xs text-text-secondary font-medium tracking-wide uppercase">
+            <p className="text-sm text-text-secondary font-medium tracking-wide uppercase">
               Conciergerie Premium
             </p>
           </div>

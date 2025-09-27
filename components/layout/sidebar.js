@@ -15,7 +15,7 @@ export default function Sidebar({ user }) {
 
   return (
     <div 
-      className="hidden md:flex flex-col w-full max-w-sm bg-bg-secondary border-r border-border"
+      className="hidden md:flex flex-col w-80 bg-bg-secondary border-r border-border"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
         borderRight: '1px solid var(--color-border)',
