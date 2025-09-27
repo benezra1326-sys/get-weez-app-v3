@@ -121,10 +121,17 @@ export default function ChatInterface({ user }) {
   }
 
   return (
-    <div className="flex h-full min-w-0" style={{ background: 'var(--color-bg-primary)' }}>
+    <div 
+      className="flex h-full w-full"
+      style={{ 
+        backgroundColor: 'var(--color-bg-primary)',
+        height: '100%',
+        width: '100%'
+      }}
+    >
       {/* Sidebar des conversations - Desktop */}
       {isSidebarOpen && (
-        <div className="hidden lg:block flex-shrink-0">
+        <div className="hidden lg:block w-80 flex-shrink-0">
           <SidebarChat
             conversations={conversations}
             currentConversationId={currentConversationId}
@@ -149,86 +156,118 @@ export default function ChatInterface({ user }) {
       />
 
       {/* Zone principale du chat */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* Header avec bouton toggle sidebar - Responsive */}
-        <div className="flex items-center justify-between p-3 sm:p-4 border-b" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg-secondary)' }}>
-          <button
-            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-            className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors lg:hidden"
-            style={{ color: 'var(--color-text-secondary)' }}
-          >
-            {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
-          </button>
-          <h2 className="text-heading-3 truncate px-2" style={{ color: 'var(--color-text-primary)' }}>
-            {conversations.find(c => c.id === currentConversationId)?.name || 'Chat'}
-          </h2>
-          <div className="w-8 lg:w-10" /> {/* Spacer responsive */}
-        </div>
-
-        {/* Zone d'affichage des messages - Responsive */}
-        <div className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6">
-        {messages.length > 0 ? (
-          <div className="max-w-4xl mx-auto space-y-3 sm:space-y-4">
-            {messages.map((msg) => (
-              <div
-                key={msg.id}
-                className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
-              >
-                <div
-                  className={`max-w-xs sm:max-w-md lg:max-w-3xl px-3 py-2 sm:px-4 sm:py-3 rounded-2xl ${
-                    msg.sender === 'user'
-                      ? 'bg-blue-500 text-white rounded-br-md'
-                      : 'bg-gray-800 text-gray-100 rounded-bl-md border border-gray-700'
-                  }`}
-                  style={{
-                    backgroundColor: msg.sender === 'user' ? 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)' : 'var(--color-bg-secondary)',
-                    color: 'var(--color-text-primary)'
-                  }}
-                >
-                  <div className="text-body-small sm:text-sm leading-relaxed whitespace-pre-wrap">
-                    {msg.text}
-                  </div>
-                </div>
-              </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start animate-fade-in">
-                <div 
-                  className="max-w-xs sm:max-w-md lg:max-w-3xl px-3 py-2 sm:px-4 sm:py-3 rounded-2xl rounded-bl-md border border-gray-700"
-                  style={{ 
-                    backgroundColor: 'var(--color-bg-secondary)',
-                    color: 'var(--color-text-primary)'
-                  }}
-                >
-                  <div className="flex items-center">
-                    <Loader2 size={14} className="animate-spin mr-2 sm:mr-3" style={{ color: 'var(--color-primary)' }} />
-                    <span className="text-body-small sm:text-sm">Get Weez vous prépare une réponse...</span>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="flex flex-col items-center justify-center h-full text-center px-4">
-            <div 
-              className="w-12 h-12 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center mb-4 sm:mb-6 shadow-glow animate-float"
-              style={{ background: 'var(--color-primary)' }}
+      <div className="flex-1 flex flex-col h-full">
+        {/* Header du chat */}
+        <div 
+          className="flex items-center justify-between p-4 border-b"
+          style={{ 
+            borderColor: 'var(--color-border)', 
+            backgroundColor: 'var(--color-bg-secondary)',
+            minHeight: '4rem'
+          }}
+        >
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors lg:hidden"
+              style={{ color: 'var(--color-text-secondary)' }}
             >
-              <MessageCircle size={24} className="sm:w-8 sm:h-8 text-white" />
-            </div>
-            <h3 className="text-heading-2 mb-2 sm:mb-3" style={{ color: 'var(--color-text-primary)' }}>
-              Commencez une conversation
-            </h3>
-            <p className="text-body-large" style={{ color: 'var(--color-text-secondary)' }}>
-              Demandez une expérience exclusive à Marbella
-            </p>
+              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
+            <h2 className="text-xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
+              {conversations.find(c => c.id === currentConversationId)?.name || 'Nouvelle Conversation'}
+            </h2>
           </div>
-        )}
+          
+          <button
+            onClick={createConversation}
+            className="btn-premium flex items-center text-sm px-4 py-2"
+          >
+            <MessageCircle size={16} className="mr-2" />
+            Nouvelle
+          </button>
         </div>
 
-        {/* Zone de saisie - Style ChatGPT Luxueux */}
-        <div className="p-4 sm:p-6 lg:p-8 border-t" style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-bg-secondary)' }}>
-        <div className="max-w-5xl mx-auto">
+        {/* Zone d'affichage des messages */}
+        <div 
+          className="flex-1 overflow-y-auto p-6"
+          style={{ 
+            backgroundColor: 'var(--color-bg-primary)',
+            minHeight: 0
+          }}
+        >
+          {messages.length > 0 ? (
+            <div className="max-w-4xl mx-auto space-y-4">
+              {messages.map((msg) => (
+                <div
+                  key={msg.id}
+                  className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
+                >
+                  <div
+                    className={`max-w-2xl px-4 py-3 rounded-2xl ${
+                      msg.sender === 'user'
+                        ? 'rounded-br-md'
+                        : 'rounded-bl-md border'
+                    }`}
+                    style={{
+                      backgroundColor: msg.sender === 'user' 
+                        ? 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)' 
+                        : 'var(--color-bg-secondary)',
+                      color: msg.sender === 'user' ? 'white' : 'var(--color-text-primary)',
+                      borderColor: msg.sender === 'user' ? 'transparent' : 'var(--color-border)'
+                    }}
+                  >
+                    <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                      {msg.text}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start animate-fade-in">
+                  <div 
+                    className="max-w-2xl px-4 py-3 rounded-2xl rounded-bl-md border"
+                    style={{ 
+                      backgroundColor: 'var(--color-bg-secondary)',
+                      color: 'var(--color-text-primary)',
+                      borderColor: 'var(--color-border)'
+                    }}
+                  >
+                    <div className="flex items-center">
+                      <Loader2 size={16} className="animate-spin mr-3" style={{ color: 'var(--color-primary)' }} />
+                      <span className="text-sm">Get Weez vous prépare une réponse...</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+              <div 
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-glow animate-float"
+                style={{ background: 'var(--color-primary)' }}
+              >
+                <MessageCircle size={32} className="text-white" />
+              </div>
+              <h3 className="text-2xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
+                Commencez une conversation
+              </h3>
+              <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
+                Demandez une expérience exclusive à Marbella
+              </p>
+            </div>
+          )}
+        </div>
+
+        {/* Zone de saisie */}
+        <div 
+          className="p-6 border-t"
+          style={{ 
+            borderColor: 'var(--color-border)', 
+            backgroundColor: 'var(--color-bg-secondary)'
+          }}
+        >
+          <div className="max-w-4xl mx-auto">
           <div className="relative">
             <div 
               className="relative rounded-2xl border transition-all duration-300 hover:border-primary/50 focus-within:border-primary focus-within:shadow-glow"
@@ -241,53 +280,41 @@ export default function ChatInterface({ user }) {
             >
               <textarea
                 ref={setTextareaRef}
-                placeholder={t('chat.placeholder') || "Écrivez ce dont vous avez besoin..."}
+                placeholder="Écrivez ce dont vous avez besoin..."
                 value={input}
                 onChange={handleInputChange}
-                className="w-full resize-none text-body pr-14 py-4 pl-4"
+                className="w-full resize-none pr-14 py-4 pl-4"
                 style={{
                   backgroundColor: 'transparent',
                   color: 'var(--color-text-primary)',
                   border: 'none',
                   outline: 'none',
-                  fontSize: '1rem',
-                  lineHeight: '1.6',
-                  minHeight: '60px',
-                  maxHeight: '200px',
-                  height: '60px',
-                  fontFamily: 'var(--font-family-primary)'
+                  fontSize: '16px',
+                  lineHeight: '1.5'
                 }}
-                onKeyPress={(e) => {
+                onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault()
                     handleSend()
                   }
                 }}
                 rows={1}
+                disabled={isLoading}
               />
               <button
                 onClick={handleSend}
-                disabled={isLoading || !input.trim()}
-                className={`absolute bottom-3 right-3 p-2.5 rounded-xl transition-all duration-300 ${
-                  isLoading || !input.trim()
-                    ? 'opacity-50 cursor-not-allowed'
-                    : 'animate-hover-lift hover:scale-105'
-                }`}
+                disabled={!input.trim() || isLoading}
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
-                  backgroundColor: isLoading || !input.trim() 
-                    ? 'var(--color-text-muted)' 
-                    : 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
-                  color: 'var(--color-text-primary)',
-                  border: 'none',
-                  borderRadius: 'var(--radius-lg)',
-                  boxShadow: isLoading || !input.trim() ? 'none' : 'var(--shadow-glow)'
+                  backgroundColor: input.trim() && !isLoading ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                  color: 'white'
                 }}
               >
                 {isLoading ? (
-                  <Loader2 size={18} className="animate-spin" />
+                  <Loader2 size={16} className="animate-spin" />
                 ) : (
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13"/>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
                   </svg>
                 )}
               </button>
