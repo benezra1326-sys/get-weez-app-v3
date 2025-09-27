@@ -3,6 +3,7 @@ import { MessageCircle, Loader2, Menu, X } from 'lucide-react'
 import { useTranslation } from 'next-i18next'
 import SidebarChat from './SidebarChat'
 import MobileChatOverlay from './MobileChatOverlay'
+import SuggestiveMessages from './SuggestiveMessages'
 import { useConversations } from '../../hooks/useConversations'
 import { ChatLoadingSpinner } from '../ui/LoadingSpinner'
 import { useToast } from '../ui/Toast'
@@ -13,6 +14,7 @@ export default function ChatInterface({ user }) {
   const [isLoading, setIsLoading] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [textareaRef, setTextareaRef] = useState(null)
+  const [showSuggestiveMessages, setShowSuggestiveMessages] = useState(true)
   const { showToast } = useToast()
   
   const {
@@ -55,6 +57,12 @@ export default function ChatInterface({ user }) {
     }
   }
 
+  // Fonction pour gérer le clic sur un message suggestif
+  const handleSuggestiveMessageClick = (message) => {
+    setInput(message)
+    setShowSuggestiveMessages(false) // Masquer les messages suggestifs quand l'utilisateur tape
+  }
+
   // Fonction pour envoyer un message
   const handleSend = async () => {
     if (!input.trim() || isLoading || !currentConversationId) return
@@ -67,6 +75,7 @@ export default function ChatInterface({ user }) {
 
     addMessage(userMessage)
     setInput('')
+    setShowSuggestiveMessages(false) // Masquer les messages suggestifs après envoi
     
     // Reset textarea height
     if (textareaRef) {
@@ -112,6 +121,10 @@ export default function ChatInterface({ user }) {
       showToast('Erreur de connexion. Veuillez réessayer.', 'error')
     } finally {
       setIsLoading(false)
+      // Réafficher les messages suggestifs après 3 secondes
+      setTimeout(() => {
+        setShowSuggestiveMessages(true)
+      }, 3000)
     }
   }
 
@@ -248,6 +261,15 @@ export default function ChatInterface({ user }) {
             </div>
           )}
         </div>
+
+        {/* Messages suggestifs */}
+        {showSuggestiveMessages && messages.length === 0 && (
+          <SuggestiveMessages
+            category="general"
+            show={showSuggestiveMessages}
+            onMessageClick={handleSuggestiveMessageClick}
+          />
+        )}
 
         {/* Zone de saisie */}
         <div 
