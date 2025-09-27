@@ -55,17 +55,20 @@ export function useConversations() {
     
     setIsCreating(true)
     
-    // Calculer le prochain numéro de conversation en se basant sur le plus grand numéro existant
-    const maxNumber = conversations.reduce((max, conv) => {
-      const match = conv.name.match(/Conversation (\d+)/)
-      return match ? Math.max(max, parseInt(match[1])) : max
-    }, 0)
-    
-    const nextNumber = maxNumber + 1
+    // Générer un nom intelligent basé sur l'heure et la date
+    const now = new Date()
+    const timeString = now.toLocaleTimeString('fr-FR', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+    const dateString = now.toLocaleDateString('fr-FR', { 
+      day: 'numeric', 
+      month: 'short' 
+    })
     
     const newConversation = {
       id: Date.now().toString(),
-      name: `Conversation ${nextNumber}`,
+      name: `Chat du ${dateString} à ${timeString}`,
       messages: [],
       lastMessage: '',
       createdAt: new Date().toISOString(),
@@ -97,18 +100,12 @@ export function useConversations() {
     setConversations(prev => {
       const filtered = prev.filter(conv => conv.id !== id)
       
-      // Réorganiser les numéros des conversations restantes
-      const renumbered = filtered.map((conv, index) => ({
-        ...conv,
-        name: `Conversation ${index + 1}`
-      }))
-      
       // Si on supprime la conversation actuelle, sélectionner la première disponible
       if (currentConversationId === id) {
-        setCurrentConversationId(renumbered.length > 0 ? renumbered[0].id : null)
+        setCurrentConversationId(filtered.length > 0 ? filtered[0].id : null)
       }
       
-      return renumbered
+      return filtered
     })
   }
 

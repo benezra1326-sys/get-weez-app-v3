@@ -33,13 +33,8 @@ export default function ChatInterface({ user }) {
     console.log('🔍 ChatInterface - Vérification des conversations...')
     console.log('🔍 Conversations:', conversations.length, 'Current ID:', currentConversationId)
     
-    // Si aucune conversation n'existe, en créer une SEULEMENT au premier chargement
-    if (conversations.length === 0 && !currentConversationId) {
-      console.log('✅ ChatInterface - Création d\'une nouvelle conversation')
-      createConversation()
-    } 
     // Si des conversations existent mais aucune n'est sélectionnée, sélectionner la première
-    else if (conversations.length > 0 && !currentConversationId) {
+    if (conversations.length > 0 && !currentConversationId) {
       console.log('✅ ChatInterface - Sélection de la première conversation existante')
       selectConversation(conversations[0].id)
     }
@@ -242,10 +237,13 @@ export default function ChatInterface({ user }) {
                 <MessageCircle size={32} className="text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-                Commencez une conversation
+                {conversations.length === 0 ? 'Bienvenue sur Get Weez' : 'Sélectionnez une conversation'}
               </h3>
               <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
-                Demandez une expérience exclusive à Marbella
+                {conversations.length === 0 
+                  ? 'Commencez par créer une nouvelle conversation' 
+                  : 'Choisissez une conversation dans la sidebar pour commencer'
+                }
               </p>
             </div>
           )}
