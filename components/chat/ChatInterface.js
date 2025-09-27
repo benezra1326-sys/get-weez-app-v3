@@ -50,6 +50,13 @@ export default function ChatInterface({ user }) {
   const handleInputChange = (e) => {
     setInput(e.target.value)
     
+    // Masquer les suggestions quand l'utilisateur tape
+    if (e.target.value.trim()) {
+      setShowSuggestiveMessages(false)
+    } else {
+      setShowSuggestiveMessages(true)
+    }
+    
     // Auto-resize
     if (textareaRef) {
       textareaRef.style.height = 'auto'
@@ -263,7 +270,7 @@ export default function ChatInterface({ user }) {
         </div>
 
         {/* Messages suggestifs */}
-        {showSuggestiveMessages && messages.length === 0 && (
+        {showSuggestiveMessages && messages.length === 0 && !input.trim() && (
           <SuggestiveMessages
             category="general"
             show={showSuggestiveMessages}
