@@ -14,8 +14,8 @@ export default function Home({ user, setUser }) {
   }
 
   return (
-    <ResponsiveLayout>
-      <div className="flex flex-col h-screen overflow-hidden">
+    <div className="w-full h-screen overflow-hidden" style={{ width: '100vw', height: '100vh' }}>
+      <div className="flex flex-col h-full w-full">
         {/* Header */}
         <Header 
           user={user} 
@@ -32,7 +32,7 @@ export default function Home({ user, setUser }) {
         />
         
         {/* Layout principal */}
-        <div className="flex flex-1 overflow-hidden">
+        <div className="flex flex-1 overflow-hidden w-full">
           {/* Sidebar - cachée sur mobile */}
           <div className="hidden lg:block">
             <Sidebar user={user} />
@@ -40,17 +40,17 @@ export default function Home({ user, setUser }) {
           
           {/* Contenu principal */}
           <main 
-            className="flex-1 overflow-hidden text-white"
+            className="flex-1 overflow-hidden text-white w-full"
             style={{ 
               backgroundColor: 'var(--color-bg-primary)',
-              minHeight: 'calc(100vh - 4rem)'
+              minHeight: 'calc(100vh - 8rem)'
             }}
           >
             <ChatInterface user={user} />
           </main>
         </div>
       </div>
-    </ResponsiveLayout>
+    </div>
   )
 }
 

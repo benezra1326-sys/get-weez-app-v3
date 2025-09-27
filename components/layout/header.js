@@ -30,7 +30,8 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             minHeight: '8rem',
             backdropFilter: 'blur(20px)',
             boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-            width: '100%'
+            width: '100vw',
+            maxWidth: '100vw'
           }}
         >
       <div className="flex items-center">

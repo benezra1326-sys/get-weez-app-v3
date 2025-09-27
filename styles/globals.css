@@ -2,6 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Force full width and height for desktop layout */
+html, body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+#__next {
+  width: 100vw;
+  height: 100vh;
+}
+
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {

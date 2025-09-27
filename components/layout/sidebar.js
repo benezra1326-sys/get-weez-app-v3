@@ -15,12 +15,16 @@ export default function Sidebar({ user }) {
 
   return (
     <div 
-      className="hidden md:flex flex-col w-80 bg-bg-secondary border-r border-border"
+      className="hidden md:flex flex-col w-80 h-full bg-bg-secondary border-r border-border"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
         borderRight: '1px solid var(--color-border)',
         backdropFilter: 'blur(20px)',
-        boxShadow: '4px 0 20px rgba(0, 0, 0, 0.1)'
+        boxShadow: '4px 0 20px rgba(0, 0, 0, 0.1)',
+        height: '100vh',
+        minHeight: '100vh',
+        width: '320px',
+        maxWidth: '320px'
       }}
     >
       <div className="p-6 lg:p-8 xl:p-10">
