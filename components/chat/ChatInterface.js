@@ -4,6 +4,7 @@ import { useTranslation } from 'next-i18next'
 import SidebarChat from './SidebarChat'
 import MobileChatOverlay from './MobileChatOverlay'
 import SuggestiveMessages from './SuggestiveMessages'
+import VoiceChatInterface from './VoiceChatInterface'
 import { useConversations } from '../../hooks/useConversations'
 import { ChatLoadingSpinner } from '../ui/LoadingSpinner'
 import { useToast } from '../ui/Toast'
@@ -15,6 +16,7 @@ export default function ChatInterface({ user }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [textareaRef, setTextareaRef] = useState(null)
   const [showSuggestiveMessages, setShowSuggestiveMessages] = useState(true)
+  const [showVoiceInterface, setShowVoiceInterface] = useState(false)
   const { showToast } = useToast()
   
   const {
@@ -68,6 +70,17 @@ export default function ChatInterface({ user }) {
   const handleSuggestiveMessageClick = (message) => {
     setInput(message)
     setShowSuggestiveMessages(false) // Masquer les messages suggestifs quand l'utilisateur tape
+  }
+
+  // Fonction pour gérer les messages vocaux
+  const handleVoiceMessage = (message) => {
+    setInput(message)
+    setShowSuggestiveMessages(false)
+  }
+
+  const handleVoiceResponse = (response) => {
+    // L'IA a répondu vocalement
+    console.log('Réponse vocale reçue:', response)
   }
 
   // Fonction pour envoyer un message
@@ -352,6 +365,29 @@ export default function ChatInterface({ user }) {
             </div>
           </div>
           
+          {/* Interface vocale */}
+          {showVoiceInterface && (
+            <VoiceChatInterface
+              onVoiceMessage={handleVoiceMessage}
+              onVoiceResponse={handleVoiceResponse}
+            />
+          )}
+
+          {/* Bouton pour basculer l'interface vocale */}
+          <div className="mt-4 text-center">
+            <button
+              onClick={() => setShowVoiceInterface(!showVoiceInterface)}
+              className="px-4 py-2 rounded-lg transition-all duration-200"
+              style={{
+                backgroundColor: showVoiceInterface ? 'var(--color-primary)' : 'var(--color-bg-secondary)',
+                color: showVoiceInterface ? 'white' : 'var(--color-text-primary)',
+                border: '1px solid var(--color-border)'
+              }}
+            >
+              {showVoiceInterface ? '🎤 Interface vocale active' : '🎤 Activer l\'agent vocal'}
+            </button>
+          </div>
+
           {/* Info text */}
           <div className="mt-4 text-center">
             <p className="text-caption" style={{ color: 'var(--color-text-muted)' }}>
