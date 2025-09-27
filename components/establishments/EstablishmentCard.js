@@ -1,4 +1,5 @@
 import { Star, Heart, MessageCircle, Building, MapPin } from 'lucide-react'
+import SocialLinks from './SocialLinks'
 
 export default function EstablishmentCard({ establishment, user, onReserve }) {
   return (
@@ -105,6 +106,11 @@ export default function EstablishmentCard({ establishment, user, onReserve }) {
               </button>
             )}
           </div>
+        </div>
+        
+        {/* Liens sociaux */}
+        <div className="mt-4 pt-4 border-t border-border">
+          <SocialLinks establishment={establishment} />
         </div>
       </div>
     </div>

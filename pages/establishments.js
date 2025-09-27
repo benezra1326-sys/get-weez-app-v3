@@ -3,15 +3,18 @@ import Header from '../components/layout/header'
 import Sidebar from '../components/layout/sidebar'
 import MobileMenu from '../components/layout/MobileMenu'
 import EstablishmentList from '../components/establishments/EstablishmentList'
+import RestaurantStyleFilter from '../components/establishments/RestaurantStyleFilter'
 import { EstablishmentSearchBar } from '../components/ui/SearchBar'
 import { useToast } from '../components/ui/Toast'
 import { supabase } from '../lib/supabase'
+import { establishments as staticEstablishments, restaurantStyles, establishmentStats } from '../data/marbella-data'
 
 export default function Establishments({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [establishments, setEstablishments] = useState([])
   const [filteredEstablishments, setFilteredEstablishments] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedStyle, setSelectedStyle] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showToast } = useToast()
 
@@ -30,8 +33,79 @@ export default function Establishments({ user, setUser }) {
       if (error) {
         console.error('Erreur lors du chargement des établissements:', error)
         showToast('Erreur lors du chargement des établissements', 'error')
-        // Fallback avec des données statiques
-        setEstablishments([
+        // Fallback avec des données statiques enrichies
+        setEstablishments(staticEstablishments)
+        setFilteredEstablishments(staticEstablishments)
+        setIsLoading(false)
+        return
+      }
+
+      setEstablishments(data || [])
+      setFilteredEstablishments(data || [])
+    } catch (error) {
+      console.error('Erreur:', error)
+      // Fallback avec des données statiques
+      setEstablishments(staticEstablishments)
+      setFilteredEstablishments(staticEstablishments)
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  // Fonction de recherche et filtrage
+  const handleSearch = (query) => {
+    setSearchQuery(query)
+    filterEstablishments(query, selectedStyle)
+  }
+
+  const handleStyleChange = (styleKey) => {
+    setSelectedStyle(styleKey)
+    filterEstablishments(searchQuery, styleKey)
+  }
+
+  const filterEstablishments = (query, style) => {
+    let filtered = establishments
+
+    // Filtrage par style
+    if (style && restaurantStyles[style]) {
+      const styleRestaurantIds = restaurantStyles[style].restaurants
+      filtered = filtered.filter(establishment => 
+        styleRestaurantIds.includes(establishment.id)
+      )
+    }
+
+    // Filtrage par recherche
+    if (query && query.trim()) {
+      filtered = filtered.filter(establishment =>
+        establishment.name.toLowerCase().includes(query.toLowerCase()) ||
+        establishment.description.toLowerCase().includes(query.toLowerCase()) ||
+        establishment.address?.toLowerCase().includes(query.toLowerCase()) ||
+        establishment.category?.toLowerCase().includes(query.toLowerCase()) ||
+        establishment.specialties?.some(specialty => 
+          specialty.toLowerCase().includes(query.toLowerCase())
+        )
+      )
+    }
+
+    setFilteredEstablishments(filtered)
+  }
+
+  // Fonction de recherche
+  const handleSearchOld = (query) => {
+    setSearchQuery(query)
+    if (!query.trim()) {
+      setFilteredEstablishments(establishments)
+      return
+    }
+
+    const filtered = establishments.filter(establishment =>
+      establishment.name.toLowerCase().includes(query.toLowerCase()) ||
+      establishment.description.toLowerCase().includes(query.toLowerCase()) ||
+      establishment.location.toLowerCase().includes(query.toLowerCase()) ||
+      establishment.type.toLowerCase().includes(query.toLowerCase())
+    )
+    setFilteredEstablishments(filtered)
+  }
           {
             "id": 1,
             "name": "Nikki Beach Marbella",

@@ -15,23 +15,15 @@ export default function Sidebar({ user }) {
 
   return (
     <div 
-      className="hidden md:flex flex-col w-72 bg-bg-secondary border-r border-border"
+      className="hidden md:flex flex-col w-full max-w-sm bg-bg-secondary border-r border-border"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
-        borderRight: '1px solid var(--color-border)'
+        borderRight: '1px solid var(--color-border)',
+        backdropFilter: 'blur(20px)',
+        boxShadow: '4px 0 20px rgba(0, 0, 0, 0.1)'
       }}
     >
-      <div className="p-8">
-        <div className="flex items-center mb-8 animate-fade-in">
-          <div 
-            className="w-12 h-12 rounded-2xl mr-4 shadow-glow animate-float"
-            style={{ background: 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)' }}
-          ></div>
-          <h1 className="text-2xl font-bold text-white">
-            Get Weez
-          </h1>
-        </div>
-
+      <div className="p-6 lg:p-8 xl:p-10">
         <nav className="space-y-3">
           {navItems.map((item) => {
             const Icon = item.icon
@@ -41,7 +33,7 @@ export default function Sidebar({ user }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center px-5 py-4 rounded-2xl transition-all duration-300 group hover:scale-105 ${
+                className={`flex items-center px-4 py-3 rounded-2xl transition-all duration-300 group hover:scale-105 ${
                   isActive
                     ? 'shadow-lg'
                     : ''

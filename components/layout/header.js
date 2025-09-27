@@ -7,21 +7,29 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
   const [showUserMenu, setShowUserMenu] = useState(false)
 
   const handleLogout = async () => {
-    const { supabase } = await import('../../lib/supabase')
-    await supabase.auth.signOut()
-    setUser(null)
-    setShowUserMenu(false)
+    try {
+      const { supabase } = await import('../../lib/supabase')
+      await supabase.auth.signOut()
+      setUser(null)
+      setShowUserMenu(false)
+    } catch (error) {
+      console.error('Erreur lors de la déconnexion:', error)
+    }
   }
 
   return (
     <header 
-      className="container-responsive flex items-center justify-between sticky top-0 z-50 glass"
+      className="w-full flex items-center justify-between sticky top-0 z-50 glass"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)', 
         borderBottom: '1px solid var(--color-border)',
-        paddingTop: 'var(--spacing-md)',
-        paddingBottom: 'var(--spacing-md)',
-        minHeight: '4rem'
+        paddingTop: 'var(--spacing-xl)',
+        paddingBottom: 'var(--spacing-xl)',
+        paddingLeft: 'var(--spacing-xl)',
+        paddingRight: 'var(--spacing-xl)',
+        minHeight: '6rem',
+        backdropFilter: 'blur(20px)',
+        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
       }}
     >
       <div className="flex items-center">
@@ -37,15 +45,21 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         </button>
         <Link href="/" className="flex items-center group animate-hover-lift">
           <div 
-            className="w-10 h-10 lg:w-12 lg:h-12 rounded-2xl mr-3 shadow-glow group-hover:shadow-glow-accent transition-all duration-300 group-hover:scale-105"
+            className="w-10 h-10 lg:w-12 lg:h-12 rounded-3xl mr-3 shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
             style={{ 
               background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
-              borderRadius: 'var(--radius-xl)'
+              borderRadius: 'var(--radius-2xl)',
+              boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
             }}
           ></div>
-          <h1 className="text-heading-3 text-gradient">
-            Get Weez
-          </h1>
+          <div className="flex flex-col">
+            <h1 className="text-xl lg:text-2xl font-bold text-gradient leading-tight">
+              Get Weez
+            </h1>
+            <p className="text-xs text-text-secondary font-medium tracking-wide uppercase">
+              Conciergerie Premium
+            </p>
+          </div>
         </Link>
       </div>
 
@@ -79,7 +93,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
               }}
             ></div>
             <div 
-              className="w-10 h-10 lg:w-11 lg:h-11 rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-glow group-hover:shadow-glow-accent transition-all duration-300 group-hover:scale-105"
+              className="w-8 h-8 lg:w-10 lg:h-10 rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-glow group-hover:shadow-glow-accent transition-all duration-300 group-hover:scale-105"
               style={{ 
                 background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
                 borderRadius: 'var(--radius-xl)'
@@ -115,6 +129,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
               border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-xl)'
             }}
+            onClick={(e) => e.stopPropagation()}
           >
             <Link 
               href="/account" 

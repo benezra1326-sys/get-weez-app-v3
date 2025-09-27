@@ -1,6 +1,7 @@
 import { X, LogIn, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 import { MessageCircle, Building, Ticket, User, CreditCard, HelpCircle } from 'lucide-react'
+import { useEffect } from 'react'
 
 const navItems = [
   { href: '/', label: 'Accueil', icon: MessageCircle },
@@ -11,16 +12,40 @@ const navItems = [
 ]
 
 export default function MobileMenu({ isOpen, onClose, user }) {
+  // Fermer le menu avec la touche Escape
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape)
+      // Empêcher le scroll du body quand le menu est ouvert
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [isOpen, onClose])
+
   if (!isOpen) return null
 
   return (
-    <div className="md:hidden fixed inset-0 z-40 bg-black bg-opacity-50">
-      <div className="bg-gray-800 h-full w-64 max-w-full">
-        <div className="p-4 flex justify-between items-center border-b border-gray-700">
-          <div className="flex items-center">
-            <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg mr-2"></div>
-            <h1 className="text-lg font-bold text-white">Get Weez</h1>
-          </div>
+    <div className="md:hidden fixed inset-0 z-50 bg-black bg-opacity-50" onClick={onClose}>
+      <div 
+        className="bg-gray-800 h-full w-80 max-w-full shadow-2xl"
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: 'var(--color-bg-secondary)',
+          backdropFilter: 'blur(20px)',
+          boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)'
+        }}
+      >
+        <div className="p-4 flex justify-end items-center border-b border-gray-700">
           <button onClick={onClose} className="text-gray-400 hover:text-white">
             <X size={24} />
           </button>
