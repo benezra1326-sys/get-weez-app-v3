@@ -38,27 +38,10 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
 
   return (
         <header
+          className="flex items-center justify-between sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700 px-4 lg:px-6 py-3 lg:py-4 w-full"
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            position: 'sticky',
-            top: 0,
-            zIndex: 50,
-            backgroundColor: 'var(--color-bg-secondary)',
-            borderBottom: '1px solid var(--color-border)',
-            paddingTop: 'var(--spacing-xl)',
-            paddingBottom: 'var(--spacing-xl)',
-            paddingLeft: 'var(--spacing-xl)',
-            paddingRight: 'var(--spacing-xl)',
-            minHeight: '8rem',
-            backdropFilter: 'blur(20px)',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-            width: '100vw',
-            maxWidth: '100vw',
-            margin: 0,
-            left: 0,
-            right: 0
+            minHeight: '4rem',
+            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
           }}
         >
       <div className="flex items-center">
@@ -82,7 +65,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             }}
           >
             <h1 
-              className="text-2xl lg:text-3xl font-bold text-white leading-tight tracking-wider"
+              className="text-xl lg:text-2xl font-bold text-white leading-tight tracking-wider"
               style={{ 
                 fontFamily: 'Blanka, sans-serif',
                 fontWeight: 'bold'
@@ -113,7 +96,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         </Link>
       </nav>
 
-      <div className="flex items-center space-x-2 lg:space-x-4">
+      <div className="flex items-center space-x-1 lg:space-x-4">
         <LanguageSelector />
         
         <div className="relative">

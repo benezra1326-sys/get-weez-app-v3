@@ -165,14 +165,11 @@ const ChatInterface = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
-      {/* Barre vide en haut */}
-      <div className="h-16 bg-gray-900/80 backdrop-blur-md border-b border-gray-700"></div>
-
       {/* Main Content */}
-      <main className="flex w-full overflow-hidden flex-col lg:flex-row" style={{ height: 'calc(100vh - 64px)' }}>
+      <main className="flex w-full overflow-hidden flex-col lg:flex-row" style={{ height: '100vh', minHeight: '100vh' }}>
         
         {/* Sidebar gauche */}
-        <div className="w-full lg:w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col h-64 lg:h-auto">
+        <div className="w-full lg:w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col h-64 lg:h-full">
           <div className="p-6 flex-1 overflow-y-auto pb-8">
             <h2 className="text-xl font-bold text-white mb-6">Conversations</h2>
             <div className="space-y-4">
@@ -259,7 +256,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Chat Section - Milieu */}
-        <div className="flex-1 flex flex-col min-w-0 h-full lg:h-auto p-6">
+        <div className="flex-1 flex flex-col min-w-0 h-full lg:h-full p-6">
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-6 h-full flex flex-col">
 
             {/* Zone des messages */}
