@@ -207,7 +207,7 @@ export default function ChatInterface({ user }) {
     >
       {/* Sidebar des conversations - Desktop */}
       {isSidebarOpen && (
-        <div className="hidden lg:block w-80 flex-shrink-0">
+        <div className="hidden lg:flex w-80 flex-shrink-0">
           <SidebarChat
             conversations={conversations}
             currentConversationId={currentConversationId}
@@ -258,7 +258,7 @@ export default function ChatInterface({ user }) {
 
         {/* Zone d'affichage des messages */}
         <div 
-          className="flex-1 overflow-y-auto p-3 md:p-6 scroll-smooth bg-black"
+          className="flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth bg-black"
           style={{ 
             backgroundColor: 'var(--color-bg-primary)',
             minHeight: 0,
