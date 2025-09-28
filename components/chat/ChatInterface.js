@@ -382,7 +382,7 @@ const ChatInterface = () => {
         {/* Sidebar droite - Propositions avec filtres */}
         <div className="w-full lg:w-80 flex-shrink-0 h-48 lg:h-full bg-gray-900/80 backdrop-blur-md border-l border-gray-700 overflow-y-auto">
           <div className="p-6 pb-12">
-            <h2 className="text-2xl font-bold text-white mb-4">Suggestions</h2>
+            <h2 className="text-xl lg:text-2xl font-bold text-white mb-4">Suggestions</h2>
             
             {/* Filtres */}
             <div className="flex space-x-2 mb-6">
