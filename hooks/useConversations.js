@@ -7,6 +7,16 @@ export function useConversations() {
   const [currentConversationId, setCurrentConversationId] = useState(null)
   const [isCreating, setIsCreating] = useState(false)
 
+  // Nettoyer les conversations vides
+  const cleanEmptyConversations = (conversationsList) => {
+    return conversationsList.filter(conv => {
+      // Garder la conversation si elle a des messages
+      const hasMessages = conv.messages && conv.messages.length > 0
+      console.log(`🔍 Conversation ${conv.id} (${conv.title}): ${hasMessages ? 'GARDÉE' : 'SUPPRIMÉE (vide)'}`)
+      return hasMessages
+    })
+  }
+
   // Charger les conversations depuis localStorage
   useEffect(() => {
     // Vérifier si on est côté client
@@ -16,11 +26,21 @@ export function useConversations() {
     if (savedConversations) {
       try {
         const parsed = JSON.parse(savedConversations)
-        setConversations(parsed)
+        
+        // Nettoyer les conversations vides au chargement
+        const cleaned = cleanEmptyConversations(parsed)
+        
+        if (cleaned.length !== parsed.length) {
+          console.log('🧹 Conversations vides supprimées au chargement')
+          // Sauvegarder la version nettoyée
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned))
+        }
+        
+        setConversations(cleaned)
         
         // Sélectionner la première conversation si aucune n'est sélectionnée
-        if (parsed.length > 0 && !currentConversationId) {
-          setCurrentConversationId(parsed[0].id)
+        if (cleaned.length > 0 && !currentConversationId) {
+          setCurrentConversationId(cleaned[0].id)
         }
       } catch (error) {
         console.error('Erreur lors du chargement des conversations:', error)
@@ -124,8 +144,8 @@ export function useConversations() {
   const addMessage = (message) => {
     if (!currentConversationId) return
 
-    setConversations(prev => 
-      prev.map(conv => 
+    setConversations(prev => {
+      const updated = prev.map(conv => 
         conv.id === currentConversationId
           ? {
               ...conv,
@@ -137,7 +157,32 @@ export function useConversations() {
             }
           : conv
       )
-    )
+      
+      // Nettoyer les conversations vides après chaque ajout de message
+      const cleaned = cleanEmptyConversations(updated)
+      
+      // Si des conversations vides ont été supprimées, mettre à jour la conversation actuelle
+      if (cleaned.length !== updated.length) {
+        console.log('🧹 Conversations vides supprimées automatiquement')
+        
+        // Si la conversation actuelle a été supprimée (elle était vide), créer une nouvelle
+        if (!cleaned.find(conv => conv.id === currentConversationId)) {
+          console.log('🆕 Création d\'une nouvelle conversation car l\'ancienne était vide')
+          const newConv = {
+            id: Date.now().toString(),
+            title: 'Nouvelle conversation',
+            messages: [],
+            lastMessage: '',
+            createdAt: formatDate(new Date()),
+            updatedAt: formatDate(new Date())
+          }
+          setCurrentConversationId(newConv.id)
+          return [...cleaned, newConv]
+        }
+      }
+      
+      return cleaned
+    })
   }
 
   // Obtenir la conversation actuelle
