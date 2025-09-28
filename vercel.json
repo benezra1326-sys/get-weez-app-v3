@@ -8,10 +8,5 @@
   ],
   "env": {
     "OPENAI_API_KEY": "@openai_api_key"
-  },
-  "functions": {
-    "pages/api/chat.js": {
-      "maxDuration": 30
-    }
   }
 }
