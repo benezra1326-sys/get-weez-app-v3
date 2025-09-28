@@ -17,6 +17,7 @@ export default function ChatInterface({ user }) {
   const [textareaRef, setTextareaRef] = useState(null)
   const [showSuggestiveMessages, setShowSuggestiveMessages] = useState(true)
   const [messagesEndRef, setMessagesEndRef] = useState(null)
+  const [isInitialLoad, setIsInitialLoad] = useState(true)
   const { showToast } = useToast()
   
   const {
@@ -47,14 +48,19 @@ export default function ChatInterface({ user }) {
     else if (currentConversationId && conversations.some(conv => conv.id === currentConversationId)) {
       console.log('✅ ChatInterface - Conversation déjà active, pas d\'action nécessaire')
     }
+    
+    // Marquer que le chargement initial est terminé
+    setTimeout(() => {
+      setIsInitialLoad(false)
+    }, 1000)
   }, []) // Seulement au montage du composant
 
   // Scroll automatique vers le bas quand de nouveaux messages arrivent
   useEffect(() => {
-    if (messagesEndRef) {
+    if (messagesEndRef && messages && messages.length > 0 && !isInitialLoad) {
       messagesEndRef.scrollIntoView({ behavior: 'smooth' })
     }
-  }, [messages, messagesEndRef])
+  }, [messages, messagesEndRef, isInitialLoad])
 
   // Fonction pour auto-resize du textarea
   const handleInputChange = (e) => {
@@ -138,7 +144,7 @@ export default function ChatInterface({ user }) {
     
     // Scroll vers le bas après l'ajout du message utilisateur
     setTimeout(() => {
-      if (messagesEndRef) {
+      if (messagesEndRef && !isInitialLoad) {
         messagesEndRef.scrollIntoView({ behavior: 'smooth' })
       }
     }, 100)
@@ -174,7 +180,7 @@ export default function ChatInterface({ user }) {
       
       // Scroll vers le bas après la réponse de l'IA
       setTimeout(() => {
-        if (messagesEndRef) {
+        if (messagesEndRef && !isInitialLoad) {
           messagesEndRef.scrollIntoView({ behavior: 'smooth' })
         }
       }, 100)
@@ -207,7 +213,7 @@ export default function ChatInterface({ user }) {
     >
       {/* Sidebar des conversations - Desktop */}
       {isSidebarOpen && (
-        <div className="hidden lg:flex w-80 flex-shrink-0 h-full">
+        <div className="hidden md:flex w-80 flex-shrink-0 h-full">
           <SidebarChat
             conversations={conversations}
             currentConversationId={currentConversationId}
@@ -245,7 +251,7 @@ export default function ChatInterface({ user }) {
           <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors flex-shrink-0"
+              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors flex-shrink-0 md:hidden"
               style={{ color: 'var(--color-text-secondary)' }}
             >
               {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
