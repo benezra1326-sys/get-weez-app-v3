@@ -383,16 +383,24 @@ export default function ChatInterface({ user }) {
                   minHeight: '44px'
                 }}
                 onKeyDown={(e) => {
-                  console.log('🔍 Touche pressée:', e.key, 'Shift:', e.shiftKey)
                   if (e.key === 'Enter' && !e.shiftKey) {
-                    console.log('✅ Entrée pressée, tentative d\'envoi')
                     e.preventDefault()
                     e.stopPropagation()
+                    console.log('🔍 Entrée pressée - Input:', input.trim(), 'Loading:', isLoading)
                     if (input.trim() && !isLoading) {
-                      console.log('🚀 Envoi du message')
+                      console.log('🚀 Envoi du message via Entrée')
                       handleSend()
-                    } else {
-                      console.log('❌ Conditions non remplies pour l\'envoi')
+                    }
+                  }
+                }}
+                onKeyPress={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault()
+                    e.stopPropagation()
+                    console.log('🔍 KeyPress Entrée détectée')
+                    if (input.trim() && !isLoading) {
+                      console.log('🚀 Envoi du message via KeyPress')
+                      handleSend()
                     }
                   }
                 }}
