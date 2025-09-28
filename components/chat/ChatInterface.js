@@ -31,6 +31,9 @@ export default function ChatInterface({ user }) {
   } = useConversations()
 
   const messages = getCurrentMessages()
+  
+  // Debug pour vérifier les messages
+  console.log('🔍 ChatInterface - Messages:', messages.length, messages)
 
   // Initialiser la conversation seulement au premier chargement
   useEffect(() => {
@@ -263,7 +266,14 @@ export default function ChatInterface({ user }) {
             scrollBehavior: 'smooth'
           }}
         >
-          {messages.length > 0 ? (
+          {/* Debug temporaire */}
+          <div className="fixed top-4 left-4 bg-red-500 text-white p-2 text-xs z-50">
+            Messages: {messages ? messages.length : 'undefined'} | 
+            Current ID: {currentConversationId || 'none'} |
+            Conversations: {conversations ? conversations.length : 'undefined'}
+          </div>
+          
+          {messages && messages.length > 0 ? (
             <div className="max-w-4xl mx-auto space-y-4">
               {messages.map((msg) => (
                 <div
@@ -274,14 +284,14 @@ export default function ChatInterface({ user }) {
                     className={`max-w-xs md:max-w-2xl px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
                       msg.sender === 'user'
                         ? 'rounded-br-md bg-purple-600 text-white'
-                        : 'rounded-bl-md border bg-gray-800 text-white'
+                        : 'rounded-bl-md border bg-white text-gray-900'
                     }`}
                     style={{
                       backgroundColor: msg.sender === 'user' 
                         ? '#8B5CF6' 
-                        : '#1F2937',
-                      color: msg.sender === 'user' ? 'white' : 'white',
-                      borderColor: msg.sender === 'user' ? 'transparent' : '#374151'
+                        : '#FFFFFF',
+                      color: msg.sender === 'user' ? '#FFFFFF' : '#111827',
+                      borderColor: msg.sender === 'user' ? 'transparent' : '#E5E7EB'
                     }}
                   >
                     <div className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -297,16 +307,16 @@ export default function ChatInterface({ user }) {
               {isLoading && (
                 <div className="flex justify-start animate-fade-in">
                   <div 
-                    className="max-w-2xl px-4 py-3 rounded-2xl rounded-bl-md border bg-gray-800 border-gray-600"
+                    className="max-w-2xl px-4 py-3 rounded-2xl rounded-bl-md border bg-white border-gray-300"
                     style={{ 
-                      backgroundColor: '#1F2937',
-                      color: 'white',
-                      borderColor: '#374151'
+                      backgroundColor: '#FFFFFF',
+                      color: '#111827',
+                      borderColor: '#E5E7EB'
                     }}
                   >
                     <div className="flex items-center">
                       <Loader2 size={16} className="animate-spin mr-3 text-purple-500" />
-                      <span className="text-sm text-white">Get Weez vous prépare une réponse...</span>
+                      <span className="text-sm text-gray-900">Get Weez vous prépare une réponse...</span>
                     </div>
                   </div>
                 </div>
