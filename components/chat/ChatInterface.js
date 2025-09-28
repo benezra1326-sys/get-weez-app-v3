@@ -284,14 +284,14 @@ export default function ChatInterface({ user }) {
                     className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
                       msg.sender === 'user'
                         ? 'rounded-br-md bg-purple-600 text-white'
-                        : 'rounded-bl-md border bg-white text-gray-900'
+                        : 'rounded-bl-md border bg-gray-800 text-white'
                     }`}
                     style={{
                       backgroundColor: msg.sender === 'user' 
                         ? '#8B5CF6' 
-                        : '#FFFFFF',
-                      color: msg.sender === 'user' ? '#FFFFFF' : '#111827',
-                      borderColor: msg.sender === 'user' ? 'transparent' : '#E5E7EB'
+                        : '#1F2937',
+                      color: msg.sender === 'user' ? '#FFFFFF' : '#FFFFFF',
+                      borderColor: msg.sender === 'user' ? 'transparent' : '#374151'
                     }}
                   >
                     <div className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -307,16 +307,16 @@ export default function ChatInterface({ user }) {
               {isLoading && (
                 <div className="flex justify-start animate-fade-in">
                   <div 
-                    className="max-w-lg px-4 py-3 rounded-2xl rounded-bl-md border bg-white border-gray-300"
+                    className="max-w-lg px-4 py-3 rounded-2xl rounded-bl-md border bg-gray-800 border-gray-600"
                     style={{ 
-                      backgroundColor: '#FFFFFF',
-                      color: '#111827',
-                      borderColor: '#E5E7EB'
+                      backgroundColor: '#1F2937',
+                      color: '#FFFFFF',
+                      borderColor: '#374151'
                     }}
                   >
                     <div className="flex items-center">
                       <Loader2 size={16} className="animate-spin mr-3 text-purple-500" />
-                      <span className="text-sm text-gray-900">Get Weez vous prépare une réponse...</span>
+                      <span className="text-sm text-white">Get Weez vous prépare une réponse...</span>
                     </div>
                   </div>
                 </div>
