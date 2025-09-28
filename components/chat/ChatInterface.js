@@ -14,6 +14,7 @@ const ChatInterface = () => {
   const [isLoading, setIsLoading] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
   const [conversationToDelete, setConversationToDelete] = useState(null)
+  const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
   const textareaRef = useRef(null)
   
   const {
@@ -168,10 +169,10 @@ const ChatInterface = () => {
       <div className="h-16 bg-gray-900/80 backdrop-blur-md border-b border-gray-700"></div>
 
       {/* Main Content */}
-      <main className="flex w-full overflow-hidden" style={{ height: 'calc(100vh - 64px)' }}>
+      <main className="flex w-full overflow-hidden flex-col lg:flex-row" style={{ height: 'calc(100vh - 64px)' }}>
         
         {/* Sidebar gauche */}
-        <div className="w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col">
+        <div className="w-full lg:w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col h-64 lg:h-auto">
           <div className="p-6 flex-1 overflow-y-auto pb-8">
             <h2 className="text-xl font-bold text-white mb-6">Conversations</h2>
             <div className="space-y-4">
@@ -258,7 +259,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Chat Section - Milieu */}
-        <div className="flex-1 flex flex-col min-w-0 h-full p-6">
+        <div className="flex-1 flex flex-col min-w-0 h-full lg:h-auto p-6">
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-6 h-full flex flex-col">
 
             {/* Zone des messages */}
@@ -380,90 +381,167 @@ const ChatInterface = () => {
           </div>
         </div>
 
-        {/* Sidebar droite - Propositions */}
-        <div className="w-80 flex-shrink-0 h-full bg-gray-900/80 backdrop-blur-md border-l border-gray-700 overflow-y-auto">
+        {/* Sidebar droite - Propositions avec filtres */}
+        <div className="w-full lg:w-80 flex-shrink-0 h-full bg-gray-900/80 backdrop-blur-md border-l border-gray-700 overflow-y-auto">
           <div className="p-6 pb-12">
-            <h2 className="text-2xl font-bold text-white mb-6">Événements à venir</h2>
+            <h2 className="text-2xl font-bold text-white mb-4">Suggestions</h2>
+            
+            {/* Filtres */}
+            <div className="flex space-x-2 mb-6">
+              <button
+                onClick={() => setSidebarFilter('all')}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  sidebarFilter === 'all' 
+                    ? 'bg-purple-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Tout
+              </button>
+              <button
+                onClick={() => setSidebarFilter('events')}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  sidebarFilter === 'events' 
+                    ? 'bg-purple-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Événements
+              </button>
+              <button
+                onClick={() => setSidebarFilter('establishments')}
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  sidebarFilter === 'establishments' 
+                    ? 'bg-purple-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`}
+              >
+                Établissements
+              </button>
+            </div>
+
             <div className="space-y-4">
-              <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-white text-lg">🏖️</span>
+              {/* Événements */}
+              {(sidebarFilter === 'all' || sidebarFilter === 'events') && (
+                <>
+                  <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🏖️</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">Beach Party</h3>
+                        <p className="text-blue-300 text-sm">21 juin - 16h</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Soirée exclusive sur la plage avec DJ international</p>
+                    <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      En savoir plus
+                    </button>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold">Beach Party</h3>
-                    <p className="text-blue-300 text-sm">21 juin - 16h</p>
-                  </div>
-                </div>
-                <p className="text-gray-300 text-sm mb-3">Soirée exclusive sur la plage avec DJ international</p>
-                <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
-                  En savoir plus
-                </button>
-              </div>
 
-              <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-white text-lg">🎷</span>
+                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🎷</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">Soirée Jazz</h3>
+                        <p className="text-purple-300 text-sm">26 juin - 22h</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Concert de jazz avec vue imprenable sur la mer</p>
+                    <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      En savoir plus
+                    </button>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold">Soirée Jazz</h3>
-                    <p className="text-purple-300 text-sm">26 juin - 22h</p>
-                  </div>
-                </div>
-                <p className="text-gray-300 text-sm mb-3">Concert de jazz avec vue imprenable sur la mer</p>
-                <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
-                  En savoir plus
-                </button>
-              </div>
 
-              <div className="bg-gradient-to-r from-green-500/20 to-teal-600/20 border border-green-500/30 rounded-xl p-4 hover:border-green-400/50 transition-all duration-300 cursor-pointer group">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-white text-lg">🍽️</span>
+                  <div className="bg-gradient-to-r from-green-500/20 to-teal-600/20 border border-green-500/30 rounded-xl p-4 hover:border-green-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🍽️</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">Dîner Gastronomique</h3>
+                        <p className="text-green-300 text-sm">28 juin - 20h</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Menu dégustation avec chef étoilé Michelin</p>
+                    <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      Réserver
+                    </button>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold">Dîner Gastronomique</h3>
-                    <p className="text-green-300 text-sm">28 juin - 20h</p>
-                  </div>
-                </div>
-                <p className="text-gray-300 text-sm mb-3">Menu dégustation avec chef étoilé Michelin</p>
-                <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
-                  Réserver
-                </button>
-              </div>
+                </>
+              )}
 
-              <div className="bg-gradient-to-r from-orange-500/20 to-red-600/20 border border-orange-500/30 rounded-xl p-4 hover:border-orange-400/50 transition-all duration-300 cursor-pointer group">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-white text-lg">🎤</span>
+              {/* Établissements */}
+              {(sidebarFilter === 'all' || sidebarFilter === 'establishments') && (
+                <>
+                  <div className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-4 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🍣</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">Nobu Marbella</h3>
+                        <p className="text-amber-300 text-sm">Restaurant Japonais</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Cuisine japonaise de luxe avec vue sur la mer</p>
+                    <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      Réserver
+                    </button>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold">Concert VIP</h3>
-                    <p className="text-orange-300 text-sm">30 juin - 21h</p>
-                  </div>
-                </div>
-                <p className="text-gray-300 text-sm mb-3">Artiste international en concert privé</p>
-                <button className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
-                  Accès VIP
-                </button>
-              </div>
 
-              <div className="bg-gradient-to-r from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 rounded-xl p-4 hover:border-indigo-400/50 transition-all duration-300 cursor-pointer group">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <span className="text-white text-lg">⛵</span>
+                  <div className="bg-gradient-to-r from-teal-500/20 to-cyan-600/20 border border-teal-500/30 rounded-xl p-4 hover:border-teal-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🏖️</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">La Terraza del Mar</h3>
+                        <p className="text-teal-300 text-sm">Restaurant Méditerranéen</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Ambiance méditerranéenne avec vue panoramique</p>
+                    <button className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      Réserver
+                    </button>
                   </div>
-                  <div>
-                    <h3 className="text-white font-semibold">Sortie Yacht</h3>
-                    <p className="text-indigo-300 text-sm">2 juillet - 14h</p>
+
+                  <div className="bg-gradient-to-r from-emerald-500/20 to-green-600/20 border border-emerald-500/30 rounded-xl p-4 hover:border-emerald-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🏨</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">El Lago</h3>
+                        <p className="text-emerald-300 text-sm">Restaurant Créatif</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Cuisine créative avec vue sur le lac</p>
+                    <button className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      Réserver
+                    </button>
                   </div>
-                </div>
-                <p className="text-gray-300 text-sm mb-3">Croisière privée avec champagne et tapas</p>
-                <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
-                  Réserver
-                </button>
-              </div>
+
+                  <div className="bg-gradient-to-r from-rose-500/20 to-pink-600/20 border border-rose-500/30 rounded-xl p-4 hover:border-rose-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🍾</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold">Club VIP</h3>
+                        <p className="text-rose-300 text-sm">Nightclub Exclusif</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-sm mb-3">Ambiance festive avec DJ internationaux</p>
+                    <button className="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                      Accès VIP
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
             
             <div className="h-8"></div>
