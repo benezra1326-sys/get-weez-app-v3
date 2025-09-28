@@ -16,6 +16,7 @@ export default function ChatInterface({ user }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [textareaRef, setTextareaRef] = useState(null)
   const [showSuggestiveMessages, setShowSuggestiveMessages] = useState(true)
+  const [messagesEndRef, setMessagesEndRef] = useState(null)
   const { showToast } = useToast()
   
   const {
@@ -46,6 +47,13 @@ export default function ChatInterface({ user }) {
       console.log('✅ ChatInterface - Conversation déjà active, pas d\'action nécessaire')
     }
   }, []) // Seulement au montage du composant
+
+  // Scroll automatique vers le bas quand de nouveaux messages arrivent
+  useEffect(() => {
+    if (messagesEndRef) {
+      messagesEndRef.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages, messagesEndRef])
 
   // Fonction pour auto-resize du textarea
   const handleInputChange = (e) => {
@@ -127,6 +135,13 @@ export default function ChatInterface({ user }) {
       textareaRef.style.height = '60px'
     }
     
+    // Scroll vers le bas après l'ajout du message utilisateur
+    setTimeout(() => {
+      if (messagesEndRef) {
+        messagesEndRef.scrollIntoView({ behavior: 'smooth' })
+      }
+    }, 100)
+    
     setIsLoading(true)
 
     try {
@@ -155,6 +170,13 @@ export default function ChatInterface({ user }) {
       }
 
       addMessage(aiMessage)
+      
+      // Scroll vers le bas après la réponse de l'IA
+      setTimeout(() => {
+        if (messagesEndRef) {
+          messagesEndRef.scrollIntoView({ behavior: 'smooth' })
+        }
+      }, 100)
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error)
       const errorMessage = {
@@ -235,10 +257,11 @@ export default function ChatInterface({ user }) {
 
         {/* Zone d'affichage des messages */}
         <div 
-          className="flex-1 overflow-y-auto p-2 md:p-6"
+          className="flex-1 overflow-y-auto p-2 md:p-6 scroll-smooth"
           style={{ 
             backgroundColor: 'var(--color-bg-primary)',
-            minHeight: 0
+            minHeight: 0,
+            scrollBehavior: 'smooth'
           }}
         >
           {messages.length > 0 ? (
@@ -268,6 +291,10 @@ export default function ChatInterface({ user }) {
                   </div>
                 </div>
               ))}
+              
+              {/* Référence pour le scroll automatique */}
+              <div ref={setMessagesEndRef} />
+              
               {isLoading && (
                 <div className="flex justify-start animate-fade-in">
                   <div 
