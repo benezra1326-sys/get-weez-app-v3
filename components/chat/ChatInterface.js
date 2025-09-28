@@ -168,27 +168,27 @@ const ChatInterface = () => {
       {/* Main Content */}
       <main className="flex w-full h-screen flex-col lg:flex-row overflow-hidden">
         
-        {/* Sidebar gauche - Mobile: en haut, Desktop: à gauche */}
-        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-gray-700 flex flex-col h-32 lg:h-full">
-          <div className="p-6 flex-1 overflow-y-auto pb-8">
-            <h2 className="text-xl font-bold text-white mb-6">Conversations</h2>
-            <div className="space-y-4">
+        {/* Sidebar gauche - Mobile: compacte, Desktop: pleine */}
+        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-gray-700 flex flex-col h-auto lg:h-full max-h-32 lg:max-h-none">
+          <div className="p-3 lg:p-6 flex-1 overflow-y-auto pb-4 lg:pb-8">
+            <h2 className="text-lg lg:text-xl font-bold text-white mb-3 lg:mb-6">Conversations</h2>
+            <div className="space-y-2 lg:space-y-4">
               {/* Bouton Nouvelle Conversation */}
-              <div className="bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
-                <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <Sparkles size={20} className="text-white" />
+              <div 
+                onClick={createConversation}
+                className="bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 rounded-xl p-2 lg:p-2 lg:p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group"
+              >
+                <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                    <Sparkles size={16} className="text-white lg:w-5 lg:h-5" />
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold">Nouvelle Conversation</h3>
-                    <p className="text-purple-300 text-sm">Commencez un nouveau chat</p>
+                    <h3 className="text-white font-semibold text-sm lg:text-base">Nouvelle Conversation</h3>
+                    <p className="text-purple-300 text-xs lg:text-sm hidden lg:block">Commencez un nouveau chat</p>
                   </div>
                 </div>
-                <p className="text-gray-300 text-sm mb-3">Démarrez une nouvelle conversation avec Get Weez</p>
-                <button
-                  onClick={createConversation}
-                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium"
-                >
+                <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Démarrez une nouvelle conversation avec Get Weez</p>
+                <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
                   Créer
                 </button>
               </div>
@@ -201,13 +201,13 @@ const ChatInterface = () => {
                     className={`bg-gradient-to-r ${conversation.id === currentConversationId 
                       ? 'from-blue-500/30 to-purple-600/30 border-blue-500/50' 
                       : 'from-gray-500/20 to-gray-600/20 border-gray-500/30'
-                    } border rounded-xl p-4 hover:border-blue-400/50 transition-all duration-300 group relative`}
+                    } border rounded-xl p-2 lg:p-4 hover:border-blue-400/50 transition-all duration-300 group relative`}
                   >
                     <div 
                       className="cursor-pointer"
                       onClick={() => selectConversation(conversation.id)}
                     >
-                      <div className="flex items-center space-x-3 mb-2">
+                      <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
                         <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200 ${
                           conversation.id === currentConversationId 
                             ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
@@ -256,13 +256,13 @@ const ChatInterface = () => {
         </div>
 
         {/* Chat Section - Milieu - Mobile: principal, Desktop: central */}
-        <div className="flex-1 flex flex-col min-w-0 h-full p-4 lg:p-6">
-          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-6 h-full flex flex-col">
+        <div className="flex-1 flex flex-col min-w-0 p-3 lg:p-6 min-h-0">
+          <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-4 lg:p-6 h-full flex flex-col">
 
             {/* Zone des messages */}
-            <div className="flex-1 overflow-y-auto mb-6 min-h-0">
+            <div className="flex-1 overflow-y-auto mb-4 lg:mb-6 min-h-0">
               {messages && messages.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-3 lg:space-y-4">
                   {messages.map((msg) => {
                     console.log('🔍 Affichage message:', msg)
                     return (
@@ -380,7 +380,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - Mobile: en bas, Desktop: à droite */}
-        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-t lg:border-t-0 lg:border-l border-gray-700 overflow-y-auto h-32 lg:h-full">
+        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-t lg:border-t-0 lg:border-l border-gray-700 overflow-y-auto h-auto lg:h-full max-h-32 lg:max-h-none">
           <div className="p-3 lg:p-6 pb-6 lg:pb-12">
             <h2 className="text-lg lg:text-2xl font-bold text-white mb-3 lg:mb-4">Suggestions</h2>
             
@@ -388,7 +388,7 @@ const ChatInterface = () => {
             <div className="flex space-x-1 lg:space-x-2 mb-3 lg:mb-6">
               <button
                 onClick={() => setSidebarFilter('all')}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 ${
                   sidebarFilter === 'all' 
                     ? 'bg-purple-600 text-white' 
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -398,7 +398,7 @@ const ChatInterface = () => {
               </button>
               <button
                 onClick={() => setSidebarFilter('events')}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 ${
                   sidebarFilter === 'events' 
                     ? 'bg-purple-600 text-white' 
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -408,7 +408,7 @@ const ChatInterface = () => {
               </button>
               <button
                 onClick={() => setSidebarFilter('establishments')}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`px-2 lg:px-3 py-1 rounded-lg text-xs lg:text-sm font-medium transition-all duration-200 ${
                   sidebarFilter === 'establishments' 
                     ? 'bg-purple-600 text-white' 
                     : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
@@ -422,10 +422,10 @@ const ChatInterface = () => {
               {/* Événements */}
               {(sidebarFilter === 'all' || sidebarFilter === 'events') && (
                 <>
-                  <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-2 lg:p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
+                  <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-2 lg:p-2 lg:p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
                     <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
                       <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-sm lg:text-lg">🏖️</span>
+                        <span className="text-white text-sm lg:text-sm lg:text-lg">🏖️</span>
                       </div>
                       <div>
                         <h3 className="text-white font-semibold text-sm lg:text-base">Beach Party</h3>
@@ -438,34 +438,34 @@ const ChatInterface = () => {
                     </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🎷</span>
+                  <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-2 lg:p-2 lg:p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-sm lg:text-lg">🎷</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">Soirée Jazz</h3>
-                        <p className="text-purple-300 text-sm">26 juin - 22h</p>
+                        <h3 className="text-white font-semibold text-sm lg:text-base">Soirée Jazz</h3>
+                        <p className="text-purple-300 text-xs lg:text-sm">26 juin - 22h</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Concert de jazz avec vue imprenable sur la mer</p>
-                    <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Concert de jazz avec vue imprenable sur la mer</p>
+                    <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
                       En savoir plus
                     </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-green-500/20 to-teal-600/20 border border-green-500/30 rounded-xl p-4 hover:border-green-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🍽️</span>
+                  <div className="bg-gradient-to-r from-green-500/20 to-teal-600/20 border border-green-500/30 rounded-xl p-2 lg:p-2 lg:p-4 hover:border-green-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-sm lg:text-lg">🍽️</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">Dîner Gastronomique</h3>
-                        <p className="text-green-300 text-sm">28 juin - 20h</p>
+                        <h3 className="text-white font-semibold text-sm lg:text-base">Dîner Gastronomique</h3>
+                        <p className="text-green-300 text-xs lg:text-sm">28 juin - 20h</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Menu dégustation avec chef étoilé Michelin</p>
-                    <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Menu dégustation avec chef étoilé Michelin</p>
+                    <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
                       Réserver
                     </button>
                   </div>
@@ -475,26 +475,26 @@ const ChatInterface = () => {
               {/* Établissements */}
               {(sidebarFilter === 'all' || sidebarFilter === 'establishments') && (
                 <>
-                  <div className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-4 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🍣</span>
+                  <div className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-2 lg:p-2 lg:p-4 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-sm lg:text-lg">🍣</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">Nobu Marbella</h3>
-                        <p className="text-amber-300 text-sm">Restaurant Japonais</p>
+                        <h3 className="text-white font-semibold text-sm lg:text-base">Nobu Marbella</h3>
+                        <p className="text-amber-300 text-xs lg:text-sm">Restaurant Japonais</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Cuisine japonaise de luxe avec vue sur la mer</p>
-                    <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Cuisine japonaise de luxe avec vue sur la mer</p>
+                    <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
                       Réserver
                     </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-teal-500/20 to-cyan-600/20 border border-teal-500/30 rounded-xl p-4 hover:border-teal-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🏖️</span>
+                  <div className="bg-gradient-to-r from-teal-500/20 to-cyan-600/20 border border-teal-500/30 rounded-xl p-2 lg:p-4 hover:border-teal-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-sm lg:text-lg">🏖️</span>
                       </div>
                       <div>
                         <h3 className="text-white font-semibold">La Terraza del Mar</h3>
@@ -507,13 +507,13 @@ const ChatInterface = () => {
                     </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-emerald-500/20 to-green-600/20 border border-emerald-500/30 rounded-xl p-4 hover:border-emerald-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <div className="bg-gradient-to-r from-emerald-500/20 to-green-600/20 border border-emerald-500/30 rounded-xl p-2 lg:p-4 hover:border-emerald-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                         <span className="text-white text-lg">🏨</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">El Lago</h3>
+                        <h3 className="text-white font-semibold text-sm lg:text-base">El Lago</h3>
                         <p className="text-emerald-300 text-sm">Restaurant Créatif</p>
                       </div>
                     </div>
@@ -523,9 +523,9 @@ const ChatInterface = () => {
                     </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-rose-500/20 to-pink-600/20 border border-rose-500/30 rounded-xl p-4 hover:border-rose-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                  <div className="bg-gradient-to-r from-rose-500/20 to-pink-600/20 border border-rose-500/30 rounded-xl p-2 lg:p-4 hover:border-rose-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                         <span className="text-white text-lg">🍾</span>
                       </div>
                       <div>
