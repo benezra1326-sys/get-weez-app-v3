@@ -198,11 +198,16 @@ export default function ChatInterface({ user }) {
 
   return (
     <div
-      className="flex h-screen w-full overflow-hidden bg-black"
+      className="flex h-screen w-full overflow-hidden bg-black m-0 p-0"
       style={{ 
         backgroundColor: 'var(--color-bg-primary)',
         height: '100vh',
-        width: '100vw'
+        width: '100vw',
+        margin: 0,
+        padding: 0,
+        position: 'fixed',
+        top: 0,
+        left: 0
       }}
     >
       {/* Sidebar des conversations - Desktop */}

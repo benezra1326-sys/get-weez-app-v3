@@ -3,17 +3,27 @@
 @tailwind utilities;
 
 /* Force full width and height for desktop layout */
+* {
+  box-sizing: border-box;
+}
+
 html, body {
   width: 100vw;
   height: 100vh;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 #__next {
   width: 100vw;
   height: 100vh;
+  margin: 0;
+  padding: 0;
+  position: relative;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
