@@ -169,7 +169,7 @@ const ChatInterface = () => {
       <main className="flex w-full overflow-hidden flex-col lg:flex-row" style={{ height: '100vh', minHeight: '100vh' }}>
         
         {/* Sidebar gauche */}
-        <div className="w-full lg:w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col h-64 lg:h-full">
+        <div className="w-full lg:w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col h-48 lg:h-full">
           <div className="p-6 flex-1 overflow-y-auto pb-8">
             <h2 className="text-xl font-bold text-white mb-6">Conversations</h2>
             <div className="space-y-4">
@@ -271,7 +271,7 @@ const ChatInterface = () => {
                         className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                       >
                         <div
-                          className={`max-w-[70%] px-4 py-3 rounded-2xl ${
+                          className={`max-w-[85%] lg:max-w-[70%] px-4 py-3 rounded-2xl ${
                             msg.role === 'user'
                               ? 'rounded-br-md bg-purple-600 text-white'
                               : 'rounded-bl-md border bg-gray-800 text-white'
@@ -284,7 +284,7 @@ const ChatInterface = () => {
                             borderColor: msg.role === 'user' ? 'transparent' : '#374151'
                           }}
                         >
-                          <div className="text-base leading-relaxed whitespace-pre-wrap break-words">
+                          <div className="text-sm lg:text-base leading-relaxed whitespace-pre-wrap break-words">
                             {msg.content || 'Message vide'}
                           </div>
                         </div>
@@ -325,31 +325,31 @@ const ChatInterface = () => {
               )}
             </div>
 
-            {/* Zone de saisie */}
-            <div className="flex-shrink-0 space-y-3">
-              <div className="relative">
-                <textarea
-                  ref={textareaRef}
-                  value={input}
-                  onChange={(e) => {
-                    setInput(e.target.value)
-                    if (textareaRef.current) {
-                      textareaRef.current.style.height = 'auto'
-                      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
-                    }
-                  }}
-                  onKeyDown={handleKeyDown}
-                  placeholder={t('chat.placeholder')}
-                  className="w-full px-4 py-3 pr-24 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none text-base"
-                  style={{ 
-                    backgroundColor: 'var(--color-bg-primary)', 
-                    borderColor: 'var(--color-border)', 
-                    color: 'var(--color-text-primary)',
-                    minHeight: '48px'
-                  }}
-                  rows={1}
-                  disabled={isLoading}
-                />
+              {/* Zone de saisie */}
+              <div className="flex-shrink-0 space-y-3">
+                <div className="relative">
+                  <textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={(e) => {
+                      setInput(e.target.value)
+                      if (textareaRef.current) {
+                        textareaRef.current.style.height = 'auto'
+                        textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
+                      }
+                    }}
+                    onKeyDown={handleKeyDown}
+                    placeholder={t('chat.placeholder')}
+                    className="w-full px-4 py-4 pr-24 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none text-base lg:text-base"
+                    style={{ 
+                      backgroundColor: 'var(--color-bg-primary)', 
+                      borderColor: 'var(--color-border)', 
+                      color: 'var(--color-text-primary)',
+                      minHeight: '56px'
+                    }}
+                    rows={1}
+                    disabled={isLoading}
+                  />
                 
                 {/* Bouton d'envoi */}
                 <button
@@ -358,7 +358,7 @@ const ChatInterface = () => {
                     handleSend()
                   }}
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
                 >
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" />
@@ -371,15 +371,16 @@ const ChatInterface = () => {
               </div>
                 
               {/* Texte d'information */}
-              <div className="flex items-center justify-between text-xs text-gray-400">
-                <span>Appuyez sur Entrée pour envoyer, Shift+Entrée pour une nouvelle ligne</span>
+              <div className="flex items-center justify-between text-xs lg:text-xs text-gray-400">
+                <span className="hidden sm:inline">Appuyez sur Entrée pour envoyer, Shift+Entrée pour une nouvelle ligne</span>
+                <span className="sm:hidden">Entrée pour envoyer</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Sidebar droite - Propositions avec filtres */}
-        <div className="w-full lg:w-80 flex-shrink-0 h-full bg-gray-900/80 backdrop-blur-md border-l border-gray-700 overflow-y-auto">
+        <div className="w-full lg:w-80 flex-shrink-0 h-48 lg:h-full bg-gray-900/80 backdrop-blur-md border-l border-gray-700 overflow-y-auto">
           <div className="p-6 pb-12">
             <h2 className="text-2xl font-bold text-white mb-4">Suggestions</h2>
             
