@@ -4,7 +4,6 @@ import { useTranslation } from 'next-i18next'
 import SidebarChat from './SidebarChat'
 import MobileChatOverlay from './MobileChatOverlay'
 import SuggestiveMessages from './SuggestiveMessages'
-import VoiceDictationButton from './VoiceDictationButton'
 import { useConversations } from '../../hooks/useConversations'
 import { ChatLoadingSpinner } from '../ui/LoadingSpinner'
 import { useToast } from '../ui/Toast'
@@ -74,17 +73,6 @@ export default function ChatInterface({ user }) {
   const handleSuggestiveMessageClick = (message) => {
     setInput(message)
     setShowSuggestiveMessages(false) // Masquer les messages suggestifs quand l'utilisateur tape
-  }
-
-  // Fonction pour gérer la dictée vocale
-  const handleVoiceTranscript = (text) => {
-    setInput(prevInput => prevInput + text)
-    setShowSuggestiveMessages(false)
-  }
-
-  const handleInterimTranscript = (text) => {
-    // Optionnel : afficher la transcription en temps réel
-    console.log('Transcription intermédiaire:', text)
   }
 
   // Fonction pour envoyer un message
@@ -369,14 +357,6 @@ export default function ChatInterface({ user }) {
                 rows={1}
                 disabled={isLoading}
               />
-              {/* Bouton de dictée vocale */}
-              <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
-                <VoiceDictationButton
-                  onTranscript={handleVoiceTranscript}
-                  onInterimTranscript={handleInterimTranscript}
-                  disabled={isLoading}
-                />
-              </div>
 
               <button
                 onClick={handleSend}
@@ -438,8 +418,7 @@ export default function ChatInterface({ user }) {
           <div className="mt-4 text-center">
             <p className="text-caption" style={{ color: 'var(--color-text-muted)' }}>
               Appuyez sur <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs">Entrée</kbd> pour envoyer, 
-              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">Maj+Entrée</kbd> pour une nouvelle ligne,
-              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">🎤</kbd> pour dicter
+              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">Maj+Entrée</kbd> pour une nouvelle ligne
             </p>
           </div>
         </div>

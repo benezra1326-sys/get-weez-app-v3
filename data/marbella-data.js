@@ -31,6 +31,30 @@ export const establishments = [
       "Edamame (€8)",
       "Miso Soup (€12)"
     ],
+    menu: {
+      entrees: [
+        { name: "Edamame", price: 8, description: "Haricots de soja salés" },
+        { name: "Miso Soup", price: 12, description: "Soupe de miso traditionnelle" },
+        { name: "Truffle Tempura", price: 30, description: "Tempura de truffe noire" }
+      ],
+      sushi: [
+        { name: "Sushi Omakase", price: 120, description: "Sélection du chef - 12 pièces" },
+        { name: "Toro Sashimi", price: 35, description: "Sashimi de thon gras" },
+        { name: "Uni Sushi", price: 25, description: "Sushi d'oursin frais" }
+      ],
+      plats: [
+        { name: "Wagyu Beef", price: 85, description: "Bœuf wagyu grillé" },
+        { name: "Black Cod Miso", price: 45, description: "Cabillaud noir au miso" }
+      ]
+    },
+    services: [
+      "Réservation VIP",
+      "Service en terrasse",
+      "Menu dégustation",
+      "Chef privé sur demande",
+      "Accompagnement sommelier",
+      "Transport privé"
+    ],
     ambiance: "Luxueux, Vue mer, Intime",
     capacity: 80,
     sponsored: true,
@@ -64,6 +88,30 @@ export const establishments = [
       "Gazpacho (€8)",
       "Tortilla Española (€12)",
       "Churros con Chocolate (€8)"
+    ],
+    menu: {
+      entrees: [
+        { name: "Gazpacho", price: 8, description: "Soupe froide andalouse" },
+        { name: "Jamón Ibérico", price: 25, description: "Jambon ibérique de bellota" },
+        { name: "Gambas al Ajillo", price: 18, description: "Crevettes à l'ail" }
+      ],
+      plats: [
+        { name: "Paella Valenciana", price: 45, description: "Paella traditionnelle valencienne" },
+        { name: "Dorada a la Sal", price: 35, description: "Dorade cuite au sel" },
+        { name: "Pulpo a la Gallega", price: 28, description: "Poulpe à la galicienne" }
+      ],
+      desserts: [
+        { name: "Churros con Chocolate", price: 8, description: "Churros avec chocolat chaud" },
+        { name: "Tortilla Española", price: 12, description: "Omelette espagnole traditionnelle" }
+      ]
+    },
+    services: [
+      "Réservation terrasse",
+      "Menu dégustation méditerranéen",
+      "Service romantique",
+      "Accompagnement sommelier",
+      "Transport privé",
+      "Cours de cuisine"
     ],
     ambiance: "Romantique, Vue mer, Terrasse",
     capacity: 120,
