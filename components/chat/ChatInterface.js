@@ -207,7 +207,7 @@ export default function ChatInterface({ user }) {
     >
       {/* Sidebar des conversations - Desktop */}
       {isSidebarOpen && (
-        <div className="hidden lg:flex w-80 flex-shrink-0">
+        <div className="hidden lg:flex w-80 flex-shrink-0 h-full">
           <SidebarChat
             conversations={conversations}
             currentConversationId={currentConversationId}
@@ -258,7 +258,7 @@ export default function ChatInterface({ user }) {
 
         {/* Zone d'affichage des messages */}
         <div 
-          className="flex-1 overflow-y-auto p-4 md:p-6 scroll-smooth bg-black"
+          className="flex-1 overflow-y-auto py-2 md:py-4 px-2 md:px-6 scroll-smooth bg-black"
           style={{ 
             backgroundColor: 'var(--color-bg-primary)',
             minHeight: 0,
@@ -266,7 +266,7 @@ export default function ChatInterface({ user }) {
           }}
         >
           {messages && messages.length > 0 ? (
-            <div className="max-w-2xl mx-auto space-y-3 md:space-y-4 px-2 md:px-4">
+            <div className="max-w-2xl mx-auto space-y-3 md:space-y-4 pt-2 md:pt-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
