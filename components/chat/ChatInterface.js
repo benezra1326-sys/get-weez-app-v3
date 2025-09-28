@@ -35,13 +35,8 @@ export default function ChatInterface({ user }) {
     console.log('🔍 ChatInterface - Vérification des conversations...')
     console.log('🔍 Conversations:', conversations.length, 'Current ID:', currentConversationId)
     
-    // Si aucune conversation n'existe, en créer une
-    if (conversations.length === 0) {
-      console.log('✅ ChatInterface - Création d\'une nouvelle conversation')
-      createConversation('Nouvelle conversation')
-    }
     // Si des conversations existent mais aucune n'est sélectionnée, sélectionner la première
-    else if (conversations.length > 0 && !currentConversationId) {
+    if (conversations.length > 0 && !currentConversationId) {
       console.log('✅ ChatInterface - Sélection de la première conversation existante')
       selectConversation(conversations[0].id)
     }
@@ -97,6 +92,8 @@ export default function ChatInterface({ user }) {
       try {
         const newConversationId = createConversation('Nouvelle conversation')
         console.log('✅ Nouvelle conversation créée:', newConversationId)
+        // Attendre un peu pour que la conversation soit créée
+        await new Promise(resolve => setTimeout(resolve, 100))
       } catch (error) {
         console.error('❌ Erreur création conversation:', error)
         return
@@ -286,13 +283,10 @@ export default function ChatInterface({ user }) {
                 <MessageCircle size={32} className="text-white" />
               </div>
               <h3 className="text-2xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
-                {conversations.length === 0 ? 'Bienvenue sur Get Weez' : 'Sélectionnez une conversation'}
+                Bienvenue sur Get Weez
               </h3>
               <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
-                {conversations.length === 0 
-                  ? 'Commencez par créer une nouvelle conversation' 
-                  : 'Choisissez une conversation dans la sidebar pour commencer'
-                }
+                Commencez à taper votre message ci-dessous pour commencer une conversation
               </p>
             </div>
           )}
