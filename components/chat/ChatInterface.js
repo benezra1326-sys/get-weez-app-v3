@@ -166,10 +166,10 @@ const ChatInterface = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
       {/* Main Content */}
-      <main className="flex w-full overflow-hidden flex-col lg:flex-row" style={{ height: '100vh', minHeight: '100vh' }}>
+      <main className="flex w-full h-screen flex-col lg:flex-row overflow-hidden">
         
-        {/* Sidebar gauche */}
-        <div className="w-full lg:w-80 flex-shrink-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex flex-col h-48 lg:h-full">
+        {/* Sidebar gauche - Mobile: en haut, Desktop: à gauche */}
+        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-gray-700 flex flex-col h-32 lg:h-full">
           <div className="p-6 flex-1 overflow-y-auto pb-8">
             <h2 className="text-xl font-bold text-white mb-6">Conversations</h2>
             <div className="space-y-4">
@@ -255,8 +255,8 @@ const ChatInterface = () => {
           </div>
         </div>
 
-        {/* Chat Section - Milieu */}
-        <div className="flex-1 flex flex-col min-w-0 h-full lg:h-full p-6">
+        {/* Chat Section - Milieu - Mobile: principal, Desktop: central */}
+        <div className="flex-1 flex flex-col min-w-0 h-full p-4 lg:p-6">
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-6 h-full flex flex-col">
 
             {/* Zone des messages */}
@@ -340,12 +340,12 @@ const ChatInterface = () => {
                     }}
                     onKeyDown={handleKeyDown}
                     placeholder={t('chat.placeholder')}
-                    className="w-full px-4 py-4 pr-24 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none text-base lg:text-base"
+                    className="w-full px-4 py-6 pr-24 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none text-lg"
                     style={{ 
                       backgroundColor: 'var(--color-bg-primary)', 
                       borderColor: 'var(--color-border)', 
                       color: 'var(--color-text-primary)',
-                      minHeight: '56px'
+                      minHeight: '80px'
                     }}
                     rows={1}
                     disabled={isLoading}
@@ -358,7 +358,7 @@ const ChatInterface = () => {
                     handleSend()
                   }}
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-3 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                  className="absolute right-3 top-1/2 transform -translate-y-1/2 p-4 bg-purple-600 hover:bg-purple-700 disabled:bg-gray-600 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
                 >
                   {isLoading ? (
                     <Loader2 size={16} className="animate-spin" />
@@ -379,13 +379,13 @@ const ChatInterface = () => {
           </div>
         </div>
 
-        {/* Sidebar droite - Propositions avec filtres */}
-        <div className="w-full lg:w-80 flex-shrink-0 h-48 lg:h-full bg-gray-900/80 backdrop-blur-md border-l border-gray-700 overflow-y-auto">
-          <div className="p-6 pb-12">
-            <h2 className="text-xl lg:text-2xl font-bold text-white mb-4">Suggestions</h2>
+        {/* Sidebar droite - Propositions avec filtres - Mobile: en bas, Desktop: à droite */}
+        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-t lg:border-t-0 lg:border-l border-gray-700 overflow-y-auto h-32 lg:h-full">
+          <div className="p-3 lg:p-6 pb-6 lg:pb-12">
+            <h2 className="text-lg lg:text-2xl font-bold text-white mb-3 lg:mb-4">Suggestions</h2>
             
             {/* Filtres */}
-            <div className="flex space-x-2 mb-6">
+            <div className="flex space-x-1 lg:space-x-2 mb-3 lg:mb-6">
               <button
                 onClick={() => setSidebarFilter('all')}
                 className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
@@ -418,22 +418,22 @@ const ChatInterface = () => {
               </button>
             </div>
 
-            <div className="space-y-4">
+            <div className="space-y-2 lg:space-y-4">
               {/* Événements */}
               {(sidebarFilter === 'all' || sidebarFilter === 'events') && (
                 <>
-                  <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🏖️</span>
+                  <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-2 lg:p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-sm lg:text-lg">🏖️</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">Beach Party</h3>
-                        <p className="text-blue-300 text-sm">21 juin - 16h</p>
+                        <h3 className="text-white font-semibold text-sm lg:text-base">Beach Party</h3>
+                        <p className="text-blue-300 text-xs lg:text-sm">21 juin - 16h</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Soirée exclusive sur la plage avec DJ international</p>
-                    <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Soirée exclusive sur la plage avec DJ international</p>
+                    <button className="w-full bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
                       En savoir plus
                     </button>
                   </div>
