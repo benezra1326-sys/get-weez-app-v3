@@ -169,26 +169,26 @@ const ChatInterface = () => {
       <main className="flex w-full h-screen flex-col lg:flex-row overflow-hidden">
         
         {/* Sidebar gauche - Mobile: compacte, Desktop: pleine */}
-        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-gray-700 flex flex-col h-auto lg:h-full max-h-32 lg:max-h-none">
+        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-b lg:border-b-0 lg:border-r border-gray-700 flex flex-col h-40 lg:h-full">
           <div className="p-3 lg:p-6 flex-1 overflow-y-auto pb-4 lg:pb-8">
             <h2 className="text-lg lg:text-xl font-bold text-white mb-3 lg:mb-6">Conversations</h2>
             <div className="space-y-2 lg:space-y-4">
               {/* Bouton Nouvelle Conversation */}
               <div 
                 onClick={createConversation}
-                className="bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 rounded-xl p-2 lg:p-2 lg:p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group"
+                className="bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group"
               >
-                <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                  <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                    <Sparkles size={16} className="text-white lg:w-5 lg:h-5" />
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                    <Sparkles size={20} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold text-sm lg:text-base">Nouvelle Conversation</h3>
-                    <p className="text-purple-300 text-xs lg:text-sm hidden lg:block">Commencez un nouveau chat</p>
+                    <h3 className="text-white font-semibold text-base">Nouvelle Conversation</h3>
+                    <p className="text-purple-300 text-sm">Commencez un nouveau chat</p>
                   </div>
                 </div>
-                <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Démarrez une nouvelle conversation avec Get Weez</p>
-                <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
+                <p className="text-gray-300 text-sm mb-3">Démarrez une nouvelle conversation avec Get Weez</p>
+                <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
                   Créer
                 </button>
               </div>
@@ -256,7 +256,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Chat Section - Milieu - Mobile: principal, Desktop: central */}
-        <div className="flex-1 flex flex-col min-w-0 p-3 lg:p-6 min-h-0">
+        <div className="flex-1 flex flex-col min-w-0 p-3 lg:p-6 h-full">
           <div className="bg-gray-800/50 backdrop-blur-sm rounded-2xl border border-gray-700 p-4 lg:p-6 h-full flex flex-col">
 
             {/* Zone des messages */}
@@ -340,12 +340,12 @@ const ChatInterface = () => {
                     }}
                     onKeyDown={handleKeyDown}
                     placeholder={t('chat.placeholder')}
-                    className="w-full px-4 py-6 pr-24 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none text-lg"
+                    className="w-full px-4 py-4 lg:py-6 pr-24 bg-gray-700 border border-gray-600 rounded-xl text-white placeholder-gray-400 focus:outline-none focus:border-purple-500 resize-none text-base lg:text-lg"
                     style={{ 
                       backgroundColor: 'var(--color-bg-primary)', 
                       borderColor: 'var(--color-border)', 
                       color: 'var(--color-text-primary)',
-                      minHeight: '80px'
+                      minHeight: '56px'
                     }}
                     rows={1}
                     disabled={isLoading}
@@ -380,7 +380,7 @@ const ChatInterface = () => {
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - Mobile: en bas, Desktop: à droite */}
-        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-t lg:border-t-0 lg:border-l border-gray-700 overflow-y-auto h-auto lg:h-full max-h-32 lg:max-h-none">
+        <div className="w-full lg:w-80 bg-gray-900/80 backdrop-blur-md border-t lg:border-t-0 lg:border-l border-gray-700 overflow-y-auto h-40 lg:h-full">
           <div className="p-3 lg:p-6 pb-6 lg:pb-12">
             <h2 className="text-lg lg:text-2xl font-bold text-white mb-3 lg:mb-4">Suggestions</h2>
             
