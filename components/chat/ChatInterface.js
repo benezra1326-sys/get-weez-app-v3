@@ -196,12 +196,11 @@ export default function ChatInterface({ user }) {
   }
 
   return (
-    <div 
-      className="flex h-screen w-full overflow-hidden"
+    <div
+      className="flex h-screen w-full overflow-hidden bg-black"
       style={{ 
         backgroundColor: 'var(--color-bg-primary)',
-        height: '100vh',
-        width: '100%'
+        minHeight: '100vh'
       }}
     >
       {/* Sidebar des conversations - Desktop */}
@@ -234,7 +233,7 @@ export default function ChatInterface({ user }) {
       <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         {/* Header du chat */}
         <div 
-          className="flex items-center justify-between p-2 md:p-4 border-b flex-shrink-0"
+          className="flex items-center justify-between p-2 md:p-4 border-b flex-shrink-0 bg-gray-900"
           style={{ 
             borderColor: 'var(--color-border)', 
             backgroundColor: 'var(--color-bg-secondary)',
@@ -257,7 +256,7 @@ export default function ChatInterface({ user }) {
 
         {/* Zone d'affichage des messages */}
         <div 
-          className="flex-1 overflow-y-auto p-2 md:p-6 scroll-smooth"
+          className="flex-1 overflow-y-auto p-2 md:p-6 scroll-smooth bg-black"
           style={{ 
             backgroundColor: 'var(--color-bg-primary)',
             minHeight: 0,
@@ -274,15 +273,15 @@ export default function ChatInterface({ user }) {
                   <div
                     className={`max-w-xs md:max-w-2xl px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
                       msg.sender === 'user'
-                        ? 'rounded-br-md'
-                        : 'rounded-bl-md border'
+                        ? 'rounded-br-md bg-purple-600 text-white'
+                        : 'rounded-bl-md border bg-gray-800 text-white'
                     }`}
                     style={{
                       backgroundColor: msg.sender === 'user' 
-                        ? 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%)' 
-                        : 'var(--color-bg-secondary)',
-                      color: msg.sender === 'user' ? 'white' : 'var(--color-text-primary)',
-                      borderColor: msg.sender === 'user' ? 'transparent' : 'var(--color-border)'
+                        ? '#8B5CF6' 
+                        : '#1F2937',
+                      color: msg.sender === 'user' ? 'white' : 'white',
+                      borderColor: msg.sender === 'user' ? 'transparent' : '#374151'
                     }}
                   >
                     <div className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -298,16 +297,16 @@ export default function ChatInterface({ user }) {
               {isLoading && (
                 <div className="flex justify-start animate-fade-in">
                   <div 
-                    className="max-w-2xl px-4 py-3 rounded-2xl rounded-bl-md border"
+                    className="max-w-2xl px-4 py-3 rounded-2xl rounded-bl-md border bg-gray-800 border-gray-600"
                     style={{ 
-                      backgroundColor: 'var(--color-bg-secondary)',
-                      color: 'var(--color-text-primary)',
-                      borderColor: 'var(--color-border)'
+                      backgroundColor: '#1F2937',
+                      color: 'white',
+                      borderColor: '#374151'
                     }}
                   >
                     <div className="flex items-center">
-                      <Loader2 size={16} className="animate-spin mr-3" style={{ color: 'var(--color-primary)' }} />
-                      <span className="text-sm">Get Weez vous prépare une réponse...</span>
+                      <Loader2 size={16} className="animate-spin mr-3 text-purple-500" />
+                      <span className="text-sm text-white">Get Weez vous prépare une réponse...</span>
                     </div>
                   </div>
                 </div>
@@ -316,15 +315,15 @@ export default function ChatInterface({ user }) {
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-center px-4">
               <div 
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 shadow-glow animate-float"
-                style={{ background: 'var(--color-primary)' }}
+                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-purple-600 shadow-lg"
+                style={{ background: '#8B5CF6' }}
               >
                 <MessageCircle size={32} className="text-white" />
               </div>
-              <h3 className="text-2xl font-bold mb-3" style={{ color: 'var(--color-text-primary)' }}>
+              <h3 className="text-2xl font-bold mb-3 text-white">
                 Bienvenue sur Get Weez
               </h3>
-              <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className="text-lg text-gray-400">
                 Commencez à taper votre message ci-dessous pour commencer une conversation
               </p>
             </div>
@@ -342,21 +341,21 @@ export default function ChatInterface({ user }) {
 
         {/* Zone de saisie */}
         <div 
-          className="p-2 md:p-6 border-t flex-shrink-0"
+          className="p-2 md:p-6 border-t flex-shrink-0 bg-gray-900 border-gray-700"
           style={{ 
-            borderColor: 'var(--color-border)', 
-            backgroundColor: 'var(--color-bg-secondary)'
+            borderColor: '#374151', 
+            backgroundColor: '#111827'
           }}
         >
           <div className="max-w-4xl mx-auto">
           <div className="relative">
             <div 
-              className="relative rounded-2xl border transition-all duration-300 hover:border-primary/50 focus-within:border-primary focus-within:shadow-glow"
+              className="relative rounded-2xl border transition-all duration-300 hover:border-purple-500/50 focus-within:border-purple-500 bg-gray-800 border-gray-600"
               style={{
-                backgroundColor: 'var(--color-bg-primary)',
-                border: '1px solid var(--color-border)',
-                borderRadius: 'var(--radius-2xl)',
-                boxShadow: 'var(--shadow-md)'
+                backgroundColor: '#1F2937',
+                border: '1px solid #374151',
+                borderRadius: '1rem',
+                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
               }}
             >
               <textarea
@@ -364,10 +363,10 @@ export default function ChatInterface({ user }) {
                 placeholder="Écrivez ce dont vous avez besoin..."
                 value={input}
                 onChange={handleInputChange}
-                className="w-full resize-none pr-14 py-4 pl-4"
+                className="w-full resize-none pr-14 py-4 pl-4 text-white placeholder-gray-400"
                 style={{
                   backgroundColor: 'transparent',
-                  color: 'var(--color-text-primary)',
+                  color: 'white',
                   border: 'none',
                   outline: 'none',
                   fontSize: '16px',
@@ -406,7 +405,7 @@ export default function ChatInterface({ user }) {
                 disabled={!input.trim() || isLoading}
                 className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
-                  backgroundColor: input.trim() && !isLoading ? 'var(--color-primary)' : 'var(--color-text-muted)',
+                  backgroundColor: input.trim() && !isLoading ? '#8B5CF6' : '#6B7280',
                   color: 'white'
                 }}
               >
@@ -425,10 +424,10 @@ export default function ChatInterface({ user }) {
 
           {/* Info text */}
           <div className="mt-4 text-center">
-            <p className="text-caption" style={{ color: 'var(--color-text-muted)' }}>
-              Appuyez sur <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs">Entrée</kbd> pour envoyer, 
-              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">Maj+Entrée</kbd> pour une nouvelle ligne,
-              <kbd className="px-1.5 py-0.5 bg-surface rounded text-xs mx-1">🎤</kbd> pour dicter
+            <p className="text-xs text-gray-400">
+              Appuyez sur <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-xs text-gray-300">Entrée</kbd> pour envoyer, 
+              <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-xs mx-1 text-gray-300">Maj+Entrée</kbd> pour une nouvelle ligne,
+              <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-xs mx-1 text-gray-300">🎤</kbd> pour dicter
             </p>
           </div>
         </div>
