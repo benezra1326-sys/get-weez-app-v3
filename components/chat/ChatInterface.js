@@ -178,10 +178,10 @@ export default function ChatInterface({ user }) {
 
   return (
     <div 
-      className="flex h-full w-full"
+      className="flex h-screen w-full overflow-hidden"
       style={{ 
         backgroundColor: 'var(--color-bg-primary)',
-        height: '100%',
+        height: '100vh',
         width: '100%'
       }}
     >
@@ -212,14 +212,14 @@ export default function ChatInterface({ user }) {
       />
 
       {/* Zone principale du chat */}
-      <div className="flex-1 flex flex-col h-full">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
         {/* Header du chat */}
         <div 
-          className="flex items-center justify-between p-4 border-b"
+          className="flex items-center justify-between p-2 md:p-4 border-b flex-shrink-0"
           style={{ 
             borderColor: 'var(--color-border)', 
             backgroundColor: 'var(--color-bg-secondary)',
-            minHeight: '4rem'
+            minHeight: '3rem'
           }}
         >
           <div className="flex items-center space-x-3">
@@ -238,7 +238,7 @@ export default function ChatInterface({ user }) {
 
         {/* Zone d'affichage des messages */}
         <div 
-          className="flex-1 overflow-y-auto p-6"
+          className="flex-1 overflow-y-auto p-2 md:p-6"
           style={{ 
             backgroundColor: 'var(--color-bg-primary)',
             minHeight: 0
@@ -252,7 +252,7 @@ export default function ChatInterface({ user }) {
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
                 >
                   <div
-                    className={`max-w-2xl px-4 py-3 rounded-2xl ${
+                    className={`max-w-xs md:max-w-2xl px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
                       msg.sender === 'user'
                         ? 'rounded-br-md'
                         : 'rounded-bl-md border'
@@ -321,7 +321,7 @@ export default function ChatInterface({ user }) {
 
         {/* Zone de saisie */}
         <div 
-          className="p-6 border-t"
+          className="p-2 md:p-6 border-t flex-shrink-0"
           style={{ 
             borderColor: 'var(--color-border)', 
             backgroundColor: 'var(--color-bg-secondary)'
@@ -400,7 +400,7 @@ export default function ChatInterface({ user }) {
           
 
           {/* Bouton de test pour débogage */}
-          <div className="mt-4 text-center">
+          <div className="mt-2 md:mt-4 text-center px-2">
             <button
               onClick={() => {
                 console.log('🧪 Test bouton - État actuel:')
@@ -415,7 +415,7 @@ export default function ChatInterface({ user }) {
                   console.log('❌ Conditions non remplies pour l\'envoi')
                 }
               }}
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg mr-2"
+              className="px-2 md:px-4 py-1 md:py-2 bg-blue-500 text-white rounded-lg mr-1 md:mr-2 text-xs md:text-sm"
             >
               🧪 Test Envoi
             </button>
@@ -428,7 +428,7 @@ export default function ChatInterface({ user }) {
                 })
                 document.querySelector('textarea').dispatchEvent(event)
               }}
-              className="px-4 py-2 bg-green-500 text-white rounded-lg"
+              className="px-2 md:px-4 py-1 md:py-2 bg-green-500 text-white rounded-lg text-xs md:text-sm"
             >
               🔧 Test Entrée
             </button>
