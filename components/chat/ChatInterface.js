@@ -198,16 +198,11 @@ export default function ChatInterface({ user }) {
 
   return (
     <div
-      className="flex h-screen w-full overflow-hidden bg-black m-0 p-0"
+      className="flex h-screen w-full overflow-hidden bg-black"
       style={{ 
         backgroundColor: 'var(--color-bg-primary)',
         height: '100vh',
-        width: '100vw',
-        margin: 0,
-        padding: 0,
-        position: 'fixed',
-        top: 0,
-        left: 0
+        width: '100vw'
       }}
     >
       {/* Sidebar des conversations - Desktop */}
@@ -250,7 +245,7 @@ export default function ChatInterface({ user }) {
           <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors lg:hidden flex-shrink-0"
+              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors flex-shrink-0"
               style={{ color: 'var(--color-text-secondary)' }}
             >
               {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
