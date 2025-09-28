@@ -178,7 +178,7 @@ const ChatInterface = () => {
               {/* Bouton Nouvelle Conversation */}
               <div className="bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                     <Sparkles size={20} className="text-white" />
                   </div>
                   <div>
@@ -210,7 +210,7 @@ const ChatInterface = () => {
                       onClick={() => selectConversation(conversation.id)}
                     >
                       <div className="flex items-center space-x-3 mb-2">
-                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300 ${
+                        <div className={`w-10 h-10 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200 ${
                           conversation.id === currentConversationId 
                             ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
                             : 'bg-gradient-to-r from-gray-500 to-gray-600'
@@ -387,7 +387,7 @@ const ChatInterface = () => {
             <div className="space-y-4">
               <div className="bg-gradient-to-r from-blue-500/20 to-purple-600/20 border border-blue-500/30 rounded-xl p-4 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                     <span className="text-white text-lg">🏖️</span>
                   </div>
                   <div>
@@ -403,7 +403,7 @@ const ChatInterface = () => {
 
               <div className="bg-gradient-to-r from-purple-500/20 to-pink-600/20 border border-purple-500/30 rounded-xl p-4 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group">
                 <div className="flex items-center space-x-3 mb-2">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                     <span className="text-white text-lg">🎷</span>
                   </div>
                   <div>
@@ -414,6 +414,54 @@ const ChatInterface = () => {
                 <p className="text-gray-300 text-sm mb-3">Concert de jazz avec vue imprenable sur la mer</p>
                 <button className="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
                   En savoir plus
+                </button>
+              </div>
+
+              <div className="bg-gradient-to-r from-green-500/20 to-teal-600/20 border border-green-500/30 rounded-xl p-4 hover:border-green-400/50 transition-all duration-300 cursor-pointer group">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                    <span className="text-white text-lg">🍽️</span>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Dîner Gastronomique</h3>
+                    <p className="text-green-300 text-sm">28 juin - 20h</p>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm mb-3">Menu dégustation avec chef étoilé Michelin</p>
+                <button className="w-full bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                  Réserver
+                </button>
+              </div>
+
+              <div className="bg-gradient-to-r from-orange-500/20 to-red-600/20 border border-orange-500/30 rounded-xl p-4 hover:border-orange-400/50 transition-all duration-300 cursor-pointer group">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                    <span className="text-white text-lg">🎤</span>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Concert VIP</h3>
+                    <p className="text-orange-300 text-sm">30 juin - 21h</p>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm mb-3">Artiste international en concert privé</p>
+                <button className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                  Accès VIP
+                </button>
+              </div>
+
+              <div className="bg-gradient-to-r from-indigo-500/20 to-purple-600/20 border border-indigo-500/30 rounded-xl p-4 hover:border-indigo-400/50 transition-all duration-300 cursor-pointer group">
+                <div className="flex items-center space-x-3 mb-2">
+                  <div className="w-10 h-10 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                    <span className="text-white text-lg">⛵</span>
+                  </div>
+                  <div>
+                    <h3 className="text-white font-semibold">Sortie Yacht</h3>
+                    <p className="text-indigo-300 text-sm">2 juillet - 14h</p>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm mb-3">Croisière privée avec champagne et tapas</p>
+                <button className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                  Réserver
                 </button>
               </div>
             </div>
