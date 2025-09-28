@@ -379,40 +379,6 @@ export default function ChatInterface({ user }) {
           </div>
           
 
-          {/* Bouton de test pour débogage */}
-          <div className="mt-2 md:mt-4 text-center px-2">
-            <button
-              onClick={() => {
-                console.log('🧪 Test bouton - État actuel:')
-                console.log('📝 Input:', input)
-                console.log('⏳ Loading:', isLoading)
-                console.log('💬 Conversation ID:', currentConversationId)
-                console.log('📚 Messages:', messages.length)
-                console.log('📚 Conversations:', conversations.length)
-                if (input.trim() && !isLoading) {
-                  handleSend()
-                } else {
-                  console.log('❌ Conditions non remplies pour l\'envoi')
-                }
-              }}
-              className="px-2 md:px-4 py-1 md:py-2 bg-blue-500 text-white rounded-lg mr-1 md:mr-2 text-xs md:text-sm"
-            >
-              🧪 Test Envoi
-            </button>
-            <button
-              onClick={() => {
-                console.log('🔧 Test Entrée simulé')
-                const event = new KeyboardEvent('keydown', {
-                  key: 'Enter',
-                  shiftKey: false
-                })
-                document.querySelector('textarea').dispatchEvent(event)
-              }}
-              className="px-2 md:px-4 py-1 md:py-2 bg-green-500 text-white rounded-lg text-xs md:text-sm"
-            >
-              🔧 Test Entrée
-            </button>
-          </div>
 
           {/* Info text */}
           <div className="mt-4 text-center">
