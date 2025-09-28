@@ -32,8 +32,6 @@ export default function ChatInterface({ user }) {
 
   const messages = getCurrentMessages()
   
-  // Debug pour vérifier les messages
-  console.log('🔍 ChatInterface - Messages:', messages.length, messages)
 
   // Initialiser la conversation seulement au premier chargement
   useEffect(() => {
@@ -203,7 +201,8 @@ export default function ChatInterface({ user }) {
       className="flex h-screen w-full overflow-hidden bg-black"
       style={{ 
         backgroundColor: 'var(--color-bg-primary)',
-        minHeight: '100vh'
+        height: '100vh',
+        width: '100vw'
       }}
     >
       {/* Sidebar des conversations - Desktop */}
@@ -233,25 +232,25 @@ export default function ChatInterface({ user }) {
       />
 
       {/* Zone principale du chat */}
-      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden">
+      <div className="flex-1 flex flex-col min-w-0 h-full overflow-hidden w-full">
         {/* Header du chat */}
         <div 
-          className="flex items-center justify-between p-2 md:p-4 border-b flex-shrink-0 bg-gray-900"
+          className="flex items-center justify-between p-3 md:p-4 border-b flex-shrink-0 bg-gray-900"
           style={{ 
             borderColor: 'var(--color-border)', 
             backgroundColor: 'var(--color-bg-secondary)',
-            minHeight: '3rem'
+            minHeight: '3.5rem'
           }}
         >
-          <div className="flex items-center space-x-3">
+          <div className="flex items-center space-x-2 md:space-x-3 flex-1 min-w-0">
             <button
               onClick={() => setIsSidebarOpen(!isSidebarOpen)}
-              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors lg:hidden"
+              className="p-2 rounded-xl hover:bg-gray-800/50 transition-colors lg:hidden flex-shrink-0"
               style={{ color: 'var(--color-text-secondary)' }}
             >
-              {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+              {isSidebarOpen ? <X size={18} /> : <Menu size={18} />}
             </button>
-            <h2 className="text-xl font-bold" style={{ color: 'var(--color-text-primary)' }}>
+            <h2 className="text-lg md:text-xl font-bold truncate" style={{ color: 'var(--color-text-primary)' }}>
               {conversations.find(c => c.id === currentConversationId)?.name || 'Nouvelle Conversation'}
             </h2>
           </div>
@@ -259,29 +258,22 @@ export default function ChatInterface({ user }) {
 
         {/* Zone d'affichage des messages */}
         <div 
-          className="flex-1 overflow-y-auto p-2 md:p-6 scroll-smooth bg-black"
+          className="flex-1 overflow-y-auto p-3 md:p-6 scroll-smooth bg-black"
           style={{ 
             backgroundColor: 'var(--color-bg-primary)',
             minHeight: 0,
             scrollBehavior: 'smooth'
           }}
         >
-          {/* Debug temporaire */}
-          <div className="fixed top-4 left-4 bg-red-500 text-white p-2 text-xs z-50">
-            Messages: {messages ? messages.length : 'undefined'} | 
-            Current ID: {currentConversationId || 'none'} |
-            Conversations: {conversations ? conversations.length : 'undefined'}
-          </div>
-          
           {messages && messages.length > 0 ? (
-            <div className="max-w-2xl mx-auto space-y-4 px-4">
+            <div className="max-w-2xl mx-auto space-y-3 md:space-y-4 px-2 md:px-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
                 >
                   <div
-                    className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
+                    className={`max-w-[85%] sm:max-w-sm md:max-w-md lg:max-w-lg px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
                       msg.sender === 'user'
                         ? 'rounded-br-md bg-purple-600 text-white'
                         : 'rounded-bl-md border bg-gray-800 text-white'
@@ -294,7 +286,7 @@ export default function ChatInterface({ user }) {
                       borderColor: msg.sender === 'user' ? 'transparent' : '#374151'
                     }}
                   >
-                    <div className="text-sm leading-relaxed whitespace-pre-wrap">
+                    <div className="text-sm md:text-base leading-relaxed whitespace-pre-wrap break-words">
                       {msg.text}
                     </div>
                   </div>
@@ -307,7 +299,7 @@ export default function ChatInterface({ user }) {
               {isLoading && (
                 <div className="flex justify-start animate-fade-in">
                   <div 
-                    className="max-w-lg px-4 py-3 rounded-2xl rounded-bl-md border bg-gray-800 border-gray-600"
+                    className="max-w-[85%] sm:max-w-lg px-3 md:px-4 py-2 md:py-3 rounded-2xl rounded-bl-md border bg-gray-800 border-gray-600"
                     style={{ 
                       backgroundColor: '#1F2937',
                       color: '#FFFFFF',
@@ -315,8 +307,8 @@ export default function ChatInterface({ user }) {
                     }}
                   >
                     <div className="flex items-center">
-                      <Loader2 size={16} className="animate-spin mr-3 text-purple-500" />
-                      <span className="text-sm text-white">Get Weez vous prépare une réponse...</span>
+                      <Loader2 size={14} className="animate-spin mr-2 md:mr-3 text-purple-500" />
+                      <span className="text-xs md:text-sm text-white">Get Weez vous prépare une réponse...</span>
                     </div>
                   </div>
                 </div>
@@ -325,15 +317,16 @@ export default function ChatInterface({ user }) {
           ) : (
             <div className="flex flex-col items-center justify-center h-full text-center px-4 max-w-2xl mx-auto">
               <div 
-                className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-purple-600 shadow-lg"
+                className="w-12 h-12 md:w-16 md:h-16 rounded-2xl flex items-center justify-center mb-4 md:mb-6 bg-purple-600 shadow-lg"
                 style={{ background: '#8B5CF6' }}
               >
-                <MessageCircle size={32} className="text-white" />
+                <MessageCircle size={24} className="text-white md:hidden" />
+                <MessageCircle size={32} className="text-white hidden md:block" />
               </div>
-              <h3 className="text-2xl font-bold mb-3 text-white">
+              <h3 className="text-xl md:text-2xl font-bold mb-2 md:mb-3 text-white">
                 Bienvenue sur Get Weez
               </h3>
-              <p className="text-lg text-gray-400">
+              <p className="text-sm md:text-lg text-gray-400 px-2">
                 Commencez à taper votre message ci-dessous pour commencer une conversation
               </p>
             </div>
@@ -351,7 +344,7 @@ export default function ChatInterface({ user }) {
 
         {/* Zone de saisie */}
         <div 
-          className="p-2 md:p-6 border-t flex-shrink-0 bg-gray-900 border-gray-700"
+          className="p-3 md:p-6 border-t flex-shrink-0 bg-gray-900 border-gray-700"
           style={{ 
             borderColor: '#374151', 
             backgroundColor: '#111827'
@@ -373,14 +366,15 @@ export default function ChatInterface({ user }) {
                 placeholder="Écrivez ce dont vous avez besoin..."
                 value={input}
                 onChange={handleInputChange}
-                className="w-full resize-none pr-14 py-4 pl-4 text-white placeholder-gray-400"
+                className="w-full resize-none pr-12 md:pr-14 py-3 md:py-4 pl-3 md:pl-4 text-white placeholder-gray-400 text-sm md:text-base"
                 style={{
                   backgroundColor: 'transparent',
                   color: 'white',
                   border: 'none',
                   outline: 'none',
                   fontSize: '16px',
-                  lineHeight: '1.5'
+                  lineHeight: '1.5',
+                  minHeight: '44px'
                 }}
                 onKeyDown={(e) => {
                   console.log('🔍 Touche pressée:', e.key, 'Shift:', e.shiftKey)
@@ -401,28 +395,35 @@ export default function ChatInterface({ user }) {
               />
 
               {/* Bouton de dictée vocale */}
-              <div className="absolute right-12 top-1/2 transform -translate-y-1/2">
+              <div className="absolute right-10 md:right-12 top-1/2 transform -translate-y-1/2">
                 <VoiceDictationButton
                   onTranscript={handleVoiceTranscript}
                   onInterimTranscript={handleInterimTranscript}
                   disabled={isLoading}
-                  size={16}
+                  size={14}
                 />
               </div>
 
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 p-2 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="absolute right-2 md:right-3 top-1/2 transform -translate-y-1/2 p-1.5 md:p-2 rounded-xl transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                 style={{
                   backgroundColor: input.trim() && !isLoading ? '#8B5CF6' : '#6B7280',
                   color: 'white'
                 }}
               >
                 {isLoading ? (
-                  <Loader2 size={16} className="animate-spin" />
+                  <Loader2 size={14} className="animate-spin md:hidden" />
                 ) : (
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <svg width="14" height="14" className="md:hidden" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                  </svg>
+                )}
+                {isLoading ? (
+                  <Loader2 size={16} className="animate-spin hidden md:block" />
+                ) : (
+                  <svg width="16" height="16" className="hidden md:block" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
                   </svg>
                 )}
@@ -433,11 +434,19 @@ export default function ChatInterface({ user }) {
 
 
           {/* Info text */}
-          <div className="mt-4 text-center">
+          <div className="mt-2 md:mt-4 text-center px-2">
             <p className="text-xs text-gray-400">
-              Appuyez sur <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-xs text-gray-300">Entrée</kbd> pour envoyer, 
-              <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-xs mx-1 text-gray-300">Maj+Entrée</kbd> pour une nouvelle ligne,
-              <kbd className="px-1.5 py-0.5 bg-gray-700 rounded text-xs mx-1 text-gray-300">🎤</kbd> pour dicter
+              <span className="hidden sm:inline">Appuyez sur </span>
+              <kbd className="px-1 py-0.5 bg-gray-700 rounded text-xs text-gray-300">Entrée</kbd> 
+              <span className="hidden sm:inline"> pour envoyer</span>
+              <span className="sm:hidden"> envoyer</span>
+              <span className="hidden md:inline">, </span>
+              <span className="hidden md:inline">
+                <kbd className="px-1 py-0.5 bg-gray-700 rounded text-xs mx-1 text-gray-300">Maj+Entrée</kbd> pour une nouvelle ligne,
+              </span>
+              <kbd className="px-1 py-0.5 bg-gray-700 rounded text-xs mx-1 text-gray-300">🎤</kbd> 
+              <span className="hidden sm:inline">pour dicter</span>
+              <span className="sm:hidden">dicter</span>
             </p>
           </div>
         </div>
