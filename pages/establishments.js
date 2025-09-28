@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Header from '../components/layout/header'
-import Sidebar from '../components/layout/sidebar'
 import MobileMenu from '../components/layout/MobileMenu'
 import EstablishmentList from '../components/establishments/EstablishmentList'
 import RestaurantStyleFilter from '../components/establishments/RestaurantStyleFilter'
@@ -138,33 +137,17 @@ export default function Establishments({ user, setUser }) {
         user={user} 
       />
       
-        {/* Layout principal */}
-        <div 
+        {/* Contenu principal */}
+        <main 
           style={{ 
-            display: 'flex', 
-            flex: 1, 
-            overflow: 'hidden', 
+            flex: 1,
+            overflowY: 'auto',
+            backgroundColor: 'var(--color-bg-primary)',
             width: '100vw',
-            height: 'calc(100vh - 8rem)'
+            height: 'calc(100vh - 8rem)',
+            padding: 'var(--spacing-xl)'
           }}
         >
-          {/* Sidebar - cachée sur mobile */}
-          <div className="hidden lg:block">
-        <Sidebar user={user} />
-          </div>
-          
-          {/* Contenu principal */}
-          <main 
-            style={{ 
-              flex: 1,
-              overflowY: 'auto',
-              backgroundColor: 'var(--color-bg-primary)',
-              width: 'calc(100vw - 320px)',
-              height: '100%',
-              marginLeft: '320px',
-              padding: 'var(--spacing-xl)'
-            }}
-          >
             {/* Header avec recherche */}
             <div className="mb-8">
               <h1 className="text-4xl font-bold text-gradient mb-4">Établissements</h1>
@@ -189,7 +172,6 @@ export default function Establishments({ user, setUser }) {
               isLoading={isLoading}
             />
           </main>
-          </div>
       </div>
     </div>
   )

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
-import { CheckCircle, XCircle, AlertCircle, Info, X } from 'lucide-react'
+import { CheckCircle, XCircle, AlertTriangle, Info, X } from 'lucide-react'
 
-export default function Toast({ 
+export function Toast({ 
   message, 
   type = 'info', 
   duration = 5000, 
@@ -20,82 +20,81 @@ export default function Toast({
     }
   }, [duration, onClose])
 
-  const handleClose = () => {
-    setIsVisible(false)
-    setTimeout(() => onClose?.(), 300)
-  }
-
-  const icons = {
-    success: CheckCircle,
-    error: XCircle,
-    warning: AlertCircle,
-    info: Info
-  }
-
-  const colors = {
+  const typeConfig = {
     success: {
-      bg: 'var(--color-success)',
-      text: 'white',
-      border: 'var(--color-success)'
+      icon: CheckCircle,
+      bgColor: 'bg-green-500/90',
+      borderColor: 'border-green-400',
+      iconColor: 'text-green-100'
     },
     error: {
-      bg: 'var(--color-error)',
-      text: 'white',
-      border: 'var(--color-error)'
+      icon: XCircle,
+      bgColor: 'bg-red-500/90',
+      borderColor: 'border-red-400',
+      iconColor: 'text-red-100'
     },
     warning: {
-      bg: 'var(--color-warning)',
-      text: 'white',
-      border: 'var(--color-warning)'
+      icon: AlertTriangle,
+      bgColor: 'bg-yellow-500/90',
+      borderColor: 'border-yellow-400',
+      iconColor: 'text-yellow-100'
     },
     info: {
-      bg: 'var(--color-info)',
-      text: 'white',
-      border: 'var(--color-info)'
+      icon: Info,
+      bgColor: 'bg-blue-500/90',
+      borderColor: 'border-blue-400',
+      iconColor: 'text-blue-100'
     }
   }
 
-  const Icon = icons[type]
-  const colorScheme = colors[type]
+  const config = typeConfig[type]
+  const Icon = config.icon
+
+  const positionClasses = {
+    'top-right': 'top-4 right-4',
+    'top-left': 'top-4 left-4',
+    'bottom-right': 'bottom-4 right-4',
+    'bottom-left': 'bottom-4 left-4',
+    'top-center': 'top-4 left-1/2 transform -translate-x-1/2',
+    'bottom-center': 'bottom-4 left-1/2 transform -translate-x-1/2'
+  }
 
   return (
     <div 
-      className={`fixed z-50 transition-all duration-300 ${
+      className={`fixed z-50 max-w-sm w-full ${positionClasses[position]} transition-all duration-300 ${
         isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2'
-      } ${
-        position === 'top-right' ? 'top-4 right-4' :
-        position === 'top-left' ? 'top-4 left-4' :
-        position === 'bottom-right' ? 'bottom-4 right-4' :
-        'bottom-4 left-4'
       }`}
     >
-      <div 
-        className="flex items-center p-4 rounded-xl shadow-lg max-w-sm"
-        style={{
-          backgroundColor: colorScheme.bg,
-          border: `1px solid ${colorScheme.border}`,
-          color: colorScheme.text
-        }}
-      >
-        <Icon size={20} className="mr-3 flex-shrink-0" />
-        <p className="flex-1 text-sm font-medium">{message}</p>
+      <div className={`
+        ${config.bgColor} ${config.borderColor} border backdrop-blur-sm rounded-lg shadow-lg p-4
+        flex items-start space-x-3
+      `}>
+        <Icon className={`w-5 h-5 ${config.iconColor} flex-shrink-0 mt-0.5`} />
+        <div className="flex-1 min-w-0">
+          <p className="text-white text-sm font-medium break-words">
+            {message}
+          </p>
+        </div>
         <button
-          onClick={handleClose}
-          className="ml-3 p-1 rounded-lg hover:bg-black/20 transition-colors"
+          onClick={() => {
+            setIsVisible(false)
+            setTimeout(() => onClose?.(), 300)
+          }}
+          className="flex-shrink-0 text-white/70 hover:text-white transition-colors"
         >
-          <X size={16} />
+          <X className="w-4 h-4" />
         </button>
       </div>
     </div>
   )
 }
 
-// Hook pour utiliser les toasts
+// Hook pour utiliser facilement les toasts
 export function useToast() {
   const [toasts, setToasts] = useState([])
 
   const showToast = (message, type = 'info', duration = 5000) => {
-    const id = Date.now()
+    const id = Date.now().toString()
     const toast = { id, message, type, duration }
     
     setToasts(prev => [...prev, toast])
@@ -103,19 +102,20 @@ export function useToast() {
     return id
   }
 
-  const hideToast = (id) => {
+  const removeToast = (id) => {
     setToasts(prev => prev.filter(toast => toast.id !== id))
   }
 
-  const ToastContainer = () => (
-    <div className="fixed top-4 right-4 z-50 space-y-2">
+  const ToastContainer = ({ position = 'top-right' }) => (
+    <div className="fixed inset-0 pointer-events-none z-50">
       {toasts.map(toast => (
         <Toast
           key={toast.id}
           message={toast.message}
           type={toast.type}
           duration={toast.duration}
-          onClose={() => hideToast(toast.id)}
+          position={position}
+          onClose={() => removeToast(toast.id)}
         />
       ))}
     </div>
@@ -123,11 +123,7 @@ export function useToast() {
 
   return {
     showToast,
-    hideToast,
-    ToastContainer,
-    success: (message, duration) => showToast(message, 'success', duration),
-    error: (message, duration) => showToast(message, 'error', duration),
-    warning: (message, duration) => showToast(message, 'warning', duration),
-    info: (message, duration) => showToast(message, 'info', duration)
+    removeToast,
+    ToastContainer
   }
 }

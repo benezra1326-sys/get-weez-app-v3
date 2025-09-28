@@ -1,4 +1,4 @@
-import { Calendar, MapPin, Users, Euro, Clock, Crown } from 'lucide-react'
+import { Calendar, MapPin, Users, Euro, Clock, Crown, User } from 'lucide-react'
 import Link from 'next/link'
 
 export default function EventCard({ event }) {
@@ -107,10 +107,16 @@ export default function EventCard({ event }) {
           <button className="w-full btn-event animate-hover-lift">
             Participer - {event.price}€
           </button>
-          <Link href="/abonnements-test" className="block">
+          <Link href="/register" className="block">
             <button className="w-full btn-secondary animate-hover-lift flex items-center justify-center">
               <Crown size={16} className="mr-2" />
               Devenir membre
+            </button>
+          </Link>
+          <Link href="/login" className="block">
+            <button className="w-full btn-outline animate-hover-lift flex items-center justify-center">
+              <User size={16} className="mr-2" />
+              Accès membre
             </button>
           </Link>
         </div>

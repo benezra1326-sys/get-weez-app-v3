@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react'
 import Header from '../components/layout/header'
-import Sidebar from '../components/layout/sidebar'
 import MobileMenu from '../components/layout/MobileMenu'
 import EventList from '../components/events/EventList'
 import { supabase } from '../lib/supabase'
@@ -200,37 +199,22 @@ export default function Events({ user, setUser }) {
           user={user} 
         />
         
-        <div 
+        <main 
           style={{ 
-            display: 'flex', 
-            flex: 1, 
-            overflow: 'hidden', 
+            flex: 1,
+            overflowY: 'auto',
+            backgroundColor: 'var(--color-bg-primary)',
             width: '100vw',
-            height: 'calc(100vh - 8rem)'
+            height: 'calc(100vh - 8rem)',
+            padding: 'var(--spacing-xl)'
           }}
         >
-          <div className="hidden lg:block">
-            <Sidebar user={user} />
-          </div>
-          
-          <main 
-            style={{ 
-              flex: 1,
-              overflowY: 'auto',
-              backgroundColor: 'var(--color-bg-primary)',
-              width: 'calc(100vw - 320px)',
-              height: '100%',
-              marginLeft: '320px',
-              padding: 'var(--spacing-xl)'
-            }}
-          >
             <EventList 
               events={events} 
               user={user} 
               onBecomeMember={handleBecomeMember}
             />
           </main>
-        </div>
       </div>
     </div>
   )

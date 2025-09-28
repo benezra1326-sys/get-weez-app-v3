@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import ChatInterface from '../components/chat/ChatInterface'
 import Header from '../components/layout/header'
-import Sidebar from '../components/layout/sidebar'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 
@@ -52,38 +51,21 @@ export default function Home({ user, setUser }) {
           user={user} 
         />
         
-        {/* Layout principal */}
-        <div 
+        {/* Contenu principal */}
+        <main 
           style={{ 
-            display: 'flex', 
-            flex: 1, 
-            overflow: 'hidden', 
+            flex: 1,
+            overflow: 'hidden',
+            backgroundColor: 'var(--color-bg-primary)',
             width: '100vw',
-            height: 'calc(100vh - 8rem)'
+            height: 'calc(100vh - 8rem)',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
           }}
         >
-          {/* Sidebar - cachée sur mobile */}
-          <div className="hidden lg:block">
-            <Sidebar user={user} />
-          </div>
-          
-          {/* Contenu principal */}
-          <main 
-            style={{ 
-              flex: 1,
-              overflow: 'hidden',
-              backgroundColor: 'var(--color-bg-primary)',
-              width: 'calc(100vw - 320px)',
-              height: '100%',
-              marginLeft: '320px',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
-            }}
-          >
-            <ChatInterface user={user} />
-          </main>
-        </div>
+          <ChatInterface user={user} />
+        </main>
       </div>
     </div>
   )

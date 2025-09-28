@@ -4,7 +4,6 @@ import { supabase } from '../lib/supabase'
 import { Mail, Lock, Eye, EyeOff, ArrowLeft, Phone, MessageCircle } from 'lucide-react'
 import Link from 'next/link'
 import Header from '../components/layout/header'
-import Sidebar from '../components/layout/sidebar'
 import MobileMenu from '../components/layout/MobileMenu'
 import SocialAuthButtons from '../components/auth/SocialAuthButtons'
 import PhoneAuth from '../components/auth/PhoneAuth'
@@ -92,10 +91,7 @@ export default function Login({ user, setUser }) {
         isMobileMenuOpen={isMobileMenuOpen}
       />
       
-      <div className="flex">
-        <Sidebar user={user} />
-        
-        <main className="flex-1 p-8">
+      <main className="flex-1 p-8">
           <div className="max-w-md mx-auto">
             <div 
               className="card-premium p-8 animate-fade-in"
@@ -300,7 +296,6 @@ export default function Login({ user, setUser }) {
             </div>
           </div>
         </main>
-      </div>
 
       <MobileMenu 
         isOpen={isMobileMenuOpen} 

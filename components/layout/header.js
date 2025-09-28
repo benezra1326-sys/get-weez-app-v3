@@ -1,10 +1,29 @@
 import { Menu, Crown, User, LogIn, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import LanguageSelector from '../LanguageSelector'
 
 export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) {
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const router = useRouter()
+
+  // Fonction pour déterminer si un lien est actif
+  const isActive = (path) => {
+    if (path === '/') {
+      return router.pathname === '/'
+    }
+    return router.pathname.startsWith(path)
+  }
+
+  // Fonction pour obtenir les classes CSS d'un lien
+  const getLinkClasses = (path) => {
+    const baseClasses = "transition-colors"
+    if (isActive(path)) {
+      return `${baseClasses} text-purple-400 font-medium`
+    }
+    return `${baseClasses} text-gray-300 hover:text-white`
+  }
 
   const handleLogout = async () => {
     try {
@@ -55,24 +74,44 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         </button>
         <Link href="/" className="flex items-center group animate-hover-lift">
           <div 
-            className="w-16 h-16 lg:w-20 lg:h-20 rounded-3xl mr-4 shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-110 group-hover:rotate-3"
+            className="px-6 py-3 rounded-lg shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
             style={{ 
-              background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
-              borderRadius: 'var(--radius-2xl)',
+              background: '#8B5CF6',
+              borderRadius: 'var(--radius-lg)',
               boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
             }}
-          ></div>
-          <div className="flex flex-col">
-            <h1 className="text-3xl lg:text-4xl font-bold text-gradient leading-tight">
-              Get Weez
+          >
+            <h1 
+              className="text-2xl lg:text-3xl font-bold text-white leading-tight tracking-wider"
+              style={{ 
+                fontFamily: 'Blanka, sans-serif',
+                fontWeight: 'bold'
+              }}
+            >
+              GET WEEZ
             </h1>
-            <p className="text-sm text-text-secondary font-medium tracking-wide uppercase">
-              Conciergerie Premium
-            </p>
           </div>
         </Link>
       </div>
 
+      {/* Menu de navigation */}
+      <nav className="hidden lg:flex items-center space-x-8">
+        <Link href="/" className={getLinkClasses('/')}>
+          Accueil
+        </Link>
+        <Link href="/establishments" className={getLinkClasses('/establishments')}>
+          Établissements
+        </Link>
+        <Link href="/events" className={getLinkClasses('/events')}>
+          Événements
+        </Link>
+        <Link href="/account" className={getLinkClasses('/account')}>
+          Compte
+        </Link>
+        <Link href="/aide" className={getLinkClasses('/aide')}>
+          Aide
+        </Link>
+      </nav>
 
       <div className="flex items-center space-x-2 lg:space-x-4">
         <LanguageSelector />

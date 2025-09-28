@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const STORAGE_KEY = 'getweez_conversations'
 
@@ -141,18 +141,23 @@ export function useConversations() {
   }
 
   // Ajouter un message à la conversation actuelle
-  const addMessage = (message) => {
-    if (!currentConversationId) return
+  const addMessage = (message, targetConversationId = null) => {
+    const conversationId = targetConversationId || currentConversationId
+    console.log('🔧 addMessage appelé:', { message, targetConversationId, conversationId, currentConversationId })
+    if (!conversationId) {
+      console.log('❌ addMessage: Pas de conversationId, abandon')
+      return
+    }
 
     setConversations(prev => {
       const updated = prev.map(conv => 
-        conv.id === currentConversationId
+        conv.id === conversationId
           ? {
               ...conv,
               messages: [...conv.messages, message],
-              lastMessage: message.text.length > 50 
-                ? message.text.substring(0, 50) + '...' 
-                : message.text,
+              lastMessage: message.content.length > 50 
+                ? message.content.substring(0, 50) + '...' 
+                : message.content,
               updatedAt: formatDate(new Date())
             }
           : conv
@@ -166,7 +171,7 @@ export function useConversations() {
         console.log('🧹 Conversations vides supprimées automatiquement')
         
         // Si la conversation actuelle a été supprimée (elle était vide), créer une nouvelle
-        if (!cleaned.find(conv => conv.id === currentConversationId)) {
+        if (!cleaned.find(conv => conv.id === conversationId)) {
           console.log('🆕 Création d\'une nouvelle conversation car l\'ancienne était vide')
           const newConv = {
             id: Date.now().toString(),
@@ -219,9 +224,13 @@ export function useConversations() {
     }
   }
 
+  // Obtenir les messages de la conversation actuelle
+  const messages = getCurrentMessages()
+
   return {
     conversations,
     currentConversationId,
+    messages,
     createConversation,
     selectConversation,
     deleteConversation,

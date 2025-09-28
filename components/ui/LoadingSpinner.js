@@ -1,22 +1,33 @@
 import React from 'react'
 import { Loader2 } from 'lucide-react'
 
-export default function LoadingSpinner({ size = 'md', text = 'Loading...', className = '' }) {
+export default function LoadingSpinner({ 
+  size = 'default', 
+  variant = 'default',
+  className = '',
+  text = ''
+}) {
   const sizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-6 h-6',
-    lg: 'w-8 h-8',
+    small: 'w-4 h-4',
+    default: 'w-6 h-6',
+    large: 'w-8 h-8',
     xl: 'w-12 h-12'
+  }
+
+  const variantClasses = {
+    default: 'text-purple-500',
+    chat: 'text-purple-400',
+    page: 'text-white',
+    muted: 'text-gray-400'
   }
 
   return (
     <div className={`flex flex-col items-center justify-center ${className}`}>
       <Loader2 
-        className={`animate-spin ${sizeClasses[size]}`}
-        style={{ color: 'var(--color-primary)' }}
+        className={`${sizeClasses[size]} ${variantClasses[variant]} animate-spin`}
       />
       {text && (
-        <p className="mt-2 text-sm" style={{ color: 'var(--color-text-secondary)' }}>
+        <p className={`mt-2 text-sm ${variantClasses[variant]}`}>
           {text}
         </p>
       )}
@@ -24,35 +35,25 @@ export default function LoadingSpinner({ size = 'md', text = 'Loading...', class
   )
 }
 
-// Variantes spécialisées
-export function ChatLoadingSpinner() {
+// Composants spécialisés
+export function ChatLoadingSpinner({ text = 'Get Weez vous prépare une réponse...' }) {
   return (
-    <div className="flex justify-start mb-4">
-      <div 
-        className="bg-gray-700 text-gray-100 px-4 py-3 rounded-2xl"
-        style={{ backgroundColor: 'var(--color-bg-secondary)' }}
-      >
-        <div className="flex items-center space-x-2">
-          <Loader2 size={16} className="animate-spin" style={{ color: 'var(--color-primary)' }} />
-          <span className="text-sm">Get Weez is typing...</span>
-        </div>
-      </div>
-    </div>
+    <LoadingSpinner 
+      size="default" 
+      variant="chat" 
+      text={text}
+      className="p-4"
+    />
   )
 }
 
-export function PageLoadingSpinner() {
+export function PageLoadingSpinner({ text = 'Chargement...' }) {
   return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="text-center">
-        <Loader2 size={48} className="animate-spin mx-auto mb-4" style={{ color: 'var(--color-primary)' }} />
-        <h3 className="text-lg font-semibold mb-2" style={{ color: 'var(--color-text-primary)' }}>
-          Loading Get Weez...
-        </h3>
-        <p className="text-sm" style={{ color: 'var(--color-text-secondary)' }}>
-          Preparing your luxury experience
-        </p>
-      </div>
-    </div>
+    <LoadingSpinner 
+      size="large" 
+      variant="page" 
+      text={text}
+      className="py-12"
+    />
   )
 }

@@ -1,3 +1,5 @@
+@import url('https://fonts.cdnfonts.com/css/blanka');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -14,6 +16,7 @@ html, body {
   padding: 0;
   overflow-x: hidden;
   position: relative;
+  scroll-behavior: auto;
 }
 
 #__next {
@@ -22,6 +25,7 @@ html, body {
   margin: 0;
   padding: 0;
   position: relative;
+  scroll-behavior: auto;
 }
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');

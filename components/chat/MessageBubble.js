@@ -1,7 +1,7 @@
 import { MapPin } from 'lucide-react'
 
 export default function MessageBubble({ message }) {
-  const isUser = message.author === 'user'
+  const isUser = message.role === 'user'
   
   return (
     <div className={`mb-6 flex ${isUser ? 'justify-end' : 'justify-start'}`}>
@@ -16,7 +16,7 @@ export default function MessageBubble({ message }) {
         <div className={`text-xs mt-3 opacity-80 ${
           isUser ? 'text-purple-100' : 'text-gray-400'
         }`}>
-          {new Date(message.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          {new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </div>
       </div>
     </div>

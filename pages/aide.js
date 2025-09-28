@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Header from '../components/layout/header'
-import Sidebar from '../components/layout/sidebar'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
+import SupportSection from '../components/account/SupportSection'
 import { ChevronDown, ChevronRight, Search, HelpCircle, FileText, Shield, CreditCard, MessageCircle, Phone, Mail, Clock, Star, Users, Zap } from 'lucide-react'
 
 export default function Aide({ user, setUser }) {
@@ -200,10 +200,7 @@ export default function Aide({ user, setUser }) {
         user={user} 
       />
       
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar user={user} />
-        
-        <main className="flex-1 overflow-y-auto" style={{ background: 'var(--color-bg-primary)' }}>
+      <main className="flex-1 overflow-y-auto" style={{ background: 'var(--color-bg-primary)' }}>
           <div className="container mx-auto px-4 py-8">
             {/* Header */}
             <div className="text-center mb-12">
@@ -310,36 +307,12 @@ export default function Aide({ user, setUser }) {
               </div>
             </div>
 
-            {/* Contact Support */}
-            <div className="max-w-4xl mx-auto mt-16 text-center">
-              <div className="card-premium">
-                <h3 className="text-xl font-semibold mb-4" style={{ color: 'var(--color-text-primary)' }}>
-                  Vous ne trouvez pas votre réponse ?
-                </h3>
-                <p className="mb-6" style={{ color: 'var(--color-text-secondary)' }}>
-                  Notre équipe support est là pour vous aider
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <a 
-                    href="/compte" 
-                    className="btn-premium flex items-center justify-center"
-                  >
-                    <MessageCircle size={18} className="mr-2" />
-                    Contacter le support
-                  </a>
-                  <a 
-                    href="mailto:support@getweez.com" 
-                    className="btn-secondary flex items-center justify-center"
-                  >
-                    <MessageCircle size={18} className="mr-2" />
-                    support@getweez.com
-                  </a>
-                </div>
-              </div>
+            {/* Section Support & Assistance */}
+            <div className="max-w-4xl mx-auto mt-16">
+              <SupportSection user={user} />
             </div>
           </div>
         </main>
-      </div>
     </div>
   )
 }
