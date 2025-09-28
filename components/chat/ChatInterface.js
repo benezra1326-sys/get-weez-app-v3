@@ -274,14 +274,14 @@ export default function ChatInterface({ user }) {
           </div>
           
           {messages && messages.length > 0 ? (
-            <div className="max-w-4xl mx-auto space-y-4">
+            <div className="max-w-2xl mx-auto space-y-4 px-4">
               {messages.map((msg) => (
                 <div
                   key={msg.id}
                   className={`flex ${msg.sender === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in`}
                 >
                   <div
-                    className={`max-w-xs md:max-w-2xl px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
+                    className={`max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg px-3 md:px-4 py-2 md:py-3 rounded-2xl ${
                       msg.sender === 'user'
                         ? 'rounded-br-md bg-purple-600 text-white'
                         : 'rounded-bl-md border bg-white text-gray-900'
@@ -307,7 +307,7 @@ export default function ChatInterface({ user }) {
               {isLoading && (
                 <div className="flex justify-start animate-fade-in">
                   <div 
-                    className="max-w-2xl px-4 py-3 rounded-2xl rounded-bl-md border bg-white border-gray-300"
+                    className="max-w-lg px-4 py-3 rounded-2xl rounded-bl-md border bg-white border-gray-300"
                     style={{ 
                       backgroundColor: '#FFFFFF',
                       color: '#111827',
@@ -323,7 +323,7 @@ export default function ChatInterface({ user }) {
               )}
             </div>
           ) : (
-            <div className="flex flex-col items-center justify-center h-full text-center px-4">
+            <div className="flex flex-col items-center justify-center h-full text-center px-4 max-w-2xl mx-auto">
               <div 
                 className="w-16 h-16 rounded-2xl flex items-center justify-center mb-6 bg-purple-600 shadow-lg"
                 style={{ background: '#8B5CF6' }}
@@ -357,7 +357,7 @@ export default function ChatInterface({ user }) {
             backgroundColor: '#111827'
           }}
         >
-          <div className="max-w-4xl mx-auto">
+          <div className="max-w-2xl mx-auto">
           <div className="relative">
             <div 
               className="relative rounded-2xl border transition-all duration-300 hover:border-purple-500/50 focus-within:border-purple-500 bg-gray-800 border-gray-600"
