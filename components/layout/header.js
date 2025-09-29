@@ -1,4 +1,4 @@
-import { Menu, Crown, User, LogIn, UserPlus } from 'lucide-react'
+import { Menu, Crown, User, LogIn, UserPlus, Sun, Moon } from 'lucide-react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
@@ -6,6 +6,7 @@ import LanguageSelector from '../LanguageSelector'
 
 export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) {
   const [showUserMenu, setShowUserMenu] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
   const router = useRouter()
 
   // Fonction pour déterminer si un lien est actif
@@ -252,6 +253,19 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
       </nav>
 
       <div className="flex items-center space-x-1 lg:space-x-4">
+        {/* Bouton de thème */}
+        <button 
+          onClick={() => setIsDarkMode(!isDarkMode)}
+          className="p-2 rounded-xl transition-all duration-300 hover:bg-gray-800/50"
+          style={{ 
+            color: 'var(--color-text-secondary)',
+            borderRadius: 'var(--radius-lg)'
+          }}
+          title={isDarkMode ? "Mode clair" : "Mode sombre"}
+        >
+          {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+        </button>
+        
         <LanguageSelector />
         
         <div className="relative">
