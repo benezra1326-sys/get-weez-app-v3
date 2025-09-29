@@ -764,7 +764,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       borderColor: '#374151', 
                       color: '#FFFFFF',
                       minHeight: '48px',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                      fontSize: '16px' // Empêche le zoom sur iOS
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = '#3B82F6'

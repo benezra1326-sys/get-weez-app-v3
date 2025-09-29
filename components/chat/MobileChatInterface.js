@@ -316,7 +316,8 @@ const MobileChatInterface = ({ user, initialMessage, establishmentName }) => {
                 className="w-full px-2.5 py-1.5 pr-8 border rounded-md text-white resize-none text-sm transition-all duration-300 focus:outline-none bg-gray-700/50 border-gray-600/50 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30"
                 style={{ 
                   minHeight: '32px',
-                  maxHeight: '48px'
+                  maxHeight: '48px',
+                  fontSize: '16px' // Empêche le zoom sur iOS
                 }}
                 rows={1}
                 disabled={isLoading}
