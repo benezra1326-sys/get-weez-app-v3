@@ -9,6 +9,7 @@ import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 export default function Home({ user, setUser }) {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev)
@@ -45,7 +46,9 @@ export default function Home({ user, setUser }) {
           user={user} 
           setUser={setUser}
           toggleMobileMenu={toggleMobileMenu} 
-          isMobileMenuOpen={isMobileMenuOpen} 
+          isMobileMenuOpen={isMobileMenuOpen}
+          isDarkMode={isDarkMode}
+          setIsDarkMode={setIsDarkMode}
         />
 
         {/* Menu mobile */}
@@ -72,6 +75,8 @@ export default function Home({ user, setUser }) {
             user={user} 
             initialMessage={reservationMessage}
             establishmentName={establishmentName}
+            isDarkMode={isDarkMode}
+            setIsDarkMode={setIsDarkMode}
           />
         </main>
         

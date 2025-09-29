@@ -4,9 +4,8 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import LanguageSelector from '../LanguageSelector'
 
-export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) {
+export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen, isDarkMode, setIsDarkMode }) {
   const [showUserMenu, setShowUserMenu] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(true)
   const router = useRouter()
 
   // Fonction pour déterminer si un lien est actif
@@ -21,9 +20,9 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
   const getLinkClasses = (path) => {
     const baseClasses = "relative px-4 py-2 rounded-lg transition-all duration-300 font-medium group"
     if (isActive(path)) {
-      return `${baseClasses} text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 shadow-lg shadow-purple-500/20`
+      return `${baseClasses} ${isDarkMode ? 'text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 shadow-lg shadow-purple-500/20' : 'text-gray-900 bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-300 shadow-lg shadow-purple-200/20'}`
     }
-    return `${baseClasses} text-gray-300 hover:text-white hover:bg-gray-800/50 hover:shadow-lg hover:shadow-gray-500/10 hover:scale-105`
+    return `${baseClasses} ${isDarkMode ? 'text-gray-300 hover:text-white hover:bg-gray-800/50 hover:shadow-lg hover:shadow-gray-500/10 hover:scale-105' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50 hover:shadow-lg hover:shadow-gray-200/10 hover:scale-105'}`
   }
 
   const handleLogout = async () => {
@@ -89,10 +88,12 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         }
       `}</style>
       <header
-        className="flex items-center justify-between sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700 px-2 lg:px-6 py-2 lg:py-4 w-full"
+        className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-2 lg:px-6 py-2 lg:py-4 w-full"
         style={{
           minHeight: '3.5rem',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
+          backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.8)' : 'rgba(255, 255, 255, 0.8)',
+          borderColor: isDarkMode ? '#374151' : '#E5E7EB'
         }}
       >
       <div className="flex items-center">
@@ -116,7 +117,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             }}
           >
             <h1 
-              className="text-lg lg:text-2xl font-bold text-white leading-tight tracking-wider whitespace-nowrap"
+              className={`text-lg lg:text-2xl font-bold leading-tight tracking-wider whitespace-nowrap ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
               style={{ 
                 fontFamily: 'Blanka, sans-serif',
                 fontWeight: 'bold',

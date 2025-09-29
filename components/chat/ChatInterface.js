@@ -7,7 +7,7 @@ import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
 import MobileChatInterface from './MobileChatInterface'
 
-const ChatInterface = ({ user, initialMessage, establishmentName }) => {
+const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, setIsDarkMode }) => {
   console.log('🔄 ChatInterface component loaded')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
@@ -17,7 +17,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   const [conversationToDelete, setConversationToDelete] = useState(null)
   const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
   const [showMobileHistory, setShowMobileHistory] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(true)
   const [isListening, setIsListening] = useState(false)
   const textareaRef = useRef(null)
 
@@ -303,7 +302,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
         
         {/* Sidebar gauche - Conversations */}
-        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#F8F9FA', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
           {/* Version mobile subtile - petit bouton flottant */}
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
@@ -418,7 +417,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             </div>
           )}
           <div className="p-3 lg:p-6 flex-1 overflow-y-auto pb-1 lg:pb-8 min-h-0">
-            <h2 className="text-base lg:text-xl font-bold text-white mb-2 lg:mb-6">Conversations</h2>
+            <h2 className={`text-base lg:text-xl font-bold mb-2 lg:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Conversations</h2>
             <div className="space-y-1 lg:space-y-4">
               {/* Bouton Nouvelle Conversation - Design Mobile Amélioré */}
               <div 
@@ -479,15 +478,15 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                           <MessageCircle size={20} className="text-white hidden lg:block" />
                         </div>
                         <div className="flex-1">
-                          <h3 className={`font-semibold ${conversation.id === currentConversationId ? 'text-white' : 'text-gray-300'}`}>
+                          <h3 className={`font-semibold ${conversation.id === currentConversationId ? (isDarkMode ? 'text-white' : 'text-gray-900') : (isDarkMode ? 'text-gray-300' : 'text-gray-600')}`}>
                             {conversation.name}
                           </h3>
-                          <p className={`text-sm ${conversation.id === currentConversationId ? 'text-blue-300' : 'text-gray-400'}`}>
+                          <p className={`text-sm ${conversation.id === currentConversationId ? (isDarkMode ? 'text-blue-300' : 'text-blue-600') : (isDarkMode ? 'text-gray-400' : 'text-gray-500')}`}>
                             {conversation.messages?.length || 0} messages
                           </p>
                         </div>
                       </div>
-                      <p className="text-gray-300 text-sm">
+                      <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-500'}`}>
                         {conversation.messages && conversation.messages.length > 0 
                           ? conversation.messages[conversation.messages.length - 1]?.content?.substring(0, 50) + '...'
                           : 'Conversation vide'
@@ -543,7 +542,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 >
                   <MessageCircle size={16} className="text-white" />
                 </button>
-                <span className="text-white text-sm font-medium">
+                <span className={`text-sm font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   {conversations?.length || 0} conversations
                 </span>
               </div>
@@ -648,10 +647,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <MessageCircle size={16} className="text-white" />
                   </div>
                   <div>
-                    <h3 className="text-white font-semibold text-sm">
+                    <h3 className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                       {conversations.find(conv => conv.id === currentConversationId)?.name || 'Conversation'}
                     </h3>
-                    <p className="text-gray-400 text-xs">
+                    <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                       {messages.length} message{messages.length > 1 ? 's' : ''}
                     </p>
                   </div>
@@ -970,7 +969,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <Mic size={16} className="hidden lg:block" />
                   )}
                 </button>
-
+                
                 {/* Bouton d'envoi */}
                 <button
                   onClick={() => {
@@ -1023,7 +1022,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - UNIQUEMENT sur desktop */}
-        <div className="hidden lg:block flex-1 max-w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#F8F9FA', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+        <div className="hidden lg:block w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
           <div className="p-2 lg:p-6 pb-2 lg:pb-12">
             <h2 className={`text-sm lg:text-3xl font-bold mb-2 lg:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>💡 Suggestions Premium</h2>
             
@@ -1036,9 +1035,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     onClick={() => setSidebarFilter('all')}
                     className="px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center"
                     style={{
-                      backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : '#374151',
-                      color: '#FFFFFF',
-                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.3)'
+                      backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : (isDarkMode ? '#374151' : '#F3F4F6'),
+                      color: sidebarFilter === 'all' ? '#FFFFFF' : (isDarkMode ? '#FFFFFF' : '#374151'),
+                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : (isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)')
                     }}
                   >
                     🌟 Tout
@@ -1586,7 +1585,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       </div> {/* Fin interface desktop */}
       
       {/* Carrousel des marques qui font confiance */}
-      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#F8F9FA' }}>
+      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center mb-8 lg:mb-12">
             <h2 className={`text-2xl lg:text-4xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
