@@ -10,21 +10,51 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
   }
 
   return (
-    <div className="relative">
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-between w-full px-4 py-3 bg-surface border border-border rounded-lg hover:bg-surface-hover transition-all duration-200"
-      >
+    <>
+      <style jsx>{`
+        .style-button {
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+          border: 1px solid rgba(139, 92, 246, 0.3);
+          transition: all 0.3s ease;
+        }
+        
+        .style-button:hover {
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2));
+          border-color: rgba(139, 92, 246, 0.5);
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.2);
+          transform: translateY(-2px);
+        }
+        
+        .style-option {
+          transition: all 0.2s ease;
+        }
+        
+        .style-option:hover {
+          transform: translateX(5px);
+          background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
+        }
+        
+        .style-option.selected {
+          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          color: white;
+          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+        }
+      `}</style>
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="style-button flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300"
+        >
         <div className="flex items-center">
           <span className="text-lg mr-3">
             {selectedStyle ? restaurantStyles[selectedStyle].icon : '🍽️'}
           </span>
-          <span className="font-medium text-text-primary">
+          <span className="font-medium text-white">
             {selectedStyle ? restaurantStyles[selectedStyle].name : 'Tous les styles'}
           </span>
         </div>
         <svg
-          className={`w-5 h-5 text-text-secondary transition-transform duration-200 ${
+          className={`w-5 h-5 text-white transition-transform duration-200 ${
             isOpen ? 'rotate-180' : ''
           }`}
           fill="none"
@@ -36,14 +66,12 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-surface border border-border rounded-lg shadow-lg z-50 max-h-80 overflow-y-auto">
-          <div className="p-2">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800/95 backdrop-blur-md border border-gray-700/50 rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto">
+          <div className="p-3">
             <button
               onClick={() => handleStyleSelect(null)}
-              className={`w-full flex items-center px-3 py-2 rounded-md text-sm transition-colors duration-200 ${
-                !selectedStyle
-                  ? 'bg-primary text-white'
-                  : 'text-text-primary hover:bg-surface-hover'
+              className={`style-option w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200 ${
+                !selectedStyle ? 'selected' : 'text-white'
               }`}
             >
               <span className="text-lg mr-3">🍽️</span>
@@ -54,16 +82,14 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
               <button
                 key={key}
                 onClick={() => handleStyleSelect(key)}
-                className={`w-full flex items-center px-3 py-2 rounded-md text-sm transition-colors duration-200 ${
-                  selectedStyle === key
-                    ? 'bg-primary text-white'
-                    : 'text-text-primary hover:bg-surface-hover'
+                className={`style-option w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200 ${
+                  selectedStyle === key ? 'selected' : 'text-white'
                 }`}
               >
                 <span className="text-lg mr-3">{style.icon}</span>
                 <div className="text-left">
                   <div className="font-medium">{style.name}</div>
-                  <div className="text-xs text-text-secondary">
+                  <div className="text-xs text-white/70">
                     {style.description}
                   </div>
                 </div>
@@ -73,5 +99,6 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
         </div>
       )}
     </div>
+    </>
   )
 }

@@ -1,0 +1,188 @@
+import { Star, Heart, MessageCircle, MapPin } from 'lucide-react'
+
+export default function ServiceCard({ service, user, onReserve }) {
+  return (
+    <>
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            background-position: -200px 0;
+          }
+          100% {
+            background-position: calc(200px + 100%) 0;
+          }
+        }
+        
+        .shimmer {
+          background: linear-gradient(90deg, #FACC15 0%, #FDE047 50%, #FACC15 100%);
+          background-size: 200px 100%;
+          animation: shimmer 2s infinite;
+        }
+      `}</style>
+    <div 
+      className="overflow-hidden transition-all duration-300 hover:scale-105 group relative rounded-2xl border shadow-lg hover:shadow-xl cursor-pointer"
+      style={{ 
+        background: service.category === 'Gastronomie' ? 'linear-gradient(135deg, #EF4444, #DC2626)' :
+                   service.category === 'Vie nocturne' ? 'linear-gradient(135deg, #EC4899, #BE185D)' :
+                   service.category === 'Luxe' ? 'linear-gradient(135deg, #F59E0B, #D97706)' :
+                   service.category === 'Bien-être' ? 'linear-gradient(135deg, #10B981, #059669)' :
+                   service.category === 'Expériences' ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)' :
+                   service.category === 'Sports' ? 'linear-gradient(135deg, #06B6D4, #0891B2)' :
+                   service.category === 'Culture' ? 'linear-gradient(135deg, #0EA5E9, #0284C7)' :
+                   'linear-gradient(135deg, #6B7280, #4B5563)',
+        borderColor: service.sponsored ? 'rgba(250, 204, 21, 0.5)' :
+                    service.category === 'Gastronomie' ? 'rgba(239, 68, 68, 0.3)' :
+                    service.category === 'Vie nocturne' ? 'rgba(236, 72, 153, 0.3)' :
+                    service.category === 'Luxe' ? 'rgba(245, 158, 11, 0.3)' :
+                    service.category === 'Bien-être' ? 'rgba(16, 185, 129, 0.3)' :
+                    service.category === 'Expériences' ? 'rgba(139, 92, 246, 0.3)' :
+                    service.category === 'Sports' ? 'rgba(6, 182, 212, 0.3)' :
+                    service.category === 'Culture' ? 'rgba(14, 165, 233, 0.3)' :
+                    'rgba(107, 114, 128, 0.3)',
+        boxShadow: service.sponsored ? '0 8px 25px rgba(250, 204, 21, 0.4)' :
+                  service.category === 'Gastronomie' ? '0 8px 25px rgba(239, 68, 68, 0.3)' :
+                  service.category === 'Vie nocturne' ? '0 8px 25px rgba(236, 72, 153, 0.3)' :
+                  service.category === 'Luxe' ? '0 8px 25px rgba(245, 158, 11, 0.3)' :
+                  service.category === 'Bien-être' ? '0 8px 25px rgba(16, 185, 129, 0.3)' :
+                  service.category === 'Expériences' ? '0 8px 25px rgba(139, 92, 246, 0.3)' :
+                  service.category === 'Sports' ? '0 8px 25px rgba(6, 182, 212, 0.3)' :
+                  service.category === 'Culture' ? '0 8px 25px rgba(14, 165, 233, 0.3)' :
+                  '0 4px 12px rgba(0, 0, 0, 0.3)'
+      }}
+    >
+      <div className="relative">
+        <div 
+          className="w-full h-32 rounded-t-2xl flex items-center justify-center relative overflow-hidden"
+          style={{
+            background: service.category === 'Gastronomie' ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #B91C1C 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       service.category === 'Vie nocturne' ? 'linear-gradient(135deg, #EC4899 0%, #BE185D 50%, #9D174D 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       service.category === 'Luxe' ? 'linear-gradient(135deg, #F59E0B 0%, #D97706 50%, #B45309 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       service.category === 'Bien-être' ? 'linear-gradient(135deg, #10B981 0%, #059669 50%, #047857 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       service.category === 'Expériences' ? 'linear-gradient(135deg, #8B5CF6 0%, #7C3AED 50%, #6D28D9 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       service.category === 'Sports' ? 'linear-gradient(135deg, #06B6D4 0%, #0891B2 50%, #0E7490 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       service.category === 'Culture' ? 'linear-gradient(135deg, #0EA5E9 0%, #0284C7 50%, #0369A1 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")' :
+                       'linear-gradient(135deg, #6B7280 0%, #4B5563 50%, #374151 100%), url("data:image/svg+xml,%3Csvg width=\'60\' height=\'60\' viewBox=\'0 0 60 60\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cg fill=\'none\' fill-rule=\'evenodd\'%3E%3Cg fill=\'%23ffffff\' fill-opacity=\'0.1\'%3E%3Ccircle cx=\'30\' cy=\'30\' r=\'4\'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")'
+          }}
+        >
+          <div className="flex flex-col items-center justify-center space-y-2">
+            <div className="w-16 h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg">
+              <span className="text-white text-3xl">
+                {service.icon}
+              </span>
+            </div>
+            <div className="text-white/90 text-xs font-medium drop-shadow-md">
+              {service.category}
+            </div>
+          </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+        </div>
+        
+        {service.sponsored && (
+          <div 
+            className="absolute top-3 right-3 text-black text-xs font-bold px-3 py-1 rounded-2xl shimmer shadow-lg"
+            style={{ 
+              background: 'linear-gradient(135deg, #FDE047, #FACC15, #F59E0B)',
+              color: '#000000',
+              fontWeight: 'bold',
+              boxShadow: '0 4px 15px rgba(250, 204, 21, 0.4)'
+            }}
+          >
+            ⭐ SPONSORISÉ
+          </div>
+        )}
+        
+        {user?.is_member && (
+          <button 
+            className="absolute top-3 left-3 p-2 rounded-2xl transition-all duration-300 hover:scale-110"
+            style={{ 
+              backgroundColor: 'rgba(0, 0, 0, 0.6)',
+              color: '#FFFFFF',
+              backdropFilter: 'blur(10px)'
+            }}
+            onMouseEnter={(e) => {
+              e.target.style.backgroundColor = 'rgba(220, 38, 38, 0.8)'
+              e.target.style.transform = 'scale(1.1)'
+            }}
+            onMouseLeave={(e) => {
+              e.target.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'
+              e.target.style.transform = 'scale(1)'
+            }}
+          >
+            <Heart size={18} fill="currentColor" />
+          </button>
+        )}
+      </div>
+      
+      <div className="p-4 relative">
+        {/* Arrière-plan coloré pour le contenu */}
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-b-2xl"></div>
+        <div className="relative z-10">
+          <div className="flex justify-between items-start mb-2">
+            <h3 
+              className="text-lg font-bold text-white drop-shadow-lg"
+            >
+              {service.name}
+            </h3>
+            {service.rating && (
+              <div 
+                className="flex items-center px-3 py-1 rounded-xl shadow-lg"
+                style={{ 
+                  background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1))',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)',
+                  color: '#FFFFFF'
+                }}
+              >
+                <Star size={14} className="text-yellow-400 fill-current mr-1" />
+                <span className="text-sm font-medium">{service.rating}</span>
+              </div>
+            )}
+          </div>
+          
+          <div className="flex items-center text-xs mb-3" style={{ color: 'rgba(255, 255, 255, 0.8)' }}>
+            <MapPin size={12} className="mr-1" />
+            <span className="drop-shadow-md">Marbella & Costa del Sol</span>
+          </div>
+          
+          <p 
+            className="text-sm mb-4 leading-relaxed"
+            style={{ color: 'rgba(255, 255, 255, 0.9)' }}
+          >
+            {service.description}
+          </p>
+          
+          <div className="flex justify-between items-center">
+            <div className="flex flex-col">
+              <span 
+                className="text-sm font-medium text-white drop-shadow-md"
+              >
+                {service.category}
+              </span>
+              {service.duration && (
+                <span 
+                  className="text-xs"
+                  style={{ color: 'rgba(255, 255, 255, 0.7)' }}
+                >
+                  {service.duration}
+                </span>
+              )}
+            </div>
+            
+            <button 
+              onClick={() => onReserve(service)}
+              className="text-xs py-2 px-4 rounded-lg font-medium transition-all duration-300 group-hover:scale-105"
+              style={{
+                background: 'linear-gradient(135deg, #3B82F6, #2563EB)',
+                color: '#FFFFFF',
+                boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+              }}
+            >
+              Réserver
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </>
+  )
+}

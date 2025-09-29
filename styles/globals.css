@@ -10,13 +10,58 @@
 }
 
 html, body {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-height: 100vh;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
   position: relative;
   scroll-behavior: auto;
+  background-color: var(--color-bg-primary);
+}
+
+/* Ensure no side spaces on any screen size */
+* {
+  box-sizing: border-box;
+}
+
+/* Fix mobile layout issues */
+@media (max-width: 1023px) {
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  #__next {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* Force full width on mobile */
+  .min-h-screen {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  /* Remove any potential margins/padding causing black bars */
+  * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+}
+
+html {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 #__next {
@@ -145,6 +190,70 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-border-light);
+}
+
+/* Desktop layout - ensure full width */
+@media (min-width: 1024px) {
+  /* Remove any margins/padding that could cause side spaces */
+  html, body {
+    margin: 0;
+    padding: 0;
+    width: 100vw;
+    overflow-x: hidden;
+  }
+  
+  #__next {
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Ensure main container uses full width */
+  main {
+    width: 100vw;
+    max-width: 100vw;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Ensure all sections use proper desktop layout */
+  main > div {
+    width: auto;
+  }
+}
+
+/* Mobile scroll improvements only */
+@media (max-width: 1023px) {
+  /* Force scroll on mobile for chat areas */
+  .overflow-y-auto {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Ensure chat messages area is scrollable on mobile */
+  .chat-messages-container {
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: #4B5563 #1F2937;
+  }
+  
+  /* Improve scrollbar visibility on mobile */
+  .chat-messages-container::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .chat-messages-container::-webkit-scrollbar-track {
+    background: #1F2937;
+    border-radius: 3px;
+  }
+  
+  .chat-messages-container::-webkit-scrollbar-thumb {
+    background: #4B5563;
+    border-radius: 3px;
+  }
+  
+  .chat-messages-container::-webkit-scrollbar-thumb:hover {
+    background: #6B7280;
+  }
 }
 
 /* 🎨 DESIGN SYSTEM UTILITIES */

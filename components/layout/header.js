@@ -18,11 +18,11 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
 
   // Fonction pour obtenir les classes CSS d'un lien
   const getLinkClasses = (path) => {
-    const baseClasses = "transition-colors"
+    const baseClasses = "relative px-4 py-2 rounded-lg transition-all duration-300 font-medium group"
     if (isActive(path)) {
-      return `${baseClasses} text-purple-400 font-medium`
+      return `${baseClasses} text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 shadow-lg shadow-purple-500/20`
     }
-    return `${baseClasses} text-gray-300 hover:text-white`
+    return `${baseClasses} text-gray-300 hover:text-white hover:bg-gray-800/50 hover:shadow-lg hover:shadow-gray-500/10 hover:scale-105`
   }
 
   const handleLogout = async () => {
@@ -37,13 +37,63 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
   }
 
   return (
-        <header
-          className="flex items-center justify-between sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700 px-4 lg:px-6 py-3 lg:py-4 w-full"
-          style={{
-            minHeight: '4rem',
-            boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
-          }}
-        >
+    <>
+      <style jsx>{`
+        @keyframes shimmer {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(100%);
+          }
+        }
+        
+        @keyframes pulse-glow {
+          0%, 100% {
+            box-shadow: 0 0 5px rgba(139, 92, 246, 0.2);
+          }
+          50% {
+            box-shadow: 0 0 20px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2);
+          }
+        }
+        
+        .menu-link {
+          position: relative;
+          overflow: hidden;
+        }
+        
+        .menu-link::before {
+          content: '';
+          position: absolute;
+          top: 0;
+          left: -100%;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent);
+          transition: left 0.6s ease;
+          z-index: 1;
+        }
+        
+        .menu-link:hover::before {
+          left: 100%;
+        }
+        
+        .menu-link:hover {
+          animation: pulse-glow 1.5s infinite;
+        }
+        
+        .menu-link span {
+          position: relative;
+          z-index: 2;
+        }
+      `}</style>
+      <header
+        className="flex items-center justify-between sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700 px-4 lg:px-6 py-3 lg:py-4 w-full"
+        style={{
+          minHeight: '4rem',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+        }}
+      >
       <div className="flex items-center">
         <button 
           onClick={toggleMobileMenu}
@@ -57,10 +107,10 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         </button>
         <Link href="/" className="flex items-center group animate-hover-lift">
           <div 
-            className="px-6 py-3 rounded-lg shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
+            className="px-6 py-3 rounded-xl shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
             style={{ 
-              background: '#8B5CF6',
-              borderRadius: 'var(--radius-lg)',
+              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+              borderRadius: '12px',
               boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
             }}
           >
@@ -68,7 +118,8 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
               className="text-xl lg:text-2xl font-bold text-white leading-tight tracking-wider"
               style={{ 
                 fontFamily: 'Blanka, sans-serif',
-                fontWeight: 'bold'
+                fontWeight: 'bold',
+                letterSpacing: '0.1em'
               }}
             >
               GET WEEZ
@@ -78,21 +129,125 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
       </div>
 
       {/* Menu de navigation */}
-      <nav className="hidden lg:flex items-center space-x-8">
-        <Link href="/" className={getLinkClasses('/')}>
-          Accueil
+      <nav className="hidden lg:flex items-center space-x-2">
+        <Link 
+          href="/" 
+          className={`${getLinkClasses('/')} menu-link`}
+        >
+          <span>Accueil</span>
         </Link>
-        <Link href="/establishments" className={getLinkClasses('/establishments')}>
-          Établissements
+        
+        <Link 
+          href="/establishments" 
+          className={`${getLinkClasses('/establishments')} menu-link`}
+        >
+          <span>Établissements</span>
         </Link>
-        <Link href="/events" className={getLinkClasses('/events')}>
-          Événements
+        
+        <Link 
+          href="/services" 
+          className={`${getLinkClasses('/services')} menu-link`}
+        >
+          <span>Services</span>
         </Link>
-        <Link href="/account" className={getLinkClasses('/account')}>
-          Compte
+        
+        <Link 
+          href="/events" 
+          className={getLinkClasses('/events')}
+          style={{
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            if (!isActive('/events')) {
+              e.target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
+              e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
+              e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isActive('/events')) {
+              e.target.style.background = 'transparent'
+              e.target.style.borderColor = 'transparent'
+              e.target.style.boxShadow = 'none'
+            }
+          }}
+        >
+          <span className="relative z-10">Événements</span>
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)',
+              transform: 'translateX(-100%)',
+              transition: 'transform 0.6s ease'
+            }}
+          />
         </Link>
-        <Link href="/aide" className={getLinkClasses('/aide')}>
-          Aide
+        
+        <Link 
+          href="/account" 
+          className={getLinkClasses('/account')}
+          style={{
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            if (!isActive('/account')) {
+              e.target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
+              e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
+              e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isActive('/account')) {
+              e.target.style.background = 'transparent'
+              e.target.style.borderColor = 'transparent'
+              e.target.style.boxShadow = 'none'
+            }
+          }}
+        >
+          <span className="relative z-10">Compte</span>
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)',
+              transform: 'translateX(-100%)',
+              transition: 'transform 0.6s ease'
+            }}
+          />
+        </Link>
+        
+        <Link 
+          href="/aide" 
+          className={getLinkClasses('/aide')}
+          style={{
+            position: 'relative',
+            overflow: 'hidden'
+          }}
+          onMouseEnter={(e) => {
+            if (!isActive('/aide')) {
+              e.target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
+              e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
+              e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!isActive('/aide')) {
+              e.target.style.background = 'transparent'
+              e.target.style.borderColor = 'transparent'
+              e.target.style.boxShadow = 'none'
+            }
+          }}
+        >
+          <span className="relative z-10">Aide</span>
+          <div 
+            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+            style={{
+              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)',
+              transform: 'translateX(-100%)',
+              transition: 'transform 0.6s ease'
+            }}
+          />
         </Link>
       </nav>
 
@@ -202,5 +357,6 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         </div>
       </div>
     </header>
+    </>
   )
 }

@@ -2,8 +2,7 @@ import { useState } from 'react'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import AccountInfo from '../components/account/AccountInfo'
-import SupportSection from '../components/account/SupportSection'
-import { HelpCircle, MessageCircle, FileText, Phone, Mail } from 'lucide-react'
+import ChatHistory from '../components/account/ChatHistory'
 
 export default function Account({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -25,23 +24,18 @@ export default function Account({ user, setUser }) {
   return (
     <div 
       style={{ 
-        width: '100vw', 
-        height: '100vh', 
+        width: '100%', 
+        minHeight: '100vh', 
         margin: 0, 
-        padding: 0,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
+        padding: 0
       }}
     >
       <div 
         style={{ 
           display: 'flex', 
           flexDirection: 'column', 
-          height: '100vh', 
-          width: '100vw',
+          minHeight: '100vh', 
+          width: '100%',
           margin: 0,
           padding: 0
         }}
@@ -61,10 +55,10 @@ export default function Account({ user, setUser }) {
         <main 
           style={{ 
             flex: 1,
-            overflowY: 'auto',
+            overflow: 'auto',
             backgroundColor: 'var(--color-bg-primary)',
-            width: '100vw',
-            height: 'calc(100vh - 8rem)',
+            width: '100%',
+            minHeight: 'calc(100vh - 8rem)',
             padding: 'var(--spacing-xl)'
           }}
         >
@@ -121,53 +115,11 @@ export default function Account({ user, setUser }) {
               </div>
             </div>
 
-            {/* Section Support */}
+            {/* Section Historique des Conversations */}
             <div className="max-w-4xl mx-auto mb-12">
-              <SupportSection user={user} />
+              <ChatHistory user={user} />
             </div>
 
-            {/* Section Aide */}
-            <div className="max-w-4xl mx-auto">
-              <div className="bg-gray-800 rounded-2xl p-8">
-                <h2 className="text-2xl font-bold text-white mb-8 text-center">Centre d'Aide</h2>
-                
-                {/* Liens rapides d'aide */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <a 
-                    href="/aide" 
-                    className="group bg-gray-700 rounded-xl p-6 hover:bg-gray-600 transition-all duration-300 hover:scale-105"
-                  >
-                    <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                      <HelpCircle size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2 text-center">FAQ & Centre d'aide</h3>
-                    <p className="text-gray-400 text-sm text-center">Trouvez des réponses à vos questions</p>
-                  </a>
-                  
-                  <a 
-                    href="mailto:support@getweez.com" 
-                    className="group bg-gray-700 rounded-xl p-6 hover:bg-gray-600 transition-all duration-300 hover:scale-105"
-                  >
-                    <div className="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                      <Mail size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2 text-center">Contacter le support</h3>
-                    <p className="text-gray-400 text-sm text-center">Écrivez-nous directement</p>
-                  </a>
-                  
-                  <a 
-                    href="/aide#cgv" 
-                    className="group bg-gray-700 rounded-xl p-6 hover:bg-gray-600 transition-all duration-300 hover:scale-105"
-                  >
-                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
-                      <FileText size={24} className="text-white" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-white mb-2 text-center">Conditions générales</h3>
-                    <p className="text-gray-400 text-sm text-center">CGV et mentions légales</p>
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
           </main>
       </div>

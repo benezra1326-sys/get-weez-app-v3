@@ -2,11 +2,19 @@ import { useState, useEffect } from 'react'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import EventList from '../components/events/EventList'
+import EventBannerView from '../components/events/EventBannerView'
+import EventCalendarView from '../components/events/EventCalendarView'
+import EventDisplayToggle from '../components/events/EventDisplayToggle'
+import { EstablishmentSearchBar } from '../components/ui/SearchBar'
 import { supabase } from '../lib/supabase'
 
 export default function Events({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [events, setEvents] = useState([])
+  const [filteredEvents, setFilteredEvents] = useState([])
+  const [searchQuery, setSearchQuery] = useState('')
+  const [displayMode, setDisplayMode] = useState('banner') // 'banner' ou 'calendar'
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
     loadEvents()
@@ -14,17 +22,18 @@ export default function Events({ user, setUser }) {
 
   const loadEvents = async () => {
     try {
-    const today = new Date().toISOString().split('T')[0]
-    const { data, error } = await supabase
-      .from('events')
-      .select('*')
-      .gte('date', today)
-      .order('date', { ascending: true })
+      setIsLoading(true)
+      const today = new Date().toISOString().split('T')[0]
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .gte('date', today)
+        .order('date', { ascending: true })
 
       if (error) {
         console.error('Erreur lors du chargement des événements:', error)
         // Fallback avec des données statiques
-        setEvents([
+        const fallbackEvents = [
           {
             "id": 1,
             "name": "Sunset Beach Party",
@@ -145,14 +154,44 @@ export default function Events({ user, setUser }) {
             "capacity": 150,
             "type": "party"
           }
-        ])
-        return
+        ]
+        setEvents(fallbackEvents)
+        setFilteredEvents(fallbackEvents)
+      } else {
+        setEvents(data || [])
+        setFilteredEvents(data || [])
       }
-
-      setEvents(data || [])
     } catch (error) {
       console.error('Erreur:', error)
+    } finally {
+      setIsLoading(false)
     }
+  }
+
+  // Fonction de recherche et filtrage
+  const handleSearch = (query) => {
+    setSearchQuery(query)
+    filterEvents(query)
+  }
+
+  const filterEvents = (query) => {
+    let filtered = events
+
+    // Filtrage par recherche
+    if (query && query.trim()) {
+      filtered = filtered.filter(event =>
+        event.name.toLowerCase().includes(query.toLowerCase()) ||
+        event.description.toLowerCase().includes(query.toLowerCase()) ||
+        event.location.toLowerCase().includes(query.toLowerCase()) ||
+        event.type.toLowerCase().includes(query.toLowerCase())
+      )
+    }
+
+    setFilteredEvents(filtered)
+  }
+
+  const handleDisplayModeChange = (mode) => {
+    setDisplayMode(mode)
   }
 
   const handleBecomeMember = () => {
@@ -164,58 +203,143 @@ export default function Events({ user, setUser }) {
   }
 
   return (
-    <div 
-      style={{ 
-        width: '100vw', 
-        height: '100vh', 
-        margin: 0, 
-        padding: 0,
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0
-      }}
-    >
+    <>
+      <style jsx>{`
+        @keyframes gradientShift {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+        
+        @keyframes float {
+          0%, 100% {
+            transform: translateY(0px);
+          }
+          50% {
+            transform: translateY(-10px);
+          }
+        }
+        
+        .floating {
+          animation: float 3s ease-in-out infinite;
+        }
+      `}</style>
       <div 
         style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          height: '100vh', 
-          width: '100vw',
-          margin: 0,
-          padding: 0
+          width: '100%', 
+          minHeight: '100vh', 
+          margin: 0, 
+          padding: 0,
+          backgroundColor: '#0D0D0D'
         }}
       >
-        <Header 
-          user={user} 
-          setUser={setUser}
-          toggleMobileMenu={toggleMobileMenu} 
-          isMobileMenuOpen={isMobileMenuOpen} 
-        />
-        <MobileMenu 
-          isOpen={isMobileMenuOpen} 
-          onClose={() => setIsMobileMenuOpen(false)} 
-          user={user} 
-        />
-        
-        <main 
+        <div 
           style={{ 
-            flex: 1,
-            overflowY: 'auto',
-            backgroundColor: 'var(--color-bg-primary)',
-            width: '100vw',
-            height: 'calc(100vh - 8rem)',
-            padding: 'var(--spacing-xl)'
+            display: 'flex', 
+            flexDirection: 'column', 
+            minHeight: '100vh', 
+            width: '100%',
+            margin: 0,
+            padding: 0
           }}
         >
-            <EventList 
-              events={events} 
-              user={user} 
-              onBecomeMember={handleBecomeMember}
-            />
+          <Header 
+            user={user} 
+            setUser={setUser}
+            toggleMobileMenu={toggleMobileMenu} 
+            isMobileMenuOpen={isMobileMenuOpen} 
+          />
+          <MobileMenu 
+            isOpen={isMobileMenuOpen} 
+            onClose={() => setIsMobileMenuOpen(false)} 
+            user={user} 
+          />
+          
+          <main 
+            style={{ 
+              flex: 1,
+              overflow: 'auto',
+              backgroundColor: '#0D0D0D',
+              width: '100%',
+              minHeight: 'calc(100vh - 8rem)',
+              padding: 'var(--spacing-xl)'
+            }}
+          >
+            {/* Header avec recherche */}
+            <div className="mb-8">
+              <div className="relative overflow-hidden rounded-3xl p-8 mb-8"
+                style={{
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #10B981 75%, #F59E0B 100%)',
+                  backgroundSize: '400% 400%',
+                  animation: 'gradientShift 8s ease infinite'
+                }}
+              >
+                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+                <div className="relative z-10">
+                  <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                    🎉 Événements Premium
+                  </h1>
+                  <p className="text-white/90 text-xl mb-6 drop-shadow-md">
+                    Découvrez les événements exclusifs de Marbella
+                  </p>
+                  
+                  <div className="max-w-2xl">
+                    <EstablishmentSearchBar 
+                      onSearch={handleSearch}
+                      className="max-w-2xl"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Toggle d'affichage */}
+            <div className="mb-8">
+              <EventDisplayToggle
+                displayMode={displayMode}
+                onModeChange={handleDisplayModeChange}
+              />
+            </div>
+
+            {/* Contenu selon le mode d'affichage */}
+            {isLoading ? (
+              <div className="flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+              </div>
+            ) : (
+              <>
+                {displayMode === 'banner' ? (
+                  <EventBannerView 
+                    events={filteredEvents} 
+                    user={user} 
+                    onBecomeMember={handleBecomeMember}
+                  />
+                ) : (
+                  <EventCalendarView 
+                    events={filteredEvents} 
+                    user={user} 
+                    onBecomeMember={handleBecomeMember}
+                  />
+                )}
+              </>
+            )}
+            
+            {filteredEvents.length === 0 && !isLoading && (
+              <div className="text-center py-12">
+                <div className="text-6xl mb-4">🔍</div>
+                <h3 className="text-xl font-semibold text-white mb-2">Aucun événement trouvé</h3>
+                <p className="text-gray-400">Essayez de modifier vos critères de recherche</p>
+              </div>
+            )}
           </main>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

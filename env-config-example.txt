@@ -1,0 +1,24 @@
+# Configuration Supabase
+# Créez un fichier .env.local avec ce contenu et remplacez les valeurs
+
+NEXT_PUBLIC_SUPABASE_URL=https://votre-projet.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=votre_cle_anonyme_supabase
+
+# Configuration OpenAI (optionnel pour le chat)
+OPENAI_API_KEY=sk-proj-votre_cle_openai
+
+# Instructions:
+# 1. Créez un fichier .env.local dans la racine du projet
+# 2. Copiez le contenu ci-dessus dans ce fichier
+# 3. Remplacez les valeurs par vos vraies clés
+# 4. Pour obtenir vos clés Supabase:
+#    - Allez sur https://supabase.com
+#    - Sélectionnez votre projet
+#    - Allez dans Settings > API
+#    - Copiez l'URL du projet et la clé anon public
+
+# Compte utilisateur à créer:
+# Email: avishay@outlook.fr
+# Mot de passe: admin123456
+# Rôle: admin
+# Membre: true

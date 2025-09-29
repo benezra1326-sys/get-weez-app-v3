@@ -1,5 +1,4 @@
 import { askWeezAgent } from '../../lib/openai'
-import { supabase } from '../../lib/supabase'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {

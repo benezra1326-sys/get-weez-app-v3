@@ -1,111 +1,79 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { Search, X, Filter } from 'lucide-react'
+import { Search } from 'lucide-react'
 
-export default function SearchBar({ 
-  placeholder = "Search...", 
-  onSearch, 
-  onClear,
-  showFilters = false,
-  className = ""
-}) {
-  const [query, setQuery] = useState('')
-  const [isFocused, setIsFocused] = useState(false)
-  const inputRef = useRef(null)
-
-  const handleSearch = (value) => {
-    setQuery(value)
-    onSearch?.(value)
-  }
-
-  const handleClear = () => {
-    setQuery('')
-    onClear?.()
-    inputRef.current?.focus()
-  }
-
-  const handleKeyPress = (e) => {
-    if (e.key === 'Enter') {
-      handleSearch(query)
-    }
+export const ServiceSearchBar = ({ onSearch, className = "" }) => {
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const query = formData.get('search')
+    onSearch(query)
   }
 
   return (
-    <div className={`relative ${className}`}>
-      <div 
-        className={`flex items-center rounded-2xl border transition-all duration-300 ${
-          isFocused 
-            ? 'border-primary shadow-glow' 
-            : 'border-gray-600 hover:border-gray-500'
-        }`}
-        style={{
-          backgroundColor: 'var(--color-bg-secondary)',
-          borderColor: isFocused ? 'var(--color-primary)' : 'var(--color-border)',
-          boxShadow: isFocused ? 'var(--shadow-glow)' : 'none'
-        }}
-      >
-        <div className="pl-4 pr-2">
-          <Search 
-            size={20} 
-            style={{ color: 'var(--color-text-muted)' }}
-          />
-        </div>
-        
-        <input
-          ref={inputRef}
-          type="text"
-          value={query}
-          onChange={(e) => handleSearch(e.target.value)}
-          onKeyPress={handleKeyPress}
-          onFocus={() => setIsFocused(true)}
-          onBlur={() => setIsFocused(false)}
-          placeholder={placeholder}
-          className="flex-1 py-4 px-2 bg-transparent text-white placeholder-gray-400 focus:outline-none"
-          style={{ color: 'var(--color-text-primary)' }}
+    <form onSubmit={handleSearch} className={`relative ${className}`}>
+      <div className="relative">
+        <Search 
+          size={20} 
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" 
         />
-        
-        {query && (
-          <button
-            onClick={handleClear}
-            className="p-2 mr-2 rounded-lg hover:bg-gray-700 transition-colors"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            <X size={16} />
-          </button>
-        )}
-        
-        {showFilters && (
-          <button
-            className="p-2 mr-2 rounded-lg hover:bg-gray-700 transition-colors"
-            style={{ color: 'var(--color-text-muted)' }}
-          >
-            <Filter size={16} />
-          </button>
-        )}
+        <input
+          type="text"
+          name="search"
+          placeholder="Rechercher un service..."
+          className="w-full pl-12 pr-4 py-4 rounded-2xl border-0 text-white placeholder-gray-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          style={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+          onFocus={(e) => {
+            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'
+            e.target.style.borderColor = 'rgba(139, 92, 246, 0.5)'
+          }}
+          onBlur={(e) => {
+            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+          }}
+        />
       </div>
-    </div>
+    </form>
   )
 }
 
-// Variante pour la recherche d'établissements
-export function EstablishmentSearchBar({ onSearch, onFilter }) {
-  return (
-    <SearchBar
-      placeholder="Search restaurants, bars, clubs..."
-      onSearch={onSearch}
-      showFilters={true}
-      className="w-full max-w-2xl mx-auto"
-    />
-  )
-}
+export const EstablishmentSearchBar = ({ onSearch, className = "" }) => {
+  const handleSearch = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.target)
+    const query = formData.get('search')
+    onSearch(query)
+  }
 
-// Variante pour la recherche d'événements
-export function EventSearchBar({ onSearch, onFilter }) {
   return (
-    <SearchBar
-      placeholder="Search events, parties, shows..."
-      onSearch={onSearch}
-      showFilters={true}
-      className="w-full max-w-2xl mx-auto"
-    />
+    <form onSubmit={handleSearch} className={`relative ${className}`}>
+      <div className="relative">
+        <Search 
+          size={20} 
+          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" 
+        />
+        <input
+          type="text"
+          name="search"
+          placeholder="Rechercher un établissement..."
+          className="w-full pl-12 pr-4 py-4 rounded-2xl border-0 text-white placeholder-gray-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-purple-500"
+          style={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+          onFocus={(e) => {
+            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'
+            e.target.style.borderColor = 'rgba(139, 92, 246, 0.5)'
+          }}
+          onBlur={(e) => {
+            e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
+            e.target.style.borderColor = 'rgba(255, 255, 255, 0.2)'
+          }}
+        />
+      </div>
+    </form>
   )
 }
