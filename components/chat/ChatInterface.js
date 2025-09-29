@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import { useTranslation } from 'next-i18next'
-import { MessageCircle, Sparkles, Trash2, Loader2, X } from 'lucide-react'
+import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon, Mic, MicOff } from 'lucide-react'
 import { useConversations } from '../../hooks/useConversations'
 import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
@@ -17,6 +17,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   const [conversationToDelete, setConversationToDelete] = useState(null)
   const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
   const [showMobileHistory, setShowMobileHistory] = useState(false)
+  const [isDarkMode, setIsDarkMode] = useState(true)
+  const [isListening, setIsListening] = useState(false)
   const textareaRef = useRef(null)
 
   // Effet pour pré-remplir le message de réservation
@@ -178,6 +180,41 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     setShowDeleteConfirm(false)
   }
 
+  // Fonction de dictée
+  const startListening = () => {
+    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+      const recognition = new SpeechRecognition()
+      
+      recognition.continuous = false
+      recognition.interimResults = false
+      recognition.lang = 'fr-FR'
+      
+      recognition.onstart = () => {
+        setIsListening(true)
+      }
+      
+      recognition.onresult = (event) => {
+        const transcript = event.results[0][0].transcript
+        setInput(transcript)
+        setIsListening(false)
+      }
+      
+      recognition.onerror = () => {
+        setIsListening(false)
+        showToast('Erreur de reconnaissance vocale', 'error')
+      }
+      
+      recognition.onend = () => {
+        setIsListening(false)
+      }
+      
+      recognition.start()
+    } else {
+      showToast('Reconnaissance vocale non supportée', 'error')
+    }
+  }
+
   const handleCloseConversation = () => {
     if (currentConversationId) {
       selectConversation(null)
@@ -261,12 +298,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           animation: scroll-reverse 30s linear infinite;
         }
       `}</style>
-      <div className="w-full min-h-screen" style={{ backgroundColor: '#0D0D0D' }}>
+      <div className="w-full min-h-screen" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
       {/* Main Content */}
       <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
         
         {/* Sidebar gauche - Conversations */}
-        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
+        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#F8F9FA', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
           {/* Version mobile subtile - petit bouton flottant */}
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
@@ -483,10 +520,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
         {/* Chat Section - Largeur ajustée */}
         <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full">
-          <div className="rounded-2xl border border-gray-800 p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
+          <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
             
             {/* Barre d'outils mobile */}
-            <div className="lg:hidden flex items-center justify-between mb-3 p-2 rounded-lg" style={{ backgroundColor: '#2D2D2D' }}>
+            <div className="lg:hidden flex items-center justify-between mb-3 p-2 rounded-lg" style={{ backgroundColor: isDarkMode ? '#2D2D2D' : '#F3F4F6' }}>
               <div className="flex items-center space-x-2">
                 <button 
                   onClick={() => setShowMobileHistory(!showMobileHistory)}
@@ -512,6 +549,27 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               </div>
               
               <div className="flex items-center space-x-2">
+                {/* Bouton thème */}
+                <button 
+                  onClick={() => setIsDarkMode(!isDarkMode)}
+                  className="p-2 rounded-lg transition-all duration-300"
+                  style={{ 
+                    backgroundColor: '#6B7280',
+                    boxShadow: '0 4px 12px rgba(107, 114, 128, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.backgroundColor = '#4B5563'
+                    e.target.style.boxShadow = '0 6px 16px rgba(107, 114, 128, 0.4)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.backgroundColor = '#6B7280'
+                    e.target.style.boxShadow = '0 4px 12px rgba(107, 114, 128, 0.3)'
+                  }}
+                  title={isDarkMode ? "Mode clair" : "Mode sombre"}
+                >
+                  {isDarkMode ? <Sun size={16} className="text-white" /> : <Moon size={16} className="text-white" />}
+                </button>
+                
                 <button 
                   onClick={createConversation}
                   className="p-2 rounded-lg transition-all duration-300"
@@ -878,6 +936,41 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     disabled={isLoading}
                   />
                 
+                {/* Bouton de dictée */}
+                <button
+                  onClick={startListening}
+                  disabled={isListening}
+                  className="absolute right-12 lg:right-16 top-1/2 transform -translate-y-1/2 p-2 lg:p-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300"
+                  style={{
+                    backgroundColor: isListening ? '#EF4444' : '#6B7280',
+                    boxShadow: isListening ? '0 4px 12px rgba(239, 68, 68, 0.3)' : '0 2px 8px rgba(107, 114, 128, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isListening) {
+                      e.target.style.backgroundColor = '#4B5563'
+                      e.target.style.boxShadow = '0 4px 12px rgba(107, 114, 128, 0.4)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isListening) {
+                      e.target.style.backgroundColor = '#6B7280'
+                      e.target.style.boxShadow = '0 2px 8px rgba(107, 114, 128, 0.3)'
+                    }
+                  }}
+                  title={isListening ? "Arrêter la dictée" : "Dictée vocale"}
+                >
+                  {isListening ? (
+                    <MicOff size={14} className="lg:hidden" />
+                  ) : (
+                    <Mic size={14} className="lg:hidden" />
+                  )}
+                  {isListening ? (
+                    <MicOff size={16} className="hidden lg:block" />
+                  ) : (
+                    <Mic size={16} className="hidden lg:block" />
+                  )}
+                </button>
+
                 {/* Bouton d'envoi */}
                 <button
                   onClick={() => {
@@ -930,9 +1023,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - UNIQUEMENT sur desktop */}
-        <div className="hidden lg:block w-72 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
+        <div className="hidden lg:block w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#F8F9FA', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
           <div className="p-2 lg:p-6 pb-2 lg:pb-12">
-            <h2 className="text-sm lg:text-3xl font-bold text-white mb-2 lg:mb-6">💡 Suggestions Premium</h2>
+            <h2 className={`text-sm lg:text-3xl font-bold mb-2 lg:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>💡 Suggestions Premium</h2>
             
             {/* Filtres améliorés avec plus d'options */}
             <div className="mb-4 lg:mb-8">
@@ -1493,13 +1586,13 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       </div> {/* Fin interface desktop */}
       
       {/* Carrousel des marques qui font confiance */}
-      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: '#0D0D0D' }}>
+      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#F8F9FA' }}>
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center mb-8 lg:mb-12">
-            <h2 className="text-2xl lg:text-4xl font-bold text-white mb-4">
+            <h2 className={`text-2xl lg:text-4xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
               Ils nous font confiance
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               Plus de 500+ partenaires premium nous font confiance
             </p>
           </div>
