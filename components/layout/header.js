@@ -258,36 +258,47 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
           {user ? (
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center space-x-3 p-2 rounded-2xl transition-all duration-300 group animate-hover-lift"
-            style={{ 
-              backgroundColor: 'transparent',
-              color: 'var(--color-text-primary)',
-              borderRadius: 'var(--radius-lg)'
-            }}
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'var(--color-surface-hover)'
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'transparent'
-            }}
+            className="flex items-center space-x-3 p-2 rounded-2xl transition-all duration-300 group animate-hover-lift hover:bg-gray-800/50"
           >
+            {/* Indicateur de statut membre */}
+            {user.is_member && (
+              <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse shadow-lg shadow-yellow-500/50"></div>
+            )}
+            
+            {/* Avatar utilisateur */}
             <div 
-              className={`w-2.5 h-2.5 rounded-full animate-pulse-slow ${
-                user.is_member ? 'shadow-glow-accent' : ''
-              }`}
-              style={{
-                backgroundColor: user.is_member ? 'var(--color-accent)' : 'var(--color-text-muted)'
-              }}
-            ></div>
-            <div 
-              className="w-8 h-8 lg:w-10 lg:h-10 rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-glow group-hover:shadow-glow-accent transition-all duration-300 group-hover:scale-105"
+              className="w-8 h-8 lg:w-10 lg:h-10 rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
               style={{ 
-                background: 'linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 50%, var(--color-primary-darker) 100%)',
-                borderRadius: 'var(--radius-xl)'
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
+                borderRadius: '12px'
               }}
             >
-              {user.first_name?.charAt(0) || 'U'}
+              <span className="relative z-10">
+                {user.first_name?.charAt(0)?.toUpperCase() || 'U'}
+              </span>
+              {/* Effet shimmer sur l'avatar */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 group-hover:animate-shimmer"></div>
             </div>
+            
+            {/* Nom utilisateur (visible sur desktop) */}
+            <div className="hidden lg:block text-left">
+              <div className="text-white text-sm font-semibold">
+                {user.first_name || 'Utilisateur'}
+              </div>
+              <div className="text-gray-400 text-xs">
+                {user.is_member ? 'Membre Premium' : 'Utilisateur'}
+              </div>
+            </div>
+            
+            {/* Icône de menu dropdown */}
+            <svg 
+              className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${showUserMenu ? 'rotate-180' : ''}`} 
+              fill="none" 
+              stroke="currentColor" 
+              viewBox="0 0 24 24"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </button>
         ) : (
           <div className="flex items-center space-x-2 lg:space-x-3">
@@ -310,48 +321,68 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
 
         {showUserMenu && user && (
           <div 
-            className="absolute right-0 mt-3 w-56 rounded-2xl shadow-2xl py-3 z-50 animate-slide-up glass-strong"
-            style={{ 
-              backgroundColor: 'var(--color-bg-secondary)',
-              border: '1px solid var(--color-border)',
-              borderRadius: 'var(--radius-xl)'
-            }}
+            className="absolute right-0 mt-3 w-64 rounded-2xl shadow-2xl py-3 z-50 bg-gray-900/95 backdrop-blur-md border border-gray-700/50"
             onClick={(e) => e.stopPropagation()}
           >
-            <Link 
-              href="/account" 
-              className="block px-4 py-3 transition-colors duration-300 font-medium text-body"
-              style={{ 
-                color: 'var(--color-text-primary)',
-                borderRadius: 'var(--radius-md)',
-                margin: '0 var(--spacing-sm)'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = 'var(--color-surface-hover)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'transparent'
-              }}
-            >
-              Mon Compte
-            </Link>
-            <button 
-              onClick={handleLogout}
-              className="block w-full text-left px-4 py-3 transition-colors duration-300 font-medium text-body"
-              style={{ 
-                color: 'var(--color-text-primary)',
-                borderRadius: 'var(--radius-md)',
-                margin: '0 var(--spacing-sm)'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.backgroundColor = 'var(--color-surface-hover)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'transparent'
-              }}
-            >
-              Déconnexion
-            </button>
+            {/* Header du menu avec infos utilisateur */}
+            <div className="px-4 py-3 border-b border-gray-700/50 mb-2">
+              <div className="flex items-center space-x-3">
+                <div 
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-semibold"
+                  style={{ 
+                    background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)'
+                  }}
+                >
+                  {user.first_name?.charAt(0)?.toUpperCase() || 'U'}
+                </div>
+                <div>
+                  <div className="text-white font-semibold text-sm">
+                    {user.first_name} {user.last_name}
+                  </div>
+                  <div className="text-gray-400 text-xs">
+                    {user.email}
+                  </div>
+                  {user.is_member && (
+                    <div className="text-xs bg-gradient-to-r from-yellow-400 to-orange-500 text-black px-2 py-0.5 rounded-full font-medium mt-1 inline-block">
+                      ⭐ Membre Premium
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* Menu items */}
+            <div className="py-1">
+              <Link 
+                href="/account" 
+                className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-gray-800/50 transition-all duration-200 group"
+                onClick={() => setShowUserMenu(false)}
+              >
+                <User size={18} className="text-gray-400 group-hover:text-purple-400 transition-colors" />
+                <span>Mon Compte</span>
+              </Link>
+              
+              {user.is_member && (
+                <Link 
+                  href="/subscriptions" 
+                  className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-gray-800/50 transition-all duration-200 group"
+                  onClick={() => setShowUserMenu(false)}
+                >
+                  <Crown size={18} className="text-gray-400 group-hover:text-yellow-400 transition-colors" />
+                  <span>Abonnement</span>
+                </Link>
+              )}
+              
+              <div className="border-t border-gray-700/50 my-2"></div>
+              
+              <button 
+                onClick={handleLogout}
+                className="flex items-center space-x-3 w-full text-left px-4 py-3 text-red-400 hover:bg-red-900/20 transition-all duration-200 group"
+              >
+                <LogIn size={18} className="group-hover:text-red-300 transition-colors" />
+                <span>Déconnexion</span>
+              </button>
+            </div>
           </div>
         )}
         </div>
