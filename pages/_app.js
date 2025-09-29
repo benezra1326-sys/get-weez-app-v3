@@ -2,6 +2,7 @@ import { appWithTranslation } from 'next-i18next'
 import '../styles/globals.css'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
+import { ThemeProvider } from '../contexts/ThemeContext'
 
 // Configuration Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -95,7 +96,11 @@ function MyApp({ Component, pageProps }) {
     )
   }
 
-  return <Component {...pageProps} user={user} setUser={setUser} />
+  return (
+    <ThemeProvider>
+      <Component {...pageProps} user={user} setUser={setUser} />
+    </ThemeProvider>
+  )
 }
 
 export default appWithTranslation(MyApp)

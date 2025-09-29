@@ -6,11 +6,13 @@ import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
 import MobileChatInterface from './MobileChatInterface'
+import { useTheme } from '../../hooks/useTheme'
 
-const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, setIsDarkMode }) => {
+const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   console.log('🔄 ChatInterface component loaded')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
+  const { isDarkMode } = useTheme()
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -297,9 +299,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
           animation: scroll-reverse 30s linear infinite;
         }
       `}</style>
-      <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+      <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF', width: '100vw', maxWidth: 'none' }}>
       {/* Main Content */}
-      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen" style={{ width: '100%', maxWidth: 'none' }}>
+      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen" style={{ width: '100vw', maxWidth: 'none' }}>
         
         {/* Sidebar gauche - Conversations */}
         <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
@@ -518,7 +520,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
         </div>
 
         {/* Chat Section - Largeur ajustée */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full" style={{ width: '100%', maxWidth: 'none' }}>
+        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full" style={{ width: '100%', maxWidth: 'none', flex: '1 1 0%' }}>
           <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
             
             {/* Barre d'outils mobile */}
@@ -805,66 +807,66 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                 </h3>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   {/* Événements */}
-                  <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-3 border border-blue-400/30">
+                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`}>
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-white text-lg">🏖️</span>
+                      <span className="text-lg">🏖️</span>
                       <div>
-                        <h4 className="text-white font-bold text-sm">Beach Party</h4>
-                        <p className="text-blue-100 text-xs">21 juin</p>
+                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h4>
+                        <p className={`text-xs ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin</p>
                       </div>
                     </div>
                     <button
                       onClick={() => setInput('Réserver pour la Beach Party')}
-                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
                     >
                       Réserver
                     </button>
                   </div>
                   
-                  <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-3 border border-purple-400/30">
+                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`}>
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-white text-lg">🎷</span>
+                      <span className="text-lg">🎷</span>
                       <div>
-                        <h4 className="text-white font-bold text-sm">Soirée Jazz</h4>
-                        <p className="text-purple-100 text-xs">26 juin</p>
+                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h4>
+                        <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin</p>
                       </div>
                     </div>
                     <button
                       onClick={() => setInput('Réserver pour la soirée jazz')}
-                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-purple-500 hover:bg-purple-600 text-white'}`}
                     >
                       Réserver
                     </button>
                   </div>
                   
                   {/* Restaurants */}
-                  <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-3 border border-amber-400/30">
+                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-amber-500 to-orange-500 border-amber-400/30' : 'bg-gradient-to-br from-amber-100 to-orange-100 border-amber-300/50'}`}>
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-white text-lg">🍣</span>
+                      <span className="text-lg">🍣</span>
                       <div>
-                        <h4 className="text-white font-bold text-sm">Nobu Marbella</h4>
-                        <p className="text-amber-100 text-xs">Japonais Premium</p>
+                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h4>
+                        <p className={`text-xs ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Japonais Premium</p>
                       </div>
                     </div>
                     <button
                       onClick={() => setInput('Réserver une table chez Nobu')}
-                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}
                     >
                       Réserver
                     </button>
                   </div>
                   
-                  <div className="bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl p-3 border border-teal-400/30">
+                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-teal-500 to-cyan-500 border-teal-400/30' : 'bg-gradient-to-br from-teal-100 to-cyan-100 border-teal-300/50'}`}>
                     <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-white text-lg">🏖️</span>
+                      <span className="text-lg">🏖️</span>
                       <div>
-                        <h4 className="text-white font-bold text-sm">La Terraza</h4>
-                        <p className="text-teal-100 text-xs">Méditerranéen</p>
+                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza</h4>
+                        <p className={`text-xs ${isDarkMode ? 'text-teal-100' : 'text-teal-700'}`}>Méditerranéen</p>
                       </div>
                     </div>
                     <button
                       onClick={() => setInput('Réserver une table à La Terraza')}
-                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-teal-500 hover:bg-teal-600 text-white'}`}
                     >
                       Réserver
                     </button>
@@ -914,11 +916,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                     }}
                     onKeyDown={handleKeyDown}
                     placeholder={messages.length === 0 ? "Demandez-moi n'importe quoi sur Marbella..." : t('chat.placeholder')}
-                    className="w-full px-4 py-4 lg:px-4 lg:py-6 pr-12 lg:pr-24 border rounded-xl text-white resize-none text-sm lg:text-lg transition-all duration-300 focus:outline-none"
+                    className="w-full px-4 py-4 lg:px-4 lg:py-6 pr-12 lg:pr-24 border rounded-xl resize-none text-sm lg:text-lg transition-all duration-300 focus:outline-none"
                     style={{ 
-                      backgroundColor: '#2D2D2D', 
-                      borderColor: '#374151', 
-                      color: '#FFFFFF',
+                      backgroundColor: isDarkMode ? '#2D2D2D' : '#F9FAFB', 
+                      borderColor: isDarkMode ? '#374151' : '#D1D5DB', 
+                      color: isDarkMode ? '#FFFFFF' : '#1F2937',
                       minHeight: '48px',
                       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
                       fontSize: '16px' // Empêche le zoom sur iOS
@@ -1022,7 +1024,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - UNIQUEMENT sur desktop */}
-        <div className="hidden lg:block w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+        <div className="hidden lg:block w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB', width: '20rem', maxWidth: '20rem' }}>
           <div className="p-2 lg:p-6 pb-2 lg:pb-12">
             <h2 className={`text-sm lg:text-3xl font-bold mb-2 lg:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>💡 Suggestions Premium</h2>
             
@@ -1104,56 +1106,56 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                 <>
                   {/* Version mobile compacte */}
                   <div className="lg:hidden grid grid-cols-2 gap-2 mb-3">
-                    <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-lg p-2 border border-blue-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🏖️</span>
+                        <span className="text-lg">🏖️</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">Beach Party</h3>
-                          <p className="text-blue-100 text-xs">21 juin</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">Soirée exclusive</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-blue-800'}`}>Soirée exclusive</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-lg p-2 border border-purple-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🎷</span>
+                        <span className="text-lg">🎷</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">Soirée Jazz</h3>
-                          <p className="text-purple-100 text-xs">26 juin</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">Concert jazz</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-purple-800'}`}>Concert jazz</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-green-500 to-emerald-500 rounded-lg p-2 border border-green-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-green-500 to-emerald-500 border-green-400/30' : 'bg-gradient-to-br from-green-100 to-emerald-100 border-green-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🍽️</span>
+                        <span className="text-lg">🍽️</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">Dîner Gastronomique</h3>
-                          <p className="text-green-100 text-xs">28 juin</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-green-900'}`}>Dîner Gastronomique</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-green-100' : 'text-green-700'}`}>28 juin</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">Menu Michelin</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-green-800'}`}>Menu Michelin</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-orange-500 to-red-500 rounded-lg p-2 border border-orange-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-orange-500 to-red-500 border-orange-400/30' : 'bg-gradient-to-br from-orange-100 to-red-100 border-orange-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🎉</span>
+                        <span className="text-lg">🎉</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">Pool Party</h3>
-                          <p className="text-orange-100 text-xs">30 juin</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-orange-900'}`}>Pool Party</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-orange-100' : 'text-orange-700'}`}>30 juin</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">Pool VIP</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-orange-800'}`}>Pool VIP</div>
                     </div>
                   </div>
                   
                   {/* Version desktop */}
-                  <div className="hidden lg:block relative overflow-hidden rounded-2xl border border-blue-500/30 hover:border-blue-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
+                  <div className={`hidden lg:block relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl ${isDarkMode ? 'border-blue-500/30 hover:border-blue-400/50' : 'border-blue-300/50 hover:border-blue-400/70'}`}>
                     {/* Bannière de fond avec gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    <div className={`absolute inset-0 opacity-90 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500' : 'bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100'}`}></div>
+                    <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-t from-black/50 via-transparent to-transparent' : 'bg-gradient-to-t from-white/20 via-transparent to-transparent'}`}></div>
                     
                     {/* Badge Événement */}
                     <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
@@ -1166,24 +1168,24 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                           <span className="text-white text-2xl lg:text-3xl">🏖️</span>
                         </div>
                         <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Beach Party</h3>
-                          <p className="text-blue-100 text-sm lg:text-base">21 juin - 16h</p>
+                          <h3 className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h3>
+                          <p className={`text-sm lg:text-base ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin - 16h</p>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Soirée exclusive sur la plage avec DJ international</p>
+                      <p className={`text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-blue-800'}`}>Soirée exclusive sur la plage avec DJ international</p>
                       <div className="flex items-center justify-between">
-                        <div className="text-blue-100 text-sm font-medium">🌊 Plage • 🎵 DJ</div>
-                        <button className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <div className={`text-sm font-medium ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>🌊 Plage • 🎵 DJ</div>
+                        <button className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl ${isDarkMode ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}>
                           En savoir plus
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden rounded-2xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
+                  <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl ${isDarkMode ? 'border-purple-500/30 hover:border-purple-400/50' : 'border-purple-300/50 hover:border-purple-400/70'}`}>
                     {/* Bannière de fond avec gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    <div className={`absolute inset-0 opacity-90 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500' : 'bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100'}`}></div>
+                    <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-t from-black/50 via-transparent to-transparent' : 'bg-gradient-to-t from-white/20 via-transparent to-transparent'}`}></div>
                     
                     {/* Badge Événement */}
                     <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
@@ -1196,24 +1198,24 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                           <span className="text-white text-2xl lg:text-3xl">🎷</span>
                         </div>
                         <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Soirée Jazz</h3>
-                          <p className="text-purple-100 text-sm lg:text-base">26 juin - 22h</p>
+                          <h3 className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h3>
+                          <p className={`text-sm lg:text-base ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin - 22h</p>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Concert de jazz avec vue imprenable sur la mer</p>
+                      <p className={`text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-purple-800'}`}>Concert de jazz avec vue imprenable sur la mer</p>
                       <div className="flex items-center justify-between">
-                        <div className="text-purple-100 text-sm font-medium">🎷 Jazz • 🌊 Vue mer</div>
-                        <button className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <div className={`text-sm font-medium ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>🎷 Jazz • 🌊 Vue mer</div>
+                        <button className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl ${isDarkMode ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white' : 'bg-purple-500 hover:bg-purple-600 text-white'}`}>
                           En savoir plus
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden rounded-2xl border border-green-500/30 hover:border-green-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
+                  <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl ${isDarkMode ? 'border-green-500/30 hover:border-green-400/50' : 'border-green-300/50 hover:border-green-400/70'}`}>
                     {/* Bannière de fond avec gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    <div className={`absolute inset-0 opacity-90 ${isDarkMode ? 'bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500' : 'bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100'}`}></div>
+                    <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-t from-black/50 via-transparent to-transparent' : 'bg-gradient-to-t from-white/20 via-transparent to-transparent'}`}></div>
                     
                     {/* Badge Sponsorisé */}
                     <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
@@ -1226,14 +1228,14 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                           <span className="text-white text-2xl lg:text-3xl">🍽️</span>
                         </div>
                         <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Dîner Gastronomique</h3>
-                          <p className="text-green-100 text-sm lg:text-base">28 juin - 20h</p>
+                          <h3 className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-green-900'}`}>Dîner Gastronomique</h3>
+                          <p className={`text-sm lg:text-base ${isDarkMode ? 'text-green-100' : 'text-green-700'}`}>28 juin - 20h</p>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Menu dégustation avec chef étoilé Michelin</p>
+                      <p className={`text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-green-800'}`}>Menu dégustation avec chef étoilé Michelin</p>
                       <div className="flex items-center justify-between">
-                        <div className="text-green-100 text-sm font-medium">🍽️ Michelin • ⭐ Étoilé</div>
-                        <button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <div className={`text-sm font-medium ${isDarkMode ? 'text-green-100' : 'text-green-700'}`}>🍽️ Michelin • ⭐ Étoilé</div>
+                        <button className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center ${isDarkMode ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white' : 'bg-green-500 hover:bg-green-600 text-white'}`}>
                           Réserver
                         </button>
                       </div>
@@ -1261,44 +1263,44 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-white text-lg">🍣</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">Nobu Marbella</h3>
-                          <p className="text-amber-100 text-xs">Japonais Premium</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Japonais Premium</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">⭐ 4.9/5</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-amber-800'}`}>⭐ 4.9/5</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg p-2 border border-teal-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-teal-500 to-cyan-500 border-teal-400/30' : 'bg-gradient-to-br from-teal-100 to-cyan-100 border-teal-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🏖️</span>
+                        <span className="text-lg">🏖️</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">La Terraza</h3>
-                          <p className="text-teal-100 text-xs">Méditerranéen</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-teal-100' : 'text-teal-700'}`}>Méditerranéen</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">Vue panoramique</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-teal-800'}`}>Vue panoramique</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-emerald-500 to-green-500 rounded-lg p-2 border border-emerald-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-emerald-500 to-green-500 border-emerald-400/30' : 'bg-gradient-to-br from-emerald-100 to-green-100 border-emerald-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🏨</span>
+                        <span className="text-lg">🏨</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">El Lago</h3>
-                          <p className="text-emerald-100 text-xs">Créatif</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-emerald-900'}`}>El Lago</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-emerald-100' : 'text-emerald-700'}`}>Créatif</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">Vue sur lac</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-emerald-800'}`}>Vue sur lac</div>
                     </div>
                     
-                    <div className="bg-gradient-to-br from-rose-500 to-pink-500 rounded-lg p-2 border border-rose-400/30">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-rose-500 to-pink-500 border-rose-400/30' : 'bg-gradient-to-br from-rose-100 to-pink-100 border-rose-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <span className="text-white text-lg">🍾</span>
+                        <span className="text-lg">🍾</span>
                         <div>
-                          <h3 className="text-white font-bold text-xs">Club VIP</h3>
-                          <p className="text-rose-100 text-xs">Nightclub</p>
+                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-rose-900'}`}>Club VIP</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-rose-100' : 'text-rose-700'}`}>Nightclub</p>
                         </div>
                       </div>
-                      <div className="text-white/90 text-xs">DJ internationaux</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-rose-800'}`}>DJ internationaux</div>
                     </div>
                   </div>
                   
@@ -1319,37 +1321,37 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                           <span className="text-white text-lg lg:text-xl">🍣</span>
                         </div>
                         <div>
-                          <h3 className="text-white font-bold text-base lg:text-lg">Nobu Marbella</h3>
-                          <p className="text-amber-100 text-xs lg:text-sm">Restaurant Japonais Premium</p>
+                          <h3 className={`font-bold text-base lg:text-lg ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h3>
+                          <p className={`text-xs lg:text-sm ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Restaurant Japonais Premium</p>
                         </div>
                       </div>
-                      <p className="text-white/90 text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed hidden lg:block">Cuisine japonaise de luxe avec vue panoramique sur la mer Méditerranée</p>
+                      <p className={`text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-amber-800'}`}>Cuisine japonaise de luxe avec vue panoramique sur la mer Méditerranée</p>
                       <div className="flex items-center justify-between">
-                        <div className="text-amber-200 text-xs lg:text-sm font-medium">⭐ 4.9/5 • €€€€</div>
-                        <button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 lg:px-4 py-1 lg:py-2 rounded-lg font-semibold text-xs lg:text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <div className={`text-xs lg:text-sm font-medium ${isDarkMode ? 'text-amber-200' : 'text-amber-700'}`}>⭐ 4.9/5 • €€€€</div>
+                        <button className={`px-3 lg:px-4 py-1 lg:py-2 rounded-lg font-semibold text-xs lg:text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center ${isDarkMode ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}>
                           Réserver
                         </button>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-teal-500/20 to-cyan-600/20 border border-teal-500/30 rounded-xl p-2 lg:p-4 hover:border-teal-400/50 transition-all duration-300 cursor-pointer group">
+                  <div className={`border rounded-xl p-2 lg:p-4 transition-all duration-300 cursor-pointer group ${isDarkMode ? 'bg-gradient-to-r from-teal-500/20 to-cyan-600/20 border-teal-500/30 hover:border-teal-400/50' : 'bg-gradient-to-r from-teal-100/50 to-cyan-100/50 border-teal-300/50 hover:border-teal-400/70'}`}>
                     <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
                       <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                         <span className="text-white text-sm lg:text-lg">🏖️</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold">La Terraza del Mar</h3>
-                        <p className="text-teal-300 text-sm">Restaurant Méditerranéen</p>
+                        <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza del Mar</h3>
+                        <p className={`text-sm ${isDarkMode ? 'text-teal-300' : 'text-teal-700'}`}>Restaurant Méditerranéen</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Ambiance méditerranéenne avec vue panoramique</p>
-                    <button className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium flex items-center justify-center">
+                    <p className={`text-sm mb-3 ${isDarkMode ? 'text-gray-300' : 'text-teal-700'}`}>Ambiance méditerranéenne avec vue panoramique</p>
+                    <button className={`w-full py-2 px-4 rounded-lg transition-all duration-300 font-medium flex items-center justify-center ${isDarkMode ? 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white' : 'bg-teal-500 hover:bg-teal-600 text-white'}`}>
                       Réserver
                     </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-emerald-500/20 to-green-600/20 border border-emerald-500/30 rounded-xl p-2 lg:p-4 hover:border-emerald-400/50 transition-all duration-300 cursor-pointer group">
+                  <div className={`border rounded-xl p-2 lg:p-4 transition-all duration-300 cursor-pointer group ${isDarkMode ? 'bg-gradient-to-r from-emerald-500/20 to-green-600/20 border-emerald-500/30 hover:border-emerald-400/50' : 'bg-gradient-to-r from-emerald-100/50 to-green-100/50 border-emerald-300/50 hover:border-emerald-400/70'}`}>
                     <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
                       <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
                         <span className="text-white text-lg">🏨</span>
@@ -1478,12 +1480,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                         <span className="text-white text-lg">💆</span>
                       </div>
                       <div>
-                        <h3 className="text-white font-semibold text-sm lg:text-base">Spa à Domicile</h3>
-                        <p className="text-pink-300 text-xs lg:text-sm">Relaxation Privée</p>
+                        <h3 className={`font-semibold text-sm lg:text-base ${isDarkMode ? 'text-white' : 'text-pink-900'}`}>Spa à Domicile</h3>
+                        <p className={`text-xs lg:text-sm ${isDarkMode ? 'text-pink-300' : 'text-pink-700'}`}>Relaxation Privée</p>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Soins de luxe dans le confort de votre villa</p>
-                    <button className="w-full bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
+                    <p className={`text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block ${isDarkMode ? 'text-gray-300' : 'text-pink-700'}`}>Soins de luxe dans le confort de votre villa</p>
+                    <button className={`w-full py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm ${isDarkMode ? 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white' : 'bg-pink-500 hover:bg-pink-600 text-white'}`}>
                       Réserver
                     </button>
                   </div>

@@ -5,11 +5,12 @@ import ChatInterface from '../components/chat/ChatInterface'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
+import { useTheme } from '../hooks/useTheme'
 
 export default function Home({ user, setUser }) {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [isDarkMode, setIsDarkMode] = useState(true)
+  const { isDarkMode, setIsDarkMode, isLoaded } = useTheme()
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev)
@@ -19,14 +20,27 @@ export default function Home({ user, setUser }) {
   const reservationMessage = router.query.message
   const establishmentName = router.query.establishment
 
+  // Ne pas rendre avant que le thème soit chargé
+  if (!isLoaded) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FFFFFF' }}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">Chargement...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div 
         style={{ 
-          width: '100%', 
+          width: '100vw', 
           minHeight: '100vh', 
           margin: 0, 
           padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF'
+          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
+          maxWidth: 'none'
         }}
     >
       <div 
@@ -34,11 +48,12 @@ export default function Home({ user, setUser }) {
           display: 'flex', 
           flexDirection: 'column', 
           minHeight: '100vh', 
-          width: '100%',
+          width: '100vw',
           margin: 0,
           padding: 0,
           backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-          position: 'relative'
+          position: 'relative',
+          maxWidth: 'none'
         }}
       >
         {/* Header */}
@@ -47,8 +62,6 @@ export default function Home({ user, setUser }) {
           setUser={setUser}
           toggleMobileMenu={toggleMobileMenu} 
           isMobileMenuOpen={isMobileMenuOpen}
-          isDarkMode={isDarkMode}
-          setIsDarkMode={setIsDarkMode}
         />
 
         {/* Menu mobile */}
@@ -64,7 +77,7 @@ export default function Home({ user, setUser }) {
             flex: 1,
             overflow: 'hidden',
             backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-            width: '100%',
+            width: '100vw',
             minHeight: 'calc(100vh - 6rem)',
             display: 'flex',
             justifyContent: 'stretch',
@@ -76,8 +89,6 @@ export default function Home({ user, setUser }) {
             user={user} 
             initialMessage={reservationMessage}
             establishmentName={establishmentName}
-            isDarkMode={isDarkMode}
-            setIsDarkMode={setIsDarkMode}
           />
         </main>
         

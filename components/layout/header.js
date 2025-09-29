@@ -3,8 +3,10 @@ import Link from 'next/link'
 import { useState } from 'react'
 import { useRouter } from 'next/router'
 import LanguageSelector from '../LanguageSelector'
+import { useTheme } from '../../hooks/useTheme'
 
-export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen, isDarkMode, setIsDarkMode }) {
+export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) {
+  const { isDarkMode, setIsDarkMode } = useTheme()
   const [showUserMenu, setShowUserMenu] = useState(false)
   const router = useRouter()
 
