@@ -297,7 +297,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
           animation: scroll-reverse 30s linear infinite;
         }
       `}</style>
-      <div className="w-full min-h-screen" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+      <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
       {/* Main Content */}
       <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
         
@@ -307,21 +307,21 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
               onClick={() => setShowMobileHistory(!showMobileHistory)}
-              className="bg-gray-800/90 backdrop-blur-md border border-gray-600 rounded-full p-2 shadow-lg hover:bg-gray-700/90 transition-all duration-300"
+              className={`backdrop-blur-md rounded-full p-2 shadow-lg transition-all duration-300 ${isDarkMode ? 'bg-gray-800/90 border border-gray-600 hover:bg-gray-700/90' : 'bg-white/90 border border-gray-300 hover:bg-gray-100/90'}`}
             >
-              <MessageCircle size={20} className="text-white" />
+              <MessageCircle size={20} className={isDarkMode ? 'text-white' : 'text-gray-700'} />
             </button>
           </div>
           
           {/* Overlay mobile pour l'historique */}
           {showMobileHistory && (
-            <div className="lg:hidden fixed inset-0 bg-black/50 backdrop-blur-sm z-50" onClick={() => setShowMobileHistory(false)}>
-              <div className="absolute top-16 left-4 right-4 bg-gray-900/95 backdrop-blur-md border border-gray-700 rounded-2xl p-4 max-h-[70vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className={`lg:hidden fixed inset-0 backdrop-blur-sm z-50 ${isDarkMode ? 'bg-black/50' : 'bg-gray-900/20'}`} onClick={() => setShowMobileHistory(false)}>
+              <div className={`absolute top-16 left-4 right-4 backdrop-blur-md border rounded-2xl p-4 max-h-[70vh] overflow-y-auto ${isDarkMode ? 'bg-gray-900/95 border-gray-700' : 'bg-white/95 border-gray-300'}`} onClick={(e) => e.stopPropagation()}>
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-white font-bold text-lg">Conversations</h3>
+                  <h3 className={`font-bold text-lg ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Conversations</h3>
                   <button 
                     onClick={() => setShowMobileHistory(false)}
-                    className="text-gray-400 hover:text-white p-1 rounded-lg hover:bg-gray-700/50"
+                    className={`p-1 rounded-lg transition-all duration-300 ${isDarkMode ? 'text-gray-400 hover:text-white hover:bg-gray-700/50' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-200/50'}`}
                   >
                     ✕
                   </button>
@@ -336,8 +336,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg p-3 mb-2 cursor-pointer hover:from-purple-700 hover:to-indigo-700 transition-all"
                 >
                   <div className="flex items-center space-x-3">
-                    <Sparkles size={18} className="text-white" />
-                    <span className="text-white font-medium">Nouvelle Conversation</span>
+                    <Sparkles size={18} className={isDarkMode ? 'text-white' : 'text-gray-700'} />
+                    <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>Nouvelle Conversation</span>
                   </div>
                 </div>
                 
@@ -351,8 +351,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                     className="bg-gradient-to-r from-gray-600 to-gray-700 rounded-lg p-3 mb-4 cursor-pointer hover:from-gray-700 hover:to-gray-800 transition-all"
                   >
                     <div className="flex items-center space-x-3">
-                      <X size={18} className="text-white" />
-                      <span className="text-white font-medium">Fermer Conversation</span>
+                      <X size={18} className={isDarkMode ? 'text-white' : 'text-gray-700'} />
+                      <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>Fermer Conversation</span>
                     </div>
                   </div>
                 )}
@@ -376,7 +376,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
                           }}
                           className="flex-1"
                         >
-                          <div className="text-white text-sm font-medium truncate mb-1">
+                          <div className={`text-sm font-medium truncate mb-1 ${isDarkMode ? 'text-white' : 'text-gray-700'}`}>
                             {conversation.name}
                           </div>
                           <div className="text-gray-400 text-xs mb-2">
