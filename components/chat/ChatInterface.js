@@ -299,7 +299,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
       `}</style>
       <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
       {/* Main Content */}
-      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
+      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen" style={{ width: '100%', maxWidth: 'none' }}>
         
         {/* Sidebar gauche - Conversations */}
         <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
@@ -518,7 +518,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName, isDarkMode, se
         </div>
 
         {/* Chat Section - Largeur ajustée */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full">
+        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full" style={{ width: '100%', maxWidth: 'none' }}>
           <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
             
             {/* Barre d'outils mobile */}

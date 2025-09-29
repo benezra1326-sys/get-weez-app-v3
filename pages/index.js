@@ -26,7 +26,7 @@ export default function Home({ user, setUser }) {
           minHeight: '100vh', 
           margin: 0, 
           padding: 0,
-          backgroundColor: '#0D0D0D'
+          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF'
         }}
     >
       <div 
@@ -37,7 +37,7 @@ export default function Home({ user, setUser }) {
           width: '100%',
           margin: 0,
           padding: 0,
-          backgroundColor: '#0D0D0D',
+          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
           position: 'relative'
         }}
       >
@@ -63,12 +63,13 @@ export default function Home({ user, setUser }) {
           style={{ 
             flex: 1,
             overflow: 'hidden',
-            backgroundColor: '#0D0D0D',
+            backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
             width: '100%',
             minHeight: 'calc(100vh - 6rem)',
             display: 'flex',
             justifyContent: 'stretch',
-            alignItems: 'stretch'
+            alignItems: 'stretch',
+            maxWidth: 'none'
           }}
         >
           <ChatInterface 
