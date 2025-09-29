@@ -131,12 +131,20 @@ const MobileChatInterface = ({ user, initialMessage, establishmentName }) => {
           }
         }
         
-        .mobile-chat-container {
-          height: 100vh;
-          height: 100dvh; /* Dynamic viewport height for mobile */
-          display: flex;
-          flex-direction: column;
-        }
+  .mobile-chat-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh; /* Dynamic viewport height for mobile */
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    background-color: #0D0D0D;
+  }
         
         .messages-container {
           flex: 1;
@@ -176,79 +184,87 @@ const MobileChatInterface = ({ user, initialMessage, establishmentName }) => {
       `}</style>
 
       {/* Conteneur principal mobile - plein écran */}
-      <div className="lg:hidden mobile-chat-container bg-gray-900 relative">
+      <div className="lg:hidden mobile-chat-container">
         
-        {/* Header mobile */}
-        <div className="flex-shrink-0 bg-gray-800/90 backdrop-blur-md border-b border-gray-700 p-4">
+        {/* Header mobile - style ChatGPT */}
+        <div className="flex-shrink-0 bg-gray-900 border-b border-gray-800 p-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
-                <MessageCircle size={16} className="text-white" />
+              <div className="w-7 h-7 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg flex items-center justify-center">
+                <MessageCircle size={14} className="text-white" />
               </div>
               <div>
-                <h3 className="text-white font-semibold text-sm">Get Weez IA</h3>
-                <p className="text-gray-400 text-xs">Votre concierge personnel</p>
+                <h3 className="text-white font-semibold text-sm">Get Weez</h3>
+                <p className="text-gray-500 text-xs">Concierge IA</p>
               </div>
             </div>
             
             <button
               onClick={() => setShowHistory(!showHistory)}
-              className="p-2 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 text-gray-400 hover:text-white transition-all duration-300"
+              className="p-1.5 rounded-lg hover:bg-gray-800 text-gray-400 hover:text-white transition-all duration-200"
             >
-              <MessageCircle size={20} />
+              <MessageCircle size={18} />
             </button>
           </div>
         </div>
 
-        {/* Section Conversations */}
-        <div className="flex-shrink-0 bg-gray-800/50 border-b border-gray-700/50 p-4">
-          <h3 className="text-white font-semibold text-sm mb-3 flex items-center">
-            <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-            Conversations
-          </h3>
-          
-          {/* Bouton nouvelle conversation */}
-          <div 
-            onClick={() => createConversation()}
-            className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-3 mb-3 cursor-pointer hover:from-purple-700 hover:to-blue-700 transition-all"
-          >
-            <div className="flex items-center space-x-3">
-              <Sparkles size={18} className="text-white" />
-              <span className="text-white font-medium">Nouvelle Conversation</span>
+        {/* Section Conversations - style ChatGPT compact */}
+        {showHistory && (
+          <div className="flex-shrink-0 bg-gray-900 border-b border-gray-800 p-3">
+            <h3 className="text-white font-medium text-sm mb-2 flex items-center">
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
+              Conversations
+            </h3>
+            
+            {/* Bouton nouvelle conversation */}
+            <div 
+              onClick={() => {
+                createConversation()
+                setShowHistory(false)
+              }}
+              className="bg-gradient-to-r from-purple-600 to-blue-600 rounded-lg p-2 mb-2 cursor-pointer hover:from-purple-700 hover:to-blue-700 transition-all"
+            >
+              <div className="flex items-center space-x-2">
+                <Sparkles size={16} className="text-white" />
+                <span className="text-white font-medium text-sm">Nouvelle Conversation</span>
+              </div>
+            </div>
+            
+            {/* Liste des conversations */}
+            <div className="space-y-1 max-h-24 overflow-y-auto">
+              {conversations && conversations.length > 0 ? (
+                conversations.slice(0, 3).map((conversation) => (
+                  <div 
+                    key={conversation.id}
+                    className={`p-2 rounded-lg cursor-pointer transition-all border ${
+                      conversation.id === currentConversationId 
+                        ? 'bg-blue-600/30 border-blue-500/50' 
+                        : 'bg-gray-800/50 border-gray-700/50 hover:bg-gray-700/60'
+                    }`}
+                    onClick={() => {
+                      selectConversation(conversation.id)
+                      setShowHistory(false)
+                    }}
+                  >
+                    <div className="text-white text-sm font-medium truncate mb-1">
+                      {conversation.name}
+                    </div>
+                    <div className="text-gray-400 text-xs">
+                      {conversation.messages?.length || 0} messages
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-2">
+                  <p className="text-gray-400 text-xs">Aucune conversation</p>
+                </div>
+              )}
             </div>
           </div>
-          
-          {/* Liste des conversations */}
-          <div className="space-y-2 max-h-32 overflow-y-auto">
-            {conversations && conversations.length > 0 ? (
-              conversations.map((conversation) => (
-                <div 
-                  key={conversation.id}
-                  className={`p-2 rounded-lg cursor-pointer transition-all border ${
-                    conversation.id === currentConversationId 
-                      ? 'bg-blue-600/30 border-blue-500/50' 
-                      : 'bg-gray-700/50 border-gray-600/50 hover:bg-gray-600/50'
-                  }`}
-                  onClick={() => selectConversation(conversation.id)}
-                >
-                  <div className="text-white text-sm font-medium truncate mb-1">
-                    {conversation.name}
-                  </div>
-                  <div className="text-gray-400 text-xs">
-                    {conversation.messages?.length || 0} messages
-                  </div>
-                </div>
-              ))
-            ) : (
-              <div className="text-center py-4">
-                <p className="text-gray-400 text-sm">Aucune conversation</p>
-              </div>
-            )}
-          </div>
-        </div>
+        )}
 
-        {/* Messages container */}
-        <div className="messages-container p-4 space-y-4">
+        {/* Messages container - style ChatGPT */}
+        <div className="messages-container p-3 space-y-3">
           {messages && messages.length > 0 ? (
             messages.map((msg) => (
               <div
@@ -297,9 +313,9 @@ const MobileChatInterface = ({ user, initialMessage, establishmentName }) => {
           )}
         </div>
 
-        {/* Zone de saisie collée aux suggestions */}
-        <div className="input-container bg-gray-800/95 backdrop-blur-md px-3 py-2">
-          <div className="flex items-center space-x-2">
+        {/* Zone de saisie - style ChatGPT */}
+        <div className="input-container bg-gray-900 border-t border-gray-800 px-3 py-3">
+          <div className="flex items-end space-x-2">
             <div className="flex-1 relative">
               <textarea
                 ref={textareaRef}
@@ -308,37 +324,37 @@ const MobileChatInterface = ({ user, initialMessage, establishmentName }) => {
                   setInput(e.target.value)
                   if (textareaRef.current) {
                     textareaRef.current.style.height = 'auto'
-                    textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 48)}px`
+                    textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 100)}px`
                   }
                 }}
                 onKeyDown={handleKeyDown}
-                placeholder="Demandez-moi n'importe quoi sur Marbella..."
-                className="w-full px-2.5 py-1.5 pr-8 border rounded-md text-white resize-none text-sm transition-all duration-300 focus:outline-none bg-gray-700/50 border-gray-600/50 focus:border-purple-500 focus:ring-1 focus:ring-purple-500/30"
+                placeholder="Message Get Weez..."
+                className="w-full px-3 py-2 pr-10 border rounded-xl text-white resize-none text-sm transition-all duration-300 focus:outline-none bg-gray-800 border-gray-700 focus:border-purple-500"
                 style={{ 
-                  minHeight: '32px',
-                  maxHeight: '48px',
+                  minHeight: '40px',
+                  maxHeight: '100px',
                   fontSize: '16px' // Empêche le zoom sur iOS
                 }}
                 rows={1}
                 disabled={isLoading}
               />
               
-              {/* Bouton d'envoi mini */}
+              {/* Bouton d'envoi */}
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="absolute right-1 bottom-1 p-1 disabled:cursor-not-allowed text-white rounded transition-all duration-300"
+                className="absolute right-2 bottom-2 p-1.5 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300"
                 style={{
-                  backgroundColor: !input.trim() || isLoading ? '#4B5563' : '#8B5CF6',
-                  boxShadow: !input.trim() || isLoading ? 'none' : '0 1px 4px rgba(139, 92, 246, 0.3)'
+                  backgroundColor: !input.trim() || isLoading ? '#4B5563' : '#3B82F6',
+                  boxShadow: !input.trim() || isLoading ? 'none' : '0 2px 8px rgba(59, 130, 246, 0.3)'
                 }}
               >
-                <Send size={12} className="text-white" />
+                <Send size={14} className="text-white" />
               </button>
             </div>
           </div>
           
-          <div className="flex items-center justify-between text-xs text-gray-400 mt-1">
+          <div className="flex items-center justify-between text-xs text-gray-400 mt-2">
             <span className="text-xs">Entrée pour envoyer</span>
             {currentConversationId && (
               <button
