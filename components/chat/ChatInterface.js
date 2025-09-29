@@ -234,13 +234,39 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           background-size: 200px 100%;
           animation: shimmer 2s infinite;
         }
-      `}</style>
-      <div className="w-full max-w-full" style={{ backgroundColor: '#0D0D0D' }}>
-      {/* Main Content */}
-      <main className="flex w-full max-w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
         
-        {/* Sidebar gauche - Désactivée sur desktop */}
-        <div className="hidden">
+        @keyframes scroll {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-100%);
+          }
+        }
+        
+        @keyframes scroll-reverse {
+          0% {
+            transform: translateX(-100%);
+          }
+          100% {
+            transform: translateX(0);
+          }
+        }
+        
+        .animate-scroll {
+          animation: scroll 30s linear infinite;
+        }
+        
+        .animate-scroll-reverse {
+          animation: scroll-reverse 30s linear infinite;
+        }
+      `}</style>
+      <div className="w-full min-h-screen" style={{ backgroundColor: '#0D0D0D' }}>
+      {/* Main Content */}
+      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
+        
+        {/* Sidebar gauche - Conversations */}
+        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
           {/* Version mobile subtile - petit bouton flottant */}
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
@@ -455,7 +481,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Chat Section - Pleine largeur */}
+        {/* Chat Section - Largeur ajustée */}
         <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full">
           <div className="rounded-2xl border border-gray-800 p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
             
@@ -714,14 +740,87 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               )}
             </div>
 
-              {/* Suggestions rapides */}
-              <div className="lg:hidden mb-3">
+              {/* Suggestions rapides - Version mobile améliorée */}
+              <div className="lg:hidden mb-4">
+                <h3 className="text-white font-semibold text-sm mb-3 flex items-center">
+                  <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                  💡 Suggestions Premium
+                </h3>
+                <div className="grid grid-cols-2 gap-3 mb-4">
+                  {/* Événements */}
+                  <div className="bg-gradient-to-br from-blue-500 to-cyan-500 rounded-xl p-3 border border-blue-400/30">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-white text-lg">🏖️</span>
+                      <div>
+                        <h4 className="text-white font-bold text-sm">Beach Party</h4>
+                        <p className="text-blue-100 text-xs">21 juin</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setInput('Réserver pour la Beach Party')}
+                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                    >
+                      Réserver
+                    </button>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl p-3 border border-purple-400/30">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-white text-lg">🎷</span>
+                      <div>
+                        <h4 className="text-white font-bold text-sm">Soirée Jazz</h4>
+                        <p className="text-purple-100 text-xs">26 juin</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setInput('Réserver pour la soirée jazz')}
+                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                    >
+                      Réserver
+                    </button>
+                  </div>
+                  
+                  {/* Restaurants */}
+                  <div className="bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl p-3 border border-amber-400/30">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-white text-lg">🍣</span>
+                      <div>
+                        <h4 className="text-white font-bold text-sm">Nobu Marbella</h4>
+                        <p className="text-amber-100 text-xs">Japonais Premium</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setInput('Réserver une table chez Nobu')}
+                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                    >
+                      Réserver
+                    </button>
+                  </div>
+                  
+                  <div className="bg-gradient-to-br from-teal-500 to-cyan-500 rounded-xl p-3 border border-teal-400/30">
+                    <div className="flex items-center space-x-2 mb-2">
+                      <span className="text-white text-lg">🏖️</span>
+                      <div>
+                        <h4 className="text-white font-bold text-sm">La Terraza</h4>
+                        <p className="text-teal-100 text-xs">Méditerranéen</p>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => setInput('Réserver une table à La Terraza')}
+                      className="w-full bg-white/20 hover:bg-white/30 text-white text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300"
+                    >
+                      Réserver
+                    </button>
+                  </div>
+                </div>
+                
+                {/* Services rapides */}
                 <div className="flex flex-wrap gap-2">
-                  {['Trouver un restaurant ce soir', 'Réserver un yacht', 'Concierge 24/7', 'Événements exclusifs'].map((suggestion, index) => (
+                  {['🚗 Transport VIP', '🛥️ Yacht privé', '🚁 Hélicoptère', '💆 Spa à domicile'].map((service, index) => (
                     <button
                       key={index}
-                      onClick={() => setInput(suggestion)}
-                      className="px-3 py-2 rounded-full text-xs font-medium transition-all duration-300"
+                      onClick={() => setInput(service)}
+                      className="px-3 py-2 rounded-full text-xs font-medium transition-all duration-300 flex items-center"
                       style={{
                         backgroundColor: '#2D2D2D',
                         color: '#FFFFFF',
@@ -737,7 +836,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                         e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)'
                       }}
                     >
-                      {suggestion}
+                      {service}
                     </button>
                   ))}
                 </div>
@@ -831,58 +930,31 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - UNIQUEMENT sur desktop */}
-        <div className="hidden lg:block w-full lg:w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
+        <div className="hidden lg:block w-72 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
           <div className="p-2 lg:p-6 pb-2 lg:pb-12">
-            <h2 className="text-sm lg:text-2xl font-bold text-white mb-2 lg:mb-4">Suggestions</h2>
+            <h2 className="text-sm lg:text-3xl font-bold text-white mb-2 lg:mb-6">💡 Suggestions Premium</h2>
             
-            {/* Filtres - Version mobile avec dropdown */}
-            <div className="mb-2 lg:mb-6">
-              {/* Version mobile - Dropdown compact */}
-              <div className="lg:hidden">
-                <div className="relative">
-                  <select
-                    value={sidebarFilter}
-                    onChange={(e) => setSidebarFilter(e.target.value)}
-                    className="w-full px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 appearance-none cursor-pointer"
-                    style={{
-                      backgroundColor: '#374151',
-                      color: '#FFFFFF',
-                      border: '1px solid #4B5563',
-                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.2)'
-                    }}
-                  >
-                    <option value="all">Toutes les suggestions</option>
-                    <option value="events">🎉 Événements</option>
-                    <option value="establishments">🍽️ Établissements</option>
-                    <option value="services">⭐ Services</option>
-                  </select>
-                  <div className="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Version desktop - Filtres regroupés intelligemment */}
+            {/* Filtres améliorés avec plus d'options */}
+            <div className="mb-4 lg:mb-8">
+              {/* Version desktop - Filtres étendus */}
               <div className="hidden lg:block">
                 <div className="grid grid-cols-2 gap-2 mb-4">
                   <button
                     onClick={() => setSidebarFilter('all')}
-                    className="px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center"
+                    className="px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center"
                     style={{
                       backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : '#374151',
                       color: '#FFFFFF',
-                      boxShadow: sidebarFilter === 'all' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : '0 1px 4px rgba(0, 0, 0, 0.2)'
+                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : '0 2px 8px rgba(0, 0, 0, 0.3)'
                     }}
                   >
                     🌟 Tout
                   </button>
                   <button
                     onClick={() => setSidebarFilter('events')}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center ${
+                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
                       sidebarFilter === 'events' 
-                        ? 'bg-purple-600 text-white' 
+                        ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
                   >
@@ -892,9 +964,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setSidebarFilter('establishments')}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center ${
+                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
                       sidebarFilter === 'establishments' 
-                        ? 'bg-purple-600 text-white' 
+                        ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
                   >
@@ -902,13 +974,23 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   </button>
                   <button
                     onClick={() => setSidebarFilter('services')}
-                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center ${
+                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
                       sidebarFilter === 'services' 
-                        ? 'bg-purple-600 text-white' 
+                        ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
                   >
                     ⭐ Services
+                  </button>
+                  <button
+                    onClick={() => setSidebarFilter('luxury')}
+                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
+                      sidebarFilter === 'luxury' 
+                        ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white' 
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    💎 Luxe
                   </button>
                 </div>
               </div>
@@ -1059,7 +1141,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Menu dégustation avec chef étoilé Michelin</p>
                       <div className="flex items-center justify-between">
                         <div className="text-green-100 text-sm font-medium">🍽️ Michelin • ⭐ Étoilé</div>
-                        <button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <button className="bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
                           Réserver
                         </button>
                       </div>
@@ -1152,7 +1234,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <p className="text-white/90 text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed hidden lg:block">Cuisine japonaise de luxe avec vue panoramique sur la mer Méditerranée</p>
                       <div className="flex items-center justify-between">
                         <div className="text-amber-200 text-xs lg:text-sm font-medium">⭐ 4.9/5 • €€€€</div>
-                        <button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 lg:px-4 py-1 lg:py-2 rounded-lg font-semibold text-xs lg:text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                        <button className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-3 lg:px-4 py-1 lg:py-2 rounded-lg font-semibold text-xs lg:text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
                           Réserver
                         </button>
                       </div>
@@ -1170,7 +1252,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     </div>
                     <p className="text-gray-300 text-sm mb-3">Ambiance méditerranéenne avec vue panoramique</p>
-                    <button className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                    <button className="w-full bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium flex items-center justify-center">
                       Réserver
                     </button>
                   </div>
@@ -1186,7 +1268,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     </div>
                     <p className="text-gray-300 text-sm mb-3">Cuisine créative avec vue sur le lac</p>
-                    <button className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
+                    <button className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium flex items-center justify-center">
                       Réserver
                     </button>
                   </div>
@@ -1213,9 +1295,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {(sidebarFilter === 'all' || sidebarFilter === 'services') && (
                 <>
                   <div className="lg:block hidden">
-                    <h3 className="text-white font-semibold text-sm mb-3 flex items-center">
-                      <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-                      Services exclusifs
+                    <h3 className="text-white font-semibold text-lg mb-4 flex items-center">
+                      <span className="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
+                      ⭐ Services Exclusifs
                     </h3>
                   </div>
                 </>
@@ -1315,6 +1397,93 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   </div>
                 </>
               )}
+
+              {/* Section Luxe */}
+              {(sidebarFilter === 'all' || sidebarFilter === 'luxury') && (
+                <>
+                  <div className="lg:block hidden">
+                    <h3 className="text-white font-semibold text-lg mb-4 flex items-center">
+                      <span className="w-3 h-3 bg-amber-500 rounded-full mr-3"></span>
+                      💎 Expériences de Luxe
+                    </h3>
+                  </div>
+                </>
+              )}
+              {(sidebarFilter === 'all' || sidebarFilter === 'luxury') && (
+                <>
+                  <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 opacity-90"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    
+                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                      💎 LUXE
+                    </div>
+                    
+                    <div className="relative p-4 lg:p-6">
+                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
+                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-white text-2xl lg:text-3xl">🚁</span>
+                        </div>
+                        <div>
+                          <h3 className="text-white font-bold text-lg lg:text-xl">Hélicoptère Privé</h3>
+                          <p className="text-amber-100 text-sm lg:text-base">Tour panoramique</p>
+                        </div>
+                      </div>
+                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Vue aérienne exclusive de la Costa del Sol</p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-amber-100 text-sm font-medium">🚁 VIP • 🌊 Vue mer</div>
+                        <button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                          Réserver
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="relative overflow-hidden rounded-2xl border border-rose-500/30 hover:border-rose-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
+                    <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-purple-500 opacity-90"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                    
+                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                      💎 EXCLUSIF
+                    </div>
+                    
+                    <div className="relative p-4 lg:p-6">
+                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
+                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                          <span className="text-white text-2xl lg:text-3xl">🛥️</span>
+                        </div>
+                        <div>
+                          <h3 className="text-white font-bold text-lg lg:text-xl">Yacht Privé</h3>
+                          <p className="text-rose-100 text-sm lg:text-base">Croisière VIP</p>
+                        </div>
+                      </div>
+                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Yacht de luxe avec équipage professionnel</p>
+                      <div className="flex items-center justify-between">
+                        <div className="text-rose-100 text-sm font-medium">🛥️ Yacht • 🍾 Champagne</div>
+                        <button className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                          Réserver
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-2 lg:p-4 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group">
+                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
+                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
+                        <span className="text-white text-lg">🏆</span>
+                      </div>
+                      <div>
+                        <h3 className="text-white font-semibold text-sm lg:text-base">Golf Privé</h3>
+                        <p className="text-amber-300 text-xs lg:text-sm">Terrain VIP</p>
+                      </div>
+                    </div>
+                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Accès exclusif aux meilleurs parcours de golf</p>
+                    <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
+                      Réserver
+                    </button>
+                  </div>
+                </>
+              )}
             </div>
             
             <div className="h-8"></div>
@@ -1322,6 +1491,97 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
       </main>
       </div> {/* Fin interface desktop */}
+      
+      {/* Carrousel des marques qui font confiance */}
+      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: '#0D0D0D' }}>
+        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+          <div className="text-center mb-8 lg:mb-12">
+            <h2 className="text-2xl lg:text-4xl font-bold text-white mb-4">
+              Ils nous font confiance
+            </h2>
+            <p className="text-gray-400 text-lg">
+              Plus de 500+ partenaires premium nous font confiance
+            </p>
+          </div>
+          
+          {/* Carrousel des marques */}
+          <div className="relative overflow-hidden">
+            <div className="flex animate-scroll">
+              {/* Première ligne de marques */}
+              <div className="flex space-x-8 lg:space-x-12 items-center">
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🏨 Marriott</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🍽️ Nobu</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🏖️ Nikki Beach</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🚁 HeliMarbella</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🛥️ Yacht Charter</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🏆 Valderrama Golf</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">💆 Six Senses Spa</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🍾 Dom Pérignon</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🚗 Rolls-Royce</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">✈️ NetJets</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Deuxième ligne de marques */}
+          <div className="mt-6 lg:mt-8 relative overflow-hidden">
+            <div className="flex animate-scroll-reverse">
+              <div className="flex space-x-8 lg:space-x-12 items-center">
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🏨 Four Seasons</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🍽️ Cipriani</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🏖️ Puente Romano</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🎵 Pacha Marbella</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">💎 Cartier</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🏆 Real Club Valderrama</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">💆 Aman Spa</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🍾 Moët & Chandon</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">🚗 Bentley</div>
+                </div>
+                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
+                  <div className="text-white font-bold text-lg lg:text-xl">✈️ VistaJet</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       
       {/* Container pour les notifications toast */}
       <ToastContainer />

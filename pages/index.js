@@ -5,7 +5,6 @@ import ChatInterface from '../components/chat/ChatInterface'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
-import PartnersCarousel from '../components/home/PartnersCarousel'
 
 export default function Home({ user, setUser }) {
   const router = useRouter()
@@ -65,7 +64,7 @@ export default function Home({ user, setUser }) {
             width: '100%',
             minHeight: 'calc(100vh - 6rem)',
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'stretch',
             alignItems: 'stretch'
           }}
         >
@@ -75,9 +74,6 @@ export default function Home({ user, setUser }) {
             establishmentName={establishmentName}
           />
         </main>
-        
-        {/* Section Partenaires */}
-        <PartnersCarousel />
         
         {/* Footer avec logo Get Weez */}
         <footer 

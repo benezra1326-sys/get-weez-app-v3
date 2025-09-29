@@ -88,26 +88,26 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         }
       `}</style>
       <header
-        className="flex items-center justify-between sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700 px-4 lg:px-6 py-3 lg:py-4 w-full"
+        className="flex items-center justify-between sticky top-0 z-50 bg-gray-900/80 backdrop-blur-md border-b border-gray-700 px-2 lg:px-6 py-2 lg:py-4 w-full"
         style={{
-          minHeight: '4rem',
+          minHeight: '3.5rem',
           boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
         }}
       >
       <div className="flex items-center">
         <button 
           onClick={toggleMobileMenu}
-          className="lg:hidden p-2 rounded-xl transition-all duration-300 hover:bg-gray-800/50 mr-2"
+          className="lg:hidden p-1.5 rounded-xl transition-all duration-300 hover:bg-gray-800/50 mr-1"
           style={{ 
             color: 'var(--color-text-secondary)',
             borderRadius: 'var(--radius-lg)'
           }}
         >
-          <Menu size={20} />
+          <Menu size={18} />
         </button>
         <Link href="/" className="flex items-center group animate-hover-lift">
           <div 
-            className="px-6 py-3 rounded-xl shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
+            className="px-3 py-2 lg:px-6 lg:py-3 rounded-xl shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
             style={{ 
               background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
               borderRadius: '12px',
@@ -115,11 +115,11 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             }}
           >
             <h1 
-              className="text-xl lg:text-2xl font-bold text-white leading-tight tracking-wider"
+              className="text-lg lg:text-2xl font-bold text-white leading-tight tracking-wider whitespace-nowrap"
               style={{ 
                 fontFamily: 'Blanka, sans-serif',
                 fontWeight: 'bold',
-                letterSpacing: '0.1em'
+                letterSpacing: '0.05em'
               }}
             >
               GET WEEZ
