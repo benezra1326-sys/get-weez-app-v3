@@ -132,17 +132,12 @@ const MobileChatInterface = ({ user, initialMessage, establishmentName }) => {
         }
         
   .mobile-chat-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100vw;
-    height: 100vh;
-    height: 100dvh; /* Dynamic viewport height for mobile */
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for mobile */
     display: flex;
     flex-direction: column;
-    z-index: 1000;
     background-color: #0D0D0D;
   }
         

@@ -239,8 +239,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       {/* Main Content */}
       <main className="flex w-full max-w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen">
         
-        {/* Sidebar gauche - Mobile: subtile, Desktop: pleine */}
-        <div className="lg:flex w-80 bg-gray-900/80 backdrop-blur-md border-r border-gray-700 flex-col h-full hidden lg:flex">
+        {/* Sidebar gauche - Désactivée sur desktop */}
+        <div className="hidden">
           {/* Version mobile subtile - petit bouton flottant */}
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
@@ -455,8 +455,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Chat Section - Mobile: pleine largeur, Desktop: central */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full">
+        {/* Chat Section - Pleine largeur */}
+        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full">
           <div className="rounded-2xl border border-gray-800 p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: '#1A1A1A', borderColor: '#2D2D2D' }}>
             
             {/* Barre d'outils mobile */}
