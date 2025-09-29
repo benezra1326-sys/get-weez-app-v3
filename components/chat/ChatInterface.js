@@ -864,61 +864,53 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 </div>
               </div>
 
-              {/* Version desktop - Boutons horizontaux */}
-              <div className="hidden lg:flex space-x-2">
-                <button
-                  onClick={() => setSidebarFilter('all')}
-                  className="px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200"
-                  style={{
-                    backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : '#374151',
-                    color: '#FFFFFF',
-                    boxShadow: sidebarFilter === 'all' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : '0 1px 4px rgba(0, 0, 0, 0.2)'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (sidebarFilter !== 'all') {
-                      e.target.style.backgroundColor = '#4B5563'
-                      e.target.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.3)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (sidebarFilter !== 'all') {
-                      e.target.style.backgroundColor = '#374151'
-                      e.target.style.boxShadow = '0 1px 4px rgba(0, 0, 0, 0.2)'
-                    }
-                  }}
-                >
-                  Tout
-                </button>
-                <button
-                  onClick={() => setSidebarFilter('events')}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    sidebarFilter === 'events' 
-                      ? 'bg-purple-600 text-white' 
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  Événements
-                </button>
-                <button
-                  onClick={() => setSidebarFilter('establishments')}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    sidebarFilter === 'establishments' 
-                      ? 'bg-purple-600 text-white' 
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  Établissements
-                </button>
-                <button
-                  onClick={() => setSidebarFilter('services')}
-                  className={`px-3 py-1 rounded-lg text-sm font-medium transition-all duration-200 ${
-                    sidebarFilter === 'services' 
-                      ? 'bg-purple-600 text-white' 
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                  }`}
-                >
-                  Services
-                </button>
+              {/* Version desktop - Filtres regroupés intelligemment */}
+              <div className="hidden lg:block">
+                <div className="grid grid-cols-2 gap-2 mb-4">
+                  <button
+                    onClick={() => setSidebarFilter('all')}
+                    className="px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center"
+                    style={{
+                      backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : '#374151',
+                      color: '#FFFFFF',
+                      boxShadow: sidebarFilter === 'all' ? '0 2px 8px rgba(59, 130, 246, 0.3)' : '0 1px 4px rgba(0, 0, 0, 0.2)'
+                    }}
+                  >
+                    🌟 Tout
+                  </button>
+                  <button
+                    onClick={() => setSidebarFilter('events')}
+                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center ${
+                      sidebarFilter === 'events' 
+                        ? 'bg-purple-600 text-white' 
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    🎉 Événements
+                  </button>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <button
+                    onClick={() => setSidebarFilter('establishments')}
+                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center ${
+                      sidebarFilter === 'establishments' 
+                        ? 'bg-purple-600 text-white' 
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    🍽️ Restaurants
+                  </button>
+                  <button
+                    onClick={() => setSidebarFilter('services')}
+                    className={`px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 text-center ${
+                      sidebarFilter === 'services' 
+                        ? 'bg-purple-600 text-white' 
+                        : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                    }`}
+                  >
+                    ⭐ Services
+                  </button>
+                </div>
               </div>
             </div>
 
