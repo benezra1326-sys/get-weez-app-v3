@@ -7,16 +7,42 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
   const { isDarkMode } = useTheme()
   return (
     <div 
-      className={`relative p-8 rounded-2xl shadow-lg transition-all duration-300 ${
-        isDarkMode 
-          ? 'bg-gray-800/50 border border-gray-700/50 backdrop-blur-sm' 
-          : 'bg-white border border-gray-200/50 shadow-xl'
-      }`}
+      className="relative rounded-3xl shadow-2xl transition-all duration-300"
+      style={{
+        background: isDarkMode 
+          ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+          : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
+        backdropFilter: 'blur(20px) saturate(150%)',
+        border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
+        boxShadow: isDarkMode 
+          ? '0 20px 60px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+          : '0 20px 60px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+        padding: '2rem',
+      }}
     >
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <span className="text-white text-2xl font-bold text-center flex items-center justify-center w-full h-full">
+        <div 
+          className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
+          style={{
+            background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)', // Cohérent avec Get Weez
+            boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+          }}
+        >
+          <span 
+            className="text-white font-bold"
+            style={{
+              fontSize: '2rem',
+              lineHeight: '1',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: '100%',
+              height: '100%',
+              fontFamily: 'Blanka, sans-serif', // Cohérent avec le logo
+              letterSpacing: '0.05em'
+            }}
+          >
             {user?.first_name?.charAt(0)?.toUpperCase() || 'D'}
           </span>
         </div>
@@ -55,9 +81,15 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
       <div className="space-y-4">
         <button 
           onClick={() => router.push('/subscriptions')}
-          className="w-full flex items-center justify-center p-4 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-xl hover:from-purple-600 hover:to-pink-600 transition-all duration-300 shadow-lg font-medium"
+          className="w-full flex items-center justify-center p-4 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95"
+          style={{
+            background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+            color: 'white',
+            boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+            border: '1px solid rgba(255, 255, 255, 0.1)',
+          }}
         >
-          <Crown size={20} className="mr-3" />
+          <Crown size={22} className="mr-3" />
           {user?.is_member ? 'Gérer mon abonnement' : 'Devenir membre'}
         </button>
         

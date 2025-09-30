@@ -71,10 +71,12 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
 
       {isOpen && (
         <div 
-          className="absolute top-full left-0 right-0 mt-2 backdrop-blur-md border rounded-xl shadow-2xl z-50 max-h-80 overflow-y-auto"
+          className="absolute top-full left-0 right-0 mt-2 backdrop-blur-md border rounded-xl shadow-2xl max-h-80 overflow-y-auto"
           style={{
-            backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-            borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'
+            backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)',
+            borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)',
+            zIndex: 9999, // Z-index MAXIMUM pour passer au-dessus de TOUT
+            position: 'absolute',
           }}
         >
           <div className="p-3">

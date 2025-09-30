@@ -26,33 +26,42 @@ export default function EventDisplayToggle({ displayMode, onModeChange }) {
       `}</style>
       
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold text-white mb-4 flex items-center">
-          <span className="mr-3">🎨</span>
-          Mode d'Affichage
-        </h2>
-        
-        <div className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <button
-              onClick={() => onModeChange('banner')}
-              className={`toggle-button flex items-center justify-center px-4 py-4 rounded-xl font-medium transition-all duration-300 ${
-                displayMode === 'banner' ? 'active' : 'text-white'
-              }`}
-              title="Vue bannières"
-            >
-              <Image size={24} />
-            </button>
-            
-            <button
-              onClick={() => onModeChange('calendar')}
-              className={`toggle-button flex items-center justify-center px-4 py-4 rounded-xl font-medium transition-all duration-300 ${
-                displayMode === 'calendar' ? 'active' : 'text-white'
-              }`}
-              title="Vue calendrier"
-            >
-              <Calendar size={24} />
-            </button>
-          </div>
+        <div className="flex justify-center gap-3 p-4">
+          <button
+            onClick={() => onModeChange('banner')}
+            className={`toggle-button flex items-center justify-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${
+              displayMode === 'banner' ? 'active' : 'text-white'
+            }`}
+            style={{
+              background: displayMode === 'banner' 
+                ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                : 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))',
+              boxShadow: displayMode === 'banner' 
+                ? '0 8px 25px rgba(139, 92, 246, 0.4)'
+                : '0 4px 12px rgba(139, 92, 246, 0.2)',
+            }}
+            title="Vue bannières"
+          >
+            <Image size={20} />
+          </button>
+          
+          <button
+            onClick={() => onModeChange('calendar')}
+            className={`toggle-button flex items-center justify-center px-6 py-3 rounded-2xl font-medium transition-all duration-300 ${
+              displayMode === 'calendar' ? 'active' : 'text-white'
+            }`}
+            style={{
+              background: displayMode === 'calendar' 
+                ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                : 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))',
+              boxShadow: displayMode === 'calendar' 
+                ? '0 8px 25px rgba(139, 92, 246, 0.4)'
+                : '0 4px 12px rgba(139, 92, 246, 0.2)',
+            }}
+            title="Vue calendrier"
+          >
+            <Calendar size={20} />
+          </button>
         </div>
       </div>
     </>

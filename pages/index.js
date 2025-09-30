@@ -110,9 +110,9 @@ const Home = memo(({ user, setUser }) => {
           />
         </main>
         
-        {/* Footer propre sans bande noire */}
+        {/* Footer rétabli - visible sur mobile */}
         <footer 
-          className="lg:block hidden"
+          className="block"
           style={{ 
             backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
             padding: '1rem 2rem',

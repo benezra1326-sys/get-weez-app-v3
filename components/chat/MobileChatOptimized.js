@@ -479,13 +479,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
       <div 
         className="mobile-chat-container"
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
+          position: 'relative',
           width: '100vw',
-          height: viewportHeight,
+          height: '100dvh', // Utiliser dvh au lieu de vh
           minHeight: '-webkit-fill-available',
           maxWidth: '100vw',
           margin: 0,
@@ -493,7 +489,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           display: 'flex',
           flexDirection: 'column',
           overflow: 'hidden',
-          zIndex: 9999,
           background: isDarkMode 
             ? `
               linear-gradient(135deg, 
@@ -511,22 +506,22 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 rgba(255, 255, 255, 1) 100%
               )
             `,
+          paddingBottom: 'env(safe-area-inset-bottom)', // Gestion safe area iOS
         }}
       >
-        {/* Header moderne TOUJOURS VISIBLE avec encadrement */}
+        {/* Header chat BAISSÉ et VISIBLE immédiatement */}
         <div 
-          className="sticky top-0 px-4 py-4 border-b"
+          className="px-4 py-3 border-b flex-shrink-0"
           style={{
             background: isDarkMode 
               ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%)'
               : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
-            backdropFilter: 'blur(25px) saturate(180%)',
-            borderBottom: `2px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
+            backdropFilter: 'blur(20px) saturate(150%)',
+            borderBottom: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
             boxShadow: isDarkMode 
-              ? '0 8px 25px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-              : '0 8px 25px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)',
-            position: 'sticky',
-            zIndex: 100,
+              ? '0 4px 12px rgba(0, 0, 0, 0.2)'
+              : '0 4px 12px rgba(0, 0, 0, 0.08)',
+            zIndex: 10,
           }}
         >
           <div className="flex items-center justify-between">
@@ -568,25 +563,26 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               />
               </button>
           </div>
-        </div>
+            </div>
+            
 
-
-        {/* Messages avec scroll optimisé - AGRANDI pour voir message d'accueil */}
+        {/* Zone chat SANS scroll interne - Message d'accueil VISIBLE immédiatement */}
         <div 
-          ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto px-4 relative"
-          style={{
-            WebkitOverflowScrolling: 'touch',
-            scrollBehavior: 'smooth',
-            minHeight: '60vh', // Hauteur minimum AGRANDIE pour voir message d'accueil
+          className="flex-shrink-0 px-4 py-6"
+                style={{ 
+            minHeight: '30vh', // Espace dédié au chat, visible immédiatement
+            maxHeight: '30vh', // Pas de débordement
+                  display: 'flex',
+            flexDirection: 'column',
+                  justifyContent: 'center',
           }}
         >
           {messages && messages.length > 0 ? (
-            <>
+            <div className="overflow-y-auto flex-1" style={{ WebkitOverflowScrolling: 'touch' }}>
               {messages.map((msg) => (
-                <div
-                  key={msg.id}
-                  className={`flex mb-6 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+              <div
+                key={msg.id}
+                  className={`flex mb-4 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
                     className={`max-w-[85%] px-4 py-3 rounded-2xl backdrop-blur-lg ${
@@ -613,27 +609,47 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
                     }}
                   >
-                    {msg.content || 'Message vide'}
-                  </div>
-                </div>
-              ))}
-            </>
-          ) : (
-            <div className="flex flex-col items-center justify-center text-center py-16">
-              <div 
-                className="w-24 h-24 rounded-3xl flex items-center justify-center mb-8 relative"
-                style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
-                  boxShadow: '0 12px 40px rgba(139, 92, 246, 0.4)',
-                }}
-              >
-                <MessageCircle size={36} className="text-white" />
-                <div className="absolute -top-2 -right-2">
-                  <Sparkles size={18} className="text-yellow-300 animate-pulse" />
+                  {msg.content || 'Message vide'}
                 </div>
               </div>
-              <div className="mb-4">
-                <h3 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start mb-4">
+                  <div
+                    className="px-4 py-3 rounded-2xl rounded-bl-md border backdrop-blur-lg"
+                    style={{
+                      background: isDarkMode
+                        ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+                        : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
+                      borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
+                    }}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Get Weez réfléchit...
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center text-center">
+              <div 
+                className="w-20 h-20 rounded-3xl flex items-center justify-center mb-6 relative"
+                style={{
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                }}
+              >
+                <MessageCircle size={32} className="text-white" />
+                <div className="absolute -top-2 -right-2">
+                  <Sparkles size={16} className="text-yellow-300 animate-pulse" />
+              </div>
+            </div>
+              <div>
+                <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   {isClient && welcomeMessage ? 
                     (() => {
                       const parts = welcomeMessage.split('!')
@@ -643,7 +659,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                         <span>
                           {firstPart}
                           {secondPart && (
-                            <span className={`block text-xl font-semibold mt-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                            <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
                               {secondPart}
                             </span>
                           )}
@@ -652,7 +668,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     })() : 
                     <span>
                       Bienvenue sur Get Weez !
-                      <span className={`block text-xl font-semibold mt-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                      <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
                         De quoi auriez-vous besoin ?
                       </span>
                     </span>
@@ -661,32 +677,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               </div>
             </div>
           )}
-          
-          {isLoading && (
-            <div className="flex justify-start mb-6">
-              <div
-                className="px-4 py-3 rounded-2xl rounded-bl-md border backdrop-blur-lg"
-                style={{
-                  background: isDarkMode
-                    ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
-                    : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
-                  borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
-                  boxShadow: isDarkMode
-                    ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
-                    : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-                }}
-              >
-                <div className="flex items-center space-x-2">
-                  <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                  <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                    Get Weez réfléchit...
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-          
-          <div ref={messagesEndRef} />
         </div>
 
         {/* Zone de saisie REPOSITIONNÉE sous les messages, au-dessus des suggestions */}
@@ -698,7 +688,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
             backdropFilter: 'blur(25px) saturate(180%)',
             borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
-            zIndex: 10,
+            zIndex: 100, // Z-index MAXIMUM pour ne jamais passer sous suggestions/footer
             boxShadow: isDarkMode 
               ? '0 4px 12px rgba(0, 0, 0, 0.2)'
               : '0 4px 12px rgba(0, 0, 0, 0.08)',
@@ -728,7 +718,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                   className={`${isDarkMode ? 'text-white/80' : 'text-gray-700/80'} transition-colors`}
                 />
               </button>
-            </div>
+        </div>
           )}
           
           {/* Boîte de saisie */}
@@ -860,8 +850,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '160px', // AGRANDIE selon consignes pour attractivité
-                        maxHeight: '160px', // Hauteur fixe agrandie
+                        minHeight: '180px', // TAILLE VALIDÉE - Bannières grandes et lisibles
+                        maxHeight: '180px', // Hauteur fixe validée
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -876,8 +866,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond - AGRANDIE pour bannières attractives */}
-                      <div className="relative h-24 overflow-hidden">
+                      {/* Image de fond - TAILLE VALIDÉE pour bannières attractives */}
+                      <div className="relative h-28 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
@@ -908,11 +898,11 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                             className={`w-6 h-6 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
                           >
                             <Icon size={12} className="text-white" />
-                          </div>
+                      </div>
                           <span className={`text-sm font-bold ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>
                             ⭐ {suggestion.rating}
                           </span>
-                        </div>
+                    </div>
                         <h4 className={`font-semibold text-sm mb-1 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                           {suggestion.title}
                         </h4>
