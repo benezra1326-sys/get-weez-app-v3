@@ -1,11 +1,12 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import { useTranslation } from 'next-i18next'
-import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon, Mic, MicOff } from 'lucide-react'
+import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon } from 'lucide-react'
 import { useConversations } from '../../hooks/useConversations'
 import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
 import MobileChatInterface from './MobileChatInterface'
+import ChatInput from './ChatInput'
 import { useTheme } from '../../contexts/ThemeContext'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
@@ -19,19 +20,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   const [conversationToDelete, setConversationToDelete] = useState(null)
   const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
   const [showMobileHistory, setShowMobileHistory] = useState(false)
-  const [isListening, setIsListening] = useState(false)
-  const textareaRef = useRef(null)
 
   // Effet pour pré-remplir le message de réservation
   useEffect(() => {
     if (initialMessage) {
       setInput(initialMessage)
-      // Focus sur la zone de saisie
-      if (textareaRef.current) {
-        textareaRef.current.focus()
-        // Scroll vers le bas pour voir la zone de saisie
-        textareaRef.current.scrollIntoView({ behavior: 'smooth' })
-      }
     }
   }, [initialMessage])
   
@@ -141,25 +134,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     }
   }, [input, isLoading, currentConversationId, createConversation, addMessage, showToast, conversations])
 
-  const handleKeyDown = useCallback((e) => {
-    console.log('⌨️⌨️⌨️ Touche pressée:', e.key, { input: input.trim(), isLoading, inputLength: input.length })
-    if (e.key === 'Enter' && !e.shiftKey) {
-      e.preventDefault()
-      e.stopPropagation()
-      console.log('✅✅✅ Entrée pressée, conditions:', { 
-        hasInput: !!input.trim(), 
-        notLoading: !isLoading,
-        inputValue: input,
-        inputTrimmed: input.trim()
-      })
-      if (input.trim() && !isLoading) {
-        console.log('🚀🚀🚀 Appel de handleSend depuis handleKeyDown')
-        handleSend()
-      } else {
-        console.log('❌❌❌ Conditions non remplies pour handleSend')
-      }
-    }
-  }, [input, isLoading, handleSend])
 
   // Gestion de la suppression de conversation
   const handleDeleteClick = (conversationId) => {
@@ -181,40 +155,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     setShowDeleteConfirm(false)
   }
 
-  // Fonction de dictée
-  const startListening = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      const recognition = new SpeechRecognition()
-      
-      recognition.continuous = false
-      recognition.interimResults = false
-      recognition.lang = 'fr-FR'
-      
-      recognition.onstart = () => {
-        setIsListening(true)
-      }
-      
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript
-        setInput(transcript)
-        setIsListening(false)
-      }
-      
-      recognition.onerror = () => {
-        setIsListening(false)
-        showToast('Erreur de reconnaissance vocale', 'error')
-      }
-      
-      recognition.onend = () => {
-        setIsListening(false)
-      }
-      
-      recognition.start()
-    } else {
-      showToast('Reconnaissance vocale non supportée', 'error')
-    }
-  }
 
   const handleCloseConversation = () => {
     if (currentConversationId) {
@@ -713,10 +653,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     className="lg:hidden relative overflow-hidden rounded-2xl border border-purple-500/30 p-4 mb-4 w-full max-w-sm cursor-pointer transition-all duration-300 hover:scale-105"
                     style={{ borderColor: '#3B82F6' }}
                     onClick={() => {
-                      if (textareaRef.current) {
-                        textareaRef.current.focus()
-                        textareaRef.current.scrollIntoView({ behavior: 'smooth' })
-                      }
+                      // Action à définir - peut-être scroll vers la zone de saisie
                     }}
                   >
                     <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 opacity-90"></div>
@@ -901,124 +838,16 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 </div>
             </div>
 
-              {/* Zone de saisie */}
-              <div className="flex-shrink-0 space-y-2 lg:space-y-3">
-                <div className="relative">
-                  <textarea
-                    ref={textareaRef}
-                    value={input}
-                    onChange={(e) => {
-                      setInput(e.target.value)
-                      if (textareaRef.current) {
-                        textareaRef.current.style.height = 'auto'
-                        textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
-                      }
-                    }}
-                    onKeyDown={handleKeyDown}
-                    placeholder={messages.length === 0 ? "Demandez-moi n'importe quoi sur Marbella..." : t('chat.placeholder')}
-                    className="w-full px-4 py-4 lg:px-4 lg:py-6 pr-12 lg:pr-24 border rounded-xl resize-none text-sm lg:text-lg transition-all duration-300 focus:outline-none"
-                    style={{ 
-                      backgroundColor: isDarkMode ? '#2D2D2D' : '#F9FAFB', 
-                      borderColor: isDarkMode ? '#374151' : '#D1D5DB', 
-                      color: isDarkMode ? '#FFFFFF' : '#1F2937',
-                      minHeight: '48px',
-                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-                      fontSize: '16px' // Empêche le zoom sur iOS
-                    }}
-                    onFocus={(e) => {
-                      e.target.style.borderColor = '#3B82F6'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
-                    }}
-                    onBlur={(e) => {
-                      e.target.style.borderColor = '#374151'
-                      e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.2)'
-                    }}
-                    rows={1}
-                    disabled={isLoading}
-                  />
-                
-                {/* Bouton de dictée */}
-                <button
-                  onClick={startListening}
-                  disabled={isListening}
-                  className="absolute right-12 lg:right-16 top-1/2 transform -translate-y-1/2 p-2 lg:p-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300"
-                  style={{
-                    backgroundColor: isListening ? '#EF4444' : '#6B7280',
-                    boxShadow: isListening ? '0 4px 12px rgba(239, 68, 68, 0.3)' : '0 2px 8px rgba(107, 114, 128, 0.3)'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isListening) {
-                      e.target.style.backgroundColor = '#4B5563'
-                      e.target.style.boxShadow = '0 4px 12px rgba(107, 114, 128, 0.4)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isListening) {
-                      e.target.style.backgroundColor = '#6B7280'
-                      e.target.style.boxShadow = '0 2px 8px rgba(107, 114, 128, 0.3)'
-                    }
-                  }}
-                  title={isListening ? "Arrêter la dictée" : "Dictée vocale"}
-                >
-                  {isListening ? (
-                    <MicOff size={14} className="lg:hidden" />
-                  ) : (
-                    <Mic size={14} className="lg:hidden" />
-                  )}
-                  {isListening ? (
-                    <MicOff size={16} className="hidden lg:block" />
-                  ) : (
-                    <Mic size={16} className="hidden lg:block" />
-                  )}
-                </button>
-                
-                {/* Bouton d'envoi */}
-                <button
-                  onClick={() => {
-                    console.log('🖱️ Bouton d\'envoi cliqué', { input: input.trim(), isLoading })
-                    handleSend()
-                  }}
-                  disabled={!input.trim() || isLoading}
-                  className="absolute right-2 lg:right-3 top-1/2 transform -translate-y-1/2 p-2 lg:p-4 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300"
-                  style={{
-                    backgroundColor: !input.trim() || isLoading ? '#374151' : '#3B82F6',
-                    boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isLoading && input.trim()) {
-                      e.target.style.backgroundColor = '#2563EB'
-                      e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isLoading && input.trim()) {
-                      e.target.style.backgroundColor = '#3B82F6'
-                      e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
-                    }
-                  }}
-                >
-                  {isLoading ? (
-                    <Loader2 size={14} className="animate-spin lg:hidden" />
-                  ) : (
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="lg:hidden">
-                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
-                    </svg>
-                  )}
-                  {isLoading ? (
-                    <Loader2 size={16} className="animate-spin hidden lg:block" />
-                  ) : (
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="hidden lg:block">
-                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
-                    </svg>
-                  )}
-                </button>
-              </div>
-                
-              {/* Texte d'information */}
-              <div className="flex items-center justify-between text-xs lg:text-xs text-gray-400">
-                <span className="hidden sm:inline">Appuyez sur Entrée pour envoyer, Shift+Entrée pour une nouvelle ligne</span>
-                <span className="sm:hidden">Entrée pour envoyer</span>
-              </div>
+              {/* Zone de saisie optimisée */}
+              <ChatInput
+                value={input}
+                onChange={setInput}
+                onSend={handleSend}
+                disabled={false}
+                isLoading={isLoading}
+                messages={messages}
+                showToast={showToast}
+              />
             </div>
           </div>
         </div>
