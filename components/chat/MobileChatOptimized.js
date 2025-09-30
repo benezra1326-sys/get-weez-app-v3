@@ -32,12 +32,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
   const [selectedCategory, setSelectedCategory] = useState('all')
   const [selectedSuggestion, setSelectedSuggestion] = useState(null)
   const [showDetailPage, setShowDetailPage] = useState(false)
-  const [welcomeMessage, setWelcomeMessage] = useState('')
-  const [isClient, setIsClient] = useState(false)
-  const [scrollY, setScrollY] = useState(0)
   const textareaRef = useRef(null)
-  const messagesEndRef = useRef(null)
-  const messagesContainerRef = useRef(null)
   
   // Vérification de sécurité pour useTheme
   let isDarkMode = false
@@ -59,39 +54,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
     }
   }, [initialMessage])
 
-  // Fonction pour scroller vers le bas
-  const scrollToBottom = useCallback(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [])
-
-  // Effet pour scroller automatiquement vers le bas quand les messages changent
-  useEffect(() => {
-    scrollToBottom()
-  }, [messages, isLoading, scrollToBottom])
-
-  // Effet pour suivre le scroll et positionner le bouton intelligemment
-  useEffect(() => {
-    const handleScroll = () => {
-      if (messagesContainerRef.current) {
-        const container = messagesContainerRef.current
-        const scrollTop = container.scrollTop
-        const scrollHeight = container.scrollHeight
-        const clientHeight = container.clientHeight
-        
-        // Calculer la position du bouton en fonction du scroll
-        const scrollPercentage = scrollTop / (scrollHeight - clientHeight)
-        setScrollY(scrollPercentage)
-      }
-    }
-
-    const container = messagesContainerRef.current
-    if (container) {
-      container.addEventListener('scroll', handleScroll)
-      return () => container.removeEventListener('scroll', handleScroll)
-    }
-  }, [messages])
 
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return
@@ -174,29 +136,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
     setIsLoading(false)
   }, [])
 
-  // Effet pour générer le message d'accueil côté client uniquement
-  useEffect(() => {
-    setIsClient(true)
-    
-    const messages = user?.first_name ? [
-      `Bonjour ${user.first_name} ! Que puis-je organiser pour vous aujourd'hui ?`,
-      `Ravi de vous revoir ${user.first_name} ! De quoi auriez-vous besoin ?`,
-      `Hello ${user.first_name} ! Prêt pour une nouvelle aventure à Marbella ?`,
-      `Salut ${user.first_name} ! Comment puis-je vous aider aujourd'hui ?`,
-      `Bienvenue ${user.first_name} ! Quel service exclusif vous intéresse ?`,
-      `Ravi de vous revoir ${user.first_name} ! Que désirez-vous découvrir ?`
-    ] : [
-      `Bonjour ! Que puis-je organiser pour vous aujourd'hui ?`,
-      `Bienvenue sur Get Weez ! De quoi auriez-vous besoin ?`,
-      `Hello ! Prêt pour une nouvelle aventure à Marbella ?`,
-      `Salut ! Comment puis-je vous aider aujourd'hui ?`,
-      `Bienvenue ! Quel service exclusif vous intéresse ?`,
-      `Ravi de vous voir ! Que désirez-vous découvrir ?`
-    ]
-    
-    // Sélectionner un message aléatoire côté client
-    setWelcomeMessage(messages[Math.floor(Math.random() * messages.length)])
-  }, [user?.first_name])
 
   // Suggestions luxueuses avec vraies images et données complètes
   const suggestions = [
@@ -440,38 +379,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
     }, 100)
   }
 
-  // État pour la gestion du viewport mobile
-  const [viewportHeight, setViewportHeight] = useState('100vh')
-  
-  // Effet pour adapter la hauteur au viewport mobile
-  useEffect(() => {
-    const updateViewportHeight = () => {
-      // Utiliser la hauteur réelle du viewport, y compris avec clavier virtuel
-      const vh = window.innerHeight * 0.01
-      document.documentElement.style.setProperty('--vh', `${vh}px`)
-      setViewportHeight(`${window.innerHeight}px`)
-    }
-    
-    // Mise à jour initiale
-    updateViewportHeight()
-    
-    // Écouter les changements de taille (rotation, clavier)
-    window.addEventListener('resize', updateViewportHeight)
-    window.addEventListener('orientationchange', updateViewportHeight)
-    
-    // Écouter les changements de viewport sur mobiles
-    if ('visualViewport' in window) {
-      window.visualViewport.addEventListener('resize', updateViewportHeight)
-    }
-    
-    return () => {
-      window.removeEventListener('resize', updateViewportHeight)
-      window.removeEventListener('orientationchange', updateViewportHeight)
-      if ('visualViewport' in window) {
-        window.visualViewport.removeEventListener('resize', updateViewportHeight)
-      }
-    }
-  }, [])
 
   return (
     <>
@@ -649,31 +556,12 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               </div>
             </div>
               <div>
-                <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                  {isClient && welcomeMessage ? 
-                    (() => {
-                      const parts = welcomeMessage.split('!')
-                      const firstPart = parts[0] + ' !'
-                      const secondPart = parts[1] ? parts[1].trim() : ''
-                      return (
-                        <span>
-                          {firstPart}
-                          {secondPart && (
-                            <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
-                              {secondPart}
-                            </span>
-                          )}
-                        </span>
-                      )
-                    })() : 
-                    <span>
-                      Bienvenue sur Get Weez !
-                      <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
-                        De quoi auriez-vous besoin ?
-                      </span>
-                    </span>
-                  }
-                </h3>
+                <h3 className={`text-xl font-bold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                Bienvenue sur Get Weez
+              </h3>
+                <p className={`text-purple-100 text-lg px-4 leading-relaxed ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                  Votre concierge IA personnel pour Marbella
+              </p>
               </div>
             </div>
           )}
@@ -718,7 +606,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                   className={`${isDarkMode ? 'text-white/80' : 'text-gray-700/80'} transition-colors`}
                 />
               </button>
-        </div>
+            </div>
           )}
           
           {/* Boîte de saisie */}
@@ -782,14 +670,13 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Suggestions modernes avec espace MAXIMISÉ pour voir message d'accueil */}
+        {/* Suggestions SANS scroll - Affichage fixe */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
-            className="flex-1 overflow-y-auto px-4 py-6"
+            className="flex-1 px-4 py-4"
             style={{
-              WebkitOverflowScrolling: 'touch',
-              scrollBehavior: 'smooth',
               paddingBottom: '120px', // Espace pour zone saisie
+              overflow: 'hidden', // SANS scroll comme demandé
             }}
           >
             <div>
@@ -831,13 +718,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             </div>
 
               {/* Grid de suggestions ultra-maximisée - Plus d'éléments visibles */}
-              <div className="grid grid-cols-3 gap-2 overflow-y-auto" style={{
-                scrollbarWidth: 'none',
-                msOverflowStyle: 'none',
-                maxHeight: 'calc(100vh - 200px)', // Encore plus d'espace
-                minHeight: 'calc(100vh - 280px)', // Hauteur minimum encore plus grande
-                height: 'auto' // Flexibilité totale
-              }}>
+              <div className="grid grid-cols-3 gap-2">
               {filteredSuggestions.map((suggestion) => {
                 const Icon = suggestion.icon
                 return (
@@ -850,8 +731,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '180px', // TAILLE VALIDÉE - Bannières grandes et lisibles
-                        maxHeight: '180px', // Hauteur fixe validée
+                        minHeight: '140px', // Taille optimisée mobile - pas trop allongées
+                        maxHeight: '140px', // Hauteur fixe optimisée
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -866,8 +747,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond - TAILLE VALIDÉE pour bannières attractives */}
-                      <div className="relative h-28 overflow-hidden">
+                      {/* Image de fond - Taille optimisée mobile */}
+                      <div className="relative h-20 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
@@ -1094,81 +975,13 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         )}
 
 
-        {/* Styles CSS pour adaptation mobile */}
+        {/* Styles CSS simplifiés */}
         <style jsx global>{`
-          /* Variables CSS personnalisées pour le viewport mobile */
-          :root {
-            --vh: 1vh;
+          .animate-fade-in-up {
+            animation: fadeInUp 0.3s ease-out;
           }
           
-          /* Optimisations pour le chat mobile plein écran */
-          .mobile-chat-container {
-            /* Forcer la hauteur complète sur tous les navigateurs mobiles */
-            height: 100vh; /* Fallback */
-            height: calc(var(--vh, 1vh) * 100); /* iOS Safari */
-            height: 100dvh; /* Nouveau standard */
-            height: -webkit-fill-available; /* Chrome mobile */
-            
-            /* Empêcher le zoom sur les inputs iOS */
-            -webkit-text-size-adjust: 100%;
-            -ms-text-size-adjust: 100%;
-            text-size-adjust: 100%;
-            
-            /* Gestion des safe areas (notch, etc.) */
-            padding-top: env(safe-area-inset-top, 0);
-            padding-bottom: env(safe-area-inset-bottom, 0);
-            padding-left: env(safe-area-inset-left, 0);
-            padding-right: env(safe-area-inset-right, 0);
-          }
-          
-          /* Optimisations pour les différentes tailles d'écran */
-          @media screen and (max-width: 320px) {
-            /* iPhone SE et petits écrans */
-            .mobile-chat-container {
-              font-size: 14px;
-            }
-          }
-          
-          @media screen and (min-width: 321px) and (max-width: 375px) {
-            /* iPhone standard */
-            .mobile-chat-container {
-              font-size: 16px;
-            }
-          }
-          
-          @media screen and (min-width: 376px) and (max-width: 414px) {
-            /* iPhone Plus */
-            .mobile-chat-container {
-              font-size: 17px;
-            }
-          }
-          
-          @media screen and (min-width: 415px) {
-            /* Écrans plus larges */
-            .mobile-chat-container {
-              font-size: 18px;
-            }
-          }
-          
-          /* Gestion du clavier virtuel */
-          @media screen and (max-height: 500px) {
-            .mobile-chat-container {
-              /* Adapter quand le clavier est ouvert */
-              padding-bottom: 0;
-            }
-          }
-          
-          /* Orientation paysage */
-          @media screen and (orientation: landscape) {
-            .mobile-chat-container {
-              padding-top: env(safe-area-inset-top, 0);
-              padding-left: env(safe-area-inset-left, 0);
-              padding-right: env(safe-area-inset-right, 0);
-            }
-          }
-          
-          /* Animations fluides */
-          @keyframes fade-in-up {
+          @keyframes fadeInUp {
             from {
               opacity: 0;
               transform: translateY(20px);
@@ -1179,46 +992,10 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             }
           }
           
-          .animate-fade-in-up {
-            animation: fade-in-up 0.4s ease-out;
-          }
-          
-          /* Masquer les scrollbars sur webkit */
-          .mobile-chat-container ::-webkit-scrollbar {
-            display: none;
-            width: 0;
-            height: 0;
-          }
-          
-          /* Masquer les scrollbars sur Firefox */
-          .mobile-chat-container * {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-          }
-          
-          /* Optimisations touch */
-          .mobile-chat-container * {
-            -webkit-tap-highlight-color: transparent;
-            touch-action: manipulation;
-          }
-          
-          /* Empêcher le zoom sur focus des inputs */
           .mobile-chat-container input,
-          .mobile-chat-container textarea,
-          .mobile-chat-container select {
-            font-size: 16px !important; /* Empêche le zoom sur iOS */
-            transform: translateZ(0);
+          .mobile-chat-container textarea {
+            font-size: 16px !important;
             -webkit-appearance: none;
-          }
-          
-          /* Fix pour les appareils avec notch */
-          @supports (padding: max(0px)) {
-            .mobile-chat-container {
-              padding-top: max(env(safe-area-inset-top, 0), 0px);
-              padding-bottom: max(env(safe-area-inset-bottom, 0), 0px);
-              padding-left: max(env(safe-area-inset-left, 0), 0px);
-              padding-right: max(env(safe-area-inset-right, 0), 0px);
-            }
           }
         `}</style>
       </div>
