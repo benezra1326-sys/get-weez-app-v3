@@ -1,0 +1,242 @@
+# 🔍 GitHub Actions - Code Review Automation
+name: Automated Code Review
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'components/**/*.js'
+      - 'components/**/*.jsx'
+      - 'pages/**/*.js'
+      - 'hooks/**/*.js'
+      - 'lib/**/*.js'
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    name: Code Quality Check
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run ESLint
+      run: |
+        npx eslint components/ pages/ hooks/ lib/ \
+          --format @microsoft/eslint-formatter-sarif \
+          --output-file eslint-results.sarif
+      continue-on-error: true
+
+    - name: Upload ESLint results
+      uses: github/codeql-action/upload-sarif@v2
+      if: always()
+      with:
+        sarif_file: eslint-results.sarif
+        wait-for-processing: true
+
+    - name: Check bundle size
+      run: |
+        npm run build
+        npx bundlesize
+
+    - name: Run performance audit
+      run: |
+        node audit-performance-final.js > performance-report.txt
+        echo "## 📊 Performance Report" >> $GITHUB_STEP_SUMMARY
+        cat performance-report.txt >> $GITHUB_STEP_SUMMARY
+
+  component-analysis:
+    runs-on: ubuntu-latest
+    name: Component Analysis
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Analyze component complexity
+      run: |
+        echo "# 🧩 Component Complexity Analysis" > complexity-report.md
+        echo "" >> complexity-report.md
+        
+        # Analyser les fichiers modifiés
+        git diff --name-only origin/main...HEAD | grep -E '\.(js|jsx)$' | while read file; do
+          if [ -f "$file" ]; then
+            lines=$(wc -l < "$file")
+            echo "## $file" >> complexity-report.md
+            echo "- **Lines:** $lines" >> complexity-report.md
+            
+            # Compter les console.log
+            console_logs=$(grep -c "console\." "$file" || true)
+            echo "- **Console.log count:** $console_logs" >> complexity-report.md
+            
+            # Compter les useState
+            usestate_count=$(grep -c "useState" "$file" || true)
+            echo "- **useState count:** $usestate_count" >> complexity-report.md
+            
+            # Vérifier la taille des composants
+            if [ "$lines" -gt 500 ]; then
+              echo "- ⚠️ **Warning:** Component too large ($lines lines). Consider splitting." >> complexity-report.md
+            fi
+            
+            if [ "$console_logs" -gt 0 ]; then
+              echo "- ⚠️ **Warning:** Found $console_logs console.log statements. Remove for production." >> complexity-report.md
+            fi
+            
+            if [ "$usestate_count" -gt 5 ]; then
+              echo "- ⚠️ **Warning:** Too many useState hooks ($usestate_count). Consider useReducer." >> complexity-report.md
+            fi
+            
+            echo "" >> complexity-report.md
+          fi
+        done
+        
+        # Afficher le rapport dans le summary
+        cat complexity-report.md >> $GITHUB_STEP_SUMMARY
+
+    - name: Check for anti-patterns
+      run: |
+        echo "# 🚨 Anti-patterns Detection" > antipatterns-report.md
+        echo "" >> antipatterns-report.md
+        
+        # Vérifier les anti-patterns
+        git diff --name-only origin/main...HEAD | grep -E '\.(js|jsx)$' | while read file; do
+          if [ -f "$file" ]; then
+            echo "## $file" >> antipatterns-report.md
+            
+            # Styles inline
+            inline_styles=$(grep -c "style={{" "$file" || true)
+            if [ "$inline_styles" -gt 5 ]; then
+              echo "- ⚠️ **Too many inline styles** ($inline_styles found). Use CSS modules or styled-components." >> antipatterns-report.md
+            fi
+            
+            # Fonctions non mémorisées dans JSX
+            inline_functions=$(grep -c "onClick={() =>" "$file" || true)
+            if [ "$inline_functions" -gt 3 ]; then
+              echo "- ⚠️ **Inline functions in JSX** ($inline_functions found). Use useCallback for performance." >> antipatterns-report.md
+            fi
+            
+            # Import * as
+            wildcard_imports=$(grep -c "import \* as" "$file" || true)
+            if [ "$wildcard_imports" -gt 0 ]; then
+              echo "- ⚠️ **Wildcard imports** ($wildcard_imports found). Use named imports instead." >> antipatterns-report.md
+            fi
+            
+            echo "" >> antipatterns-report.md
+          fi
+        done
+        
+        cat antipatterns-report.md >> $GITHUB_STEP_SUMMARY
+
+  security-scan:
+    runs-on: ubuntu-latest
+    name: Security Scan
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run Snyk security scan
+      uses: snyk/actions/node@master
+      env:
+        SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+      with:
+        args: --severity-threshold=medium
+
+    - name: Run npm audit
+      run: |
+        npm audit --audit-level moderate
+        npm audit --json > audit-results.json || true
+
+  lighthouse-ci:
+    runs-on: ubuntu-latest
+    name: Lighthouse CI
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build project
+      run: npm run build
+
+    - name: Run Lighthouse CI
+      uses: treosh/lighthouse-ci-action@v9
+      with:
+        configPath: './lighthouserc.js'
+        uploadArtifacts: true
+        temporaryPublicStorage: true
+
+  comment-pr:
+    runs-on: ubuntu-latest
+    name: Comment PR with insights
+    needs: [code-quality, component-analysis, security-scan]
+    if: always()
+    
+    steps:
+    - name: Comment PR
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const prNumber = context.payload.pull_request.number;
+          
+          let comment = `
+          ## 🔍 Automated Code Review Results
+          
+          ### ✅ Checks Completed:
+          - Code quality analysis
+          - Component complexity check  
+          - Security scan
+          - Performance audit
+          
+          ### 📊 Summary:
+          - **Code Quality**: ${{ needs.code-quality.result }}
+          - **Component Analysis**: ${{ needs.component-analysis.result }}
+          - **Security Scan**: ${{ needs.security-scan.result }}
+          
+          ### 🚀 Recommendations:
+          - Review any warnings in the component analysis
+          - Fix security vulnerabilities if found
+          - Consider performance improvements for large components
+          - Remove console.log statements before merging
+          
+          ### 📚 Useful Links:
+          - [Performance Optimization Guide](./RAPPORT_AUDIT_PERFORMANCE_FINAL.md)
+          - [Component Architecture Guidelines](./MOBILE_OPTIMIZATIONS.md)
+          `;
+          
+          github.rest.issues.createComment({
+            issue_number: prNumber,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: comment
+          });
