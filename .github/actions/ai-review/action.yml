@@ -1,0 +1,27 @@
+name: 'AI Code Review'
+description: 'AI-powered code review using OpenAI GPT-4'
+author: 'Get Weez Team'
+
+inputs:
+  openai-api-key:
+    description: 'OpenAI API Key'
+    required: true
+  github-token:
+    description: 'GitHub token'
+    required: true
+  review-level:
+    description: 'Review level: basic, detailed, comprehensive'
+    required: false
+    default: 'detailed'
+  max-files:
+    description: 'Maximum number of files to review'
+    required: false
+    default: '10'
+
+runs:
+  using: 'node20'
+  main: 'dist/index.js'
+
+branding:
+  icon: 'eye'
+  color: 'blue'
