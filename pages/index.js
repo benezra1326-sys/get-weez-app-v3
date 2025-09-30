@@ -109,14 +109,14 @@ const Home = memo(({ user, setUser }) => {
           />
         </main>
         
-        {/* Footer avec logo Get Weez */}
+        {/* Footer propre sans bande noire */}
         <footer 
+          className="lg:block hidden"
           style={{ 
-            backgroundColor: isDarkMode ? '#1F2937' : '#f8f9fa',
+            backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
             padding: '1rem 2rem',
             textAlign: 'center',
             color: isDarkMode ? '#F9FAFB' : '#333333',
-            borderTop: isDarkMode ? '1px solid #374151' : '1px solid #e5e7eb',
             marginTop: 'auto',
             position: 'relative',
             zIndex: 1,
@@ -159,7 +159,7 @@ const Home = memo(({ user, setUser }) => {
                 fontWeight: '500'
               }}
             >
-              YOUR IA CONCIERGE
+              Your luxury AI concierge, anytime, anywhere
             </p>
           </div>
           
