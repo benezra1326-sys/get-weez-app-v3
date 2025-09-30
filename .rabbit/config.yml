@@ -1,0 +1,272 @@
+# Configuration Rabbit pour Reviews Automatiques de Code
+# Get Weez - ChatInterface Optimization Project
+
+version: "1.0"
+
+# Triggers pour déclencher les reviews
+triggers:
+  - push
+  - pull_request
+  - manual
+
+# Règles d'analyse pour le projet
+rules:
+  # ===============================
+  # RÈGLES DE QUALITÉ DE CODE
+  # ===============================
+  
+  - name: "No Console Logs in Production"
+    pattern: "**/*.js"
+    type: "code_quality"
+    severity: "error"
+    checks:
+      - rule: "no_console_statements"
+        message: "❌ Console.log détecté - utilisez un logger conditionnel"
+        fix_suggestion: "Remplacer par: process.env.NODE_ENV === 'development' && console.log(...)"
+  
+  - name: "File Size Limit"
+    pattern: "components/**/*.js"
+    type: "architecture"
+    severity: "warning"
+    checks:
+      - rule: "max_lines"
+        threshold: 200
+        message: "⚠️ Fichier trop volumineux ({lines} lignes) - Considérer la refactorisation"
+        fix_suggestion: "Diviser en composants plus petits selon le principe de responsabilité unique"
+  
+  - name: "No Inline Styles"
+    pattern: "**/*.js"
+    type: "code_quality" 
+    severity: "warning"
+    checks:
+      - rule: "no_inline_styles"
+        threshold: 5
+        message: "🎨 Trop de styles inline ({count}) - Utiliser CSS modules ou styled-components"
+        fix_suggestion: "Extraire les styles vers un fichier séparé"
+
+  # ===============================
+  # RÈGLES DE PERFORMANCE REACT
+  # ===============================
+  
+  - name: "React Performance Optimization"
+    pattern: "components/**/*.js"
+    type: "performance"
+    severity: "info"
+    checks:
+      - rule: "missing_react_memo"
+        message: "⚡ Considérer React.memo pour ce composant lourd"
+        condition: "component_has_props && lines > 50"
+      
+      - rule: "callback_memoization"
+        message: "🔄 Callbacks non mémorisés détectés - utiliser useCallback"
+        pattern: "onClick|onChange|onSubmit"
+      
+      - rule: "effect_dependencies"
+        message: "🔗 Dépendances useEffect manquantes ou excessives"
+        severity: "warning"
+
+  # ===============================
+  # RÈGLES D'ARCHITECTURE
+  # ===============================
+  
+  - name: "Component Architecture"
+    pattern: "components/**/*.js"
+    type: "architecture"
+    severity: "warning"
+    checks:
+      - rule: "single_responsibility"
+        message: "🏗️ Composant avec trop de responsabilités"
+        threshold:
+          hooks: 5
+          state_variables: 8
+          functions: 10
+      
+      - rule: "proper_imports"
+        message: "📦 Imports manquants ou incorrects détectés"
+        check_patterns:
+          - "useTheme from.*hooks/useTheme"  # Détecte l'import cassé
+        fix_suggestion: "Import depuis contexts/ThemeContext"
+
+  # ===============================
+  # RÈGLES SPÉCIFIQUES AU PROJET
+  # ===============================
+  
+  - name: "Get Weez Specific Rules"
+    pattern: "**/*.js"
+    type: "project_specific"
+    severity: "info"
+    checks:
+      - rule: "mobile_desktop_duplication"
+        message: "📱💻 Code dupliqué mobile/desktop détecté"
+        pattern: "lg:hidden.*lg:block"
+        fix_suggestion: "Créer des composants séparés MobileVersion/DesktopVersion"
+      
+      - rule: "theme_usage"
+        message: "🌓 Utilisation inconsistante du thème"
+        pattern: "isDarkMode.*?"
+        threshold: 20
+        fix_suggestion: "Utiliser des CSS variables ou un système de design tokens"
+
+# ===============================
+# CONFIGURATION DES NOTIFICATIONS
+# ===============================
+
+notifications:
+  slack:
+    webhook_url: "${SLACK_WEBHOOK_URL}"
+    channel: "#dev-code-reviews"
+    template: |
+      🤖 *Rabbit Code Review* pour `{repository}`
+      
+      📊 *Résumé* :
+      • ✅ {passed_rules} règles respectées
+      • ⚠️ {warnings} avertissements  
+      • ❌ {errors} erreurs
+      
+      📁 *Fichiers analysés* : {files_count}
+      🔍 *Branch* : `{branch}`
+      👤 *Auteur* : {author}
+      
+      {detailed_report}
+  
+  email:
+    recipients:
+      - "dev@getweez.com"
+      - "architect@getweez.com"
+    template: "detailed"
+  
+  github:
+    create_pr_comment: true
+    create_check_run: true
+    template: |
+      ## 🤖 Rabbit Code Review
+      
+      ### 📊 Résumé de l'analyse
+      
+      | Métrique | Valeur |
+      |----------|---------|
+      | ✅ Règles OK | {passed_rules} |
+      | ⚠️ Warnings | {warnings} |
+      | ❌ Erreurs | {errors} |
+      | 📁 Fichiers | {files_count} |
+      
+      ### 🎯 Actions Recommandées
+      
+      {action_items}
+      
+      <details>
+      <summary>📋 Rapport Détaillé</summary>
+      
+      {detailed_report}
+      
+      </details>
+
+# ===============================
+# CONFIGURATION AVANCÉE
+# ===============================
+
+analysis:
+  # Exclure certains fichiers de l'analyse
+  exclude_patterns:
+    - "node_modules/**"
+    - "dist/**" 
+    - "build/**"
+    - "*.test.js"
+    - "*.spec.js"
+    - "public/**"
+  
+  # Configuration spécifique par type de fichier
+  file_types:
+    javascript:
+      max_complexity: 15
+      max_functions_per_file: 10
+      prefer_functional_components: true
+    
+    typescript:
+      strict_types: true
+      no_any: true
+  
+  # Métriques personnalisées
+  custom_metrics:
+    - name: "chat_interface_health"
+      description: "Santé spécifique du composant ChatInterface"
+      files: ["components/chat/ChatInterface.js"]
+      checks:
+        - max_lines: 200
+        - max_hooks: 5
+        - no_console_logs: true
+        - proper_memoization: true
+
+# ===============================
+# INTÉGRATIONS
+# ===============================
+
+integrations:
+  github:
+    enabled: true
+    auto_assign_reviewers: true
+    reviewers:
+      - "senior-dev"
+      - "tech-lead"
+  
+  jira:
+    enabled: true
+    create_tickets_for_errors: true
+    project_key: "GETWEEZ"
+  
+  sonarqube:
+    enabled: false  # Désactivé pour l'instant
+  
+  bundle_analyzer:
+    enabled: true
+    threshold_mb: 5
+    alert_on_increase: 10  # %
+
+# ===============================
+# RAPPORTS ET HISTORIQUE
+# ===============================
+
+reporting:
+  generate_trends: true
+  history_retention_days: 90
+  weekly_summary: true
+  
+  dashboard:
+    enabled: true
+    url: "https://rabbit-dashboard.getweez.com"
+  
+  metrics_export:
+    prometheus: true
+    datadog: false
+
+# ===============================
+# CONFIGURATION DES FIXES AUTOMATIQUES
+# ===============================
+
+auto_fix:
+  enabled: false  # Désactivé par sécurité au début
+  rules:
+    - "remove_console_logs"
+    - "fix_imports"
+    - "format_code"
+  
+  safe_mode: true  # Demande confirmation avant fix
+  create_pr: true  # Crée une PR pour les fixes
+
+# ===============================
+# ENVIRONNEMENTS
+# ===============================
+
+environments:
+  development:
+    severity_threshold: "info"
+    notifications: ["slack"]
+  
+  staging:
+    severity_threshold: "warning" 
+    notifications: ["slack", "email"]
+  
+  production:
+    severity_threshold: "error"
+    notifications: ["slack", "email", "github"]
+    block_deployment: true
