@@ -34,8 +34,10 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
   const [showDetailPage, setShowDetailPage] = useState(false)
   const [welcomeMessage, setWelcomeMessage] = useState('')
   const [isClient, setIsClient] = useState(false)
+  const [scrollY, setScrollY] = useState(0)
   const textareaRef = useRef(null)
   const messagesEndRef = useRef(null)
+  const messagesContainerRef = useRef(null)
   
   // Vérification de sécurité pour useTheme
   let isDarkMode = false
@@ -68,6 +70,28 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
   useEffect(() => {
     scrollToBottom()
   }, [messages, isLoading, scrollToBottom])
+
+  // Effet pour suivre le scroll et positionner le bouton intelligemment
+  useEffect(() => {
+    const handleScroll = () => {
+      if (messagesContainerRef.current) {
+        const container = messagesContainerRef.current
+        const scrollTop = container.scrollTop
+        const scrollHeight = container.scrollHeight
+        const clientHeight = container.clientHeight
+        
+        // Calculer la position du bouton en fonction du scroll
+        const scrollPercentage = scrollTop / (scrollHeight - clientHeight)
+        setScrollY(scrollPercentage)
+      }
+    }
+
+    const container = messagesContainerRef.current
+    if (container) {
+      container.addEventListener('scroll', handleScroll)
+      return () => container.removeEventListener('scroll', handleScroll)
+    }
+  }, [messages])
 
   const handleSend = useCallback(async () => {
     if (!input.trim() || isLoading) return
@@ -506,28 +530,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           }}
         >
           <div className="flex items-center justify-between">
-            {/* Bouton fermer TRÈS VISIBLE en haut à gauche */}
-            <button
-              onClick={() => {
-                if (typeof window !== 'undefined') {
-                  window.history.back()
-                }
-              }}
-              className="p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 group"
-              style={{
-                background: 'rgba(239, 68, 68, 0.95)',
-                backdropFilter: 'blur(15px)',
-                border: '3px solid rgba(255, 255, 255, 0.9)',
-                boxShadow: '0 8px 25px rgba(239, 68, 68, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.3)',
-              }}
-              title="Fermer le chat"
-            >
-              <X 
-                size={20} 
-                className="text-white group-hover:text-red-100 transition-colors font-bold"
-              />
-            </button>
-
             <div className="flex items-center space-x-3">
               <div 
                 className="w-10 h-10 rounded-2xl flex items-center justify-center relative"
@@ -545,9 +547,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 <h1 className={`text-lg font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   Get Weez
                 </h1>
-                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                  Concierge IA Premium
-                </p>
               </div>
             </div>
             
@@ -561,7 +560,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                   backdropFilter: 'blur(10px)',
                 border: `1px solid ${isDarkMode ? 'rgba(156, 163, 175, 0.2)' : 'rgba(209, 213, 219, 0.3)'}`,
                 }}
-              title="Nouvelle conversation"
+                title="Nouvelle conversation"
               >
               <Plus 
                 size={18} 
@@ -574,47 +573,51 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
 
         {/* Messages avec scroll optimisé */}
         <div 
-          className="flex-1 overflow-y-auto px-4 py-6"
+          ref={messagesContainerRef}
+          className="flex-1 overflow-y-auto px-4 py-6 relative"
           style={{
             WebkitOverflowScrolling: 'touch',
             scrollBehavior: 'smooth',
           }}
         >
           {messages && messages.length > 0 ? (
-            messages.map((msg) => (
+            <>
+
+              {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex mb-6 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[85%] px-4 py-3 rounded-2xl backdrop-blur-lg ${
-                    msg.role === 'user'
-                      ? 'rounded-br-md'
-                      : 'rounded-bl-md border'
-                  }`}
-                  style={{
-                    background: msg.role === 'user' 
-                      ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
-                      : isDarkMode
-                        ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
-                        : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
-                    color: msg.role === 'user' 
-                      ? '#FFFFFF' 
-                      : isDarkMode ? '#F9FAFB' : '#111827',
-                    borderColor: msg.role === 'user' 
-                      ? 'transparent' 
-                      : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
-                    boxShadow: msg.role === 'user'
-                      ? '0 4px 12px rgba(16, 163, 127, 0.3)'
-                      : isDarkMode
-                        ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
-                        : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
-                  }}
+                  className={`flex mb-6 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
+                  <div
+                    className={`max-w-[85%] px-4 py-3 rounded-2xl backdrop-blur-lg ${
+                      msg.role === 'user'
+                        ? 'rounded-br-md'
+                        : 'rounded-bl-md border'
+                    }`}
+                    style={{
+                      background: msg.role === 'user' 
+                        ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
+                        : isDarkMode
+                          ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+                          : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
+                      color: msg.role === 'user' 
+                        ? '#FFFFFF' 
+                        : isDarkMode ? '#F9FAFB' : '#111827',
+                      borderColor: msg.role === 'user' 
+                        ? 'transparent' 
+                        : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
+                      boxShadow: msg.role === 'user'
+                        ? '0 4px 12px rgba(16, 163, 127, 0.3)'
+                        : isDarkMode
+                          ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                          : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+                    }}
+                  >
                   {msg.content || 'Message vide'}
                 </div>
               </div>
-            ))
+              ))}
+            </>
           ) : (
             <div className="flex flex-col items-center justify-center text-center py-12">
               <div 
@@ -629,12 +632,17 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                   <Sparkles size={16} className="text-yellow-300 animate-pulse" />
               </div>
               </div>
-              <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                {isClient && welcomeMessage ? welcomeMessage : 'Bienvenue sur Get Weez !'}
+              <div className="mb-2">
+                <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  {isClient && welcomeMessage ? 
+                    welcomeMessage.split('!')[0] + ' !' : 
+                    'Bienvenue sur Get Weez !'
+                  }
               </h3>
-              <p className={`px-4 leading-relaxed text-sm ${isDarkMode ? 'text-purple-300' : 'text-purple-600'} font-medium`}>
-                De quoi auriez-vous besoin ?
+                <p className={`text-lg font-semibold mt-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                  De quoi auriez-vous besoin ?
               </p>
+              </div>
             </div>
           )}
           
@@ -703,7 +711,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 textarea.style.height = `${newHeight}px`
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Message Get Weez..."
+              placeholder="Demande ce que tu veux"
               className="w-full border-none outline-none bg-transparent resize-none px-4 py-3 pr-12"
               style={{ 
                 fontSize: '16px',
@@ -1061,6 +1069,33 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         )}
 
+        {/* Bouton fermer flottant intelligent - toujours visible quand il y a des messages */}
+        {messages && messages.length > 0 && (
+          <button
+            onClick={() => {
+              if (typeof window !== 'undefined') {
+                window.history.back()
+              }
+            }}
+            className="fixed bottom-24 left-4 z-50 p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 group"
+            style={{
+              background: isDarkMode 
+                ? 'rgba(0, 0, 0, 0.4)' 
+                : 'rgba(255, 255, 255, 0.4)',
+              backdropFilter: 'blur(15px)',
+              border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
+              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)',
+              width: '48px',
+              height: '48px',
+            }}
+            title="Fermer le chat"
+          >
+            <X 
+              size={20} 
+              className={`${isDarkMode ? 'text-white/80 group-hover:text-white' : 'text-gray-700/80 group-hover:text-gray-900'} transition-colors`}
+            />
+          </button>
+        )}
 
         {/* Styles CSS pour adaptation mobile */}
         <style jsx global>{`
