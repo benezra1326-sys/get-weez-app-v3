@@ -728,7 +728,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             </div>
 
               {/* Grid de suggestions ultra-maximisée - Plus d'éléments visibles */}
-              <div className="grid grid-cols-4 gap-1 jsx-maximized-suggestions">
+              <div className="grid grid-cols-3 gap-2 jsx-maximized-suggestions">
               {filteredSuggestions.map((suggestion) => {
                 const Icon = suggestion.icon
                 return (
@@ -741,8 +741,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '140px', // Taille RÉDUITE de moitié
-                        maxHeight: '140px', // Hauteur OPTIMISÉE mobile
+                        minHeight: '180px', // Taille NICKEL - parfaite pour mobile
+                        maxHeight: '180px', // Hauteur OPTIMALE pour lisibilité
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -757,8 +757,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond - Taille RÉDUITE adaptée */}
-                      <div className="relative h-20 overflow-hidden">
+                      {/* Image de fond - Taille NICKEL pour mobile */}
+                      <div className="relative h-28 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
@@ -782,8 +782,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     </div>
 
-                      {/* Contenu - ADAPTÉ à la taille réduite */}
-                      <div className="p-2">
+                      {/* Contenu - NICKEL pour mobile parfait */}
+                      <div className="p-3">
                         <div className="flex items-start justify-between mb-1">
                           <div 
                             className={`w-6 h-6 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
@@ -794,10 +794,10 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                             ⭐ {suggestion.rating}
                           </span>
                     </div>
-                        <h4 className={`font-semibold text-sm mb-1 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                        <h4 className={`font-bold text-sm mb-1 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                           {suggestion.title}
                         </h4>
-                        <p className={`text-xs mb-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <p className={`text-xs mb-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                           📍 {suggestion.location}
                         </p>
                         <div className="flex items-center justify-between">
@@ -1007,11 +1007,11 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             overflow: visible !important;
           }
           
-          /* Optimisations mobile pour plus de suggestions visibles */
+          /* Optimisations mobile NICKEL - 3 colonnes parfaites */
           @media (max-width: 768px) {
             .jsx-maximized-suggestions {
-              grid-template-columns: repeat(4, 1fr) !important;
-              gap: 4px !important;
+              grid-template-columns: repeat(3, 1fr) !important;
+              gap: 8px !important;
               padding: 0 !important;
             }
           }
