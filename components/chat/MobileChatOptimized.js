@@ -570,10 +570,12 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           )}
         </div>
 
-        {/* Zone de saisie FIXÉE en bas mobile - S'adapte à l'écran */}
+        {/* Zone de saisie VISIBLE TOUJOURS - Positionnement corrigé */}
         <div 
-          className="fixed bottom-0 left-0 right-0 p-4 border-t"
+          className="flex-shrink-0 px-4 py-4 border-t"
           style={{
+            position: 'sticky',
+            bottom: 0,
             background: isDarkMode 
               ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.95) 100%)'
               : 'linear-gradient(135deg, rgba(248, 250, 252, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%)',
@@ -582,8 +584,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             zIndex: 1000,
             paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 16px)',
             boxShadow: isDarkMode 
-              ? '0 -12px 40px rgba(0, 0, 0, 0.4)'
-              : '0 -12px 40px rgba(0, 0, 0, 0.1)',
+              ? '0 -8px 25px rgba(0, 0, 0, 0.3)'
+              : '0 -8px 25px rgba(0, 0, 0, 0.1)',
           }}
         >
           {/* Croix de fermeture quand il y a des messages */}
@@ -676,15 +678,15 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Suggestions AGRANDIES - SANS scroll JAMAIS */}
+        {/* Suggestions MAXIMISÉES - Plus d'éléments visibles */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
-            className="flex-1 px-4 py-6"
+            className="flex-1 px-4 py-4"
             style={{
-              paddingBottom: '180px', // Plus d'espace pour zone saisie fixe
-              overflow: 'visible', // AUCUN scroll - affichage libre
-              maxHeight: 'calc(100vh - 300px)', // Plus de place pour bannières
-              minHeight: 'calc(100vh - 300px)', // Zone MAXIMISÉE
+              paddingBottom: '140px', // Espace optimisé pour zone saisie visible
+              overflow: 'visible', // AUCUN scroll
+              maxHeight: 'calc(100vh - 160px)', // MAXIMUM d'espace pour suggestions
+              minHeight: 'calc(100vh - 160px)', // Zone AGRANDIE au maximum
             }}
           >
             <div>
@@ -726,7 +728,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             </div>
 
               {/* Grid de suggestions ultra-maximisée - Plus d'éléments visibles */}
-              <div className="grid grid-cols-3 gap-2">
+              <div className="grid grid-cols-4 gap-1 jsx-maximized-suggestions">
               {filteredSuggestions.map((suggestion) => {
                 const Icon = suggestion.icon
                 return (
@@ -739,8 +741,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '200px', // Taille AGRANDIE pour afficher TOUT le texte
-                        maxHeight: '200px', // Hauteur AUGMENTÉE pour lisibilité complète
+                        minHeight: '140px', // Taille RÉDUITE de moitié
+                        maxHeight: '140px', // Hauteur OPTIMISÉE mobile
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -755,8 +757,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond - Taille AGRANDIE pour bannières complètes */}
-                      <div className="relative h-32 overflow-hidden">
+                      {/* Image de fond - Taille RÉDUITE adaptée */}
+                      <div className="relative h-20 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
@@ -780,8 +782,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     </div>
 
-                      {/* Contenu - AGRANDI pour bannières attractives */}
-                      <div className="p-3">
+                      {/* Contenu - ADAPTÉ à la taille réduite */}
+                      <div className="p-2">
                         <div className="flex items-start justify-between mb-1">
                           <div 
                             className={`w-6 h-6 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
@@ -795,7 +797,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                         <h4 className={`font-semibold text-sm mb-1 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                           {suggestion.title}
                         </h4>
-                        <p className={`text-sm mb-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <p className={`text-xs mb-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                           📍 {suggestion.location}
                         </p>
                         <div className="flex items-center justify-between">
@@ -983,7 +985,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         )}
 
 
-        {/* Styles CSS simplifiés */}
+        {/* Styles CSS optimisés pour mobile */}
         <style jsx global>{`
           .animate-fade-in-up {
             animation: fadeInUp 0.3s ease-out;
@@ -997,6 +999,20 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             to {
               opacity: 1;
               transform: translateY(0);
+            }
+          }
+          
+          .jsx-maximized-suggestions {
+            max-height: calc(100vh - 180px) !important;
+            overflow: visible !important;
+          }
+          
+          /* Optimisations mobile pour plus de suggestions visibles */
+          @media (max-width: 768px) {
+            .jsx-maximized-suggestions {
+              grid-template-columns: repeat(4, 1fr) !important;
+              gap: 4px !important;
+              padding: 0 !important;
             }
           }
           
