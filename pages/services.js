@@ -91,19 +91,14 @@ export default function Services({ user, setUser }) {
   const handleServiceRequest = (service) => {
     console.log('Service request clicked for:', service)
     
-    // Créer le message de demande de service
-    const serviceMessage = `Je souhaite demander le service ${service.name} (${service.category}). Pouvez-vous m'aider avec cette demande ?`
+    // TODO: Afficher détails du service au lieu de rediriger
+    showToast(`Service ${service.name} sélectionné`, 'info')
     
-    // Rediriger vers la page d'accueil avec le message pré-rempli
-    router.push({
-      pathname: '/',
-      query: { 
-        message: serviceMessage,
-        service: service.name
-      }
-    })
+    // CORRECTION: Ne plus rediriger automatiquement vers l'accueil
+    // Garder l'utilisateur sur la page services
     
-    showToast(`Redirection vers le chat pour ${service.name}`, 'info')
+    // Si nécessaire, router.push vers page dédiée service :
+    // router.push(`/service/${service.id}`)
   }
 
   const toggleMobileMenu = () => {
@@ -171,11 +166,11 @@ export default function Services({ user, setUser }) {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-                <div className="relative z-10">
-                  <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                <div className="relative z-10 text-center">
+                  <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                     🛎️ Services
                   </h1>
-                  <p className="text-white/90 text-xl mb-6 drop-shadow-md">
+                  <p className="text-white/90 text-lg lg:text-xl mb-6 drop-shadow-md">
                     Découvrez nos services premium à Marbella
                   </p>
                   

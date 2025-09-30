@@ -571,13 +571,15 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         </div>
 
 
-        {/* Messages avec scroll optimisé */}
+        {/* Messages avec scroll optimisé - adaptés pour zone saisie fixe */}
         <div 
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto px-4 py-6 relative"
           style={{
             WebkitOverflowScrolling: 'touch',
             scrollBehavior: 'smooth',
+            paddingBottom: '120px', // Espace pour la zone de saisie fixe
+            marginBottom: '0',
           }}
         >
           {messages && messages.length > 0 ? (
@@ -689,18 +691,20 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Zone de saisie moderne */}
+        {/* Zone de saisie FIXÉE en bas comme app native */}
         <div 
-          className="p-4 border-t"
+          className="fixed bottom-0 left-0 right-0 p-4 border-t"
           style={{
             background: isDarkMode 
-              ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.9) 0%, rgba(31, 41, 55, 0.7) 100%)'
-              : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.7) 100%)',
-            backdropFilter: 'blur(20px) saturate(150%)',
-            borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
-            paddingBottom: 'env(safe-area-inset-bottom, 16px)',
-            position: 'relative',
-            zIndex: 10,
+              ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%)'
+              : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
+            backdropFilter: 'blur(25px) saturate(180%)',
+            borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
+            paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 16px)',
+            zIndex: 1000,
+            boxShadow: isDarkMode 
+              ? '0 -8px 32px rgba(0, 0, 0, 0.3)'
+              : '0 -8px 32px rgba(0, 0, 0, 0.08)',
           }}
         >
           <div 
@@ -727,7 +731,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 textarea.style.height = `${newHeight}px`
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Demande ce que tu veux"
+              placeholder={user?.is_member ? "Demande ce que tu veux" : "Demandez ce que vous voulez"}
               className="w-full border-none outline-none bg-transparent resize-none px-4 py-3 pr-12"
               style={{ 
                 fontSize: '16px',
@@ -762,19 +766,17 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             </button>
           </div>
           
-          {/* Footer mobile avec slogan - uniquement visible sans messages */}
-          {showSuggestions && messages && messages.length === 0 && (
-            <div className="text-center py-2">
-              <p className={`text-xs font-medium italic opacity-80 ${
-                isDarkMode ? 'text-gray-400' : 'text-gray-600'
-              }`}>
-                Your luxury AI concierge, anytime, anywhere
-              </p>
+          {/* Footer discret avec slogan - au-dessus de la zone de saisie fixe */}
+          <div className="text-center py-2 pb-4">
+            <p className={`text-xs font-medium italic opacity-60 ${
+              isDarkMode ? 'text-gray-500' : 'text-gray-500'
+            }`}>
+              Your luxury AI concierge, anytime, anywhere
+            </p>
           </div>
-          )}
         </div>
 
-        {/* Suggestions modernes avec scroll optimisé - Zone maximisée */}
+        {/* Suggestions modernes avec scroll optimisé - Zone maximisée pour saisie fixe */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
             className="flex-1 overflow-y-auto"
@@ -782,9 +784,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
               marginTop: '0',
-              paddingBottom: '60px', // Encore plus réduit
-              maxHeight: 'calc(100vh - 120px)', // Plus d'espace vertical
-              minHeight: 'calc(100vh - 200px)', // Hauteur minimum garantie
+              paddingBottom: '140px', // Espace pour zone de saisie fixe + footer
+              maxHeight: 'calc(100vh - 100px)', // Maximiser l'espace vertical
+              minHeight: 'calc(100vh - 180px)', // Hauteur minimum garantie
             }}
           >
             <div className="p-2"> {/* Padding ultra-réduit pour maximiser l'espace */}

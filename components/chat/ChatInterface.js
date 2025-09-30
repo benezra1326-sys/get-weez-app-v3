@@ -1328,13 +1328,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               )}
             </div>
 
-              {/* Suggestions rapides - Version mobile améliorée */}
-              <div className="lg:hidden mb-4">
-                <h3 className="text-white font-bold text-base mb-3 flex items-center">
+              {/* Suggestions rapides - Version mobile AGRANDIE */}
+              <div className="lg:hidden mb-2">
+                <h3 className="text-white font-bold text-base mb-2 flex items-center">
                   <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
-                  💡 Suggestions Premium
+                  💡 Que puis-je faire pour vous ?
                 </h3>
-                <div className="grid grid-cols-2 gap-3 mb-4">
+                <div className="grid grid-cols-2 gap-2 mb-2 max-h-[75vh] overflow-y-auto" style={{
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none',
+                  minHeight: '50vh' // Hauteur minimum garantie
+                }}>
                   {/* Événements */}
                   <div className={`rounded-xl p-3 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`}>
                     <div className="flex items-center space-x-3 mb-2">

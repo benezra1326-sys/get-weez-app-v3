@@ -35,28 +35,22 @@ export default function EventDisplayToggle({ displayMode, onModeChange }) {
           <div className="flex flex-col sm:flex-row gap-4">
             <button
               onClick={() => onModeChange('banner')}
-              className={`toggle-button flex items-center justify-center px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
+              className={`toggle-button flex items-center justify-center px-4 py-4 rounded-xl font-medium transition-all duration-300 ${
                 displayMode === 'banner' ? 'active' : 'text-white'
               }`}
+              title="Vue bannières"
             >
-              <Image size={20} className="mr-3" />
-              <div className="text-left">
-                <div className="font-semibold">Vue Bannières</div>
-                <div className="text-sm opacity-80">Images et détails complets</div>
-              </div>
+              <Image size={24} />
             </button>
             
             <button
               onClick={() => onModeChange('calendar')}
-              className={`toggle-button flex items-center justify-center px-6 py-4 rounded-xl font-medium transition-all duration-300 ${
+              className={`toggle-button flex items-center justify-center px-4 py-4 rounded-xl font-medium transition-all duration-300 ${
                 displayMode === 'calendar' ? 'active' : 'text-white'
               }`}
+              title="Vue calendrier"
             >
-              <Calendar size={20} className="mr-3" />
-              <div className="text-left">
-                <div className="font-semibold">Vue Calendrier</div>
-                <div className="text-sm opacity-80">Vue chronologique des événements</div>
-              </div>
+              <Calendar size={24} />
             </button>
           </div>
         </div>

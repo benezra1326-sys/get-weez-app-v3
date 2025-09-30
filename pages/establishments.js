@@ -159,13 +159,21 @@ export default function Establishments({ user, setUser }) {
           gap: 1rem !important;
         }
         
-        /* Ensure cards are visible */
+        /* Ensure cards are visible - Mobile optimized */
         .establishment-card {
           display: block !important;
           visibility: visible !important;
           opacity: 1 !important;
           width: 100% !important;
-          min-height: 300px !important;
+          min-height: 250px !important; /* Réduit pour mobile */
+        }
+        
+        /* Mobile grid optimizations */
+        @media (max-width: 768px) {
+          .grid {
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+            gap: 0.75rem !important;
+          }
         }
         
         /* Force visibility of all elements */
@@ -236,11 +244,11 @@ export default function Establishments({ user, setUser }) {
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-                <div className="relative z-10">
-                  <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                <div className="relative z-10 text-center">
+                  <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
                     🍽️ Établissements
                   </h1>
-                  <p className="text-white/90 text-xl mb-6 drop-shadow-md">
+                  <p className="text-white/90 text-lg lg:text-xl mb-6 drop-shadow-md">
                     Découvrez les meilleurs endroits de Marbella
                   </p>
                   
