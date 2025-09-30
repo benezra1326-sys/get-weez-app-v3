@@ -1,0 +1,77 @@
+name: 🤖 CodeRabbit Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  pull_request_review_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  coderabbit-review:
+    name: 🤖 CodeRabbit Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        
+    - name: 🤖 CodeRabbit Review
+      uses: coderabbitai/coderabbit-action@v2
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+      env:
+        # Configuration pour Get Weez
+        CODERABBIT_CONFIG: |
+          reviews:
+            profile: chill
+            request_changes_workflow: false
+            high_level_summary: true
+            poem: true
+            review_status: true
+            collapse_level: 2
+            filter_mode: diff_context
+            path_instructions:
+              - path: "**/*.js"
+                instructions: |
+                  - Focus on Next.js best practices and React hooks usage
+                  - Check for proper error handling and user experience
+                  - Verify API route security and performance
+                  - Look for potential memory leaks in React components
+              - path: "**/*.jsx" 
+                instructions: |
+                  - Review component structure and prop validation
+                  - Check accessibility compliance (a11y)
+                  - Verify responsive design principles
+                  - Look for proper state management
+              - path: "components/chat/**"
+                instructions: |
+                  - Focus on chat functionality and real-time features
+                  - Check WebSocket connections and error handling
+                  - Verify message handling and state persistence
+                  - Look for performance optimizations
+              - path: "pages/api/**"
+                instructions: |
+                  - Review API security and authentication
+                  - Check rate limiting and input validation
+                  - Verify database operations and error handling
+                  - Look for proper HTTP status codes
+              - path: "**/*.css"
+                instructions: |
+                  - Check for responsive design and mobile optimization
+                  - Verify accessibility in styling choices
+                  - Look for performance issues (large files, unused styles)
+                  - Check for consistent design system usage
+
+    - name: 📊 Review Summary
+      run: |
+        echo "🤖 CodeRabbit review completed for PR #${{ github.event.pull_request.number }}"
+        echo "📝 Title: ${{ github.event.pull_request.title }}"
+        echo "👤 Author: ${{ github.event.pull_request.user.login }}"
+        echo "🔄 Files changed: $(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | wc -l)"
