@@ -159,36 +159,36 @@ export default function Establishments({ user, setUser }) {
           gap: 1rem !important;
         }
         
-        /* Ensure cards are visible - Mobile optimized */
+        /* Ensure cards are visible - Mobile AGRANDIES selon consignes */
         .establishment-card {
           display: block !important;
           visibility: visible !important;
           opacity: 1 !important;
           width: 100% !important;
-          min-height: 250px !important; /* Réduit pour mobile */
+          min-height: 320px !important; /* AGRANDI pour bannières plus visibles */
         }
         
-        /* Mobile grid optimizations - Plus d'éléments visibles */
+        /* Mobile grid optimizations - Bannières AGRANDIES selon consignes */
         @media (max-width: 768px) {
           .grid {
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
-            gap: 0.75rem !important;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+            gap: 1rem !important;
           }
           
           .establishment-card {
-            min-height: 200px !important; /* Encore plus compact */
+            min-height: 280px !important; /* AGRANDI pour meilleure visibilité */
           }
           
           /* Container principal mobile */
           .establishments-container {
-            padding: 8px !important;
+            padding: 12px !important;
             margin: 0 !important;
           }
           
-          /* Header banner mobile plus compact */
+          /* Header banner mobile MAXIMISÉ */
           .establishments-banner {
-            min-height: 200px !important; /* Réduit de 300px */
-            padding: 16px !important;
+            min-height: 300px !important; /* MAXIMISÉ pour grande visibilité */
+            padding: 24px !important;
           }
         }
         
@@ -257,7 +257,7 @@ export default function Establishments({ user, setUser }) {
                   background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #10B981 75%, #F59E0B 100%)',
                   backgroundSize: '400% 400%',
                   animation: 'gradientShift 8s ease infinite',
-                  minHeight: '200px' // Mobile optimisé
+                  minHeight: '280px' // AGRANDI pour mobile selon consignes
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>

@@ -972,13 +972,13 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 <div className="relative flex items-center justify-center space-x-3">
                   <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-colors duration-300">
                     <Sparkles size={18} className="text-white" />
-                  </div>
+                </div>
                   <span className="text-sm font-bold">Nouvelle conversation</span>
                   <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
                     <Sparkles size={16} className="text-yellow-300" />
-                  </div>
-                </div>
-              </button>
+                    </div>
+                    </div>
+                    </button>
 
               {/* Liste des conversations */}
               {conversations && conversations.length > 0 ? (
@@ -1340,13 +1340,13 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
                   💡 Que puis-je faire pour vous ?
                 </h3>
-                <div className="grid grid-cols-2 gap-3 mb-4 max-h-[75vh] overflow-y-auto" style={{
+                <div className="grid grid-cols-2 gap-4 mb-6 max-h-[80vh] overflow-y-auto" style={{
                   scrollbarWidth: 'none',
                   msOverflowStyle: 'none',
-                  minHeight: '50vh' // Hauteur minimum garantie
+                  minHeight: '60vh' // Plus d'espace pour voir plus de bannières
                 }}>
-                  {/* Événements - Taille d'origine remise */}
-                  <div className={`rounded-xl p-4 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`} style={{ minHeight: '120px' }}>
+                  {/* Événements - Bannières AGRANDIES pour meilleure visibilité */}
+                  <div className={`rounded-xl p-5 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`} style={{ minHeight: '140px' }}>
                     <div className="flex items-center space-x-3 mb-2">
                       <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
                         <span className="text-xl">🏖️</span>
@@ -1364,7 +1364,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </button>
                   </div>
                   
-                  <div className={`rounded-xl p-4 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`}>
+                  <div className={`rounded-xl p-5 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`} style={{ minHeight: '140px' }}>
                     <div className="flex items-center space-x-3 mb-2">
                       <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
                         <span className="text-xl">🎷</span>
@@ -1383,7 +1383,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   </div>
                   
                   {/* Restaurants */}
-                  <div className={`rounded-xl p-4 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-amber-500 to-orange-500 border-amber-400/30' : 'bg-gradient-to-br from-amber-100 to-orange-100 border-amber-300/50'}`}>
+                  <div className={`rounded-xl p-5 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-amber-500 to-orange-500 border-amber-400/30' : 'bg-gradient-to-br from-amber-100 to-orange-100 border-amber-300/50'}`} style={{ minHeight: '140px' }}>
                     <div className="flex items-center space-x-3 mb-2">
                       <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
                         <span className="text-xl">🍣</span>
@@ -1401,7 +1401,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </button>
                   </div>
                   
-                  <div className={`rounded-xl p-4 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-teal-500 to-cyan-500 border-teal-400/30' : 'bg-gradient-to-br from-teal-100 to-cyan-100 border-teal-300/50'}`}>
+                  <div className={`rounded-xl p-5 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-teal-500 to-cyan-500 border-teal-400/30' : 'bg-gradient-to-br from-teal-100 to-cyan-100 border-teal-300/50'}`} style={{ minHeight: '140px' }}>
                     <div className="flex items-center space-x-3 mb-2">
                       <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
                         <span className="text-xl">🍽️</span>

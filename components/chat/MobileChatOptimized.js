@@ -571,14 +571,14 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         </div>
 
 
-        {/* Messages avec scroll optimisé - adaptés pour footer + saisie fixe */}
+        {/* Messages avec scroll optimisé - adaptés pour zone saisie fixe */}
         <div 
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto px-4 py-6 relative"
           style={{
             WebkitOverflowScrolling: 'touch',
             scrollBehavior: 'smooth',
-            paddingBottom: '160px', // Espace pour footer + zone de saisie + croix
+            paddingBottom: '140px', // Espace optimisé pour zone saisie + footer intégré
             marginBottom: '0',
           }}
         >
@@ -691,84 +691,70 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Layout bas réorganisé - Footer + Croix + Saisie */}
+        {/* Layout bas chat mobile optimisé - App native parfaite */}
         
-        {/* Footer fixe tout en bas */}
+        {/* Zone de saisie + croix COMBINÉES en bas */}
         <div 
-          className="fixed bottom-0 left-0 right-0 text-center py-2"
+          className="fixed bottom-0 left-0 right-0"
           style={{
             background: isDarkMode 
-              ? 'rgba(0, 0, 0, 0.8)' 
-              : 'rgba(255, 255, 255, 0.8)',
-            backdropFilter: 'blur(10px)',
-            zIndex: 999,
-            paddingBottom: 'env(safe-area-inset-bottom, 8px)',
-          }}
-        >
-          <p className={`text-xs font-medium italic opacity-60 ${
-            isDarkMode ? 'text-gray-500' : 'text-gray-500'
-          }`}>
-            Your luxury AI concierge, anytime, anywhere
-          </p>
-        </div>
-
-        {/* Zone de saisie FIXÉE au-dessus du footer */}
-        <div 
-          className="fixed left-0 right-0 p-4"
-          style={{
-            bottom: '32px', // Au-dessus du footer
-            background: isDarkMode 
-              ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%)'
-              : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
-            backdropFilter: 'blur(25px) saturate(180%)',
+              ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.95) 100%)'
+              : 'linear-gradient(135deg, rgba(248, 250, 252, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%)',
+            backdropFilter: 'blur(30px) saturate(200%)',
             zIndex: 1000,
-            borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
+            borderTop: `2px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
             boxShadow: isDarkMode 
-              ? '0 -8px 32px rgba(0, 0, 0, 0.3)'
-              : '0 -8px 32px rgba(0, 0, 0, 0.08)',
+              ? '0 -12px 40px rgba(0, 0, 0, 0.4)'
+              : '0 -12px 40px rgba(0, 0, 0, 0.1)',
+            paddingBottom: 'env(safe-area-inset-bottom, 0px)',
           }}
         >
-          {/* Croix de fermeture alignée à gauche au-dessus de la saisie */}
-          {messages && messages.length > 0 && (
-            <div className="flex justify-start mb-2">
-              <button
-                onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.history.back()
-                  }
-                }}
-                className="p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
-                style={{
-                  background: isDarkMode 
-                    ? 'rgba(0, 0, 0, 0.4)' 
-                    : 'rgba(255, 255, 255, 0.4)',
-                  backdropFilter: 'blur(10px)',
-                  border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
-                }}
-                title="Fermer le chat"
-              >
-                <X 
-                  size={16} 
-                  className={`${isDarkMode ? 'text-white/80' : 'text-gray-700/80'} transition-colors`}
-                />
-              </button>
-            </div>
-          )}
-          
-          {/* Boîte de saisie toujours visible */}
-          <div 
-            className="relative rounded-2xl border transition-all duration-300"
-            style={{
-              background: isDarkMode 
-                ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.7) 0%, rgba(31, 41, 55, 0.9) 100%)'
-                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.7) 100%)',
-              borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
-              backdropFilter: 'blur(15px)',
-              boxShadow: input.trim() 
-                ? '0 0 0 2px rgba(139, 92, 246, 0.3), 0 4px 12px rgba(139, 92, 246, 0.15)'
-                : 'none',
-            }}
-          >
+          {/* Container interne avec croix + saisie */}
+          <div className="p-4">
+            {/* Croix transparente à gauche quand il y a des messages */}
+            {messages && messages.length > 0 && (
+              <div className="flex justify-start mb-3">
+                <button
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.history.back()
+                    }
+                  }}
+                  className="p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
+                  style={{
+                    background: isDarkMode 
+                      ? 'rgba(0, 0, 0, 0.3)' 
+                      : 'rgba(255, 255, 255, 0.3)',
+                    backdropFilter: 'blur(15px)',
+                    border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.15)'}`,
+                    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  }}
+                  title="Fermer le chat"
+                >
+                  <X 
+                    size={18} 
+                    className={`${isDarkMode ? 'text-white/70 hover:text-white' : 'text-gray-700/70 hover:text-gray-900'} transition-colors`}
+                  />
+                </button>
+              </div>
+            )}
+            
+            {/* Boîte de saisie TOUJOURS VISIBLE */}
+            <div 
+              className="relative rounded-2xl border transition-all duration-300"
+              style={{
+                background: isDarkMode 
+                  ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.8) 0%, rgba(31, 41, 55, 0.95) 100%)'
+                  : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.8) 100%)',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.6)',
+                backdropFilter: 'blur(20px)',
+                boxShadow: input.trim() 
+                  ? '0 0 0 2px rgba(139, 92, 246, 0.4), 0 8px 25px rgba(139, 92, 246, 0.2)'
+                  : isDarkMode 
+                    ? '0 8px 25px rgba(0, 0, 0, 0.2)'
+                    : '0 8px 25px rgba(0, 0, 0, 0.1)',
+              }}
+            >
             <textarea
               ref={textareaRef}
               value={input}
@@ -776,47 +762,61 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 setInput(e.target.value)
                 const textarea = e.target
                 textarea.style.height = 'auto'
-                const newHeight = Math.min(Math.max(textarea.scrollHeight, 44), 120)
+                  const newHeight = Math.min(Math.max(textarea.scrollHeight, 48), 120)
                 textarea.style.height = `${newHeight}px`
               }}
               onKeyDown={handleKeyDown}
-              placeholder={user?.is_member ? "Demande ce que tu veux" : "Demandez ce que vous voulez"}
-              className="w-full border-none outline-none bg-transparent resize-none px-4 py-3 pr-12"
+                placeholder={user?.is_member ? "Demande ce que tu veux" : "Demandez ce que vous voulez"}
+                className="w-full border-none outline-none bg-transparent resize-none px-5 py-4 pr-14"
               style={{ 
-                fontSize: '16px',
-                lineHeight: '1.4',
-                color: isDarkMode ? '#FFFFFF' : '#000000',
-                minHeight: '44px',
-                maxHeight: '120px',
-              }}
-              rows={1}
-              disabled={isLoading}
+                  fontSize: '16px',
+                  lineHeight: '1.5',
+                  color: isDarkMode ? '#FFFFFF' : '#000000',
+                  minHeight: '48px',
+                  maxHeight: '120px',
+                  fontWeight: '400',
+                }}
+                rows={1}
+                disabled={isLoading}
             />
             
             <button
               onClick={handleSend}
               disabled={!input.trim() || isLoading}
-              className="absolute right-2 bottom-2 w-8 h-8 rounded-xl border-none transition-all duration-300 flex items-center justify-center"
-              style={{
-                background: input.trim() && !isLoading
-                  ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
-                  : isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(156, 163, 175, 0.5)',
-                color: 'white',
-                opacity: input.trim() && !isLoading ? 1 : 0.5,
-                transform: input.trim() && !isLoading ? 'scale(1)' : 'scale(0.95)',
-                cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
-              }}
+                className="absolute right-3 bottom-3 w-10 h-10 rounded-xl border-none transition-all duration-300 flex items-center justify-center"
+                style={{
+                  background: input.trim() && !isLoading
+                    ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
+                    : isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(156, 163, 175, 0.5)',
+                  color: 'white',
+                  opacity: input.trim() && !isLoading ? 1 : 0.5,
+                  transform: input.trim() && !isLoading ? 'scale(1)' : 'scale(0.95)',
+                  cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
+                  boxShadow: input.trim() && !isLoading 
+                    ? '0 4px 12px rgba(16, 163, 127, 0.3)'
+                    : 'none',
+                }}
             >
               {isLoading ? (
-                <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                  <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
               ) : (
-                <Send size={14} />
+                <Send size={16} />
               )}
             </button>
           </div>
+          
+            {/* Footer avec slogan intégré dans la zone de saisie */}
+            <div className="text-center mt-3">
+              <p className={`text-xs font-medium italic opacity-50 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-600'
+              }`}>
+                Your luxury AI concierge, anytime, anywhere
+              </p>
+            </div>
+          </div>
         </div>
 
-        {/* Suggestions modernes avec scroll optimisé - Adaptées au nouveau layout */}
+        {/* Suggestions modernes avec scroll optimisé - Layout optimisé */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
             className="flex-1 overflow-y-auto"
@@ -824,9 +824,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
               marginTop: '0',
-              paddingBottom: '160px', // Espace pour footer + saisie + croix
-              maxHeight: 'calc(100vh - 80px)', // Maximiser encore plus l'espace
-              minHeight: 'calc(100vh - 160px)', // Hauteur minimum garantie
+              paddingBottom: '180px', // Espace pour zone saisie complète avec footer intégré
+              maxHeight: 'calc(100vh - 70px)', // Maximiser l'espace disponible
+              minHeight: 'calc(100vh - 140px)', // Hauteur minimum garantie
             }}
           >
             <div className="p-2"> {/* Padding ultra-réduit pour maximiser l'espace */}
@@ -887,8 +887,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '100px', // Réduit pour voir plus d'éléments
-                        maxHeight: '100px', // Hauteur fixe pour uniformité
+                        minHeight: '120px', // AGRANDI selon consignes pour meilleure visibilité
+                        maxHeight: '120px', // Hauteur fixe agrandie
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -903,8 +903,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond ultra-optimisée */}
-                      <div className="relative h-12 overflow-hidden">
+                      {/* Image de fond AGRANDIE pour meilleure visibilité */}
+                      <div className="relative h-16 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
@@ -928,8 +928,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     </div>
 
-                      {/* Contenu hyper-compact */}
-                      <div className="p-1">
+                      {/* Contenu optimisé pour bannières agrandies */}
+                      <div className="p-2">
                         <div className="flex items-start justify-between mb-0.5">
                           <div 
                             className={`w-5 h-5 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
