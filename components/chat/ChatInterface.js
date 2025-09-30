@@ -6,7 +6,7 @@ import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
 import MobileChatInterface from './MobileChatInterface'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '../../contexts/ThemeContext'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   console.log('🔄 ChatInterface component loaded')
