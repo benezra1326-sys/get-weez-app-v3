@@ -1,0 +1,386 @@
+/* ===== CHAT INTERFACE STYLES ===== */
+
+.chatInterface {
+  @apply relative w-full h-screen flex overflow-hidden;
+  background: var(--color-bg-primary);
+}
+
+.chatArea {
+  @apply flex-1 flex flex-col h-full relative;
+  min-width: 0; /* Permet la compression sur mobile */
+}
+
+.chatContainer {
+  @apply flex flex-col h-full relative;
+}
+
+/* ===== MOBILE TOOLBAR ===== */
+.mobileToolbar {
+  @apply flex items-center justify-between p-4 border-b;
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  backdrop-filter: blur(10px);
+  z-index: 10;
+}
+
+.mobileOnly {
+  @apply block;
+}
+
+/* ===== MESSAGES CONTAINER ===== */
+.messagesContainer {
+  @apply flex-1 overflow-y-auto px-0 py-4;
+  min-height: 0; /* Important pour le scroll */
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.messagesContainer::-webkit-scrollbar {
+  width: 6px;
+}
+
+.messagesContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+
+.messagesContainer::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-light);
+}
+
+.messagesList {
+  @apply flex flex-col space-y-4;
+  padding-bottom: 1rem;
+}
+
+/* ===== MESSAGE BUBBLE ===== */
+.messageBubble {
+  @apply px-4 py-3 rounded-2xl max-w-[80%] shadow-sm;
+  word-wrap: break-word;
+  line-height: 1.5;
+}
+
+.messageBubble.user {
+  @apply ml-auto;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark) 100%);
+  color: white;
+  border-bottom-right-radius: 0.5rem;
+}
+
+.messageBubble.assistant {
+  @apply mr-auto;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border);
+  border-bottom-left-radius: 0.5rem;
+}
+
+.messageBubble.system {
+  @apply mx-auto text-center bg-yellow-500/10 text-yellow-300;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 1rem;
+}
+
+/* ===== INPUT AREA ===== */
+.inputArea {
+  @apply p-4 border-t;
+  background: var(--color-bg-secondary);
+  border-color: var(--color-border);
+  backdrop-filter: blur(10px);
+}
+
+.inputWrapper {
+  @apply relative flex items-end space-x-2;
+  max-width: 100%;
+}
+
+.textInput {
+  @apply flex-1 resize-none rounded-2xl border px-4 py-3 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200;
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  border-color: var(--color-border);
+  min-height: 60px;
+  max-height: 200px;
+  font-size: 16px; /* Empêche le zoom sur iOS */
+  line-height: 1.5;
+}
+
+.textInput::placeholder {
+  color: var(--color-text-muted);
+}
+
+.textInput:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+}
+
+.voiceButton {
+  @apply flex-shrink-0 self-end mb-2;
+}
+
+.sendButton {
+  @apply flex-shrink-0 self-end mb-2;
+  min-width: 44px; /* Touch target minimum */
+  min-height: 44px;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  @apply flex flex-col h-full;
+  width: 300px;
+  background: var(--color-bg-secondary);
+  border-right: 1px solid var(--color-border);
+}
+
+.sidebarHeader {
+  @apply p-4 border-b;
+  border-color: var(--color-border);
+}
+
+.conversationsList {
+  @apply flex-1 overflow-y-auto p-2 space-y-2;
+}
+
+.conversationItem {
+  @apply p-3 rounded-lg cursor-pointer transition-all duration-200 border;
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.conversationItem:hover {
+  background: var(--color-surface-hover);
+  border-color: var(--color-border);
+}
+
+.conversationItem.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: white;
+}
+
+.conversationItem.active:hover {
+  background: var(--color-primary-dark);
+}
+
+/* ===== LOADING SPINNER ===== */
+.loadingSpinner {
+  @apply flex items-center space-x-2;
+}
+
+.loadingDots {
+  @apply flex space-x-1;
+}
+
+.loadingDot {
+  @apply w-2 h-2 bg-current rounded-full animate-bounce;
+}
+
+.loadingDot:nth-child(1) { animation-delay: 0ms; }
+.loadingDot:nth-child(2) { animation-delay: 150ms; }
+.loadingDot:nth-child(3) { animation-delay: 300ms; }
+
+/* ===== RESPONSIVE DESIGN ===== */
+
+/* Desktop */
+@media (min-width: 1024px) {
+  .mobileOnly {
+    @apply hidden;
+  }
+  
+  .chatInterface {
+    @apply flex-row;
+  }
+  
+  .sidebar {
+    @apply block;
+  }
+  
+  .chatArea {
+    @apply flex-1;
+  }
+  
+  .inputWrapper {
+    max-width: calc(100% - 2rem);
+  }
+}
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .sidebar {
+    width: 280px;
+  }
+  
+  .messageBubble {
+    max-width: 75%;
+  }
+}
+
+/* Mobile */
+@media (max-width: 767px) {
+  .chatInterface {
+    @apply flex-col;
+    height: 100vh;
+    height: 100dvh; /* Pour les navigateurs mobiles modernes */
+  }
+  
+  .sidebar {
+    @apply hidden;
+  }
+  
+  .sidebar.mobile {
+    @apply block fixed inset-0 z-50;
+    background: var(--color-bg-primary);
+  }
+  
+  .chatArea {
+    @apply flex-1;
+    min-height: 0;
+  }
+  
+  .messagesContainer {
+    @apply px-2;
+    padding-bottom: 2rem;
+  }
+  
+  .messageBubble {
+    max-width: 85%;
+    font-size: 0.9rem;
+  }
+  
+  .inputArea {
+    @apply p-3;
+    /* Padding bottom pour éviter les barres de navigation mobile */
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  
+  .textInput {
+    font-size: 16px; /* Évite le zoom automatique sur iOS */
+    min-height: 50px;
+  }
+  
+  .sendButton, .voiceButton {
+    min-width: 40px;
+    min-height: 40px;
+  }
+}
+
+/* Mobile landscape */
+@media (max-width: 767px) and (orientation: landscape) {
+  .messagesContainer {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .inputArea {
+    @apply p-2;
+  }
+  
+  .textInput {
+    min-height: 40px;
+  }
+}
+
+/* Small mobile devices */
+@media (max-width: 375px) {
+  .messageBubble {
+    max-width: 90%;
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+  }
+  
+  .inputArea {
+    @apply p-2;
+  }
+  
+  .mobileToolbar {
+    @apply p-3;
+  }
+  
+  .sendButton, .voiceButton {
+    min-width: 36px;
+    min-height: 36px;
+  }
+}
+
+/* ===== ANIMATIONS ===== */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.messageEnter {
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ===== ACCESSIBILITY ===== */
+@media (prefers-reduced-motion: reduce) {
+  .messageEnter,
+  .fadeIn,
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .messageBubble {
+    border: 2px solid currentColor;
+  }
+  
+  .textInput {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ===== TOUCH IMPROVEMENTS ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Styles pour les appareils tactiles */
+  .conversationItem,
+  .sendButton,
+  .voiceButton {
+    min-height: 44px; /* Apple HIG touch target */
+  }
+  
+  .textInput {
+    font-size: 16px; /* Évite le zoom sur iOS */
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .inputArea,
+  .mobileToolbar,
+  .sidebar {
+    @apply hidden;
+  }
+  
+  .chatArea {
+    @apply block;
+  }
+  
+  .messageBubble {
+    @apply border border-gray-300;
+    break-inside: avoid;
+  }
+}
