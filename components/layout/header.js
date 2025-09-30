@@ -114,15 +114,23 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
       <div className="flex items-center">
         <button 
           onClick={toggleMobileMenu}
-          className="lg:hidden p-1.5 rounded-xl transition-all duration-300 hover:bg-gray-800/50 mr-1"
+          className="lg:hidden p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 mr-2"
           style={{ 
-            color: 'var(--color-text-secondary)',
-            borderRadius: 'var(--radius-lg)'
+            background: isDarkMode 
+              ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.4), rgba(55, 65, 81, 0.6))'
+              : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.8))',
+            backdropFilter: 'blur(10px)',
+            border: `1px solid ${isDarkMode ? 'rgba(156, 163, 175, 0.2)' : 'rgba(209, 213, 219, 0.3)'}`,
+            borderRadius: '12px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
           }}
         >
-          <Menu size={18} />
+          <Menu 
+            size={20} 
+            className={isDarkMode ? 'text-gray-300' : 'text-gray-700'}
+          />
         </button>
-        <Link href="/" className="flex flex-col items-start group animate-hover-lift">
+        <Link href="/" className="flex items-center group animate-hover-lift">
           <div 
             className="px-3 py-2 lg:px-6 lg:py-3 rounded-xl shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
             style={{ 
@@ -143,10 +151,6 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
               GET WEEZ
             </h1>
           </div>
-          <p className={`text-xs mt-1 font-medium italic opacity-70 transition-all duration-300 group-hover:opacity-100 ${
-            isDarkMode ? 'text-gray-400' : 'text-gray-600'
-          }`}>
-          </p>
         </Link>
       </div>
 
