@@ -1,0 +1,51 @@
+# Dockerfile for GetWeez Code Review Worker
+FROM node:18-alpine
+
+# Metadata
+LABEL maintainer="GetWeez Team <dev@getweez.com>"
+LABEL description="GetWeez Code Review Worker"
+LABEL version="1.0.0"
+
+# Security: Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S worker -u 1001
+
+# Install system dependencies including git and build tools
+RUN apk update && apk add --no-cache \
+    curl \
+    git \
+    python3 \
+    make \
+    g++ \
+    && rm -rf /var/cache/apk/*
+
+# Set working directory
+WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy source code
+COPY src/ ./src/
+COPY .env.example ./
+
+# Create required directories
+RUN mkdir -p logs temp-repos && chown -R worker:nodejs logs temp-repos
+
+# Switch to non-root user
+USER worker
+
+# Configure git for the worker user (required for cloning)
+RUN git config --global user.email "worker@getweez.com" && \
+    git config --global user.name "GetWeez Worker" && \
+    git config --global init.defaultBranch main
+
+# Health check (check if worker process is running)
+HEALTHCHECK --interval=60s --timeout=30s --start-period=10s --retries=3 \
+    CMD pgrep -f "code-review-worker.js" || exit 1
+
+# Start command
+CMD ["node", "src/code-review-worker.js"]
