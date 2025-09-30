@@ -91,7 +91,7 @@ const Home = memo(({ user, setUser }) => {
         <main 
           style={{ 
             flex: 1, 
-            overflow: 'auto', // Permettre scroll sur mobile
+            overflow: 'visible', // Scroll libre sur mobile
             backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
             width: '100vw', 
             minHeight: 'calc(100vh - 6rem)', 
@@ -99,7 +99,8 @@ const Home = memo(({ user, setUser }) => {
             justifyContent: 'stretch', 
             alignItems: 'stretch', 
             maxWidth: 'none',
-            WebkitOverflowScrolling: 'touch' // Scroll fluide iOS
+            WebkitOverflowScrolling: 'touch', // Scroll fluide iOS
+            overscrollBehavior: 'auto' // Permettre rebond naturel
           }}
         >
           <ChatInterface 

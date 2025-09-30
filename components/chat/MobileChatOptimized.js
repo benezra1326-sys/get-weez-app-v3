@@ -571,20 +571,21 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         </div>
 
 
-        {/* Messages avec scroll optimisé */}
+        {/* Messages avec scroll optimisé - AGRANDI pour voir message d'accueil */}
         <div 
           ref={messagesContainerRef}
-          className="flex-1 overflow-y-auto px-4 py-6 relative"
+          className="flex-1 overflow-y-auto px-4 relative"
           style={{
             WebkitOverflowScrolling: 'touch',
             scrollBehavior: 'smooth',
+            minHeight: '60vh', // Hauteur minimum AGRANDIE pour voir message d'accueil
           }}
         >
           {messages && messages.length > 0 ? (
             <>
               {messages.map((msg) => (
-              <div
-                key={msg.id}
+                <div
+                  key={msg.id}
                   className={`flex mb-6 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                 >
                   <div
@@ -612,27 +613,27 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
                     }}
                   >
-                  {msg.content || 'Message vide'}
+                    {msg.content || 'Message vide'}
+                  </div>
                 </div>
-              </div>
               ))}
             </>
           ) : (
-            <div className="flex flex-col items-center justify-center text-center py-12">
+            <div className="flex flex-col items-center justify-center text-center py-16">
               <div 
-                className="w-20 h-20 rounded-3xl flex items-center justify-center mb-6 relative"
+                className="w-24 h-24 rounded-3xl flex items-center justify-center mb-8 relative"
                 style={{
                   background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                  boxShadow: '0 12px 40px rgba(139, 92, 246, 0.4)',
                 }}
               >
-                <MessageCircle size={32} className="text-white" />
+                <MessageCircle size={36} className="text-white" />
                 <div className="absolute -top-2 -right-2">
-                  <Sparkles size={16} className="text-yellow-300 animate-pulse" />
+                  <Sparkles size={18} className="text-yellow-300 animate-pulse" />
+                </div>
               </div>
-              </div>
-              <div className="mb-2">
-                <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              <div className="mb-4">
+                <h3 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   {isClient && welcomeMessage ? 
                     (() => {
                       const parts = welcomeMessage.split('!')
@@ -642,7 +643,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                         <span>
                           {firstPart}
                           {secondPart && (
-                            <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                            <span className={`block text-xl font-semibold mt-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
                               {secondPart}
                             </span>
                           )}
@@ -651,12 +652,12 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     })() : 
                     <span>
                       Bienvenue sur Get Weez !
-                      <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                      <span className={`block text-xl font-semibold mt-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
                         De quoi auriez-vous besoin ?
                       </span>
                     </span>
                   }
-              </h3>
+                </h3>
               </div>
             </div>
           )}
@@ -791,15 +792,14 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Suggestions modernes avec espace AGRANDI pour bannières taille d'origine */}
+        {/* Suggestions modernes avec espace MAXIMISÉ pour voir message d'accueil */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
-            className="overflow-y-auto px-4 py-4"
+            className="flex-1 overflow-y-auto px-4 py-6"
             style={{
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
-              maxHeight: 'calc(100vh - 240px)', // Espace pour header + zone saisie
-              minHeight: '300px', // Hauteur minimum pour voir les bannières
+              paddingBottom: '120px', // Espace pour zone saisie
             }}
           >
             <div>
@@ -909,8 +909,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           >
                             <Icon size={12} className="text-white" />
                           </div>
-                          <span className={`text-sm font-bold ${isDarkMode ? 'text-yellow-400' : 'text-orange-600'}`}>
-                            {suggestion.price}
+                          <span className={`text-sm font-bold ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>
+                            ⭐ {suggestion.rating}
                           </span>
                         </div>
                         <h4 className={`font-semibold text-sm mb-1 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -920,8 +920,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           📍 {suggestion.location}
                         </p>
                         <div className="flex items-center justify-between">
-                          <span className={`text-sm ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>
-                            ⭐ {suggestion.rating}
+                          <span className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                            {suggestion.price}
                           </span>
                           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
                         </div>

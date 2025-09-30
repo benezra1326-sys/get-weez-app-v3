@@ -79,7 +79,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
         />
 
         {/* Sidebar avec glassmorphism ultra moderne */}
-        <MobilePageTransition isVisible={isOpen} direction="slide" duration={400}>
+        <MobilePageTransition isVisible={isOpen} direction="slide" duration={200}>
           <div 
             className="h-full w-80 max-w-[85vw] relative flex flex-col"
             onClick={(e) => e.stopPropagation()}
@@ -115,7 +115,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                   inset 1px 0 0 rgba(255, 255, 255, 0.6)
                 `,
               transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-              transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+              transition: 'transform 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
             }}
           >
             {/* Header avec effet glassmorphism */}

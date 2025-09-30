@@ -1047,15 +1047,21 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Chat Section - Largeur ajustée avec scroll mobile corrigé */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-auto lg:h-full w-full" style={{ 
+        {/* Chat Section - Largeur ajustée avec scroll mobile LIBRE */}
+        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-full w-full" style={{ 
           width: '100%', 
           maxWidth: 'none', 
           flex: '1 1 0%',
-          overflowY: 'auto', // Permettre scroll vertical sur mobile
-          WebkitOverflowScrolling: 'touch' // Scroll fluide iOS
+          overflowY: 'visible', // Permettre scroll libre sur mobile
+          WebkitOverflowScrolling: 'touch', // Scroll fluide iOS
+          position: 'relative'
         }}>
-          <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+          <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col overflow-y-auto" style={{ 
+            backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', 
+            borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB',
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'auto'
+          }}>
             
             {/* Barre d'outils mobile */}
             <div className="lg:hidden flex items-center justify-between mb-3 p-2 rounded-lg" style={{ backgroundColor: isDarkMode ? '#2D2D2D' : '#F3F4F6' }}>
