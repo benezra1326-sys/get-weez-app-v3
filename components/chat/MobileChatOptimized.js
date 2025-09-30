@@ -774,7 +774,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           )}
         </div>
 
-        {/* Suggestions modernes avec scroll optimisé - Zone agrandie */}
+        {/* Suggestions modernes avec scroll optimisé - Zone maximisée */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
             className="flex-1 overflow-y-auto"
@@ -782,22 +782,23 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
               marginTop: '0',
-              paddingBottom: '80px', // Réduit pour plus d'espace suggestions
-              maxHeight: 'calc(100vh - 140px)', // Plus d'espace vertical
+              paddingBottom: '60px', // Encore plus réduit
+              maxHeight: 'calc(100vh - 120px)', // Plus d'espace vertical
+              minHeight: 'calc(100vh - 200px)', // Hauteur minimum garantie
             }}
           >
-            <div className="p-3"> {/* Padding réduit pour plus d'espace */}
-              <h3 className={`text-lg font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+            <div className="p-2"> {/* Padding ultra-réduit pour maximiser l'espace */}
+              <h3 className={`text-base font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 ✨ Que puis-je faire pour vous ?
             </h3>
 
               {/* Filtres modernes - Grid 2x3 pour tout voir */}
-              <div className="grid grid-cols-3 gap-2 mb-4">
+              <div className="grid grid-cols-3 gap-2 mb-2">
               {categories.map((cat) => (
                 <button
                   key={cat.key}
                   onClick={() => setSelectedCategory(cat.key)}
-                    className="flex flex-col items-center justify-center py-3 px-2 rounded-xl text-sm font-medium transition-all duration-300"
+                    className="flex flex-col items-center justify-center py-2 px-2 rounded-xl text-sm font-medium transition-all duration-300"
                   style={{
                       background: selectedCategory === cat.key
                         ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.8))'
@@ -815,7 +816,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     boxShadow: selectedCategory === cat.key 
                         ? '0 4px 12px rgba(139, 92, 246, 0.3)'
                       : 'none',
-                      minHeight: '60px',
+                      minHeight: '50px', // Réduit de 60px à 50px
                     }}
                   >
                     <span className="text-lg mb-1">{cat.emoji}</span>
@@ -824,12 +825,13 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               ))}
             </div>
 
-              {/* Grid de suggestions maximisée - Zone étendue */}
+              {/* Grid de suggestions ultra-maximisée - Plus d'éléments visibles */}
               <div className="grid grid-cols-3 gap-2 overflow-y-auto" style={{
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
-                maxHeight: 'calc(100vh - 240px)', // Utilise tout l'espace disponible
-                minHeight: '400px' // Hauteur minimum garantie
+                maxHeight: 'calc(100vh - 200px)', // Encore plus d'espace
+                minHeight: 'calc(100vh - 280px)', // Hauteur minimum encore plus grande
+                height: 'auto' // Flexibilité totale
               }}>
               {filteredSuggestions.map((suggestion) => {
                 const Icon = suggestion.icon
@@ -843,7 +845,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '110px',
+                        minHeight: '100px', // Réduit pour voir plus d'éléments
+                        maxHeight: '100px', // Hauteur fixe pour uniformité
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -858,8 +861,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond optimisée */}
-                      <div className="relative h-16 overflow-hidden">
+                      {/* Image de fond ultra-optimisée */}
+                      <div className="relative h-12 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
@@ -883,29 +886,29 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     </div>
 
-                      {/* Contenu ultra-compact */}
-                      <div className="p-1.5">
-                        <div className="flex items-start justify-between mb-1">
+                      {/* Contenu hyper-compact */}
+                      <div className="p-1">
+                        <div className="flex items-start justify-between mb-0.5">
                           <div 
-                            className={`w-6 h-6 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
+                            className={`w-5 h-5 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
                           >
-                            <Icon size={12} className="text-white" />
+                            <Icon size={10} className="text-white" />
                       </div>
                           <span className={`text-xs font-bold ${isDarkMode ? 'text-yellow-400' : 'text-orange-600'}`}>
                             {suggestion.price}
                           </span>
                     </div>
-                        <h4 className={`font-semibold text-xs mb-1 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                        <h4 className={`font-semibold text-xs mb-0.5 leading-tight ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                           {suggestion.title}
                         </h4>
-                        <p className={`text-xs mb-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                        <p className={`text-xs mb-0.5 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                           📍 {suggestion.location}
                         </p>
                         <div className="flex items-center justify-between">
                           <span className={`text-xs ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>
                             ⭐ {suggestion.rating}
                           </span>
-                          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                          <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
                         </div>
                       </div>
 
