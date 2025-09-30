@@ -1,20 +1,36 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import ChatInterface from '../components/chat/ChatInterface'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
-import { useTheme } from '../hooks/useTheme'
+import { useTheme } from '../contexts/ThemeContextSimple'
+import { usePreloader } from '../lib/preloader'
 
-export default function Home({ user, setUser }) {
+const Home = memo(({ user, setUser }) => {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const { isDarkMode, setIsDarkMode, isLoaded } = useTheme()
+  const { isDarkMode, toggleTheme, isLoaded } = useTheme()
+  const { preloadPage } = usePreloader()
+  
+  // Récupérer le message depuis l'URL
+  const { message } = router.query
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev)
   }
+
+  // Précharger les pages importantes au montage
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      preloadPage('/establishments')
+      preloadPage('/services')
+      preloadPage('/events')
+    }, 2000) // Délai pour ne pas bloquer le chargement initial
+
+    return () => clearTimeout(timer)
+  }, [preloadPage])
 
   // Récupérer le message de réservation depuis les query parameters
   const reservationMessage = router.query.message
@@ -23,10 +39,10 @@ export default function Home({ user, setUser }) {
   // Ne pas rendre avant que le thème soit chargé
   if (!isLoaded) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: '#FFFFFF' }}>
+      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#000000' : '#FFFFFF' }}>
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Chargement...</p>
+          <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
         </div>
       </div>
     )
@@ -38,8 +54,8 @@ export default function Home({ user, setUser }) {
           width: '100vw', 
           minHeight: '100vh', 
           margin: 0, 
-          padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
+          padding: 0, 
+          backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
           maxWidth: 'none'
         }}
     >
@@ -48,11 +64,11 @@ export default function Home({ user, setUser }) {
           display: 'flex', 
           flexDirection: 'column', 
           minHeight: '100vh', 
-          width: '100vw',
-          margin: 0,
-          padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-          position: 'relative',
+          width: '100vw', 
+          margin: 0, 
+          padding: 0, 
+          backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
+          position: 'relative', 
           maxWidth: 'none'
         }}
       >
@@ -74,20 +90,20 @@ export default function Home({ user, setUser }) {
         {/* Contenu principal */}
         <main 
           style={{ 
-            flex: 1,
-            overflow: 'hidden',
-            backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-            width: '100vw',
-            minHeight: 'calc(100vh - 6rem)',
-            display: 'flex',
-            justifyContent: 'stretch',
-            alignItems: 'stretch',
+            flex: 1, 
+            overflow: 'hidden', 
+            backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
+            width: '100vw', 
+            minHeight: 'calc(100vh - 6rem)', 
+            display: 'flex', 
+            justifyContent: 'stretch', 
+            alignItems: 'stretch', 
             maxWidth: 'none'
           }}
         >
           <ChatInterface 
             user={user} 
-            initialMessage={reservationMessage}
+            initialMessage={message || reservationMessage}
             establishmentName={establishmentName}
           />
         </main>
@@ -95,11 +111,11 @@ export default function Home({ user, setUser }) {
         {/* Footer avec logo Get Weez */}
         <footer 
           style={{ 
-            backgroundColor: 'var(--color-bg-secondary)',
+            backgroundColor: isDarkMode ? '#1F2937' : '#f8f9fa',
             padding: '1rem 2rem',
             textAlign: 'center',
-            color: 'var(--color-text-primary)',
-            borderTop: '1px solid var(--color-border)',
+            color: isDarkMode ? '#F9FAFB' : '#333333',
+            borderTop: isDarkMode ? '1px solid #374151' : '1px solid #e5e7eb',
             marginTop: 'auto',
             position: 'relative',
             zIndex: 1,
@@ -137,7 +153,7 @@ export default function Home({ user, setUser }) {
             <p 
               style={{ 
                 fontSize: '0.875rem', 
-                color: 'var(--color-text-secondary)', 
+                color: isDarkMode ? '#9CA3AF' : '#666666', 
                 margin: '0.125rem 0',
                 fontWeight: '500'
               }}
@@ -147,14 +163,18 @@ export default function Home({ user, setUser }) {
           </div>
           
           {/* Copyright */}
-          <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>
+          <p style={{ fontSize: '0.75rem', color: isDarkMode ? '#6B7280' : '#999999', margin: 0 }}>
             GET WEEZ - ALL RIGHTS RESERVED
           </p>
         </footer>
       </div>
     </div>
   )
-}
+})
+
+Home.displayName = 'Home'
+
+export default Home
 
 export async function getStaticProps({ locale }) {
   return {

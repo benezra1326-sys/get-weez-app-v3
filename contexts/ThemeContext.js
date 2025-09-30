@@ -1,24 +1,34 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 
-const ThemeContext = createContext()
+export const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
   const [isDarkMode, setIsDarkMode] = useState(false) // Mode clair par défaut
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(false) // Pas chargé au début
 
   useEffect(() => {
-    // Récupérer le thème depuis localStorage au chargement
+    // Récupérer le thème depuis localStorage ou utiliser le mode sombre par défaut
     const savedTheme = localStorage.getItem('theme')
-    if (savedTheme) {
-      setIsDarkMode(savedTheme === 'dark')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    
+    if (savedTheme === 'dark' || (!savedTheme && prefersDark)) {
+      setIsDarkMode(true)
+    } else {
+      setIsDarkMode(false)
     }
+    
     setIsLoaded(true)
   }, [])
 
+  // Sauvegarder dans localStorage et appliquer la classe CSS
   useEffect(() => {
     if (isLoaded) {
-      // Sauvegarder le thème dans localStorage
       localStorage.setItem('theme', isDarkMode ? 'dark' : 'light')
+      
+      // Appliquer la classe CSS au body
+      if (typeof document !== 'undefined') {
+        document.body.className = isDarkMode ? 'theme-dark' : 'theme-light'
+      }
     }
   }, [isDarkMode, isLoaded])
 

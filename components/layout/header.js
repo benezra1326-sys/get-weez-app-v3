@@ -1,31 +1,44 @@
 import { Menu, Crown, User, LogIn, UserPlus, Sun, Moon } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useState, memo, useCallback } from 'react'
 import { useRouter } from 'next/router'
 import LanguageSelector from '../LanguageSelector'
-import { useTheme } from '../../hooks/useTheme'
+import { useTheme } from '../../contexts/ThemeContextSimple'
+import { usePreloader } from '../../lib/preloader'
 
-export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) {
-  const { isDarkMode, setIsDarkMode } = useTheme()
+const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const router = useRouter()
+  const { handleLinkHover } = usePreloader()
+  
+  // Vérification de sécurité pour useTheme
+  let isDarkMode = false
+  let toggleTheme = () => {}
+  
+  try {
+    const theme = useTheme()
+    isDarkMode = theme.isDarkMode
+    toggleTheme = theme.toggleTheme
+  } catch (error) {
+    console.warn('ThemeProvider not available, using default theme')
+  }
 
   // Fonction pour déterminer si un lien est actif
-  const isActive = (path) => {
+  const isActive = useCallback((path) => {
     if (path === '/') {
       return router.pathname === '/'
     }
     return router.pathname.startsWith(path)
-  }
+  }, [router.pathname])
 
   // Fonction pour obtenir les classes CSS d'un lien
-  const getLinkClasses = (path) => {
+  const getLinkClasses = useCallback((path) => {
     const baseClasses = "relative px-4 py-2 rounded-lg transition-all duration-300 font-medium group"
     if (isActive(path)) {
       return `${baseClasses} ${isDarkMode ? 'text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 shadow-lg shadow-purple-500/20' : 'text-gray-900 bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-300 shadow-lg shadow-purple-200/20'}`
     }
     return `${baseClasses} ${isDarkMode ? 'text-gray-300 hover:text-white hover:bg-gray-800/50 hover:shadow-lg hover:shadow-gray-500/10 hover:scale-105' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50 hover:shadow-lg hover:shadow-gray-200/10 hover:scale-105'}`
-  }
+  }, [isActive, isDarkMode])
 
   const handleLogout = async () => {
     try {
@@ -93,9 +106,9 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-2 lg:px-6 py-2 lg:py-4 w-full"
         style={{
           minHeight: '3.5rem',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-          backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.8)' : 'rgba(255, 255, 255, 0.8)',
-          borderColor: isDarkMode ? '#374151' : '#E5E7EB'
+          boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.1)' : '0 4px 20px rgba(139, 92, 246, 0.1)',
+          backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.8)' : 'rgba(255, 255, 255, 0.95)',
+          borderColor: isDarkMode ? '#374151' : 'rgba(139, 92, 246, 0.2)'
         }}
       >
       <div className="flex items-center">
@@ -109,7 +122,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         >
           <Menu size={18} />
         </button>
-        <Link href="/" className="flex items-center group animate-hover-lift">
+        <Link href="/" className="flex flex-col items-start group animate-hover-lift">
           <div 
             className="px-3 py-2 lg:px-6 lg:py-3 rounded-xl shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
             style={{ 
@@ -119,16 +132,22 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             }}
           >
             <h1 
-              className={`text-lg lg:text-2xl font-bold leading-tight tracking-wider whitespace-nowrap ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              className="text-lg lg:text-2xl font-bold leading-tight tracking-wider whitespace-nowrap text-white"
               style={{ 
                 fontFamily: 'Blanka, sans-serif',
                 fontWeight: 'bold',
-                letterSpacing: '0.05em'
+                letterSpacing: '0.05em',
+                color: '#FFFFFF'
               }}
             >
               GET WEEZ
             </h1>
           </div>
+          <p className={`text-xs mt-1 font-medium italic opacity-70 transition-all duration-300 group-hover:opacity-100 ${
+            isDarkMode ? 'text-gray-400' : 'text-gray-600'
+          }`}>
+            Your luxury AI concierge, anytime, anywhere
+          </p>
         </Link>
       </div>
 
@@ -137,6 +156,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         <Link 
           href="/" 
           className={`${getLinkClasses('/')} menu-link`}
+          onMouseEnter={() => handleLinkHover('/')}
         >
           <span>Accueil</span>
         </Link>
@@ -144,6 +164,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         <Link 
           href="/establishments" 
           className={`${getLinkClasses('/establishments')} menu-link`}
+          onMouseEnter={() => handleLinkHover('/establishments')}
         >
           <span>Établissements</span>
         </Link>
@@ -151,6 +172,7 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         <Link 
           href="/services" 
           className={`${getLinkClasses('/services')} menu-link`}
+          onMouseEnter={() => handleLinkHover('/services')}
         >
           <span>Services</span>
         </Link>
@@ -158,107 +180,44 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
         <Link 
           href="/events" 
           className={getLinkClasses('/events')}
+          onMouseEnter={() => handleLinkHover('/events')}
           style={{
             position: 'relative',
             overflow: 'hidden'
           }}
-          onMouseEnter={(e) => {
-            if (!isActive('/events')) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
-              e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
-              e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isActive('/events')) {
-              e.target.style.background = 'transparent'
-              e.target.style.borderColor = 'transparent'
-              e.target.style.boxShadow = 'none'
-            }
-          }}
         >
           <span className="relative z-10">Événements</span>
-          <div 
-            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{
-              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)',
-              transform: 'translateX(-100%)',
-              transition: 'transform 0.6s ease'
-            }}
-          />
         </Link>
         
         <Link 
           href="/account" 
           className={getLinkClasses('/account')}
+          onMouseEnter={() => handleLinkHover('/account')}
           style={{
             position: 'relative',
             overflow: 'hidden'
           }}
-          onMouseEnter={(e) => {
-            if (!isActive('/account')) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
-              e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
-              e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isActive('/account')) {
-              e.target.style.background = 'transparent'
-              e.target.style.borderColor = 'transparent'
-              e.target.style.boxShadow = 'none'
-            }
-          }}
         >
           <span className="relative z-10">Compte</span>
-          <div 
-            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{
-              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)',
-              transform: 'translateX(-100%)',
-              transition: 'transform 0.6s ease'
-            }}
-          />
         </Link>
         
         <Link 
           href="/aide" 
           className={getLinkClasses('/aide')}
+          onMouseEnter={() => handleLinkHover('/aide')}
           style={{
             position: 'relative',
             overflow: 'hidden'
           }}
-          onMouseEnter={(e) => {
-            if (!isActive('/aide')) {
-              e.target.style.background = 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
-              e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
-              e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
-            }
-          }}
-          onMouseLeave={(e) => {
-            if (!isActive('/aide')) {
-              e.target.style.background = 'transparent'
-              e.target.style.borderColor = 'transparent'
-              e.target.style.boxShadow = 'none'
-            }
-          }}
         >
           <span className="relative z-10">Aide</span>
-          <div 
-            className="absolute inset-0 bg-gradient-to-r from-purple-600/20 to-blue-600/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            style={{
-              background: 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent)',
-              transform: 'translateX(-100%)',
-              transition: 'transform 0.6s ease'
-            }}
-          />
         </Link>
       </nav>
 
       <div className="flex items-center space-x-1 lg:space-x-4">
         {/* Bouton de thème */}
         <button 
-          onClick={() => setIsDarkMode(!isDarkMode)}
+          onClick={toggleTheme}
           className="p-2 rounded-xl transition-all duration-300 hover:bg-gray-800/50"
           style={{ 
             color: 'var(--color-text-secondary)',
@@ -275,7 +234,11 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
           {user ? (
           <button 
             onClick={() => setShowUserMenu(!showUserMenu)}
-            className="flex items-center space-x-3 p-2 rounded-2xl transition-all duration-300 group animate-hover-lift hover:bg-gray-800/50"
+            className={`flex items-center space-x-3 p-2 rounded-2xl transition-all duration-300 group animate-hover-lift ${isDarkMode ? 'hover:bg-gray-800/50' : 'hover:bg-gradient-to-r hover:from-purple-50 hover:to-blue-50 border border-transparent hover:border-purple-200'}`}
+            style={{
+              background: isDarkMode ? 'transparent' : 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 50%, rgba(6, 182, 212, 0.05) 100%)',
+              border: isDarkMode ? 'none' : '1px solid rgba(139, 92, 246, 0.1)'
+            }}
           >
             {/* Indicateur de statut membre */}
             {user.is_member && (
@@ -299,10 +262,10 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             
             {/* Nom utilisateur (visible sur desktop) */}
             <div className="hidden lg:block text-left">
-              <div className="text-white text-sm font-semibold">
+              <div className={`text-sm font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 {user.first_name || 'Utilisateur'}
               </div>
-              <div className="text-gray-400 text-xs">
+              <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 {user.is_member ? 'Membre Premium' : 'Utilisateur'}
               </div>
             </div>
@@ -338,11 +301,11 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
 
         {showUserMenu && user && (
           <div 
-            className="absolute right-0 mt-3 w-64 rounded-2xl shadow-2xl py-3 z-50 bg-gray-900/95 backdrop-blur-md border border-gray-700/50"
+            className={`absolute right-0 mt-3 w-64 rounded-2xl shadow-2xl py-3 z-50 backdrop-blur-md ${isDarkMode ? 'bg-gray-900/95 border-gray-700/50' : 'bg-white/95 border-gray-300/50'} border`}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header du menu avec infos utilisateur */}
-            <div className="px-4 py-3 border-b border-gray-700/50 mb-2">
+            <div className={`px-4 py-3 border-b ${isDarkMode ? 'border-gray-700/50' : 'border-gray-300/50'} mb-2`}>
               <div className="flex items-center space-x-3">
                 <div 
                   className="w-10 h-10 rounded-xl flex items-center justify-center text-white font-semibold"
@@ -353,10 +316,10 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
                   {user.first_name?.charAt(0)?.toUpperCase() || 'U'}
                 </div>
                 <div>
-                  <div className="text-white font-semibold text-sm">
+                  <div className={`font-semibold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                     {user.first_name} {user.last_name}
                   </div>
-                  <div className="text-gray-400 text-xs">
+                  <div className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     {user.email}
                   </div>
                   {user.is_member && (
@@ -372,31 +335,31 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
             <div className="py-1">
               <Link 
                 href="/account" 
-                className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-gray-800/50 transition-all duration-200 group"
+                className={`flex items-center space-x-3 px-4 py-3 transition-all duration-200 group ${isDarkMode ? 'text-white hover:bg-gray-800/50' : 'text-gray-900 hover:bg-gray-100/50'}`}
                 onClick={() => setShowUserMenu(false)}
               >
-                <User size={18} className="text-gray-400 group-hover:text-purple-400 transition-colors" />
+                <User size={18} className={`group-hover:text-purple-400 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
                 <span>Mon Compte</span>
               </Link>
               
               {user.is_member && (
                 <Link 
                   href="/subscriptions" 
-                  className="flex items-center space-x-3 px-4 py-3 text-white hover:bg-gray-800/50 transition-all duration-200 group"
+                  className={`flex items-center space-x-3 px-4 py-3 transition-all duration-200 group ${isDarkMode ? 'text-white hover:bg-gray-800/50' : 'text-gray-900 hover:bg-gray-100/50'}`}
                   onClick={() => setShowUserMenu(false)}
                 >
-                  <Crown size={18} className="text-gray-400 group-hover:text-yellow-400 transition-colors" />
+                  <Crown size={18} className={`group-hover:text-yellow-400 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
                   <span>Abonnement</span>
                 </Link>
               )}
               
-              <div className="border-t border-gray-700/50 my-2"></div>
+              <div className={`border-t my-2 ${isDarkMode ? 'border-gray-700/50' : 'border-gray-300/50'}`}></div>
               
               <button 
                 onClick={handleLogout}
-                className="flex items-center space-x-3 w-full text-left px-4 py-3 text-red-400 hover:bg-red-900/20 transition-all duration-200 group"
+                className={`flex items-center space-x-3 w-full text-left px-4 py-3 transition-all duration-200 group ${isDarkMode ? 'text-red-400 hover:bg-red-900/20' : 'text-red-600 hover:bg-red-100/50'}`}
               >
-                <LogIn size={18} className="group-hover:text-red-300 transition-colors" />
+                <LogIn size={18} className={`transition-colors ${isDarkMode ? 'group-hover:text-red-300' : 'group-hover:text-red-500'}`} />
                 <span>Déconnexion</span>
               </button>
             </div>
@@ -407,4 +370,8 @@ export default function Header({ user, setUser, toggleMobileMenu, isMobileMenuOp
     </header>
     </>
   )
-}
+})
+
+Header.displayName = 'Header'
+
+export default Header

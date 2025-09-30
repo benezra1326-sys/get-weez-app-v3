@@ -7,6 +7,7 @@ import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import SocialAuthButtons from '../components/auth/SocialAuthButtons'
 import PhoneAuth from '../components/auth/PhoneAuth'
+import { useTheme } from '../contexts/ThemeContextSimple'
 
 export default function Register({ user, setUser }) {
   const [firstName, setFirstName] = useState('')
@@ -22,6 +23,19 @@ export default function Register({ user, setUser }) {
   const [authMethod, setAuthMethod] = useState('email') // 'email', 'phone', 'social'
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const router = useRouter()
+  const { isDarkMode, isLoaded } = useTheme()
+
+  // Ne pas rendre avant que le thème soit chargé
+  if (!isLoaded) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' }}>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
+        </div>
+      </div>
+    )
+  }
 
   const handleRegister = async (e) => {
     e.preventDefault()

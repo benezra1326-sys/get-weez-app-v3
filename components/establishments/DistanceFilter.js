@@ -89,8 +89,8 @@ export default function DistanceFilter({ onLocationChange, onDistanceChange, use
       {userLocation && (
         <div className="space-y-3">
           <div className="flex items-center space-x-2">
-            <Target size={16} className="text-text-secondary" />
-            <span className="text-sm font-medium text-text-primary">Distance maximale</span>
+            <Target size={16} className="text-gray-600" />
+            <span className="text-sm font-medium text-gray-800">Distance maximale</span>
           </div>
           
           <div className="grid grid-cols-3 gap-2">
@@ -100,8 +100,8 @@ export default function DistanceFilter({ onLocationChange, onDistanceChange, use
                 onClick={() => handleDistanceChange(option.value)}
                 className={`flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   maxDistance === option.value
-                    ? 'bg-primary text-white shadow-glow'
-                    : 'bg-surface text-text-secondary hover:bg-surface-hover hover:text-text-primary'
+                    ? 'bg-blue-500 text-white shadow-lg'
+                    : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'
                 }`}
               >
                 <span className="text-lg">{option.icon}</span>

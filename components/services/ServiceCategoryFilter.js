@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { serviceCategories } from '../../data/services-data'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function ServiceCategoryFilter({ onCategoryChange, selectedCategory }) {
   const [isOpen, setIsOpen] = useState(false)
+  const { isDarkMode } = useTheme()
 
   const handleCategorySelect = (categoryKey) => {
     onCategoryChange(categoryKey)
@@ -16,6 +18,7 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
           background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1));
           border: 1px solid rgba(139, 92, 246, 0.3);
           transition: all 0.3s ease;
+          color: ${isDarkMode ? '#F9FAFB' : '#1F2937'};
         }
         
         .category-button:hover {
@@ -49,14 +52,15 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
             <span className="text-lg mr-3">
               {selectedCategory ? serviceCategories[selectedCategory].icon : '⭐'}
             </span>
-            <span className="font-medium text-white">
+            <span className="font-medium" style={{ color: isDarkMode ? '#F9FAFB' : '#1F2937' }}>
               {selectedCategory ? serviceCategories[selectedCategory].name : 'Toutes les catégories'}
             </span>
           </div>
           <svg
-            className={`w-5 h-5 text-white transition-transform duration-200 ${
+            className={`w-5 h-5 transition-transform duration-200 ${
               isOpen ? 'rotate-180' : ''
             }`}
+            style={{ color: isDarkMode ? '#D1D5DB' : '#374151' }}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"

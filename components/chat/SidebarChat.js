@@ -44,16 +44,16 @@ export default function SidebarChat({
       <div className="p-4 border-b border-gray-700">
         <button
           onClick={onNewConversation}
-          className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group"
+          className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-102 hover:shadow-md hover:shadow-purple-500/20 group"
         >
-          <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-          <div className="relative flex items-center justify-center space-x-2">
-            <div className="p-1 bg-white/20 rounded-lg group-hover:bg-white/30 transition-colors duration-300">
-              <Plus size={16} className="text-white" />
+          <div className="absolute inset-0 bg-gradient-to-r from-white/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div className="relative flex items-center justify-center space-x-1.5">
+            <div className="p-0.5 bg-white/20 rounded group-hover:bg-white/25 transition-colors duration-300">
+              <Plus size={14} className="text-white" />
             </div>
-            <span className="text-sm font-semibold">Nouvelle conversation</span>
-            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-              <Sparkles size={14} className="text-yellow-300" />
+            <span className="text-xs font-semibold truncate">Nouveau chat</span>
+            <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
+              <Sparkles size={12} className="text-yellow-300" />
             </div>
           </div>
         </button>

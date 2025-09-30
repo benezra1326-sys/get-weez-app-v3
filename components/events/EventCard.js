@@ -30,10 +30,12 @@ export default function EventCard({ event }) {
 
   return (
     <div 
-      className="card-premium overflow-hidden animate-fade-in animate-hover-lift group"
+      className="card-premium overflow-hidden animate-fade-in animate-hover-lift group transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rotate-1"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
-        border: '1px solid var(--color-border)'
+        border: '1px solid var(--color-border)',
+        transform: 'perspective(1000px)',
+        transformStyle: 'preserve-3d'
       }}
     >
       <div className="relative">

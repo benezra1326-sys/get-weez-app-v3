@@ -53,8 +53,8 @@ export default function SocialLinks({ establishment }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center space-x-2 mb-3">
-        <div className="w-2 h-2 bg-primary rounded-full"></div>
-        <h3 className="font-semibold text-text-primary">Suivez-nous</h3>
+        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+        <h3 className="font-semibold text-gray-800">Suivez-nous</h3>
       </div>
       
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -76,15 +76,15 @@ export default function SocialLinks({ establishment }) {
       </div>
 
       {/* Informations de contact rapide */}
-      <div className="p-4 bg-surface rounded-lg border border-border">
-        <h4 className="font-semibold text-text-primary mb-3">Contact rapide</h4>
+      <div className="p-4 bg-gray-100 rounded-lg border border-gray-200">
+        <h4 className="font-semibold text-gray-800 mb-3">Contact rapide</h4>
         <div className="space-y-2 text-sm">
           {establishment.phone && (
             <div className="flex items-center space-x-2">
-              <Phone size={16} className="text-text-secondary" />
+              <Phone size={16} className="text-gray-600" />
               <a 
                 href={`tel:${establishment.phone}`}
-                className="text-primary hover:text-primary-dark transition-colors"
+                className="text-blue-600 hover:text-blue-800 transition-colors"
               >
                 {establishment.phone}
               </a>

@@ -1,21 +1,38 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, memo, useCallback } from 'react'
 
-export default function ResponsiveLayout({ children, className = '' }) {
+const ResponsiveLayout = memo(({ children, className = '' }) => {
   const [isMobile, setIsMobile] = useState(false)
   const [isTablet, setIsTablet] = useState(false)
 
+  // Optimisation: utiliser useCallback pour éviter les re-renders
+  const checkScreenSize = useCallback(() => {
+    const width = window.innerWidth
+    const newIsMobile = width < 768
+    const newIsTablet = width >= 768 && width < 1024
+    
+    // Éviter les re-renders inutiles
+    setIsMobile(prev => prev !== newIsMobile ? newIsMobile : prev)
+    setIsTablet(prev => prev !== newIsTablet ? newIsTablet : prev)
+  }, [])
+
   useEffect(() => {
-    const checkScreenSize = () => {
-      const width = window.innerWidth
-      setIsMobile(width < 768)
-      setIsTablet(width >= 768 && width < 1024)
+    // Vérification initiale
+    checkScreenSize()
+    
+    // Debounce pour éviter trop d'appels
+    let timeoutId
+    const debouncedCheckScreenSize = () => {
+      clearTimeout(timeoutId)
+      timeoutId = setTimeout(checkScreenSize, 100)
     }
 
-    checkScreenSize()
-    window.addEventListener('resize', checkScreenSize)
+    window.addEventListener('resize', debouncedCheckScreenSize)
     
-    return () => window.removeEventListener('resize', checkScreenSize)
-  }, [])
+    return () => {
+      window.removeEventListener('resize', debouncedCheckScreenSize)
+      clearTimeout(timeoutId)
+    }
+  }, [checkScreenSize])
 
   return (
     <div 
@@ -31,7 +48,11 @@ export default function ResponsiveLayout({ children, className = '' }) {
       {children}
     </div>
   )
-}
+})
+
+ResponsiveLayout.displayName = 'ResponsiveLayout'
+
+export default ResponsiveLayout
 
 // Hook pour utiliser les breakpoints dans les composants
 export function useResponsive() {

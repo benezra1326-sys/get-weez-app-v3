@@ -5,8 +5,8 @@ export default function EventList({ events, user, onBecomeMember }) {
   return (
     <div className="p-4 md:p-6" style={{ background: 'var(--color-bg-primary)' }}>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white mb-2">Événements à Marbella</h1>
-        <p className="text-gray-400">Événements exclusifs à Marbella</p>
+        <h1 className="text-2xl font-bold mb-2" style={{ color: 'var(--color-text-primary)' }}>Événements à Marbella</h1>
+        <p style={{ color: 'var(--color-text-secondary)' }}>Événements exclusifs à Marbella</p>
       </div>
       
       {user?.is_member ? (

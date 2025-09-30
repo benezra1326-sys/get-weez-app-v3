@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react'
 import { MessageCircle, Trash2, Calendar, Clock, ArrowRight } from 'lucide-react'
 import { useConversations } from '../../hooks/useConversations'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 import Link from 'next/link'
 
 const ChatHistory = ({ user }) => {
+  const { isDarkMode } = useTheme()
   const [conversations, setConversations] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   
@@ -47,8 +49,12 @@ const ChatHistory = ({ user }) => {
 
   if (isLoading) {
     return (
-      <div className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
-        <h2 className="text-2xl font-bold text-white mb-6 flex items-center">
+      <div className={`rounded-2xl p-6 transition-all duration-300 ${
+        isDarkMode 
+          ? 'bg-gray-800/50 backdrop-blur-md border border-gray-700/50' 
+          : 'bg-white border border-gray-200/50 shadow-xl'
+      }`}>
+        <h2 className={`text-2xl font-bold mb-6 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
           <MessageCircle size={24} className="mr-3 text-purple-500" />
           Historique des Conversations
         </h2>
@@ -60,15 +66,19 @@ const ChatHistory = ({ user }) => {
   }
 
   return (
-    <div className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
+    <div className={`rounded-2xl p-6 transition-all duration-300 ${
+      isDarkMode 
+        ? 'bg-gray-800/50 backdrop-blur-md border border-gray-700/50' 
+        : 'bg-white border border-gray-200/50 shadow-xl'
+    }`}>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-2xl font-bold text-white flex items-center">
+        <h2 className={`text-2xl font-bold flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
           <MessageCircle size={24} className="mr-3 text-purple-500" />
           Historique des Conversations
         </h2>
         <Link 
           href="/"
-          className="flex items-center text-purple-400 hover:text-purple-300 transition-colors text-sm"
+          className="flex items-center text-purple-500 hover:text-purple-600 transition-colors text-sm"
         >
           <span>Nouvelle conversation</span>
           <ArrowRight size={16} className="ml-1" />
@@ -85,7 +95,11 @@ const ChatHistory = ({ user }) => {
             return (
               <div
                 key={conversation.id}
-                className="bg-gray-700/50 rounded-xl p-4 border border-gray-600/50 hover:border-gray-500/50 transition-all duration-300 group"
+                className={`rounded-xl p-4 border transition-all duration-300 group ${
+                  isDarkMode 
+                    ? 'bg-gray-700/50 border-gray-600/50 hover:border-gray-500/50' 
+                    : 'bg-gray-50 border-gray-200/50 hover:border-gray-300/50 hover:bg-gray-100/50'
+                }`}
               >
                 <div className="flex items-start justify-between">
                   <div className="flex-1 min-w-0">
@@ -94,10 +108,10 @@ const ChatHistory = ({ user }) => {
                         <MessageCircle size={18} className="text-white" />
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="text-white font-semibold text-sm truncate">
+                        <h3 className={`font-semibold text-sm truncate ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                           {conversation.name}
                         </h3>
-                        <div className="flex items-center space-x-2 text-xs text-gray-400">
+                        <div className={`flex items-center space-x-2 text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
                           <span>{conversation.messages?.length || 0} messages</span>
                           {lastMessage && (
                             <>
@@ -112,14 +126,14 @@ const ChatHistory = ({ user }) => {
                       </div>
                     </div>
                     
-                    <p className="text-gray-300 text-sm leading-relaxed mb-3">
+                    <p className={`text-sm leading-relaxed mb-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                       {getLastMessagePreview(conversation.messages)}
                     </p>
                     
                     <div className="flex items-center justify-between">
                       <Link
                         href="/"
-                        className="inline-flex items-center text-purple-400 hover:text-purple-300 transition-colors text-sm"
+                        className="inline-flex items-center text-purple-500 hover:text-purple-600 transition-colors text-sm"
                       >
                         <span>Continuer la conversation</span>
                         <ArrowRight size={14} className="ml-1" />
@@ -127,7 +141,7 @@ const ChatHistory = ({ user }) => {
                       
                       <button
                         onClick={() => handleDeleteConversation(conversation.id, conversation.name)}
-                        className="p-2 rounded-lg bg-red-600/20 hover:bg-red-600/40 text-red-400 hover:text-red-300 transition-all duration-200 opacity-0 group-hover:opacity-100"
+                        className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-500 hover:text-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100"
                         title="Supprimer la conversation"
                       >
                         <Trash2 size={14} />
@@ -142,10 +156,10 @@ const ChatHistory = ({ user }) => {
       ) : (
         <div className="text-center py-12">
           <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
-            <MessageCircle size={32} className="text-gray-400" />
+            <MessageCircle size={32} className={isDarkMode ? 'text-gray-400' : 'text-gray-500'} />
           </div>
-          <h3 className="text-lg font-semibold text-white mb-2">Aucune conversation</h3>
-          <p className="text-gray-400 text-sm mb-6">
+          <h3 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Aucune conversation</h3>
+          <p className={`text-sm mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             Commencez votre première conversation avec Get Weez
           </p>
           <Link
@@ -159,8 +173,8 @@ const ChatHistory = ({ user }) => {
       )}
 
       {conversations && conversations.length > 0 && (
-        <div className="mt-6 pt-4 border-t border-gray-700/50">
-          <p className="text-gray-400 text-xs text-center">
+        <div className={`mt-6 pt-4 border-t ${isDarkMode ? 'border-gray-700/50' : 'border-gray-200/50'}`}>
+          <p className={`text-xs text-center ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             💡 Astuce : Cliquez sur "Continuer la conversation" pour reprendre un chat précédent
           </p>
         </div>

@@ -6,13 +6,15 @@ import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
 import MobileChatInterface from './MobileChatInterface'
-import { useTheme } from '../../hooks/useTheme'
+import ConversationSidebar from './ConversationSidebar'
+import SuggestionsSidebar from './SuggestionsSidebar'
+import ChatArea from './ChatArea'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   console.log('🔄 ChatInterface component loaded')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
-  const { isDarkMode } = useTheme()
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
@@ -20,21 +22,24 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
   const [showMobileHistory, setShowMobileHistory] = useState(false)
   const [isListening, setIsListening] = useState(false)
+  const [selectedItem, setSelectedItem] = useState(null) // Pour stocker l'élément sélectionné
+  const [showDetailPage, setShowDetailPage] = useState(false) // Pour afficher la page dédiée
   const textareaRef = useRef(null)
-
-  // Effet pour pré-remplir le message de réservation
-  useEffect(() => {
-    if (initialMessage) {
-      setInput(initialMessage)
-      // Focus sur la zone de saisie
-      if (textareaRef.current) {
-        textareaRef.current.focus()
-        // Scroll vers le bas pour voir la zone de saisie
-        textareaRef.current.scrollIntoView({ behavior: 'smooth' })
-      }
-    }
-  }, [initialMessage])
+  const messagesEndRef = useRef(null)
   
+  // Vérification de sécurité pour useTheme
+  let isDarkMode = false
+  let toggleTheme = () => {}
+  
+  try {
+    const theme = useTheme()
+    isDarkMode = theme.isDarkMode
+    toggleTheme = theme.toggleTheme
+  } catch (error) {
+    console.warn('ThemeProvider not available, using default theme')
+  }
+
+  // Hook useConversations - DOIT être déclaré avant les useEffect qui l'utilisent
   const {
     conversations,
     currentConversationId,
@@ -44,6 +49,53 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     addMessage,
     deleteConversation
   } = useConversations()
+
+  // Effet pour pré-remplir le message de réservation
+  useEffect(() => {
+    if (initialMessage) {
+      setInput(initialMessage)
+      // Focus sur la zone de saisie sans scroll automatique
+      if (textareaRef.current) {
+        textareaRef.current.focus()
+      }
+    }
+  }, [initialMessage])
+  
+  // Effet pour créer une nouvelle conversation par défaut au chargement
+  useEffect(() => {
+    // Créer une nouvelle conversation si aucune n'est sélectionnée
+    if (!currentConversationId && conversations.length >= 0 && createConversation) {
+      console.log('🆕 Création d\'une nouvelle conversation par défaut')
+      createConversation()
+    }
+  }, [conversations.length, createConversation, currentConversationId])
+
+  // Fonction pour scroller vers le bas
+  const scrollToBottom = useCallback(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [])
+
+  // Effet pour scroller automatiquement vers le bas quand les messages changent
+  useEffect(() => {
+    // Seulement si on est en train de charger ou si c'est un nouveau message
+    if (isLoading || (messages && messages.length > 0)) {
+      // Délai pour éviter le scroll intempestif
+      setTimeout(() => scrollToBottom(), 100)
+    }
+  }, [messages, isLoading, scrollToBottom])
+
+  // Effet pour scroller vers le bas quand on change de conversation
+  useEffect(() => {
+    // Seulement si on a des messages dans la conversation
+    if (currentConversationId && messages && messages.length > 0) {
+      // Petit délai pour s'assurer que les messages sont rendus
+      setTimeout(() => {
+        scrollToBottom()
+      }, 100)
+    }
+  }, [currentConversationId, scrollToBottom, messages])
 
   console.log('📊 ChatInterface state:', {
     conversationsCount: conversations?.length || 0,
@@ -226,6 +278,127 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   // État pour détecter si on est sur mobile
   const [isMobile, setIsMobile] = useState(false)
 
+  // Données des éléments pour les pages dédiées
+  const itemsData = {
+    'beach-party': {
+      type: 'event',
+      title: 'Beach Party',
+      date: '21 juin - 16h',
+      description: 'Soirée exclusive sur la plage avec DJ international et vue panoramique sur la mer',
+      details: 'Rejoignez-nous pour une soirée inoubliable sur la plage avec un DJ international, des cocktails premium et une vue panoramique sur la mer Méditerranée. Ambiance festive garantie avec musique électronique et house.',
+      features: ['DJ international', 'Cocktails premium', 'Vue panoramique', 'Ambiance festive'],
+      price: 'À partir de 150€',
+      location: 'Plage de Marbella',
+      capacity: '200 personnes',
+      dressCode: 'Tenue de plage élégante',
+      includes: ['Boissons illimitées', 'Snacks', 'Transport depuis l\'hôtel', 'Service VIP'],
+      tags: ['🌊', '🎵', '✨', '🏖️']
+    },
+    'jazz-evening': {
+      type: 'event',
+      title: 'Soirée Jazz',
+      date: '26 juin - 22h',
+      description: 'Concert de jazz avec vue imprenable sur la mer et ambiance intimiste',
+      details: 'Découvrez une soirée jazz intimiste avec des musiciens de renommée internationale dans un cadre exceptionnel face à la mer.',
+      features: ['Musiciens internationaux', 'Ambiance intimiste', 'Vue sur mer', 'Cocktails raffinés'],
+      price: 'À partir de 80€',
+      location: 'Terrasse panoramique',
+      capacity: '50 personnes',
+      dressCode: 'Tenue élégante',
+      includes: ['Concert', 'Cocktails premium', 'Amuse-bouches', 'Service personnalisé'],
+      tags: ['🎷', '🌊', '🎼', '✨']
+    },
+    'gastronomic-dinner': {
+      type: 'event',
+      title: 'Dîner Gastronomique',
+      date: '28 juin - 20h',
+      description: 'Expérience culinaire exceptionnelle avec chef étoilé et menu dégustation',
+      details: 'Un voyage culinaire exceptionnel avec notre chef étoilé qui vous proposera un menu dégustation unique.',
+      features: ['Chef étoilé', 'Menu dégustation', 'Vins d\'exception', 'Service sommelier'],
+      price: 'À partir de 200€',
+      location: 'Restaurant gastronomique',
+      capacity: '30 personnes',
+      dressCode: 'Tenue de soirée',
+      includes: ['Menu dégustation', 'Accord mets-vins', 'Service sommelier', 'Digestif premium'],
+      tags: ['🍽️', '⭐', '🍷', '👨‍🍳']
+    },
+    'nobu-marbella': {
+      type: 'establishment',
+      title: 'Nobu Marbella',
+      category: 'Restaurant',
+      description: 'Expérience culinaire japonaise exceptionnelle avec vue sur la mer',
+      details: 'Découvrez l\'excellence de la cuisine japonaise dans un cadre exceptionnel face à la mer Méditerranée.',
+      features: ['Cuisine japonaise authentique', 'Vue sur mer', 'Chef Nobu', 'Saké premium'],
+      price: 'Menu à partir de 120€',
+      location: 'Puerto Banús, Marbella',
+      hours: '19h00 - 23h30',
+      capacity: '80 couverts',
+      dressCode: 'Tenue élégante',
+      includes: ['Menu dégustation', 'Saké premium', 'Service exceptionnel', 'Terrasse privée'],
+      tags: ['🍣', '⭐', '🌊', '🏮']
+    },
+    'terraza-del-mar': {
+      type: 'establishment',
+      title: 'La Terraza del Mar',
+      category: 'Restaurant',
+      description: 'Cuisine méditerranéenne raffinée avec terrasse panoramique',
+      details: 'Savourez une cuisine méditerranéenne raffinée dans un cadre idyllique avec vue panoramique sur la mer.',
+      features: ['Cuisine méditerranéenne', 'Terrasse panoramique', 'Produits locaux', 'Vins régionaux'],
+      price: 'Menu à partir de 90€',
+      location: 'Costa del Sol, Marbella',
+      hours: '12h00 - 15h00 / 19h00 - 23h00',
+      capacity: '60 couverts',
+      dressCode: 'Tenue décontractée élégante',
+      includes: ['Menu méditerranéen', 'Vins régionaux', 'Terrasse privée', 'Service personnalisé'],
+      tags: ['🏖️', '🌊', '🍽️', '🌿']
+    },
+    'el-lago': {
+      type: 'establishment',
+      title: 'El Lago',
+      category: 'Restaurant',
+      description: 'Restaurant gastronomique avec vue sur le lac et jardin tropical',
+      details: 'Une expérience culinaire unique dans un cadre exceptionnel avec vue sur le lac et jardin tropical.',
+      features: ['Vue sur lac', 'Jardin tropical', 'Cuisine créative', 'Ambiance romantique'],
+      price: 'Menu à partir de 150€',
+      location: 'Complexe hôtelier, Marbella',
+      hours: '19h30 - 23h00',
+      capacity: '40 couverts',
+      dressCode: 'Tenue de soirée',
+      includes: ['Menu gastronomique', 'Vins d\'exception', 'Jardin privé', 'Service VIP'],
+      tags: ['🏨', '🌊', '🍽️', '✨']
+    },
+    'club-vip': {
+      type: 'establishment',
+      title: 'Club VIP',
+      category: 'Nightclub',
+      description: 'Club exclusif avec piste de danse et bar premium',
+      details: 'Vivez une nuit inoubliable dans notre club VIP exclusif avec piste de danse et bar premium.',
+      features: ['Piste de danse', 'Bar premium', 'DJ international', 'Ambiance exclusive'],
+      price: 'Entrée à partir de 50€',
+      location: 'Puerto Banús, Marbella',
+      hours: '23h00 - 06h00',
+      capacity: '300 personnes',
+      dressCode: 'Tenue de soirée',
+      includes: ['Entrée VIP', 'Boissons premium', 'Service bottle', 'Terrasse privée'],
+      tags: ['🍾', '🎵', '✨', '🎉']
+    }
+  }
+
+  // Fonction pour ouvrir une page dédiée
+  const openDetailPage = (itemId) => {
+    const item = itemsData[itemId]
+    if (item) {
+      setSelectedItem(item)
+      setShowDetailPage(true)
+    }
+  }
+
+  // Fonction pour fermer la page dédiée
+  const closeDetailPage = () => {
+    setShowDetailPage(false)
+    setSelectedItem(null)
+  }
+
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024)
@@ -237,8 +410,187 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Composant de page dédiée
+  const DetailPage = ({ item, onClose }) => {
+    if (!item) return null
+
+    return (
+      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
+        <div className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl ${
+          isDarkMode ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-200'
+        }`}>
+          {/* Header */}
+          <div className={`sticky top-0 z-10 p-6 border-b flex items-center justify-between ${
+            isDarkMode ? 'border-gray-700' : 'border-gray-200'
+          }`}>
+            <div className="flex items-center space-x-3">
+              <div className="text-3xl">{item.tags[0]}</div>
+              <div>
+                <h1 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  {item.title}
+                </h1>
+                <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {item.type === 'event' ? item.date : item.category}
+                </p>
+              </div>
+            </div>
+            <button
+              onClick={onClose}
+              className={`p-2 rounded-full transition-colors ${
+                isDarkMode 
+                  ? 'text-white hover:bg-gray-800' 
+                  : 'text-gray-600 hover:bg-gray-100'
+              }`}
+            >
+              <X size={24} />
+            </button>
+          </div>
+
+          {/* Content */}
+          <div className="p-6 space-y-6">
+            {/* Description principale */}
+            <div>
+              <h2 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                Description
+              </h2>
+              <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-700'} leading-relaxed`}>
+                {item.details}
+              </p>
+            </div>
+
+            {/* Informations principales */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <h3 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  Informations
+                </h3>
+                <div className="space-y-2">
+                  <div className="flex justify-between">
+                    <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Prix:</span>
+                    <span className={`font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                      {item.price}
+                    </span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Lieu:</span>
+                    <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.location}</span>
+                  </div>
+                  {item.capacity && (
+                    <div className="flex justify-between">
+                      <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Capacité:</span>
+                      <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.capacity}</span>
+                    </div>
+                  )}
+                  {item.hours && (
+                    <div className="flex justify-between">
+                      <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Horaires:</span>
+                      <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.hours}</span>
+                    </div>
+                  )}
+                  {item.dressCode && (
+                    <div className="flex justify-between">
+                      <span className={`${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Tenue:</span>
+                      <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.dressCode}</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div>
+                <h3 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  Caractéristiques
+                </h3>
+                <div className="space-y-2">
+                  {item.features.map((feature, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <span className="text-green-500">✓</span>
+                      <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{feature}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Inclus */}
+            {item.includes && (
+              <div>
+                <h3 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  Inclus
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                  {item.includes.map((include, index) => (
+                    <div key={index} className="flex items-center space-x-2">
+                      <span className="text-blue-500">•</span>
+                      <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{include}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Tags */}
+            <div>
+              <h3 className={`text-lg font-semibold mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                Ambiance
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {item.tags.map((tag, index) => (
+                  <span
+                    key={index}
+                    className={`px-3 py-1 rounded-full text-sm ${
+                      isDarkMode 
+                        ? 'bg-gray-800 text-gray-200 border border-gray-700' 
+                        : 'bg-gray-100 text-gray-800 border border-gray-200'
+                    }`}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Footer avec boutons */}
+          <div className={`sticky bottom-0 p-6 border-t rounded-b-2xl ${
+            isDarkMode 
+              ? 'border-gray-700 bg-gray-800' 
+              : 'border-gray-200 bg-gray-50'
+          }`}>
+            <div className="flex space-x-4">
+              <button
+                onClick={() => {
+                  setInput(`Plus d'informations sur ${item.title}`)
+                  onClose()
+                }}
+                className={`flex-1 px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                  isDarkMode 
+                    ? 'bg-gray-700 text-white hover:bg-gray-600 border border-gray-600' 
+                    : 'bg-gray-200 text-gray-900 hover:bg-gray-300 border border-gray-300'
+                }`}
+              >
+                Plus d'infos
+              </button>
+              <button
+                onClick={() => {
+                  setInput(`Réserver pour ${item.title}`)
+                  onClose()
+                }}
+                className="flex-1 px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 text-white rounded-lg font-semibold hover:from-blue-700 hover:to-purple-700 transition-all duration-300 shadow-lg hover:shadow-xl"
+              >
+                Réserver
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
+      {/* Page dédiée */}
+      {showDetailPage && <DetailPage item={selectedItem} onClose={closeDetailPage} />}
+
       {/* Interface mobile - toujours présente mais cachée sur desktop */}
       <div className="lg:hidden">
         <MobileChatInterface user={user} initialMessage={initialMessage} establishmentName={establishmentName} />
@@ -298,13 +650,199 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         .animate-scroll-reverse {
           animation: scroll-reverse 30s linear infinite;
         }
+        
+        /* Styles pour les bannières uniformes */
+        .uniform-banner {
+          position: relative;
+          height: 200px;
+          border-radius: 20px;
+          overflow: hidden;
+          margin-bottom: 16px;
+          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
+        }
+        
+        .uniform-banner:hover {
+          transform: translateY(-2px);
+          box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+        }
+        
+        .banner-image {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          z-index: 1;
+        }
+        
+        .banner-overlay {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.1) 100%);
+          z-index: 2;
+        }
+        
+        .banner-content {
+          position: relative;
+          z-index: 3;
+          height: 100%;
+          padding: 20px 20px 16px 20px;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+          color: white;
+          min-height: 0;
+        }
+        
+        .banner-header {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: 12px;
+        }
+        
+        .banner-badge {
+          background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
+          backdrop-filter: blur(8px);
+          padding: 6px 12px;
+          border-radius: 20px;
+          font-size: 12px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          border: 1px solid rgba(255, 215, 0, 0.6);
+          box-shadow: 0 2px 8px rgba(255, 165, 0, 0.3);
+          color: #1A1A1A;
+        }
+        
+        .banner-title {
+          font-size: 24px;
+          font-weight: 700;
+          margin-bottom: 8px;
+          line-height: 1.2;
+        }
+        
+        .banner-description {
+          font-size: 14px;
+          opacity: 0.9;
+          line-height: 1.3;
+          margin-bottom: 8px;
+          max-height: 2.6em;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+        }
+        
+        .banner-footer {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          margin-top: auto;
+          padding-top: 8px;
+          flex-shrink: 0;
+          min-height: 44px;
+        }
+        
+        .banner-rating {
+          font-size: 14px;
+          opacity: 0.8;
+          margin-bottom: 0;
+        }
+        
+        .banner-buttons {
+          display: flex;
+          gap: 8px;
+          align-items: flex-end;
+          flex-shrink: 0;
+        }
+        
+        .banner-button {
+          padding: 6px 12px;
+          border-radius: 12px;
+          font-size: 11px;
+          font-weight: 600;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          border: none;
+          white-space: nowrap;
+          min-height: 28px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        
+        .banner-button.primary {
+          background: rgba(255, 255, 255, 0.9);
+          color: #1f2937;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .banner-button.primary:hover {
+          background: white;
+          transform: translateY(-1px);
+          box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        .banner-button.secondary {
+          background: rgba(255, 255, 255, 0.2);
+          color: white;
+          backdrop-filter: blur(10px);
+          border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .banner-button.secondary:hover {
+          background: rgba(255, 255, 255, 0.3);
+          transform: translateY(-1px);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+          .uniform-banner {
+            height: 160px;
+            margin-bottom: 12px;
+          }
+          
+          .banner-content {
+            padding: 16px 16px 12px 16px;
+          }
+          
+          .banner-title {
+            font-size: 20px;
+          }
+          
+          .banner-description {
+            font-size: 13px;
+          }
+          
+          .banner-button {
+            padding: 5px 10px;
+            font-size: 10px;
+            min-height: 24px;
+          }
+          
+          .banner-rating {
+            font-size: 12px;
+          }
+          
+          .banner-footer {
+            min-height: 36px;
+            padding-top: 6px;
+          }
+        }
       `}</style>
       <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF', width: '100vw', maxWidth: 'none' }}>
       {/* Main Content */}
       <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen" style={{ width: '100vw', maxWidth: 'none' }}>
         
         {/* Sidebar gauche - Conversations */}
-        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+        <div className="hidden lg:block w-60 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
           {/* Version mobile subtile - petit bouton flottant */}
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
@@ -365,11 +903,15 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     conversations.map((conversation) => (
                       <div 
                         key={conversation.id}
-                        className={`p-3 rounded-lg cursor-pointer transition-all border ${
+                        className={`p-3 rounded-lg cursor-pointer transition-all border hover:scale-105 hover:shadow-lg hover:rotate-1 ${
                           conversation.id === currentConversationId 
                             ? 'bg-blue-600/30 border-blue-500/50' 
                             : 'bg-gray-800/50 border-gray-700/50 hover:bg-gray-700/50'
                         }`}
+                        style={{
+                          transform: 'perspective(1000px)',
+                          transformStyle: 'preserve-3d'
+                        }}
                       >
                         <div 
                           onClick={() => {
@@ -418,43 +960,25 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               </div>
             </div>
           )}
-          <div className="p-3 lg:p-6 flex-1 overflow-y-auto pb-1 lg:pb-8 min-h-0">
-            <h2 className={`text-base lg:text-xl font-bold mb-2 lg:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Conversations</h2>
+          <div className="p-2 lg:p-4 flex-1 overflow-y-auto pb-1 lg:pb-6 min-h-0">
+            <h2 className={`text-sm lg:text-lg font-bold mb-2 lg:mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Conversations</h2>
             <div className="space-y-1 lg:space-y-4">
-              {/* Bouton Nouvelle Conversation - Design Mobile Amélioré */}
-              <div 
+              {/* Bouton Nouvelle Conversation - Design Optimisé */}
+              <button 
                 onClick={createConversation}
-                className="relative overflow-hidden rounded-2xl border border-purple-500/30 hover:border-purple-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl"
+                className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
               >
-                {/* Bannière de fond avec gradient */}
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 opacity-90"></div>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent"></div>
-                
-                {/* Badge Premium */}
-                <div className="absolute top-2 right-2 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                  ✨ NOUVEAU
-                </div>
-                
-                <div className="relative p-3 lg:p-4">
-                  <div className="flex items-center space-x-3 mb-2 lg:mb-3">
-                    <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                      <Sparkles size={20} className="text-white lg:hidden" />
-                      <Sparkles size={24} className="text-white hidden lg:block" />
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold text-base lg:text-lg">Nouvelle Conversation</h3>
-                      <p className="text-purple-100 text-sm lg:text-base">Commencez un nouveau chat</p>
-                    </div>
+                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <div className="relative flex items-center justify-center space-x-3">
+                  <div className="p-2 bg-white/20 rounded-lg group-hover:bg-white/30 transition-colors duration-300">
+                    <Sparkles size={18} className="text-white" />
                   </div>
-                  <p className="text-white/90 text-sm mb-3 lg:mb-4 leading-relaxed hidden lg:block">Démarrez une nouvelle conversation avec Get Weez</p>
-                  <div className="flex items-center justify-between">
-                    <div className="text-purple-100 text-sm font-medium">💬 Chat IA</div>
-                    <button className="bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
-                      Créer
-                    </button>
+                  <span className="text-sm font-bold">Nouvelle conversation</span>
+                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex-shrink-0">
+                    <Sparkles size={16} className="text-yellow-300" />
                   </div>
                 </div>
-              </div>
+              </button>
 
               {/* Liste des conversations */}
               {conversations && conversations.length > 0 ? (
@@ -464,27 +988,31 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     className={`bg-gradient-to-r ${conversation.id === currentConversationId 
                       ? 'from-blue-500/30 to-purple-600/30 border-blue-500/50' 
                       : 'from-gray-500/20 to-gray-600/20 border-gray-500/30'
-                    } border rounded-xl p-1 lg:p-4 hover:border-blue-400/50 transition-all duration-300 group relative`}
+                    } border rounded-xl p-1 lg:p-4 hover:border-blue-400/50 transition-all duration-300 group relative hover:scale-105 hover:shadow-lg hover:rotate-1`}
+                    style={{
+                      transform: 'perspective(1000px)',
+                      transformStyle: 'preserve-3d'
+                    }}
                   >
                     <div 
                       className="cursor-pointer"
                       onClick={() => selectConversation(conversation.id)}
                     >
-                      <div className="flex items-center space-x-1 lg:space-x-3 mb-1 lg:mb-2">
-                        <div className={`w-8 h-8 lg:w-10 lg:h-10 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200 ${
+                      <div className="flex items-center space-x-2 lg:space-x-3 mb-1">
+                        <div className={`w-6 h-6 lg:w-8 lg:h-8 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200 ${
                           conversation.id === currentConversationId 
                             ? 'bg-gradient-to-r from-blue-500 to-purple-500' 
                             : 'bg-gradient-to-r from-gray-500 to-gray-600'
                         }`}>
-                          <MessageCircle size={16} className="text-white lg:hidden" />
-                          <MessageCircle size={20} className="text-white hidden lg:block" />
+                          <MessageCircle size={12} className="text-white lg:hidden" />
+                          <MessageCircle size={16} className="text-white hidden lg:block" />
                         </div>
-                        <div className="flex-1">
-                          <h3 className={`font-semibold ${conversation.id === currentConversationId ? (isDarkMode ? 'text-white' : 'text-gray-900') : (isDarkMode ? 'text-gray-300' : 'text-gray-600')}`}>
+                        <div className="flex-1 min-w-0">
+                          <h3 className={`font-semibold text-xs lg:text-sm truncate ${conversation.id === currentConversationId ? (isDarkMode ? 'text-white' : 'text-gray-900') : (isDarkMode ? 'text-gray-300' : 'text-gray-600')}`}>
                             {conversation.name}
                           </h3>
-                          <p className={`text-sm ${conversation.id === currentConversationId ? (isDarkMode ? 'text-blue-300' : 'text-blue-600') : (isDarkMode ? 'text-gray-400' : 'text-gray-500')}`}>
-                            {conversation.messages?.length || 0} messages
+                          <p className={`text-xs ${conversation.id === currentConversationId ? (isDarkMode ? 'text-blue-300' : 'text-blue-600') : (isDarkMode ? 'text-gray-400' : 'text-gray-500')}`}>
+                            {conversation.messages?.length || 0} msgs
                           </p>
                         </div>
                       </div>
@@ -552,7 +1080,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               <div className="flex items-center space-x-2">
                 {/* Bouton thème */}
                 <button 
-                  onClick={() => setIsDarkMode(!isDarkMode)}
+                  onClick={toggleTheme}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
                     backgroundColor: '#6B7280',
@@ -705,6 +1233,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     )
                   })}
+                  {/* Élément invisible pour le scroll automatique */}
+                  <div ref={messagesEndRef} />
                 </div>
               ) : (
                 <div className="flex flex-col items-center justify-center h-full text-center py-4 lg:py-8">
@@ -715,7 +1245,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     onClick={() => {
                       if (textareaRef.current) {
                         textareaRef.current.focus()
-                        textareaRef.current.scrollIntoView({ behavior: 'smooth' })
                       }
                     }}
                   >
@@ -764,7 +1293,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   </div>
                   
                   {/* Notification de réservation si applicable */}
-                  {establishmentName && (
+                  {establishmentName && establishmentName !== 'undefined' && (
                     <div className="lg:hidden bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg p-3 mb-4 mx-2">
                       <div className="flex items-center space-x-2">
                         <span className="text-white text-lg">🍽️</span>
@@ -801,15 +1330,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
               {/* Suggestions rapides - Version mobile améliorée */}
               <div className="lg:hidden mb-4">
-                <h3 className="text-white font-semibold text-sm mb-3 flex items-center">
+                <h3 className="text-white font-bold text-base mb-3 flex items-center">
                   <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
                   💡 Suggestions Premium
                 </h3>
                 <div className="grid grid-cols-2 gap-3 mb-4">
                   {/* Événements */}
-                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`}>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-lg">🏖️</span>
+                  <div className={`rounded-xl p-3 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 to-cyan-500 border-blue-400/30' : 'bg-gradient-to-br from-blue-100 to-cyan-100 border-blue-300/50'}`}>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-blue-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span className="text-xl">🏖️</span>
+                      </div>
                       <div>
                         <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h4>
                         <p className={`text-xs ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin</p>
@@ -817,15 +1348,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     <button
                       onClick={() => setInput('Réserver pour la Beach Party')}
-                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white`}
                     >
                       Réserver
                     </button>
                   </div>
                   
-                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`}>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-lg">🎷</span>
+                  <div className={`rounded-xl p-3 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`}>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span className="text-xl">🎷</span>
+                      </div>
                       <div>
                         <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h4>
                         <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin</p>
@@ -833,16 +1366,18 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     <button
                       onClick={() => setInput('Réserver pour la soirée jazz')}
-                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-purple-500 hover:bg-purple-600 text-white'}`}
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white`}
                     >
                       Réserver
                     </button>
                   </div>
                   
                   {/* Restaurants */}
-                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-amber-500 to-orange-500 border-amber-400/30' : 'bg-gradient-to-br from-amber-100 to-orange-100 border-amber-300/50'}`}>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-lg">🍣</span>
+                  <div className={`rounded-xl p-3 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-amber-500 to-orange-500 border-amber-400/30' : 'bg-gradient-to-br from-amber-100 to-orange-100 border-amber-300/50'}`}>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-amber-600 to-orange-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span className="text-xl">🍣</span>
+                      </div>
                       <div>
                         <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h4>
                         <p className={`text-xs ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Japonais Premium</p>
@@ -850,15 +1385,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     <button
                       onClick={() => setInput('Réserver une table chez Nobu')}
-                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white`}
                     >
                       Réserver
                     </button>
                   </div>
                   
-                  <div className={`rounded-xl p-3 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-teal-500 to-cyan-500 border-teal-400/30' : 'bg-gradient-to-br from-teal-100 to-cyan-100 border-teal-300/50'}`}>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <span className="text-lg">🏖️</span>
+                  <div className={`rounded-xl p-3 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-teal-500 to-cyan-500 border-teal-400/30' : 'bg-gradient-to-br from-teal-100 to-cyan-100 border-teal-300/50'}`}>
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-teal-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg">
+                        <span className="text-xl">🍽️</span>
+                      </div>
                       <div>
                         <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza</h4>
                         <p className={`text-xs ${isDarkMode ? 'text-teal-100' : 'text-teal-700'}`}>Méditerranéen</p>
@@ -866,7 +1403,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </div>
                     <button
                       onClick={() => setInput('Réserver une table à La Terraza')}
-                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-teal-500 hover:bg-teal-600 text-white'}`}
+                      className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white`}
                     >
                       Réserver
                     </button>
@@ -875,27 +1412,19 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 
                 {/* Services rapides */}
                 <div className="flex flex-wrap gap-2">
-                  {['🚗 Transport VIP', '🛥️ Yacht privé', '🚁 Hélicoptère', '💆 Spa à domicile'].map((service, index) => (
+                  {[
+                    { icon: '🚗', text: 'Transport VIP', gradient: 'from-blue-500 to-indigo-600' },
+                    { icon: '🛥️', text: 'Yacht privé', gradient: 'from-cyan-500 to-blue-600' },
+                    { icon: '🚁', text: 'Hélicoptère', gradient: 'from-amber-500 to-orange-600' },
+                    { icon: '💆', text: 'Spa à domicile', gradient: 'from-pink-500 to-rose-600' }
+                  ].map((service, index) => (
                     <button
                       key={index}
-                      onClick={() => setInput(service)}
-                      className="px-3 py-2 rounded-full text-xs font-medium transition-all duration-300 flex items-center"
-                      style={{
-                        backgroundColor: '#2D2D2D',
-                        color: '#FFFFFF',
-                        border: '1px solid #374151',
-                        boxShadow: '0 2px 4px rgba(0, 0, 0, 0.2)'
-                      }}
-                      onMouseEnter={(e) => {
-                        e.target.style.backgroundColor = '#374151'
-                        e.target.style.boxShadow = '0 4px 8px rgba(0, 0, 0, 0.3)'
-                      }}
-                      onMouseLeave={(e) => {
-                        e.target.style.backgroundColor = '#2D2D2D'
-                        e.target.style.boxShadow = '0 2px 4px rgba(0, 0, 0, 0.2)'
-                      }}
+                      onClick={() => setInput(service.text)}
+                      className={`px-4 py-3 rounded-lg text-sm font-medium transition-all duration-300 flex items-center justify-center min-w-[120px] bg-gradient-to-r ${service.gradient} text-white border border-white/20 shadow-lg hover:shadow-xl hover:scale-105`}
                     >
-                      {service}
+                      <span className="mr-2 text-xl">{service.icon}</span>
+                      {service.text}
                     </button>
                   ))}
                 </div>
@@ -1024,80 +1553,106 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
 
         {/* Sidebar droite - Propositions avec filtres - UNIQUEMENT sur desktop */}
-        <div className="hidden lg:block w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB', width: '20rem', maxWidth: '20rem' }}>
-          <div className="p-2 lg:p-6 pb-2 lg:pb-12">
-            <h2 className={`text-sm lg:text-3xl font-bold mb-2 lg:mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>💡 Suggestions Premium</h2>
+        <div className="hidden lg:block w-72 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+          <div className="p-2 lg:p-4 pb-2 lg:pb-6">
+            <h2 className={`text-base lg:text-lg font-bold mb-2 lg:mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>💡 Suggestions</h2>
             
             {/* Filtres améliorés avec plus d'options */}
-            <div className="mb-4 lg:mb-8">
-              {/* Version desktop - Filtres étendus */}
+            <div className="mb-3 lg:mb-4">
+              {/* Version desktop - Filtres uniformisés */}
               <div className="hidden lg:block">
-                <div className="grid grid-cols-2 gap-2 mb-4">
+                <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setSidebarFilter('all')}
-                    className="px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center"
+                    className="px-3 py-3 rounded-lg text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex flex-col items-center justify-center"
                     style={{
                       backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : (isDarkMode ? '#374151' : '#F3F4F6'),
                       color: sidebarFilter === 'all' ? '#FFFFFF' : (isDarkMode ? '#FFFFFF' : '#374151'),
-                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : (isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)')
+                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : (isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)'),
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      minHeight: '50px'
                     }}
                   >
-                    🌟 Tout
+                    <span className="text-lg mb-1">🌟</span>
+                    <span className="text-xs">Tout</span>
                   </button>
                   <button
                     onClick={() => setSidebarFilter('events')}
-                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
+                    className={`px-3 py-3 rounded-lg text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex flex-col items-center justify-center ${
                       sidebarFilter === 'events' 
                         ? 'bg-gradient-to-r from-purple-600 to-pink-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      minHeight: '50px'
+                    }}
                   >
-                    🎉 Événements
+                    <span className="text-lg mb-1">🎉</span>
+                    <span className="text-xs">Événements</span>
                   </button>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
                   <button
                     onClick={() => setSidebarFilter('establishments')}
-                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
+                    className={`px-3 py-3 rounded-lg text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex flex-col items-center justify-center ${
                       sidebarFilter === 'establishments' 
                         ? 'bg-gradient-to-r from-green-600 to-emerald-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      minHeight: '50px'
+                    }}
                   >
-                    🍽️ Restaurants
+                    <span className="text-lg mb-1">🍽️</span>
+                    <span className="text-xs">Restaurants</span>
                   </button>
                   <button
                     onClick={() => setSidebarFilter('services')}
-                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
+                    className={`px-3 py-3 rounded-lg text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex flex-col items-center justify-center ${
                       sidebarFilter === 'services' 
                         ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      minHeight: '50px'
+                    }}
                   >
-                    ⭐ Services
+                    <span className="text-lg mb-1">⭐</span>
+                    <span className="text-xs">Services</span>
                   </button>
                   <button
                     onClick={() => setSidebarFilter('luxury')}
-                    className={`px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center ${
+                    className={`px-3 py-3 rounded-lg text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex flex-col items-center justify-center ${
                       sidebarFilter === 'luxury' 
                         ? 'bg-gradient-to-r from-amber-600 to-orange-600 text-white' 
                         : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
                     }`}
+                    style={{
+                      fontSize: '14px',
+                      fontWeight: '600',
+                      minHeight: '50px'
+                    }}
                   >
-                    💎 Luxe
+                    <span className="text-lg mb-1">💎</span>
+                    <span className="text-xs">Luxe</span>
                   </button>
                 </div>
               </div>
             </div>
 
-            <div className="space-y-4 lg:space-y-6">
+            <div className="space-y-2 lg:space-y-3">
               {/* Événements */}
               {(sidebarFilter === 'all' || sidebarFilter === 'events') && (
                 <>
                   <div className="lg:block hidden">
-                    <h3 className="text-white font-semibold text-sm mb-3 flex items-center">
-                      <span className="w-2 h-2 bg-blue-500 rounded-full mr-2"></span>
-                      Événements du jour
+                    <h3 className={`font-semibold text-xs mb-2 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                      Aujourd'hui
                     </h3>
                   </div>
                 </>
@@ -1110,7 +1665,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🏖️</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin</p>
                         </div>
                       </div>
@@ -1121,7 +1676,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🎷</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin</p>
                         </div>
                       </div>
@@ -1132,7 +1687,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🍽️</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-green-900'}`}>Dîner Gastronomique</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-green-900'}`}>Dîner Gastronomique</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-green-100' : 'text-green-700'}`}>28 juin</p>
                         </div>
                       </div>
@@ -1143,7 +1698,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🎉</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-orange-900'}`}>Pool Party</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-orange-900'}`}>Pool Party</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-orange-100' : 'text-orange-700'}`}>30 juin</p>
                         </div>
                       </div>
@@ -1151,93 +1706,192 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </div>
                   </div>
                   
-                  {/* Version desktop */}
-                  <div className={`hidden lg:block relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl ${isDarkMode ? 'border-blue-500/30 hover:border-blue-400/50' : 'border-blue-300/50 hover:border-blue-400/70'}`}>
-                    {/* Bannière de fond avec gradient */}
-                    <div className={`absolute inset-0 opacity-90 ${isDarkMode ? 'bg-gradient-to-br from-blue-500 via-cyan-500 to-teal-500' : 'bg-gradient-to-br from-blue-100 via-cyan-100 to-teal-100'}`}></div>
-                    <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-t from-black/50 via-transparent to-transparent' : 'bg-gradient-to-t from-white/20 via-transparent to-transparent'}`}></div>
+                  {/* Version desktop - Bannière uniforme */}
+                  <div 
+                    className="hidden lg:block uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('beach-party')}
+                  >
+                    {/* Image de fond avec gradient */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: isDarkMode ? 'linear-gradient(135deg, #1E40AF 0%, #3730A3 50%, #581C87 100%)' : 'linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%)'
+                      }}
+                    ></div>
                     
-                    {/* Badge Événement */}
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                      🎉 ÉVÉNEMENT
-                    </div>
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
                     
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🏖️</span>
-                        </div>
-                        <div>
-                          <h3 className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h3>
-                          <p className={`text-sm lg:text-base ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin - 16h</p>
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          🎉 ÉVÉNEMENT
                         </div>
                       </div>
-                      <p className={`text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-blue-800'}`}>Soirée exclusive sur la plage avec DJ international</p>
-                      <div className="flex items-center justify-between">
-                        <div className={`text-sm font-medium ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>🌊 Plage • 🎵 DJ</div>
-                        <button className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl ${isDarkMode ? 'bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}>
-                          En savoir plus
-                        </button>
+                      
+                      {/* Titre et description */}
+                      <div>
+                        <h3 className="banner-title">Beach Party</h3>
+                        <p className="banner-description">Soirée exclusive sur la plage avec DJ international et vue panoramique sur la mer</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>📅</span>
+                          <span>21 juin - 16h</span>
+                        </div>
+                      </div>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🌊 🎵 ✨ 🏖️</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur la Beach Party')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver pour la Beach Party du 21 juin')}
+                          >
+                            Réserver
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl ${isDarkMode ? 'border-purple-500/30 hover:border-purple-400/50' : 'border-purple-300/50 hover:border-purple-400/70'}`}>
-                    {/* Bannière de fond avec gradient */}
-                    <div className={`absolute inset-0 opacity-90 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500' : 'bg-gradient-to-br from-purple-100 via-pink-100 to-rose-100'}`}></div>
-                    <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-t from-black/50 via-transparent to-transparent' : 'bg-gradient-to-t from-white/20 via-transparent to-transparent'}`}></div>
+                  <div 
+                    className="uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('jazz-evening')}
+                  >
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                    style={{
+                        background: 'linear-gradient(135deg, #7C3AED 0%, #C026D3 50%, #DB2777 100%)',
+                      width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
                     
-                    {/* Badge Événement */}
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
                       🎵 MUSIQUE
                     </div>
-                    
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🎷</span>
-                        </div>
-                        <div>
-                          <h3 className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h3>
-                          <p className={`text-sm lg:text-base ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin - 22h</p>
+                      </div>
+                      
+                      {/* Titre et description */}
+                      <div>
+                        <h3 className="banner-title">Soirée Jazz</h3>
+                        <p className="banner-description">Concert de jazz avec vue imprenable sur la mer et ambiance intimiste</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>📅</span>
+                          <span>26 juin - 22h</span>
                         </div>
                       </div>
-                      <p className={`text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-purple-800'}`}>Concert de jazz avec vue imprenable sur la mer</p>
-                      <div className="flex items-center justify-between">
-                        <div className={`text-sm font-medium ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>🎷 Jazz • 🌊 Vue mer</div>
-                        <button className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl ${isDarkMode ? 'bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white' : 'bg-purple-500 hover:bg-purple-600 text-white'}`}>
-                          En savoir plus
-                        </button>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🎷 🌊 🎼 ✨</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur la Soirée Jazz')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver pour la Soirée Jazz du 26 juin')}
+                          >
+                            Réserver
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className={`relative overflow-hidden rounded-2xl border transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl ${isDarkMode ? 'border-green-500/30 hover:border-green-400/50' : 'border-green-300/50 hover:border-green-400/70'}`}>
-                    {/* Bannière de fond avec gradient */}
-                    <div className={`absolute inset-0 opacity-90 ${isDarkMode ? 'bg-gradient-to-br from-green-500 via-emerald-500 to-teal-500' : 'bg-gradient-to-br from-green-100 via-emerald-100 to-teal-100'}`}></div>
-                    <div className={`absolute inset-0 ${isDarkMode ? 'bg-gradient-to-t from-black/50 via-transparent to-transparent' : 'bg-gradient-to-t from-white/20 via-transparent to-transparent'}`}></div>
+                  <div 
+                    className="uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('gastronomic-dinner')}
+                  >
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                    style={{
+                        background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
+                      width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
                     
-                    {/* Badge Sponsorisé */}
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                      ⭐ SPONSORISÉ
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                      🍽️ GASTRONOMIE
                     </div>
-                    
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🍽️</span>
-                        </div>
-                        <div>
-                          <h3 className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-green-900'}`}>Dîner Gastronomique</h3>
-                          <p className={`text-sm lg:text-base ${isDarkMode ? 'text-green-100' : 'text-green-700'}`}>28 juin - 20h</p>
+                      </div>
+                      
+                      {/* Titre et description */}
+                      <div>
+                        <h3 className="banner-title">Dîner Gastronomique</h3>
+                        <p className="banner-description">Menu dégustation avec chef étoilé Michelin</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>📅</span>
+                          <span>28 juin - 20h</span>
                         </div>
                       </div>
-                      <p className={`text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-green-800'}`}>Menu dégustation avec chef étoilé Michelin</p>
-                      <div className="flex items-center justify-between">
-                        <div className={`text-sm font-medium ${isDarkMode ? 'text-green-100' : 'text-green-700'}`}>🍽️ Michelin • ⭐ Étoilé</div>
-                        <button className={`px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center ${isDarkMode ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white' : 'bg-green-500 hover:bg-green-600 text-white'}`}>
-                          Réserver
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🍽️ ⭐ 🍷 👨‍🍳</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Dîner Gastronomique')}
+                          >
+                            Info
                         </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver pour le Dîner Gastronomique du 28 juin')}
+                          >
+                            Réserver
+                        </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1248,9 +1902,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {(sidebarFilter === 'all' || sidebarFilter === 'establishments') && (
                 <>
                   <div className="lg:block hidden">
-                    <h3 className="text-white font-semibold text-sm mb-3 flex items-center">
+                    <h3 className={`font-semibold text-sm mb-3 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                       <span className="w-2 h-2 bg-green-500 rounded-full mr-2"></span>
-                      Nos partenaires premium
+                      Recommandés
                     </h3>
                   </div>
                 </>
@@ -1263,7 +1917,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-white text-lg">🍣</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Japonais Premium</p>
                         </div>
                       </div>
@@ -1274,7 +1928,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🏖️</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-teal-100' : 'text-teal-700'}`}>Méditerranéen</p>
                         </div>
                       </div>
@@ -1285,7 +1939,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🏨</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-emerald-900'}`}>El Lago</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-emerald-900'}`}>El Lago</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-emerald-100' : 'text-emerald-700'}`}>Créatif</p>
                         </div>
                       </div>
@@ -1296,7 +1950,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🍾</span>
                         <div>
-                          <h3 className={`font-bold text-xs ${isDarkMode ? 'text-white' : 'text-rose-900'}`}>Club VIP</h3>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-rose-900'}`}>Club VIP</h3>
                           <p className={`text-xs ${isDarkMode ? 'text-rose-100' : 'text-rose-700'}`}>Nightclub</p>
                         </div>
                       </div>
@@ -1305,82 +1959,264 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   </div>
                   
                   {/* Version desktop */}
-                  <div className="hidden lg:block relative overflow-hidden rounded-xl border border-amber-500/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
-                    {/* Image de fond avec gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div 
+                    className="uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('nobu-marbella')}
+                  >
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                    style={{
+                        background: 'linear-gradient(135deg, #D97706 0%, #EA580C 50%, #DC2626 100%)',
+                      width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
                     
-                    {/* Badge Sponsorisé */}
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-amber-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                      ⭐ SPONSORISÉ
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                      🍣 JAPONAIS
                     </div>
-                    
-                    <div className="relative p-3 lg:p-4">
-                      <div className="flex items-center space-x-3 mb-2 lg:mb-3">
-                        <div className="w-10 h-10 lg:w-12 lg:h-12 bg-white/20 backdrop-blur-sm rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-lg lg:text-xl">🍣</span>
                         </div>
-                        <div>
-                          <h3 className={`font-bold text-base lg:text-lg ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Nobu Marbella</h3>
-                          <p className={`text-xs lg:text-sm ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Restaurant Japonais Premium</p>
+                      
+                      {/* Titre et description */}
+                      <div>
+                        <h3 className="banner-title">Nobu Marbella</h3>
+                        <p className="banner-description">Cuisine japonaise de luxe avec vue panoramique sur la mer</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.8/5 • Premium</span>
                         </div>
-                      </div>
-                      <p className={`text-xs lg:text-sm mb-3 lg:mb-4 leading-relaxed hidden lg:block ${isDarkMode ? 'text-white/90' : 'text-amber-800'}`}>Cuisine japonaise de luxe avec vue panoramique sur la mer Méditerranée</p>
-                      <div className="flex items-center justify-between">
-                        <div className={`text-xs lg:text-sm font-medium ${isDarkMode ? 'text-amber-200' : 'text-amber-700'}`}>⭐ 4.9/5 • €€€€</div>
-                        <button className={`px-3 lg:px-4 py-1 lg:py-2 rounded-lg font-semibold text-xs lg:text-sm transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center ${isDarkMode ? 'bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}>
-                          Réserver
-                        </button>
+                        </div>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🍣 ⭐ 🌊 🏮</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur Nobu Marbella')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver une table chez Nobu Marbella')}
+                          >
+                            Réserver
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className={`border rounded-xl p-2 lg:p-4 transition-all duration-300 cursor-pointer group ${isDarkMode ? 'bg-gradient-to-r from-teal-500/20 to-cyan-600/20 border-teal-500/30 hover:border-teal-400/50' : 'bg-gradient-to-r from-teal-100/50 to-cyan-100/50 border-teal-300/50 hover:border-teal-400/70'}`}>
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-sm lg:text-lg">🏖️</span>
+                  <div 
+                    className="uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('terraza-del-mar')}
+                  >
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                    style={{
+                        background: 'linear-gradient(135deg, #0D9488 0%, #14B8A6 50%, #06B6D4 100%)',
+                      width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                      🏖️ MÉDITERRANÉEN
                       </div>
+                      </div>
+                      
+                      {/* Titre et description */}
                       <div>
-                        <h3 className={`font-semibold ${isDarkMode ? 'text-white' : 'text-teal-900'}`}>La Terraza del Mar</h3>
-                        <p className={`text-sm ${isDarkMode ? 'text-teal-300' : 'text-teal-700'}`}>Restaurant Méditerranéen</p>
+                        <h3 className="banner-title">La Terraza del Mar</h3>
+                        <p className="banner-description">Ambiance méditerranéenne avec vue panoramique sur la mer</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.7/5 • Vue mer</span>
+                        </div>
+                    </div>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🏖️ 🌊 🍽️ 🌿</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur La Terraza del Mar')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver une table à La Terraza del Mar')}
+                          >
+                            Réserver
+                          </button>
+                        </div>
                       </div>
                     </div>
-                    <p className={`text-sm mb-3 ${isDarkMode ? 'text-gray-300' : 'text-teal-700'}`}>Ambiance méditerranéenne avec vue panoramique</p>
-                    <button className={`w-full py-2 px-4 rounded-lg transition-all duration-300 font-medium flex items-center justify-center ${isDarkMode ? 'bg-gradient-to-r from-teal-600 to-cyan-600 hover:from-teal-700 hover:to-cyan-700 text-white' : 'bg-teal-500 hover:bg-teal-600 text-white'}`}>
+                  </div>
+
+                  <div 
+                    className="uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('el-lago')}
+                  >
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                    style={{
+                        background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
+                      width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                      🏨 CRÉATIF
+                      </div>
+                      </div>
+                      
+                      {/* Titre et description */}
+                      <div>
+                        <h3 className="banner-title">El Lago</h3>
+                        <p className="banner-description">Cuisine créative avec vue sur le lac</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.5/5 • Créatif</span>
+                        </div>
+                    </div>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🏨 🌊 🍽️ ✨</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur El Lago')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver une table à El Lago')}
+                          >
                       Réserver
                     </button>
-                  </div>
-
-                  <div className={`border rounded-xl p-2 lg:p-4 transition-all duration-300 cursor-pointer group ${isDarkMode ? 'bg-gradient-to-r from-emerald-500/20 to-green-600/20 border-emerald-500/30 hover:border-emerald-400/50' : 'bg-gradient-to-r from-emerald-100/50 to-green-100/50 border-emerald-300/50 hover:border-emerald-400/70'}`}>
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-emerald-500 to-green-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🏨</span>
-                      </div>
-                      <div>
-                        <h3 className="text-white font-semibold text-sm lg:text-base">El Lago</h3>
-                        <p className="text-emerald-300 text-sm">Restaurant Créatif</p>
+                        </div>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Cuisine créative avec vue sur le lac</p>
-                    <button className="w-full bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-700 hover:to-green-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium flex items-center justify-center">
-                      Réserver
-                    </button>
                   </div>
 
-                  <div className="bg-gradient-to-r from-rose-500/20 to-pink-600/20 border border-rose-500/30 rounded-xl p-2 lg:p-4 hover:border-rose-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-rose-500 to-pink-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🍾</span>
+                  <div 
+                    className="uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
+                    onClick={() => openDetailPage('club-vip')}
+                  >
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #E11D48 0%, #EC4899 50%, #8B5CF6 100%)',
+                      width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          🍾 NIGHTCLUB
                       </div>
+                      </div>
+                      
+                      {/* Titre et description */}
                       <div>
-                        <h3 className="text-white font-semibold">Club VIP</h3>
-                        <p className="text-rose-300 text-sm">Nightclub Exclusif</p>
+                        <h3 className="banner-title">Club VIP</h3>
+                        <p className="banner-description">Ambiance festive avec DJ internationaux</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.9/5 • VIP</span>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-sm mb-3">Ambiance festive avec DJ internationaux</p>
-                    <button className="w-full bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white py-2 px-4 rounded-lg transition-all duration-300 font-medium">
-                      Accès VIP
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🍾 🎵 ✨ 🎉</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Club VIP')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un accès VIP au Club')}
+                          >
+                            Réserver
                     </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </>
               )}
@@ -1389,105 +2225,261 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {(sidebarFilter === 'all' || sidebarFilter === 'services') && (
                 <>
                   <div className="lg:block hidden">
-                    <h3 className="text-white font-semibold text-lg mb-4 flex items-center">
+                    <h3 className={`font-semibold text-lg mb-4 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                       <span className="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
-                      ⭐ Services Exclusifs
+                      Services
                     </h3>
                   </div>
                 </>
               )}
               {(sidebarFilter === 'all' || sidebarFilter === 'services') && (
                 <>
-                  <div className="relative overflow-hidden rounded-2xl border border-indigo-500/30 hover:border-indigo-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
-                    {/* Bannière de fond avec gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 via-purple-500 to-blue-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #3B82F6 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
                     
-                    {/* Badge Service */}
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
                       🚗 SERVICE
                     </div>
-                    
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🚗</span>
                         </div>
+                      
+                      {/* Titre et description */}
                         <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Transport Privé</h3>
-                          <p className="text-indigo-100 text-sm lg:text-base">Chauffeur VIP</p>
+                        <h3 className="banner-title">Transport Privé</h3>
+                        <p className="banner-description">Service de transport de luxe avec chauffeur professionnel</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>5.0/5 • VIP</span>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Service de transport de luxe avec chauffeur professionnel</p>
-                      <div className="flex items-center justify-between">
-                        <div className="text-indigo-100 text-sm font-medium">🚗 VIP • 👨‍✈️ Chauffeur</div>
-                        <button className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🚗 👨‍✈️ ⭐ 🏆</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Transport Privé')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un Transport Privé')}
+                          >
                           Réserver
                         </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden rounded-2xl border border-emerald-500/30 hover:border-emerald-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
-                    {/* Bannière de fond avec gradient */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 via-teal-500 to-cyan-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #059669 0%, #14B8A6 50%, #06B6D4 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
                     
-                    {/* Badge Sponsorisé */}
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
                       ⭐ SPONSORISÉ
                     </div>
-                    
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🧳</span>
                         </div>
+                      
+                      {/* Titre et description */}
                         <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Concierge 24/7</h3>
-                          <p className="text-emerald-100 text-sm lg:text-base">Service Premium</p>
+                        <h3 className="banner-title">Concierge 24/7</h3>
+                        <p className="banner-description">Assistance personnalisée disponible 24h/24</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>5.0/5 • Premium</span>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Assistance personnalisée disponible 24h/24</p>
-                      <div className="flex items-center justify-between">
-                        <div className="text-emerald-100 text-sm font-medium">🧳 24/7 • ⭐ Premium</div>
-                        <button className="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
-                          Contacter
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🧳 ⭐ 🕐 🏆</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Concierge 24/7')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver le service Concierge 24/7')}
+                          >
+                          Réserver
                         </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-cyan-500/20 to-blue-600/20 border border-cyan-500/30 rounded-xl p-2 lg:p-4 hover:border-cyan-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">✈️</span>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #06B6D4 0%, #3B82F6 50%, #1D4ED8 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          ✈️ TRANSFERT
                       </div>
+                      </div>
+                      
+                      {/* Titre et description */}
                       <div>
-                        <h3 className="text-white font-semibold text-sm lg:text-base">Transfert Aéroport</h3>
-                        <p className="text-cyan-300 text-xs lg:text-sm">Service VIP</p>
+                        <h3 className="banner-title">Transfert Aéroport</h3>
+                        <p className="banner-description">Transfert confortable depuis l'aéroport</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.8/5 • VIP</span>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Transfert confortable depuis l'aéroport</p>
-                    <button className="w-full bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>✈️ 🚗 ⭐ 🏆</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Transfert Aéroport')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un Transfert Aéroport')}
+                          >
                       Réserver
                     </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-pink-500/20 to-rose-600/20 border border-pink-500/30 rounded-xl p-2 lg:p-4 hover:border-pink-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-pink-500 to-rose-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">💆</span>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #EC4899 0%, #F43F5E 50%, #E11D48 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          💆 SPA
                       </div>
+                      </div>
+                      
+                      {/* Titre et description */}
                       <div>
-                        <h3 className={`font-semibold text-sm lg:text-base ${isDarkMode ? 'text-white' : 'text-pink-900'}`}>Spa à Domicile</h3>
-                        <p className={`text-xs lg:text-sm ${isDarkMode ? 'text-pink-300' : 'text-pink-700'}`}>Relaxation Privée</p>
+                        <h3 className="banner-title">Spa à Domicile</h3>
+                        <p className="banner-description">Soins de luxe dans le confort de votre villa</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.9/5 • Privé</span>
                       </div>
                     </div>
-                    <p className={`text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block ${isDarkMode ? 'text-gray-300' : 'text-pink-700'}`}>Soins de luxe dans le confort de votre villa</p>
-                    <button className={`w-full py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm ${isDarkMode ? 'bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-700 hover:to-rose-700 text-white' : 'bg-pink-500 hover:bg-pink-600 text-white'}`}>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>💆 🏠 ✨ 🌸</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Spa à Domicile')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un Spa à Domicile')}
+                          >
                       Réserver
                     </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </>
               )}
@@ -1496,8 +2488,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {(sidebarFilter === 'all' || sidebarFilter === 'luxury') && (
                 <>
                   <div className="lg:block hidden">
-                    <h3 className="text-white font-semibold text-lg mb-4 flex items-center">
-                      <span className="w-3 h-3 bg-amber-500 rounded-full mr-3"></span>
+                    <h3 className={`font-semibold text-sm mb-3 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                      <span className="w-2 h-2 bg-amber-500 rounded-full mr-2"></span>
                       💎 Expériences de Luxe
                     </h3>
                   </div>
@@ -1505,76 +2497,244 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               )}
               {(sidebarFilter === 'all' || sidebarFilter === 'luxury') && (
                 <>
-                  <div className="relative overflow-hidden rounded-2xl border border-amber-500/30 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
-                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500 via-orange-500 to-red-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-                    
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                      💎 LUXE
-                    </div>
-                    
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🚁</span>
+                  {/* Version mobile compacte */}
+                  <div className="lg:hidden grid grid-cols-2 gap-2 mb-3">
+                    <div className={`rounded-lg p-2 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-amber-500 to-orange-500 border-amber-400/30' : 'bg-gradient-to-br from-amber-100 to-orange-100 border-amber-300/50'}`}>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-8 h-8 bg-gradient-to-br from-amber-600 to-orange-600 rounded-lg flex items-center justify-center shadow-lg">
+                          <span className="text-lg">🚁</span>
                         </div>
                         <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Hélicoptère Privé</h3>
-                          <p className="text-amber-100 text-sm lg:text-base">Tour panoramique</p>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-amber-900'}`}>Hélicoptère</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-amber-100' : 'text-amber-700'}`}>Tour VIP</p>
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Vue aérienne exclusive de la Costa del Sol</p>
-                      <div className="flex items-center justify-between">
-                        <div className="text-amber-100 text-sm font-medium">🚁 VIP • 🌊 Vue mer</div>
-                        <button className="bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-amber-800'}`}>Vue panoramique</div>
+                    </div>
+                    
+                    <div className={`rounded-lg p-2 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-rose-500 to-pink-500 border-rose-400/30' : 'bg-gradient-to-br from-rose-100 to-pink-100 border-rose-300/50'}`}>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-8 h-8 bg-gradient-to-br from-rose-600 to-pink-600 rounded-lg flex items-center justify-center shadow-lg">
+                          <span className="text-lg">🛥️</span>
+                        </div>
+                        <div>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-rose-900'}`}>Yacht Privé</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-rose-100' : 'text-rose-700'}`}>Croisière VIP</p>
+                        </div>
+                      </div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-rose-800'}`}>Équipage pro</div>
+                    </div>
+                    
+                    <div className={`rounded-lg p-2 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-emerald-500 to-teal-500 border-emerald-400/30' : 'bg-gradient-to-br from-emerald-100 to-teal-100 border-emerald-300/50'}`}>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-8 h-8 bg-gradient-to-br from-emerald-600 to-teal-600 rounded-lg flex items-center justify-center shadow-lg">
+                          <span className="text-lg">🏆</span>
+                        </div>
+                        <div>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-emerald-900'}`}>Golf Privé</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-emerald-100' : 'text-emerald-700'}`}>Terrain VIP</p>
+                        </div>
+                      </div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-emerald-800'}`}>Caddy privé</div>
+                    </div>
+                    
+                    <div className={`rounded-lg p-2 border transition-all duration-300 shadow-lg hover:shadow-xl hover:scale-105 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-indigo-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-indigo-100 border-purple-300/50'}`}>
+                      <div className="flex items-center space-x-2 mb-1">
+                        <div className="w-8 h-8 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-lg flex items-center justify-center shadow-lg">
+                          <span className="text-lg">💎</span>
+                        </div>
+                        <div>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Spa Privé</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>Thérapie VIP</p>
+                        </div>
+                      </div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-purple-800'}`}>Thérapeute privé</div>
+                    </div>
+                  </div>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #D97706 0%, #EA580C 50%, #DC2626 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          🚁 LUXE
+                        </div>
+                      </div>
+                      
+                      {/* Titre et description */}
+                        <div>
+                        <h3 className="banner-title">Hélicoptère Privé</h3>
+                        <p className="banner-description">Vue aérienne exclusive de la Costa del Sol</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>5.0/5 • VIP</span>
+                        </div>
+                      </div>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🚁 🌊 ⭐ 💎</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur l\'Hélicoptère Privé')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un Hélicoptère Privé')}
+                          >
                           Réserver
                         </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="relative overflow-hidden rounded-2xl border border-rose-500/30 hover:border-rose-400/50 transition-all duration-300 cursor-pointer group shadow-lg hover:shadow-xl">
-                    <div className="absolute inset-0 bg-gradient-to-br from-rose-500 via-pink-500 to-purple-500 opacity-90"></div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #E11D48 0%, #EC4899 50%, #8B5CF6 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
                     
-                    <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-2 py-1 rounded-full shadow-lg">
-                      💎 EXCLUSIF
-                    </div>
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
                     
-                    <div className="relative p-4 lg:p-6">
-                      <div className="flex items-center space-x-3 mb-3 lg:mb-4">
-                        <div className="w-12 h-12 lg:w-16 lg:h-16 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                          <span className="text-white text-2xl lg:text-3xl">🛥️</span>
-                        </div>
-                        <div>
-                          <h3 className="text-white font-bold text-lg lg:text-xl">Yacht Privé</h3>
-                          <p className="text-rose-100 text-sm lg:text-base">Croisière VIP</p>
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          🛥️ LUXE
                         </div>
                       </div>
-                      <p className="text-white/90 text-sm lg:text-base mb-4 lg:mb-6 leading-relaxed hidden lg:block">Yacht de luxe avec équipage professionnel</p>
-                      <div className="flex items-center justify-between">
-                        <div className="text-rose-100 text-sm font-medium">🛥️ Yacht • 🍾 Champagne</div>
-                        <button className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 text-white px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300 shadow-lg hover:shadow-xl">
+                      
+                      {/* Titre et description */}
+                        <div>
+                        <h3 className="banner-title">Yacht Privé</h3>
+                        <p className="banner-description">Yacht de luxe avec équipage professionnel</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>5.0/5 • VIP</span>
+                        </div>
+                      </div>
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🛥️ 🍾 ⭐ 💎</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Yacht Privé')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un Yacht Privé')}
+                          >
                           Réserver
                         </button>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-gradient-to-r from-amber-500/20 to-orange-600/20 border border-amber-500/30 rounded-xl p-2 lg:p-4 hover:border-amber-400/50 transition-all duration-300 cursor-pointer group">
-                    <div className="flex items-center space-x-2 lg:space-x-3 mb-1 lg:mb-2">
-                      <div className="w-8 h-8 lg:w-10 lg:h-10 bg-gradient-to-r from-amber-500 to-orange-500 rounded-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-200">
-                        <span className="text-white text-lg">🏆</span>
+                  <div className="uniform-banner">
+                    {/* Image de fond */}
+                    <div 
+                      className="banner-image"
+                      style={{
+                        background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
+                        width: '100%',
+                        height: '100%',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        zIndex: 1
+                      }}
+                    ></div>
+                    
+                    {/* Overlay */}
+                    <div className="banner-overlay"></div>
+                    
+                    {/* Contenu */}
+                    <div className="banner-content">
+                      {/* Header avec badge */}
+                      <div className="banner-header">
+                        <div></div>
+                        <div className="banner-badge">
+                          🏆 LUXE
                       </div>
+                      </div>
+                      
+                      {/* Titre et description */}
                       <div>
-                        <h3 className="text-white font-semibold text-sm lg:text-base">Golf Privé</h3>
-                        <p className="text-amber-300 text-xs lg:text-sm">Terrain VIP</p>
+                        <h3 className="banner-title">Golf Privé</h3>
+                        <p className="banner-description">Accès exclusif aux meilleurs parcours de golf</p>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
+                          <span>⭐</span>
+                          <span>4.9/5 • VIP</span>
                       </div>
                     </div>
-                    <p className="text-gray-300 text-xs lg:text-sm mb-2 lg:mb-3 hidden lg:block">Accès exclusif aux meilleurs parcours de golf</p>
-                    <button className="w-full bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 text-white py-1 lg:py-2 px-2 lg:px-4 rounded-lg transition-all duration-300 font-medium text-xs lg:text-sm">
+                      
+                      {/* Footer avec rating et boutons */}
+                      <div className="banner-footer">
+                        <div className="banner-rating">
+                          <span>🏆 ⛳ ⭐ 💎</span>
+                        </div>
+                        
+                        <div className="banner-buttons">
+                          <button 
+                            className="banner-button secondary"
+                            onClick={() => setInput('Plus d\'informations sur le Golf Privé')}
+                          >
+                            Info
+                          </button>
+                          <button 
+                            className="banner-button primary"
+                            onClick={() => setInput('Réserver un accès Golf Privé')}
+                          >
                       Réserver
                     </button>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </>
               )}
@@ -1586,9 +2746,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       </main>
       </div> {/* Fin interface desktop */}
       
-      {/* Carrousel des marques qui font confiance */}
-      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
-        <div className="max-w-7xl mx-auto px-4 lg:px-8">
+      {/* Carrousel des marques qui font confiance - Pleine largeur */}
+      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF', width: '100vw', maxWidth: 'none' }}>
+        <div className="w-full px-4 lg:px-8">
           <div className="text-center mb-8 lg:mb-12">
             <h2 className={`text-2xl lg:text-4xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
               Ils nous font confiance
@@ -1603,35 +2763,119 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             <div className="flex animate-scroll">
               {/* Première ligne de marques */}
               <div className="flex space-x-8 lg:space-x-12 items-center">
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🏨 Marriott</div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🏨</span>
+                    Marriott
+                  </div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🍽️ Nobu</div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-amber-500 to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🍽️</span>
+                    Nobu
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🏖️ Nikki Beach</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🚁 HeliMarbella</div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🏖️</span>
+                    Nikki Beach
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🛥️ Yacht Charter</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🏆 Valderrama Golf</div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-amber-500 to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🚁</span>
+                    HeliMarbella
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">💆 Six Senses Spa</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🍾 Dom Pérignon</div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🛥️</span>
+                    Yacht Charter
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🚗 Rolls-Royce</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">✈️ NetJets</div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🏆</span>
+                    Valderrama Golf
+                </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-pink-500 to-rose-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">💆</span>
+                    Six Senses Spa
+                </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-purple-500 to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🍾</span>
+                    Dom Pérignon
+                </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-slate-500 to-gray-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🚗</span>
+                    Rolls-Royce
+                </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-blue-500 to-indigo-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">✈️</span>
+                    NetJets
+                </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-amber-500 to-yellow-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🏨</span>
+                    Ritz-Carlton
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-purple-500 to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🍾</span>
+                    Veuve Clicquot
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-red-500 to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🚗</span>
+                    Lamborghini
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-cyan-500 to-blue-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">💎</span>
+                    Tiffany & Co
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-teal-500 to-cyan-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🏖️</span>
+                    Marbella Club
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-purple-500 to-pink-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🎵</span>
+                    Ocean Club
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-amber-500 to-orange-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🍽️</span>
+                    La Sala
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-green-500 to-emerald-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">🏆</span>
+                    Real Club Valderrama
+                  </div>
+                </div>
+                <div className="flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-white/20 bg-gradient-to-r from-pink-500 to-rose-600 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 cursor-pointer">
+                  <div className="font-bold text-lg lg:text-xl text-white flex items-center">
+                    <span className="mr-2 text-xl">💆</span>
+                    Six Senses
+                  </div>
                 </div>
               </div>
             </div>
@@ -1641,35 +2885,35 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           <div className="mt-6 lg:mt-8 relative overflow-hidden">
             <div className="flex animate-scroll-reverse">
               <div className="flex space-x-8 lg:space-x-12 items-center">
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🏨 Four Seasons</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🏨 Four Seasons</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🍽️ Cipriani</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🍽️ Cipriani</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🏖️ Puente Romano</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🏖️ Puente Romano</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🎵 Pacha Marbella</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🎵 Pacha Marbella</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">💎 Cartier</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>💎 Cartier</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🏆 Real Club Valderrama</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🏆 Real Club Valderrama</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">💆 Aman Spa</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>💆 Aman Spa</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🍾 Moët & Chandon</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🍾 Moët & Chandon</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">🚗 Bentley</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>🚗 Bentley</div>
                 </div>
-                <div className="flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50">
-                  <div className="text-white font-bold text-lg lg:text-xl">✈️ VistaJet</div>
+                <div className={`flex-shrink-0 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border ${isDarkMode ? 'bg-white/10 border-gray-700/50' : 'bg-gray-100/80 border-gray-300/50'}`}>
+                  <div className={`font-bold text-lg lg:text-xl ${isDarkMode ? 'text-white' : 'text-gray-800'}`}>✈️ VistaJet</div>
                 </div>
               </div>
             </div>
@@ -1691,9 +2935,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         cancelText="Annuler"
         type="danger"
       />
-    </div>
+      </div> {/* Fermeture de l'interface desktop */}
     </>
   )
 }
 
 export default memo(ChatInterface)
+

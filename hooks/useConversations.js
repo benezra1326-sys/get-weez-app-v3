@@ -38,10 +38,9 @@ export function useConversations() {
         
         setConversations(cleaned)
         
-        // Sélectionner la première conversation si aucune n'est sélectionnée
-        if (cleaned.length > 0 && !currentConversationId) {
-          setCurrentConversationId(cleaned[0].id)
-        }
+        // Ne pas sélectionner automatiquement une conversation existante
+        // L'utilisateur devra créer une nouvelle conversation ou en sélectionner une manuellement
+        // setCurrentConversationId(null) // Garder null pour forcer la création d'une nouvelle conversation
       } catch (error) {
         console.error('Erreur lors du chargement des conversations:', error)
         // En cas d'erreur, nettoyer le localStorage

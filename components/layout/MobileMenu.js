@@ -1,18 +1,42 @@
-import { X, LogIn, UserPlus } from 'lucide-react'
+import { X, LogIn, UserPlus, Sparkles, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
 import { MessageCircle, Building, Ticket, User, CreditCard, HelpCircle, Settings } from 'lucide-react'
-import { useEffect } from 'react'
+import { useEffect, memo, useCallback, useState } from 'react'
+import { usePreloader } from '../../lib/preloader'
+import { useTheme } from '../../contexts/ThemeContextSimple'
+import { 
+  useMobileOptimizations, 
+  useTouchOptimizations, 
+  MobilePerformanceOptimizer,
+  MobilePageTransition,
+  MobileButtonAnimation
+} from '../mobile'
 
 const navItems = [
-  { href: '/', label: 'Accueil', icon: MessageCircle },
-  { href: '/establishments', label: 'Établissements', icon: Building },
-  { href: '/services', label: 'Services', icon: Settings },
-  { href: '/events', label: 'Événements', icon: Ticket },
-  { href: '/account', label: 'Compte', icon: User },
-  { href: '/aide', label: 'Aide', icon: HelpCircle },
+  { href: '/', label: 'Accueil', icon: MessageCircle, emoji: '🏠' },
+  { href: '/establishments', label: 'Établissements', icon: Building, emoji: '🏨' },
+  { href: '/services', label: 'Services', icon: Settings, emoji: '⚙️' },
+  { href: '/events', label: 'Événements', icon: Ticket, emoji: '🎉' },
+  { href: '/account', label: 'Compte', icon: User, emoji: '👤' },
+  { href: '/aide', label: 'Aide', icon: HelpCircle, emoji: '❓' },
 ]
 
-export default function MobileMenu({ isOpen, onClose, user }) {
+const MobileMenu = memo(({ isOpen, onClose, user }) => {
+  const { handleLinkHover } = usePreloader()
+  const { isTouchDevice, isSlowConnection } = useMobileOptimizations()
+  const { onTouchStart, onTouchMove, onTouchEnd } = useTouchOptimizations()
+  const [activeItem, setActiveItem] = useState(null)
+  
+  // Vérification de sécurité pour useTheme
+  let isDarkMode = false
+  
+  try {
+    const theme = useTheme()
+    isDarkMode = theme.isDarkMode
+  } catch (error) {
+    console.warn('ThemeProvider not available, using default theme')
+  }
+
   // Fermer le menu avec la touche Escape
   useEffect(() => {
     const handleEscape = (e) => {
@@ -23,7 +47,6 @@ export default function MobileMenu({ isOpen, onClose, user }) {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape)
-      // Empêcher le scroll du body quand le menu est ouvert
       document.body.style.overflow = 'hidden'
     }
 
@@ -33,36 +56,105 @@ export default function MobileMenu({ isOpen, onClose, user }) {
     }
   }, [isOpen, onClose])
 
+  // Optimisation: précharger les pages au survol
+  const handleItemHover = useCallback((href) => {
+    handleLinkHover(href)
+  }, [handleLinkHover])
+
   if (!isOpen) return null
 
   return (
-    <div className="md:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div 
-        className="bg-gray-900/80 backdrop-blur-md h-full w-80 max-w-full shadow-2xl border-r border-gray-700"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundColor: 'rgba(17, 24, 39, 0.8)',
-          backdropFilter: 'blur(16px)',
-          boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)'
-        }}
-      >
-        <div className="p-4 flex justify-between items-center border-b border-gray-700">
-          {/* Logo Get Weez */}
-          <Link href="/" onClick={onClose} className="flex items-center group">
+    <MobilePerformanceOptimizer enableOptimizations={true}>
+      <div className="md:hidden fixed inset-0 z-50">
+        {/* Overlay avec effet glassmorphism */}
+        <div 
+          className="absolute inset-0 transition-all duration-500 ease-out"
+          style={{
+            background: isDarkMode 
+              ? 'radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 25%, rgba(0, 0, 0, 0.4) 100%)'
+              : 'radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 25%, rgba(255, 255, 255, 0.3) 100%)',
+            backdropFilter: 'blur(20px) saturate(150%)',
+          }}
+          onClick={onClose}
+        />
+
+        {/* Sidebar avec glassmorphism ultra moderne */}
+        <MobilePageTransition isVisible={isOpen} direction="slide" duration={400}>
+          <div 
+            className="h-full w-80 max-w-[85vw] relative flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: isDarkMode
+                ? `
+                  linear-gradient(135deg, 
+                    rgba(17, 24, 39, 0.85) 0%, 
+                    rgba(31, 41, 55, 0.80) 35%,
+                    rgba(55, 65, 81, 0.85) 70%,
+                    rgba(17, 24, 39, 0.90) 100%
+                  )
+                `
+                : `
+                  linear-gradient(135deg, 
+                    rgba(255, 255, 255, 0.90) 0%, 
+                    rgba(248, 250, 252, 0.85) 35%,
+                    rgba(241, 245, 249, 0.90) 70%,
+                    rgba(255, 255, 255, 0.95) 100%
+                  )
+                `,
+              backdropFilter: 'blur(40px) saturate(180%)',
+              borderRight: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
+              boxShadow: isDarkMode 
+                ? `
+                  8px 0 40px rgba(0, 0, 0, 0.5),
+                  0 0 80px rgba(139, 92, 246, 0.08),
+                  inset 1px 0 0 rgba(255, 255, 255, 0.05)
+                `
+                : `
+                  8px 0 40px rgba(0, 0, 0, 0.12),
+                  0 0 80px rgba(139, 92, 246, 0.05),
+                  inset 1px 0 0 rgba(255, 255, 255, 0.6)
+                `,
+              transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
+              transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            }}
+          >
+            {/* Header avec effet glassmorphism */}
             <div 
-              className="px-4 py-2 rounded-xl shadow-glow group-hover:shadow-glow-accent transition-all duration-500 group-hover:scale-105"
+              className="px-6 py-5 border-b relative overflow-hidden"
               style={{ 
-                background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-                borderRadius: '12px',
-                boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
+                background: isDarkMode 
+                  ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.6) 0%, rgba(17, 24, 39, 0.4) 100%)'
+                  : 'linear-gradient(135deg, rgba(248, 250, 252, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%)',
+                backdropFilter: 'blur(20px)',
+                borderBottom: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.3)'}`,
               }}
             >
-              <h1 
-                className="text-lg font-bold text-white leading-tight tracking-wider"
+              {/* Effet lumineux subtil */}
+              <div 
+                className="absolute top-0 left-0 right-0 h-px"
+                style={{
+                  background: isDarkMode 
+                    ? 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent)'
+                    : 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent)'
+                }}
+              />
+              
+              <div className="flex justify-between items-center">
+                {/* Logo moderne */}
+                <Link href="/" onClick={onClose} className="group">
+                  <div 
+                    className="relative px-6 py-3 rounded-2xl transition-all duration-500 group-hover:scale-105 group-active:scale-95"
+                    style={{ 
+                      background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+                      boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                    }}
+                  >
+                    <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <h1 
+                      className="text-xl font-bold text-white leading-tight tracking-wider relative z-10"
                 style={{ 
                   fontFamily: 'Blanka, sans-serif',
-                  fontWeight: 'bold',
-                  letterSpacing: '0.1em'
+                        textShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
                 }}
               >
                 GET WEEZ
@@ -70,92 +162,248 @@ export default function MobileMenu({ isOpen, onClose, user }) {
             </div>
           </Link>
           
-          {/* Bouton de fermeture */}
-          <button onClick={onClose} className="text-gray-400 hover:text-white">
-            <X size={24} />
+                {/* Bouton fermer moderne */}
+          <button 
+            onClick={onClose} 
+                  className="relative p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 group"
+            style={{
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.4) 0%, rgba(55, 65, 81, 0.6) 100%)'
+                      : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6) 0%, rgba(229, 231, 235, 0.8) 100%)',
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${isDarkMode ? 'rgba(156, 163, 175, 0.2)' : 'rgba(209, 213, 219, 0.3)'}`,
+                    boxShadow: isDarkMode 
+                      ? '0 4px 12px rgba(0, 0, 0, 0.3)'
+                      : '0 4px 12px rgba(0, 0, 0, 0.1)',
+                  }}
+                >
+                  <X 
+                    size={20} 
+                    className={`transition-all duration-300 group-hover:rotate-90 ${
+                      isDarkMode ? 'text-gray-300 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'
+                    }`}
+                  />
           </button>
+              </div>
         </div>
 
-        <nav className="p-4 space-y-2">
-          {navItems.map((item) => {
+            {/* Navigation moderne */}
+            <nav className="px-4 py-6 space-y-2 flex-1">
+              {navItems.map((item, index) => {
             const Icon = item.icon
+                const isActive = activeItem === item.href
+                
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                onClick={onClose}
-                className="flex items-center px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-gray-800/50 transition-all duration-300 group"
-                style={{
-                  backgroundColor: 'transparent',
-                  border: '1px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(75, 85, 99, 0.3)'
-                  e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent'
-                  e.target.style.borderColor = 'transparent'
+                    onClick={() => {
+                      setActiveItem(item.href)
+                      setTimeout(onClose, 150)
+                    }}
+                    onMouseEnter={() => {
+                      handleItemHover(item.href)
+                      setActiveItem(item.href)
+                    }}
+                    onMouseLeave={() => setActiveItem(null)}
+                    className="block relative group"
+                    style={{
+                      animationDelay: `${index * 50}ms`,
+                      animation: isOpen ? 'slideInRight 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards' : 'none',
                 }}
               >
-                <Icon size={20} className="mr-4 group-hover:scale-110 transition-transform duration-200" />
-                <span className="font-medium">{item.label}</span>
+                <div 
+                      className="flex items-center px-4 py-4 rounded-2xl transition-all duration-400 relative overflow-hidden"
+                      style={{
+                        background: isActive 
+                          ? isDarkMode 
+                            ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.10) 100%)'
+                            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%)'
+                          : 'transparent',
+                        backdropFilter: isActive ? 'blur(10px)' : 'none',
+                        border: `1px solid ${
+                          isActive 
+                            ? isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
+                            : 'transparent'
+                        }`,
+                        transform: isActive ? 'translateX(8px)' : 'translateX(0)',
+                        boxShadow: isActive 
+                          ? isDarkMode
+                            ? '0 8px 32px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                            : '0 8px 32px rgba(139, 92, 246, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                          : 'none',
+                      }}
+                    >
+                      {/* Effet de glow */}
+                      <div 
+                        className={`absolute inset-0 rounded-2xl transition-opacity duration-400 ${
+                          isActive ? 'opacity-100' : 'opacity-0'
+                        }`}
+                  style={{
+                          background: isDarkMode 
+                            ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05))'
+                            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.03), rgba(59, 130, 246, 0.03))',
+                        }}
+                      />
+                      
+                      {/* Icône avec emoji */}
+                      <div className="flex items-center justify-center w-12 h-12 rounded-xl mr-4 relative">
+                        <div 
+                          className={`absolute inset-0 rounded-xl transition-all duration-400 ${
+                            isActive ? 'scale-110' : 'scale-100'
+                          }`}
+                  style={{
+                            background: isActive 
+                              ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))'
+                              : isDarkMode 
+                                ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.3), rgba(55, 65, 81, 0.3))'
+                                : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.6))',
+                            backdropFilter: 'blur(10px)',
+                          }}
+                        />
+                        <span className="text-lg relative z-10">{item.emoji}</span>
+                        <Icon 
+                          size={16} 
+                          className={`absolute inset-0 m-auto transition-all duration-400 ${
+                            isActive ? 'scale-90 opacity-20' : 'scale-0 opacity-0'
+                          } ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                        />
+                      </div>
+                      
+                      {/* Label */}
+                      <div className="flex-1">
+                        <span className={`font-medium text-base transition-all duration-300 ${
+                          isActive 
+                            ? isDarkMode ? 'text-white font-semibold' : 'text-gray-900 font-semibold'
+                            : isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                        }`}>
+                          {item.label}
+                        </span>
+                      </div>
+                      
+                      {/* Flèche */}
+                      <ChevronRight 
+                        size={16} 
+                        className={`transition-all duration-400 ${
+                          isActive 
+                            ? 'translate-x-0 opacity-100' 
+                            : '-translate-x-2 opacity-0'
+                        } ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`}
+                      />
+                    </div>
               </Link>
             )
           })}
         </nav>
 
+            {/* Section utilisateur */}
+            <div className="absolute bottom-0 left-0 right-0 p-4">
         {user ? (
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-900/80 backdrop-blur-md border-t border-gray-700">
+          <div 
+                  className="p-5 rounded-2xl border relative overflow-hidden"
+            style={{
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+                      : 'linear-gradient(135deg, rgba(248, 250, 252, 0.8) 0%, rgba(255, 255, 255, 0.6) 100%)',
+                    backdropFilter: 'blur(20px)',
+                    borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.3)',
+                    boxShadow: isDarkMode 
+                      ? '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                      : '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+            }}
+          >
             <div className="flex items-center">
-              <div className={`w-3 h-3 rounded-full mr-3 ${
-                user.is_member ? 'bg-yellow-500' : 'bg-gray-500'
-              }`}></div>
-              <div>
-                <p className="text-sm font-medium text-white">
-                  {user.is_member ? 'Membre Actif' : 'Invité'}
-                </p>
-                <p className="text-xs text-gray-400">
+                    <div className="relative">
+                      <div 
+                        className={`w-4 h-4 rounded-full transition-all duration-300 ${
+                          user.is_member ? 'bg-yellow-500' : 'bg-gray-500'
+                        }`}
+                        style={{
+                          boxShadow: user.is_member 
+                            ? '0 0 20px rgba(245, 158, 11, 0.5), 0 0 40px rgba(245, 158, 11, 0.2)'
+                            : 'none'
+                        }}
+                      />
+                      {user.is_member && (
+                        <Sparkles 
+                          size={8} 
+                          className="absolute -top-1 -right-1 text-yellow-300 animate-pulse" 
+                        />
+                      )}
+                    </div>
+                    <div className="ml-4">
+                      <p className={`text-sm font-semibold ${
+                        isDarkMode ? 'text-white' : 'text-gray-900'
+                      }`}>
+                        {user.is_member ? 'Membre Premium' : 'Invité'}
+                      </p>
+                      <p className={`text-xs ${
+                        isDarkMode ? 'text-gray-400' : 'text-gray-600'
+                      }`}>
                   {user.first_name || 'Utilisateur'}
                 </p>
               </div>
             </div>
           </div>
         ) : (
-          <div className="absolute bottom-0 left-0 right-0 p-4 bg-gray-900/80 backdrop-blur-md border-t border-gray-700">
-            <div className="space-y-2">
+                <div className="space-y-3">
               <Link 
                 href="/login"
                 onClick={onClose}
-                className="flex items-center px-4 py-3 rounded-xl text-gray-300 hover:text-white hover:bg-gray-800/50 transition-all duration-300 group"
+                    className="flex items-center px-5 py-4 rounded-2xl transition-all duration-400 group relative overflow-hidden"
                 style={{
-                  backgroundColor: 'transparent',
-                  border: '1px solid transparent'
-                }}
-                onMouseEnter={(e) => {
-                  e.target.style.backgroundColor = 'rgba(75, 85, 99, 0.3)'
-                  e.target.style.borderColor = 'rgba(139, 92, 246, 0.3)'
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.backgroundColor = 'transparent'
-                  e.target.style.borderColor = 'transparent'
-                }}
-              >
-                <LogIn size={20} className="mr-4 group-hover:scale-110 transition-transform duration-200" />
-                <span className="font-medium">Connexion</span>
+                      background: isDarkMode 
+                        ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.4) 0%, rgba(55, 65, 81, 0.6) 100%)'
+                        : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6) 0%, rgba(229, 231, 235, 0.8) 100%)',
+                      backdropFilter: 'blur(15px)',
+                      border: `1px solid ${isDarkMode ? 'rgba(156, 163, 175, 0.2)' : 'rgba(209, 213, 219, 0.3)'}`,
+                    }}
+                  >
+                    <LogIn size={18} className={`mr-3 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`} />
+                    <span className={`font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                      Connexion
+                    </span>
               </Link>
+                  
               <Link 
                 href="/register"
                 onClick={onClose}
-                className="flex items-center px-4 py-3 rounded-xl bg-gradient-to-r from-purple-500/20 to-indigo-600/20 border border-purple-500/30 text-white hover:border-purple-400/50 hover:from-purple-600/30 hover:to-indigo-600/30 transition-all duration-300 group"
-              >
-                <UserPlus size={20} className="mr-4 group-hover:scale-110 transition-transform duration-200" />
-                <span className="font-medium">Inscription</span>
+                    className="flex items-center px-5 py-4 rounded-2xl transition-all duration-400 group relative overflow-hidden"
+                style={{
+                      background: 'linear-gradient(135deg, rgba(139, 92, 246, 0.8), rgba(59, 130, 246, 0.8))',
+                      backdropFilter: 'blur(15px)',
+                      border: '1px solid rgba(255, 255, 255, 0.2)',
+                      boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                    }}
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <UserPlus size={18} className="mr-3 text-white relative z-10" />
+                    <span className="font-semibold text-white relative z-10">Inscription</span>
               </Link>
+                </div>
+              )}
             </div>
           </div>
-        )}
-      </div>
-    </div>
+        </MobilePageTransition>
+
+        {/* Animations CSS */}
+        <style jsx>{`
+          @keyframes slideInRight {
+            from {
+              opacity: 0;
+              transform: translateX(-30px);
+            }
+            to {
+              opacity: 1;
+              transform: translateX(0);
+            }
+          }
+        `}</style>
+        </div>
+    </MobilePerformanceOptimizer>
   )
-}
+})
+
+MobileMenu.displayName = 'MobileMenu'
+
+export default MobileMenu

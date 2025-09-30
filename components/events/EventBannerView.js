@@ -5,6 +5,10 @@ import Link from 'next/link'
 export default function EventBannerView({ events, user, onBecomeMember }) {
   const [selectedEvent, setSelectedEvent] = useState(null)
 
+  console.log('EventBannerView - events:', events?.length || 0)
+  console.log('EventBannerView - user:', user)
+  console.log('EventBannerView - is_member:', user?.is_member)
+
   if (!user?.is_member) {
     return (
       <div className="max-w-4xl mx-auto">
@@ -48,10 +52,147 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
           background-size: 200px 100%;
           animation: shimmer 2s infinite;
         }
+        
+        /* Desktop optimizations - Design compact et attractif */
+        @media (min-width: 1024px) {
+          .banner-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+          }
+          
+          .banner-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            justify-items: stretch;
+          }
+          
+          .banner-card {
+            width: 100%;
+            max-width: 380px;
+            min-height: 400px;
+            max-height: 450px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+          }
+          
+          .banner-image {
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+          }
+          
+          .banner-card:hover .banner-image {
+            transform: scale(1.02);
+          }
+          
+          .banner-title {
+            font-size: 1.25rem;
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+          }
+          
+          .banner-text {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+          }
+          
+          .banner-info {
+            font-size: 0.8rem;
+            line-height: 1.3;
+            margin-bottom: 0.5rem;
+          }
+          
+          .banner-button {
+            margin-top: auto;
+            padding: 0.75rem 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+          }
+        }
+        
+        @media (min-width: 1280px) {
+          .banner-grid {
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+          }
+          
+          .banner-card {
+            max-width: 400px;
+          }
+        }
+        
+        @media (min-width: 1536px) {
+          .banner-grid {
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+          }
+          
+          .banner-card {
+            max-width: 350px;
+          }
+        }
+        
+        /* Badges et prix optimisés */
+        @media (min-width: 1024px) {
+          .banner-badge {
+            font-size: 0.75rem;
+            padding: 0.4rem 0.8rem;
+            font-weight: 600;
+            border-radius: 12px;
+          }
+          
+          .banner-price {
+            font-size: 0.9rem;
+            padding: 0.4rem 0.8rem;
+            font-weight: 700;
+            border-radius: 12px;
+          }
+          
+          /* Ombres et effets premium */
+          .banner-card {
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .banner-card:hover {
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-4px);
+          }
+          
+          /* Bouton premium */
+          .banner-button {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+          }
+          
+          .banner-button:hover {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2));
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            transform: translateY(-1px);
+          }
+        }
       `}</style>
       
-      <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+      <div className="banner-container">
+        <div className="banner-grid">
           {events.map(event => {
             const eventDate = new Date(event.date)
             const typeColors = {
@@ -67,7 +208,7 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
             return (
               <div 
                 key={event.id}
-                className="group relative overflow-hidden rounded-3xl border shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer"
+                className="banner-card group relative overflow-hidden rounded-3xl border shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer"
                 style={{ 
                   background: typeColors[event.type] || 'linear-gradient(135deg, #6B7280, #4B5563)',
                   borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -75,90 +216,83 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
                 }}
                 onClick={() => setSelectedEvent(event)}
               >
-                {/* Image de l'événement */}
-                <div className="relative h-48 overflow-hidden">
+                {/* Image de l'événement - Plus compacte */}
+                <div className="relative h-48 overflow-hidden flex-shrink-0">
                   <img 
                     src={event.image_url} 
                     alt={event.name}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="banner-image w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
                   
-                  {/* Badge type */}
-                  <div className="absolute top-4 left-4">
+                  {/* Badge type - Plus petit */}
+                  <div className="absolute top-3 left-3">
                     <div 
-                      className="px-3 py-1 rounded-full text-xs font-bold text-white shadow-lg"
+                      className="banner-badge px-2 py-1 rounded-lg text-xs font-semibold text-white shadow-md"
                       style={{ 
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(255, 255, 255, 0.3)'
+                        background: 'rgba(0, 0, 0, 0.6)',
+                        backdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)'
                       }}
                     >
                       {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
                     </div>
                   </div>
                   
-                  {/* Prix */}
-                  <div className="absolute top-4 right-4">
+                  {/* Prix - Plus petit */}
+                  <div className="absolute top-3 right-3">
                     <div 
-                      className="px-3 py-1 rounded-full text-sm font-bold text-black shadow-lg"
+                      className="banner-price px-2 py-1 rounded-lg text-xs font-bold text-black shadow-md"
                       style={{ 
                         background: 'linear-gradient(135deg, #FDE047, #FACC15)',
-                        boxShadow: '0 4px 15px rgba(250, 204, 21, 0.4)'
+                        boxShadow: '0 2px 8px rgba(250, 204, 21, 0.3)'
                       }}
                     >
-                      <Euro size={12} className="inline mr-1" />
+                      <Euro size={10} className="inline mr-1" />
                       {event.price}
                     </div>
                   </div>
                 </div>
                 
-                {/* Contenu */}
-                <div className="p-6 relative">
-                  <div className="absolute inset-0 bg-black/20 backdrop-blur-sm rounded-b-3xl"></div>
-                  <div className="relative z-10">
-                    <h3 className="text-xl font-bold text-white mb-3 drop-shadow-lg">
+                {/* Contenu - Plus compact et organisé */}
+                <div className="p-4 relative flex-1 flex flex-col">
+                  <div className="absolute inset-0 bg-black/15 backdrop-blur-sm rounded-b-3xl"></div>
+                  <div className="relative z-10 flex-1 flex flex-col">
+                    <h3 className="banner-title text-lg font-bold text-white mb-2 drop-shadow-lg">
                       {event.name}
                     </h3>
                     
-                    <p className="text-white/90 text-sm mb-4 leading-relaxed">
+                    <p className="banner-text text-white/85 text-sm mb-3 leading-relaxed flex-1">
                       {event.description}
                     </p>
                     
-                    {/* Informations de l'événement */}
+                    {/* Informations de l'événement - Plus compactes */}
                     <div className="space-y-2 mb-4">
-                      <div className="flex items-center text-white/80 text-sm">
-                        <Calendar size={16} className="mr-2" />
-                        <span>{eventDate.toLocaleDateString('fr-FR', { 
-                          weekday: 'long', 
-                          year: 'numeric', 
-                          month: 'long', 
-                          day: 'numeric' 
+                      <div className="flex items-center text-white/80 text-xs">
+                        <Calendar size={14} className="mr-2 flex-shrink-0" />
+                        <span className="truncate">{eventDate.toLocaleDateString('fr-FR', { 
+                          day: 'numeric', 
+                          month: 'short' 
                         })}</span>
                       </div>
                       
-                      <div className="flex items-center text-white/80 text-sm">
-                        <Clock size={16} className="mr-2" />
+                      <div className="flex items-center text-white/80 text-xs">
+                        <Clock size={14} className="mr-2 flex-shrink-0" />
                         <span>{eventDate.toLocaleTimeString('fr-FR', { 
                           hour: '2-digit', 
                           minute: '2-digit' 
                         })}</span>
                       </div>
                       
-                      <div className="flex items-center text-white/80 text-sm">
-                        <MapPin size={16} className="mr-2" />
-                        <span>{event.location}</span>
-                      </div>
-                      
-                      <div className="flex items-center text-white/80 text-sm">
-                        <Users size={16} className="mr-2" />
-                        <span>Capacité: {event.capacity} personnes</span>
+                      <div className="flex items-center text-white/80 text-xs">
+                        <MapPin size={14} className="mr-2 flex-shrink-0" />
+                        <span className="truncate">{event.location}</span>
                       </div>
                     </div>
                     
-                    {/* Bouton de réservation */}
+                    {/* Bouton de réservation - Plus compact */}
                     <button 
-                      className="w-full bg-white/20 backdrop-blur-sm text-white py-3 px-4 rounded-xl font-medium transition-all duration-300 hover:bg-white/30 hover:scale-105 border border-white/30"
+                      className="banner-button w-full bg-white/20 backdrop-blur-sm text-white py-3 px-4 rounded-lg font-semibold text-sm transition-all duration-300 hover:bg-white/30 border border-white/30 shadow-md hover:shadow-lg mt-auto"
                       onClick={(e) => {
                         e.stopPropagation()
                         console.log('Réserver:', event.name)
@@ -176,8 +310,8 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
         {events.length === 0 && (
           <div className="text-center py-12">
             <div className="text-6xl mb-4">📅</div>
-            <h3 className="text-xl font-semibold text-white mb-2">Aucun événement disponible</h3>
-            <p className="text-gray-400">De nouveaux événements seront bientôt ajoutés</p>
+            <h3 className="text-xl font-bold text-white mb-3">Aucun événement disponible</h3>
+            <p className="text-gray-300">De nouveaux événements seront bientôt ajoutés</p>
           </div>
         )}
       </div>

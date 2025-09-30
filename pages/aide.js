@@ -3,10 +3,12 @@ import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 import SupportSection from '../components/account/SupportSection'
+import { useTheme } from '../contexts/ThemeContextSimple'
 import { ChevronDown, ChevronRight, Search, HelpCircle, FileText, Shield, CreditCard, MessageCircle, Phone, Mail, Clock, Star, Users, Zap } from 'lucide-react'
 
 export default function Aide({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const { isDarkMode } = useTheme()
   const [searchQuery, setSearchQuery] = useState('')
   const [expandedItems, setExpandedItems] = useState({})
 
@@ -200,14 +202,14 @@ export default function Aide({ user, setUser }) {
         user={user} 
       />
       
-      <main className="flex-1 overflow-y-auto" style={{ background: 'var(--color-bg-primary)' }}>
+      <main className="flex-1 overflow-y-auto" style={{ background: isDarkMode ? '#0D0D0D' : '#F9FAFB' }}>
           <div className="container mx-auto px-4 py-8">
             {/* Header */}
             <div className="text-center mb-12">
               <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-4">
                 Centre d'aide Get Weez
               </h1>
-              <p className="text-lg" style={{ color: 'var(--color-text-secondary)' }}>
+              <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 Trouvez rapidement les réponses à vos questions
               </p>
             </div>
@@ -217,36 +219,38 @@ export default function Aide({ user, setUser }) {
               <div className="relative">
                 <Search 
                   size={20} 
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2" 
-                  style={{ color: 'var(--color-text-muted)' }}
+                  className={`absolute left-4 top-1/2 transform -translate-y-1/2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}
                 />
                 <input
                   type="text"
                   placeholder="Rechercher dans l'aide..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-12 pr-4 py-4 rounded-2xl border-0"
-                  style={{ 
-                    backgroundColor: 'var(--color-bg-secondary)',
-                    color: 'var(--color-text-primary)',
-                    border: '1px solid var(--color-border)'
-                  }}
+                  className={`w-full pl-12 pr-4 py-4 rounded-2xl border transition-all duration-300 ${
+                    isDarkMode 
+                      ? 'bg-gray-800/50 text-white border-gray-700/50 focus:border-purple-500/50' 
+                      : 'bg-white text-gray-900 border-gray-200 focus:border-purple-500/50'
+                  }`}
                 />
               </div>
             </div>
 
             {/* FAQ */}
             <div className="max-w-4xl mx-auto mb-16">
-              <h2 className="text-2xl font-bold mb-8" style={{ color: 'var(--color-text-primary)' }}>
+              <h2 className={`text-2xl font-bold mb-8 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 Questions Fréquentes
               </h2>
               
               <div className="space-y-6">
                 {filteredCategories.map((category) => (
-                  <div key={category.id} className="card-premium">
+                  <div key={category.id} className={`p-6 rounded-2xl transition-all duration-300 ${
+                    isDarkMode 
+                      ? 'bg-gray-800/50 border border-gray-700/50' 
+                      : 'bg-white border border-gray-200/50 shadow-xl'
+                  }`}>
                     <div className="flex items-center mb-4">
-                      <category.icon size={24} className="mr-3" style={{ color: 'var(--color-primary)' }} />
-                      <h3 className="text-xl font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                      <category.icon size={24} className="mr-3 text-purple-500" />
+                      <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         {category.title}
                       </h3>
                     </div>
@@ -255,20 +259,30 @@ export default function Aide({ user, setUser }) {
                       {category.questions.map((question) => {
                         const isExpanded = expandedItems[`${category.id}-${question.id}`]
                         return (
-                          <div key={question.id} className="border rounded-xl" style={{ borderColor: 'var(--color-border)' }}>
+                          <div key={question.id} className={`border rounded-xl transition-all duration-300 ${
+                            isDarkMode 
+                              ? 'border-gray-700/50' 
+                              : 'border-gray-200/50'
+                          }`}>
                             <button
                               onClick={() => toggleExpanded(category.id, question.id)}
-                              className="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-800/50 transition-colors"
+                              className={`w-full px-6 py-4 text-left flex items-center justify-between transition-colors ${
+                                isDarkMode 
+                                  ? 'hover:bg-gray-700/50' 
+                                  : 'hover:bg-gray-50/50'
+                              }`}
                             >
-                              <span className="font-medium" style={{ color: 'var(--color-text-primary)' }}>
+                              <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                                 {question.question}
                               </span>
-                              {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                              <div className={isDarkMode ? 'text-gray-400' : 'text-gray-500'}>
+                                {isExpanded ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                              </div>
                             </button>
                             
                             {isExpanded && (
                               <div className="px-6 pb-4">
-                                <p className="text-sm leading-relaxed" style={{ color: 'var(--color-text-secondary)' }}>
+                                <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
                                   {question.answer}
                                 </p>
                               </div>
@@ -284,22 +298,25 @@ export default function Aide({ user, setUser }) {
 
             {/* CGV/CGU */}
             <div className="max-w-4xl mx-auto">
-              <h2 className="text-2xl font-bold mb-8" style={{ color: 'var(--color-text-primary)' }}>
+              <h2 className={`text-2xl font-bold mb-8 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 Informations Légales
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {legalSections.map((section) => (
-                  <div key={section.id} className="card-premium">
+                  <div key={section.id} className={`p-6 rounded-2xl transition-all duration-300 ${
+                    isDarkMode 
+                      ? 'bg-gray-800/50 border border-gray-700/50' 
+                      : 'bg-white border border-gray-200/50 shadow-xl'
+                  }`}>
                     <div className="flex items-center mb-4">
-                      <FileText size={24} className="mr-3" style={{ color: 'var(--color-primary)' }} />
-                      <h3 className="text-lg font-semibold" style={{ color: 'var(--color-text-primary)' }}>
+                      <FileText size={24} className="mr-3 text-purple-500" />
+                      <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         {section.title}
                       </h3>
                     </div>
                     <div 
-                      className="text-sm leading-relaxed"
-                      style={{ color: 'var(--color-text-secondary)' }}
+                      className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
                       dangerouslySetInnerHTML={{ __html: section.content }}
                     />
                   </div>
@@ -309,42 +326,58 @@ export default function Aide({ user, setUser }) {
 
             {/* Centre d'Aide - Liens rapides */}
             <div className="max-w-4xl mx-auto mt-16">
-              <div className="bg-gray-800 rounded-2xl p-8">
-                <h2 className="text-2xl font-bold text-white mb-8 text-center">Centre d'Aide</h2>
+              <div className={`rounded-2xl p-8 transition-all duration-300 ${
+                isDarkMode 
+                  ? 'bg-gray-800/50 border border-gray-700/50' 
+                  : 'bg-white border border-gray-200/50 shadow-xl'
+              }`}>
+                <h2 className={`text-2xl font-bold mb-8 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Centre d'Aide</h2>
                 
                 {/* Liens rapides d'aide */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <a 
                     href="/aide" 
-                    className="group bg-gray-700 rounded-xl p-6 hover:bg-gray-600 transition-all duration-300 hover:scale-105"
+                    className={`group rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
+                      isDarkMode 
+                        ? 'bg-gray-700/50 hover:bg-gray-600/50' 
+                        : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                    }`}
                   >
                     <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                       <HelpCircle size={24} className="text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-2 text-center">FAQ & Centre d'aide</h3>
-                    <p className="text-gray-400 text-sm text-center">Trouvez des réponses à vos questions</p>
+                    <h3 className={`text-lg font-semibold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>FAQ & Centre d'aide</h3>
+                    <p className={`text-sm text-center ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Trouvez des réponses à vos questions</p>
                   </a>
                   
                   <a 
                     href="mailto:support@getweez.com" 
-                    className="group bg-gray-700 rounded-xl p-6 hover:bg-gray-600 transition-all duration-300 hover:scale-105"
+                    className={`group rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
+                      isDarkMode 
+                        ? 'bg-gray-700/50 hover:bg-gray-600/50' 
+                        : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                    }`}
                   >
                     <div className="w-12 h-12 bg-pink-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                       <Mail size={24} className="text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-2 text-center">Contacter le support</h3>
-                    <p className="text-gray-400 text-sm text-center">Écrivez-nous directement</p>
+                    <h3 className={`text-lg font-semibold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Contacter le support</h3>
+                    <p className={`text-sm text-center ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Écrivez-nous directement</p>
                   </a>
                   
                   <a 
                     href="/aide#cgv" 
-                    className="group bg-gray-700 rounded-xl p-6 hover:bg-gray-600 transition-all duration-300 hover:scale-105"
+                    className={`group rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
+                      isDarkMode 
+                        ? 'bg-gray-700/50 hover:bg-gray-600/50' 
+                        : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
+                    }`}
                   >
                     <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                       <FileText size={24} className="text-white" />
                     </div>
-                    <h3 className="text-lg font-semibold text-white mb-2 text-center">Conditions générales</h3>
-                    <p className="text-gray-400 text-sm text-center">CGV et mentions légales</p>
+                    <h3 className={`text-lg font-semibold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Conditions générales</h3>
+                    <p className={`text-sm text-center ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>CGV et mentions légales</p>
                   </a>
                 </div>
               </div>
