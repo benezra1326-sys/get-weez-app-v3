@@ -1,0 +1,248 @@
+/* Styles optimisés pour ChatInterface - Élimination des styles inline */
+
+/* Conteneur principal */
+.container {
+  @apply w-full min-h-screen flex flex-col lg:flex-row;
+  width: 100vw;
+  max-width: none;
+}
+
+.container.light {
+  background-color: #FFFFFF;
+}
+
+.container.dark {
+  background-color: #0D0D0D;
+}
+
+/* Layout principal */
+.mainContent {
+  @apply flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen;
+  width: 100vw;
+  max-width: none;
+}
+
+/* Sidebar gauche - Conversations */
+.leftSidebar {
+  @apply hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0;
+}
+
+.leftSidebar.light {
+  background-color: #FFFFFF;
+  border-color: #E5E7EB;
+}
+
+.leftSidebar.dark {
+  background-color: #1A1A1A;
+  border-color: #2D2D2D;
+}
+
+/* Chat principal */
+.chatSection {
+  @apply flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full;
+  width: 100%;
+  max-width: none;
+  flex: 1 1 0%;
+}
+
+.chatContainer {
+  @apply rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col;
+}
+
+.chatContainer.light {
+  background-color: #FFFFFF;
+  border-color: #E5E7EB;
+}
+
+.chatContainer.dark {
+  background-color: #1A1A1A;
+  border-color: #2D2D2D;
+}
+
+/* Messages */
+.messagesArea {
+  @apply flex-1 lg:overflow-y-auto mb-2 lg:mb-6 lg:min-h-0 p-2 lg:p-0;
+}
+
+.messagesContainer {
+  @apply space-y-2 lg:space-y-4;
+}
+
+.messageWrapper {
+  @apply flex animate-fade-in-up;
+}
+
+.messageWrapper.user {
+  @apply justify-end;
+}
+
+.messageWrapper.assistant {
+  @apply justify-start;
+}
+
+.messageBubble {
+  @apply max-w-[85%] lg:max-w-[70%] px-4 py-3 rounded-2xl border;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.messageBubble.user {
+  @apply rounded-br-md;
+  background-color: #14B8A6;
+  color: #FFFFFF;
+  border-color: transparent;
+  box-shadow: 0 4px 12px rgba(20, 184, 166, 0.3);
+}
+
+.messageBubble.assistant {
+  @apply rounded-bl-md;
+  background-color: #2D2D2D;
+  color: #FFFFFF;
+  border-color: #374151;
+}
+
+.messageText {
+  @apply text-sm lg:text-base leading-relaxed whitespace-pre-wrap break-words;
+}
+
+/* Sidebar droite - Suggestions */
+.rightSidebar {
+  @apply hidden lg:block w-80 border-t lg:border-t-0 lg:border-l overflow-y-auto h-[32rem] lg:h-full flex-shrink-0;
+  width: 20rem;
+  max-width: 20rem;
+}
+
+.rightSidebar.light {
+  background-color: #FFFFFF;
+  border-color: #E5E7EB;
+}
+
+.rightSidebar.dark {
+  background-color: #1A1A1A;
+  border-color: #2D2D2D;
+}
+
+/* Boutons de filtres */
+.filterButton {
+  @apply px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex items-center justify-center;
+}
+
+.filterButton.active.light {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.filterButton.active.dark {
+  background-color: #3B82F6;
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.filterButton.inactive.light {
+  background-color: #F3F4F6;
+  color: #374151;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.filterButton.inactive.dark {
+  background-color: #374151;
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Carrousel des marques */
+.brandCarousel {
+  @apply w-full py-8 lg:py-12;
+}
+
+.brandCarousel.light {
+  background-color: #FFFFFF;
+}
+
+.brandCarousel.dark {
+  background-color: #0D0D0D;
+}
+
+.brandCard {
+  @apply flex-shrink-0 bg-white/10 backdrop-blur-sm rounded-2xl p-4 lg:p-6 border border-gray-700/50;
+}
+
+.brandText {
+  @apply text-white font-bold text-lg lg:text-xl;
+}
+
+/* Animations personnalisées */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes scroll-reverse {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+.animate-scroll {
+  animation: scroll 30s linear infinite;
+}
+
+.animate-scroll-reverse {
+  animation: scroll-reverse 30s linear infinite;
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+
+/* Responsive utilities */
+@media (max-width: 1024px) {
+  .container {
+    width: 100vw;
+  }
+  
+  .mainContent {
+    width: 100vw;
+  }
+}
+
+/* Scrollbar personnalisée */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #6B7280 #1F2937;
+}
+
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: #1F2937;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #6B7280;
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #9CA3AF;
+}

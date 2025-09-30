@@ -1,171 +1,72 @@
-import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
+import React, { useEffect, useCallback, memo, useMemo } from 'react'
 import { useTranslation } from 'next-i18next'
 import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon } from 'lucide-react'
-import { useConversations } from '../../hooks/useConversations'
 import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
 import MobileChatInterface from './MobileChatInterface'
 import ChatInput from './ChatInput'
 import { useTheme } from '../../contexts/ThemeContext'
+import { useChatLogic } from '../../hooks/useChatLogic'
+import styles from '../../styles/chat-interface.module.css'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🔄 ChatInterface component loaded')
+  console.log('🔄 ChatInterface component loaded - OPTIMISÉ 🚀')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   const { isDarkMode } = useTheme()
-  const [input, setInput] = useState('')
-  const [isLoading, setIsLoading] = useState(false)
-  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
-  const [conversationToDelete, setConversationToDelete] = useState(null)
-  const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
-  const [showMobileHistory, setShowMobileHistory] = useState(false)
-
-  // Effet pour pré-remplir le message de réservation
-  useEffect(() => {
-    if (initialMessage) {
-      setInput(initialMessage)
-    }
-  }, [initialMessage])
   
+  // 🚀 LOGIQUE UNIFIÉE - Plus de duplication !
   const {
+    // État du chat
+    input,
+    isLoading,
+    sidebarFilter,
+    showMobileHistory,
+    showDeleteConfirm,
+    conversationToDelete,
+    isMobile,
+    canSend,
+    hasInput,
+    hasMessages,
+    conversationCount,
+    
+    // Données des conversations
     conversations,
     currentConversationId,
     messages,
+    
+    // Actions unifiées
+    handleSend,
+    handleCloseConversation,
+    handleDeleteConfirm,
+    handleSuggestionClick,
+    
+    // Actions d'état
+    setInput,
+    setSidebarFilter,
+    toggleMobileHistory,
+    closeMobileHistory,
+    showDeleteConfirm: showDeleteDialog,
+    hideDeleteConfirm: hideDeleteDialog,
+    setIsMobile,
+    
+    // Actions conversations
     createConversation,
     selectConversation,
-    addMessage,
     deleteConversation
-  } = useConversations()
+  } = useChatLogic(initialMessage, showToast, establishmentName, user)
 
-  console.log('📊 ChatInterface state:', {
-    conversationsCount: conversations?.length || 0,
-    currentConversationId,
-    messagesCount: messages?.length || 0,
-    messages: messages,
-    messagesType: typeof messages,
-    messagesArray: Array.isArray(messages),
-    input,
-    isLoading,
-    hasCreateConversation: typeof createConversation === 'function',
-    hasAddMessage: typeof addMessage === 'function'
-  })
+  // 🚀 LOGIQUE SIMPLIFIÉE - Tout est dans useChatLogic !
+  const handleDeleteClick = useCallback((conversationId) => {
+    showDeleteDialog(conversationId)
+  }, [showDeleteDialog])
 
-  const handleSend = useCallback(async () => {
-    console.log('🚀🚀🚀 handleSend appelé', { 
-      input: input.trim(), 
-      isLoading, 
-      currentConversationId,
-      hasInput: !!input.trim()
-    })
-    
-    if (!input.trim() || isLoading) {
-      console.log('❌ handleSend: Conditions non remplies', { input: input.trim(), isLoading })
-      return
-    }
+  const handleDeleteCancel = useCallback(() => {
+    hideDeleteDialog()
+  }, [hideDeleteDialog])
 
-    const userMessage = input.trim()
-    console.log('📝 Message utilisateur:', userMessage)
-    setInput('')
-    
-    // Créer une conversation si nécessaire
-    let conversationId = currentConversationId
-    if (!conversationId) {
-      console.log('🔧 Création d\'une nouvelle conversation...')
-      conversationId = createConversation()
-      console.log('🔧 Nouveau conversationId:', conversationId)
-    }
-
-    // Ajouter le message utilisateur
-    console.log('💬 Ajout du message utilisateur, conversationId:', conversationId)
-    addMessage({
-      id: Date.now().toString(),
-      content: userMessage,
-      role: 'user',
-      timestamp: new Date()
-    }, conversationId)
-    
-    setIsLoading(true)
-
-    try {
-      // Obtenir l'historique des messages de la conversation actuelle
-      const currentMessages = conversations.find(conv => conv.id === conversationId)?.messages || []
-      
-      // Appeler l'API de chat
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: userMessage,
-          userName: 'Utilisateur',
-          isMember: false,
-          conversationHistory: currentMessages
-        })
-      })
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      }
-
-      const data = await response.json()
-      console.log('📥 Réponse reçue:', data)
-      
-      addMessage({
-        id: (Date.now() + 1).toString(),
-        content: data.reply,
-        role: 'assistant',
-        timestamp: new Date()
-      }, conversationId)
-      
-    } catch (error) {
-      console.error('Erreur lors de l\'envoi du message:', error)
-      const errorMessage = 'Désolé, une erreur est survenue. Veuillez réessayer.'
-      addMessage({
-        id: (Date.now() + 2).toString(),
-        content: errorMessage,
-        role: 'assistant',
-        timestamp: new Date()
-      }, conversationId)
-      showToast('Erreur lors de l\'envoi du message', 'error')
-    } finally {
-      setIsLoading(false)
-    }
-  }, [input, isLoading, currentConversationId, createConversation, addMessage, showToast, conversations])
-
-
-  // Gestion de la suppression de conversation
-  const handleDeleteClick = (conversationId) => {
-    setConversationToDelete(conversationId)
-    setShowDeleteConfirm(true)
-  }
-
-  const handleDeleteConfirm = () => {
-    if (conversationToDelete) {
-      deleteConversation(conversationToDelete)
-      setConversationToDelete(null)
-      setShowDeleteConfirm(false)
-      showToast('Conversation supprimée avec succès', 'success')
-    }
-  }
-
-  const handleDeleteCancel = () => {
-    setConversationToDelete(null)
-    setShowDeleteConfirm(false)
-  }
-
-
-  const handleCloseConversation = () => {
-    if (currentConversationId) {
-      selectConversation(null)
-      showToast('Conversation fermée', 'info')
-    }
-  }
-
-  // État pour détecter si on est sur mobile
-  const [isMobile, setIsMobile] = useState(false)
-
+  // Optimisation: gestion mobile intégrée au hook
   useEffect(() => {
     const checkMobile = () => {
       setIsMobile(window.innerWidth < 1024)
@@ -175,7 +76,37 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     window.addEventListener('resize', checkMobile)
     
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
+  }, [setIsMobile])
+
+  // 🚀 OPTIMISATIONS DE PERFORMANCE
+  const themeClasses = useMemo(() => ({
+    container: `${styles.container} ${isDarkMode ? styles.dark : styles.light}`,
+    leftSidebar: `${styles.leftSidebar} ${isDarkMode ? styles.dark : styles.light}`,
+    chatContainer: `${styles.chatContainer} ${isDarkMode ? styles.dark : styles.light}`,
+    brandCarousel: `${styles.brandCarousel} ${isDarkMode ? styles.dark : styles.light}`,
+    messagesArea: `${styles.messagesArea} ${styles.scrollbarThin}`
+  }), [isDarkMode])
+
+  const memoizedMessages = useMemo(() => {
+    if (!hasMessages) return null
+    
+    return (
+      <div className={styles.messagesContainer}>
+        {messages.map((msg) => (
+          <div
+            key={msg.id}
+            className={`${styles.messageWrapper} ${msg.role === 'user' ? styles.user : styles.assistant}`}
+          >
+            <div className={`${styles.messageBubble} ${msg.role === 'user' ? styles.user : styles.assistant}`}>
+              <div className={styles.messageText}>
+                {msg.content || 'Message vide'}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    )
+  }, [messages, hasMessages])
 
   return (
     <>
@@ -239,12 +170,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           animation: scroll-reverse 30s linear infinite;
         }
       `}</style>
-      <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF', width: '100vw', maxWidth: 'none' }}>
+      <div className={themeClasses.container}>
       {/* Main Content */}
-      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen" style={{ width: '100vw', maxWidth: 'none' }}>
+      <main className={styles.mainContent}>
         
         {/* Sidebar gauche - Conversations */}
-        <div className="hidden lg:block w-72 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+        <div className={themeClasses.leftSidebar}>
           {/* Version mobile subtile - petit bouton flottant */}
           <div className="lg:hidden fixed top-20 left-4 z-40">
             <button 
@@ -459,9 +390,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Chat Section - Largeur ajustée */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-[calc(100vh-32rem)] lg:h-full w-full" style={{ width: '100%', maxWidth: 'none', flex: '1 1 0%' }}>
-          <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
+        {/* Chat Section - OPTIMISÉ */}
+        <div className={styles.chatSection}>
+          <div className={themeClasses.chatContainer}>
             
             {/* Barre d'outils mobile */}
             <div className="lg:hidden flex items-center justify-between mb-3 p-2 rounded-lg" style={{ backgroundColor: isDarkMode ? '#2D2D2D' : '#F3F4F6' }}>
@@ -607,46 +538,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               </div>
             )}
 
-            {/* Zone des messages */}
-            <div className="flex-1 lg:overflow-y-auto mb-2 lg:mb-6 lg:min-h-0 chat-messages-container scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 p-2 lg:p-0">
-              {messages && messages.length > 0 ? (
-                <div className="space-y-2 lg:space-y-4">
-                  {messages.map((msg) => {
-                    console.log('🔍 Affichage message:', msg)
-                    return (
-                      <div
-                        key={msg.id}
-                        className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'} animate-fade-in-up`}
-                        style={{
-                          animation: 'fadeInUp 0.3s ease-out'
-                        }}
-                      >
-                        <div
-                          className={`max-w-[85%] lg:max-w-[70%] px-4 py-3 rounded-2xl ${
-                            msg.role === 'user'
-                              ? 'rounded-br-md'
-                              : 'rounded-bl-md border'
-                          }`}
-                          style={{
-                            backgroundColor: msg.role === 'user' 
-                              ? '#14B8A6' 
-                              : '#2D2D2D',
-                            color: '#FFFFFF',
-                            borderColor: msg.role === 'user' ? 'transparent' : '#374151',
-                            boxShadow: msg.role === 'user' 
-                              ? '0 4px 12px rgba(20, 184, 166, 0.3)' 
-                              : '0 2px 8px rgba(0, 0, 0, 0.2)'
-                          }}
-                        >
-                          <div className="text-sm lg:text-base leading-relaxed whitespace-pre-wrap break-words">
-                            {msg.content || 'Message vide'}
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-              ) : (
+            {/* Zone des messages ULTRA-OPTIMISÉE */}
+            <div className={themeClasses.messagesArea}>
+              {memoizedMessages || (
                 <div className="flex flex-col items-center justify-center h-full text-center py-4 lg:py-8">
                   {/* Version mobile - design plus engageant */}
                   <div 
@@ -753,7 +647,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setInput('Réserver pour la Beach Party')}
+                      onClick={() => handleSuggestionClick('Réserver pour la Beach Party')}
                       className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-blue-500 hover:bg-blue-600 text-white'}`}
                     >
                       Réserver
@@ -769,7 +663,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setInput('Réserver pour la soirée jazz')}
+                      onClick={() => handleSuggestionClick('Réserver pour la soirée jazz')}
                       className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-purple-500 hover:bg-purple-600 text-white'}`}
                     >
                       Réserver
@@ -786,7 +680,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setInput('Réserver une table chez Nobu')}
+                      onClick={() => handleSuggestionClick('Réserver une table chez Nobu')}
                       className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-amber-500 hover:bg-amber-600 text-white'}`}
                     >
                       Réserver
@@ -802,7 +696,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       </div>
                     </div>
                     <button
-                      onClick={() => setInput('Réserver une table à La Terraza')}
+                      onClick={() => handleSuggestionClick('Réserver une table à La Terraza')}
                       className={`w-full text-xs font-medium py-2 px-3 rounded-lg transition-all duration-300 ${isDarkMode ? 'bg-white/20 hover:bg-white/30 text-white' : 'bg-teal-500 hover:bg-teal-600 text-white'}`}
                     >
                       Réserver
@@ -815,7 +709,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   {['🚗 Transport VIP', '🛥️ Yacht privé', '🚁 Hélicoptère', '💆 Spa à domicile'].map((service, index) => (
                     <button
                       key={index}
-                      onClick={() => setInput(service)}
+                      onClick={() => handleSuggestionClick(service)}
                       className="px-3 py-2 rounded-full text-xs font-medium transition-all duration-300 flex items-center"
                       style={{
                         backgroundColor: '#2D2D2D',
@@ -1413,10 +1307,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
       </main>
-      </div> {/* Fin interface desktop */}
+      </div>
       
-      {/* Carrousel des marques qui font confiance */}
-      <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+      {/* Carrousel des marques OPTIMISÉ */}
+      <div className={themeClasses.brandCarousel}>
         <div className="max-w-7xl mx-auto px-4 lg:px-8">
           <div className="text-center mb-8 lg:mb-12">
             <h2 className={`text-2xl lg:text-4xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -1520,7 +1414,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         cancelText="Annuler"
         type="danger"
       />
-    </div>
+      </div>
     </>
   )
 }
