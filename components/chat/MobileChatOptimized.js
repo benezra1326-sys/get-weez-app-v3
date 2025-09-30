@@ -184,14 +184,14 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
       `Hello ${user.first_name} ! Prêt pour une nouvelle aventure à Marbella ?`,
       `Salut ${user.first_name} ! Comment puis-je vous aider aujourd'hui ?`,
       `Bienvenue ${user.first_name} ! Quel service exclusif vous intéresse ?`,
-      `Content de vous voir ${user.first_name} ! Que désirez-vous découvrir ?`
+      `Ravi de vous revoir ${user.first_name} ! Que désirez-vous découvrir ?`
     ] : [
       `Bonjour ! Que puis-je organiser pour vous aujourd'hui ?`,
       `Bienvenue sur Get Weez ! De quoi auriez-vous besoin ?`,
       `Hello ! Prêt pour une nouvelle aventure à Marbella ?`,
       `Salut ! Comment puis-je vous aider aujourd'hui ?`,
       `Bienvenue ! Quel service exclusif vous intéresse ?`,
-      `Content de vous voir ! Que désirez-vous découvrir ?`
+      `Ravi de vous voir ! Que désirez-vous découvrir ?`
     ]
     
     // Sélectionner un message aléatoire côté client
@@ -635,13 +635,29 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               <div className="mb-2">
                 <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   {isClient && welcomeMessage ? 
-                    welcomeMessage.split('!')[0] + ' !' : 
-                    'Bienvenue sur Get Weez !'
+                    (() => {
+                      const parts = welcomeMessage.split('!')
+                      const firstPart = parts[0] + ' !'
+                      const secondPart = parts[1] ? parts[1].trim() : ''
+                      return (
+                        <span>
+                          {firstPart}
+                          {secondPart && (
+                            <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                              {secondPart}
+                            </span>
+                          )}
+                        </span>
+                      )
+                    })() : 
+                    <span>
+                      Bienvenue sur Get Weez !
+                      <span className={`block text-lg font-semibold mt-1 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
+                        De quoi auriez-vous besoin ?
+                      </span>
+                    </span>
                   }
               </h3>
-                <p className={`text-lg font-semibold mt-2 ${isDarkMode ? 'text-purple-300' : 'text-purple-600'}`}>
-                  De quoi auriez-vous besoin ?
-              </p>
               </div>
             </div>
           )}

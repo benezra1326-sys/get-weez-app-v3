@@ -146,7 +146,6 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
           <p className={`text-xs mt-1 font-medium italic opacity-70 transition-all duration-300 group-hover:opacity-100 ${
             isDarkMode ? 'text-gray-400' : 'text-gray-600'
           }`}>
-            Your luxury AI concierge, anytime, anywhere
           </p>
         </Link>
       </div>
