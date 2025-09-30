@@ -168,11 +168,27 @@ export default function Establishments({ user, setUser }) {
           min-height: 250px !important; /* Réduit pour mobile */
         }
         
-        /* Mobile grid optimizations */
+        /* Mobile grid optimizations - Plus d'éléments visibles */
         @media (max-width: 768px) {
           .grid {
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
             gap: 0.75rem !important;
+          }
+          
+          .establishment-card {
+            min-height: 200px !important; /* Encore plus compact */
+          }
+          
+          /* Container principal mobile */
+          .establishments-container {
+            padding: 8px !important;
+            margin: 0 !important;
+          }
+          
+          /* Header banner mobile plus compact */
+          .establishments-banner {
+            min-height: 200px !important; /* Réduit de 300px */
+            padding: 16px !important;
           }
         }
         
@@ -235,12 +251,13 @@ export default function Establishments({ user, setUser }) {
           }}
         >
             {/* Header avec recherche */}
-            <div className="mb-8">
-              <div className="relative overflow-hidden rounded-3xl p-8 mb-8"
+            <div className="mb-4 lg:mb-8 establishments-container">
+              <div className="relative overflow-hidden rounded-3xl p-4 lg:p-8 mb-4 lg:mb-8 establishments-banner"
                 style={{
                   background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #10B981 75%, #F59E0B 100%)',
                   backgroundSize: '400% 400%',
-                  animation: 'gradientShift 8s ease infinite'
+                  animation: 'gradientShift 8s ease infinite',
+                  minHeight: '200px' // Mobile optimisé
                 }}
               >
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>

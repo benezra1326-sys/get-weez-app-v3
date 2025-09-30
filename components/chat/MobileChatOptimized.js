@@ -571,14 +571,14 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         </div>
 
 
-        {/* Messages avec scroll optimisé - adaptés pour zone saisie fixe */}
+        {/* Messages avec scroll optimisé - adaptés pour footer + saisie fixe */}
         <div 
           ref={messagesContainerRef}
           className="flex-1 overflow-y-auto px-4 py-6 relative"
           style={{
             WebkitOverflowScrolling: 'touch',
             scrollBehavior: 'smooth',
-            paddingBottom: '120px', // Espace pour la zone de saisie fixe
+            paddingBottom: '160px', // Espace pour footer + zone de saisie + croix
             marginBottom: '0',
           }}
         >
@@ -691,22 +691,71 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Zone de saisie FIXÉE en bas comme app native */}
+        {/* Layout bas réorganisé - Footer + Croix + Saisie */}
+        
+        {/* Footer fixe tout en bas */}
         <div 
-          className="fixed bottom-0 left-0 right-0 p-4 border-t"
+          className="fixed bottom-0 left-0 right-0 text-center py-2"
           style={{
+            background: isDarkMode 
+              ? 'rgba(0, 0, 0, 0.8)' 
+              : 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(10px)',
+            zIndex: 999,
+            paddingBottom: 'env(safe-area-inset-bottom, 8px)',
+          }}
+        >
+          <p className={`text-xs font-medium italic opacity-60 ${
+            isDarkMode ? 'text-gray-500' : 'text-gray-500'
+          }`}>
+            Your luxury AI concierge, anytime, anywhere
+          </p>
+        </div>
+
+        {/* Zone de saisie FIXÉE au-dessus du footer */}
+        <div 
+          className="fixed left-0 right-0 p-4"
+          style={{
+            bottom: '32px', // Au-dessus du footer
             background: isDarkMode 
               ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%)'
               : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
             backdropFilter: 'blur(25px) saturate(180%)',
-            borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
-            paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 16px)',
             zIndex: 1000,
+            borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
             boxShadow: isDarkMode 
               ? '0 -8px 32px rgba(0, 0, 0, 0.3)'
               : '0 -8px 32px rgba(0, 0, 0, 0.08)',
           }}
         >
+          {/* Croix de fermeture alignée à gauche au-dessus de la saisie */}
+          {messages && messages.length > 0 && (
+            <div className="flex justify-start mb-2">
+              <button
+                onClick={() => {
+                  if (typeof window !== 'undefined') {
+                    window.history.back()
+                  }
+                }}
+                className="p-2 rounded-full transition-all duration-300 hover:scale-110 active:scale-95"
+                style={{
+                  background: isDarkMode 
+                    ? 'rgba(0, 0, 0, 0.4)' 
+                    : 'rgba(255, 255, 255, 0.4)',
+                  backdropFilter: 'blur(10px)',
+                  border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
+                }}
+                title="Fermer le chat"
+              >
+                <X 
+                  size={16} 
+                  className={`${isDarkMode ? 'text-white/80' : 'text-gray-700/80'} transition-colors`}
+                />
+              </button>
+            </div>
+          )}
+          
+          {/* Boîte de saisie toujours visible */}
           <div 
             className="relative rounded-2xl border transition-all duration-300"
             style={{
@@ -765,18 +814,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               )}
             </button>
           </div>
-          
-          {/* Footer discret avec slogan - au-dessus de la zone de saisie fixe */}
-          <div className="text-center py-2 pb-4">
-            <p className={`text-xs font-medium italic opacity-60 ${
-              isDarkMode ? 'text-gray-500' : 'text-gray-500'
-            }`}>
-              Your luxury AI concierge, anytime, anywhere
-            </p>
-          </div>
         </div>
 
-        {/* Suggestions modernes avec scroll optimisé - Zone maximisée pour saisie fixe */}
+        {/* Suggestions modernes avec scroll optimisé - Adaptées au nouveau layout */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
             className="flex-1 overflow-y-auto"
@@ -784,9 +824,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               WebkitOverflowScrolling: 'touch',
               scrollBehavior: 'smooth',
               marginTop: '0',
-              paddingBottom: '140px', // Espace pour zone de saisie fixe + footer
-              maxHeight: 'calc(100vh - 100px)', // Maximiser l'espace vertical
-              minHeight: 'calc(100vh - 180px)', // Hauteur minimum garantie
+              paddingBottom: '160px', // Espace pour footer + saisie + croix
+              maxHeight: 'calc(100vh - 80px)', // Maximiser encore plus l'espace
+              minHeight: 'calc(100vh - 160px)', // Hauteur minimum garantie
             }}
           >
             <div className="p-2"> {/* Padding ultra-réduit pour maximiser l'espace */}
@@ -1090,33 +1130,6 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         )}
 
-        {/* Bouton fermer flottant intelligent - toujours visible quand il y a des messages */}
-        {messages && messages.length > 0 && (
-          <button
-            onClick={() => {
-              if (typeof window !== 'undefined') {
-                window.history.back()
-              }
-            }}
-            className="fixed bottom-24 left-4 z-50 p-3 rounded-full transition-all duration-300 hover:scale-110 active:scale-95 group"
-            style={{
-              background: isDarkMode 
-                ? 'rgba(0, 0, 0, 0.4)' 
-                : 'rgba(255, 255, 255, 0.4)',
-              backdropFilter: 'blur(15px)',
-              border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)'}`,
-              boxShadow: '0 8px 25px rgba(0, 0, 0, 0.2)',
-              width: '48px',
-              height: '48px',
-            }}
-            title="Fermer le chat"
-          >
-            <X 
-              size={20} 
-              className={`${isDarkMode ? 'text-white/80 group-hover:text-white' : 'text-gray-700/80 group-hover:text-gray-900'} transition-colors`}
-            />
-          </button>
-        )}
 
         {/* Styles CSS pour adaptation mobile */}
         <style jsx global>{`

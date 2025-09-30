@@ -16,14 +16,14 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
       {/* Header */}
       <div className="text-center mb-8">
         <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
-          <span className="text-white text-2xl font-bold">
-            {user?.first_name?.charAt(0) || 'U'}
+          <span className="text-white text-2xl font-bold text-center flex items-center justify-center w-full h-full">
+            {user?.first_name?.charAt(0)?.toUpperCase() || 'D'}
           </span>
         </div>
-        <h3 className={`text-2xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-          {user?.first_name || 'Utilisateur'}
+        <h3 className={`text-2xl font-bold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+          {user?.first_name || 'DEMO'}
         </h3>
-        <p className={isDarkMode ? 'text-gray-400' : 'text-gray-600'}>{user?.email || 'Non connecté'}</p>
+        <p className={`text-center ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{user?.email || 'demo@getweez.com'}</p>
       </div>
 
       {/* Statut */}
