@@ -1,0 +1,267 @@
+/* Chat Interface - Styles Optimisés */
+
+/* CSS Variables pour les thèmes */
+:root {
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #1A1A1A;
+  --bg-tertiary: #2D2D2D;
+  --text-primary: #FFFFFF;
+  --text-secondary: #D1D5DB;
+  --border-primary: #374151;
+  --accent-blue: #3B82F6;
+  --accent-purple: #8B5CF6;
+  --accent-teal: #14B8A6;
+}
+
+[data-theme="light"] {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F9FAFB;
+  --bg-tertiary: #F3F4F6;
+  --text-primary: #1F2937;
+  --text-secondary: #6B7280;
+  --border-primary: #E5E7EB;
+}
+
+/* Animations optimisées */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* Classes utilitaires réutilisables */
+.gradient-purple {
+  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%);
+}
+
+.gradient-teal {
+  background: linear-gradient(135deg, #14B8A6 0%, #0891B2 100%);
+}
+
+.gradient-amber {
+  background: linear-gradient(135deg, #F59E0B 0%, #EF4444 100%);
+}
+
+.button-primary {
+  @apply px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-300;
+  background: var(--accent-blue);
+  color: white;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.button-primary:hover {
+  background: #2563EB;
+  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.4);
+  transform: translateY(-1px);
+}
+
+.card-base {
+  @apply rounded-xl border transition-all duration-300;
+  background: var(--bg-secondary);
+  border-color: var(--border-primary);
+}
+
+.card-base:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Layout optimisé */
+.chat-container {
+  background: var(--bg-primary);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-main {
+  display: flex;
+  flex: 1;
+  min-height: 0; /* Important pour flexbox */
+}
+
+.sidebar-left {
+  width: 18rem;
+  background: var(--bg-secondary);
+  border-right: 1px solid var(--border-primary);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.chat-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 1.5rem;
+}
+
+.sidebar-right {
+  width: 20rem;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border-primary);
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+/* Messages optimisés */
+.message-container {
+  display: flex;
+  margin-bottom: 1rem;
+  animation: fadeInUp 0.3s ease-out;
+}
+
+.message-user {
+  justify-content: flex-end;
+}
+
+.message-assistant {
+  justify-content: flex-start;
+}
+
+.message-bubble {
+  max-width: 70%;
+  padding: 0.75rem 1rem;
+  border-radius: 1rem;
+  word-wrap: break-word;
+}
+
+.message-bubble.user {
+  background: var(--accent-teal);
+  color: white;
+  border-bottom-right-radius: 0.25rem;
+}
+
+.message-bubble.assistant {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-primary);
+  border-bottom-left-radius: 0.25rem;
+}
+
+/* Input optimisé */
+.chat-input-container {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.chat-input {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  border: 2px solid var(--border-primary);
+  border-radius: 0.75rem;
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 16px; /* Évite le zoom sur iOS */
+  resize: none;
+  transition: all 0.3s ease;
+}
+
+.chat-input:focus {
+  outline: none;
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Suggestions sidebar */
+.suggestions-container {
+  padding: 1.5rem;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.suggestion-card {
+  @apply card-base;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.suggestion-card:hover {
+  border-color: var(--accent-blue);
+}
+
+/* Brand carousel */
+.brand-carousel {
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 2rem 0;
+}
+
+.brand-track {
+  display: inline-flex;
+  animation: scroll 30s linear infinite;
+  gap: 2rem;
+}
+
+.brand-track:hover {
+  animation-play-state: paused;
+}
+
+.brand-item {
+  flex-shrink: 0;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  color: white;
+  font-weight: 600;
+}
+
+/* Responsive optimisé */
+@media (max-width: 1023px) {
+  .sidebar-left,
+  .sidebar-right {
+    display: none;
+  }
+  
+  .chat-content {
+    padding: 1rem;
+  }
+  
+  .message-bubble {
+    max-width: 85%;
+  }
+}
+
+/* Loading states */
+.shimmer-effect {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+}
+
+/* Scrollbar custom */
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 3px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background: var(--border-primary);
+  border-radius: 3px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}

@@ -1,0 +1,272 @@
+name: 🔍 Code Review & Quality Check
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths: 
+      - '**.js'
+      - '**.jsx'
+      - '**.ts'
+      - '**.tsx'
+      - '**.css'
+      - '**.scss'
+  push:
+    branches: [ main ]
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  # 1. Analyse statique du code
+  static-analysis:
+    name: 📊 Static Code Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Pour SonarCloud
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        run: npm ci
+      
+      - name: 🔍 ESLint Analysis
+        run: |
+          npm run lint -- --format=json --output-file=eslint-report.json || true
+          npm run lint -- --format=@microsoft/eslint-formatter-sarif --output-file=eslint-results.sarif || true
+        continue-on-error: true
+      
+      - name: 💅 Prettier Check
+        run: npm run format:check
+        continue-on-error: true
+      
+      - name: 📊 Upload ESLint results to GitHub
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: eslint-results.sarif
+          wait-for-processing: true
+
+  # 2. Tests de performance et complexité
+  performance-check:
+    name: ⚡ Performance & Complexity Check
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        run: npm ci
+      
+      - name: 🔍 Complexity Analysis
+        run: |
+          npx plato -r -d complexity-report -t "Get Weez Complexity Report" --exclude "node_modules|build|dist" .
+          echo "## 📊 Complexity Analysis Report" >> $GITHUB_STEP_SUMMARY
+          echo "Complexity analysis completed. Check artifacts for detailed report." >> $GITHUB_STEP_SUMMARY
+      
+      - name: 📊 Bundle Size Analysis
+        run: |
+          npm run build
+          npx bundlesize
+          echo "## 📦 Bundle Size Check" >> $GITHUB_STEP_SUMMARY
+          echo "Bundle size analysis completed." >> $GITHUB_STEP_SUMMARY
+      
+      - name: 📤 Upload complexity report
+        uses: actions/upload-artifact@v4
+        with:
+          name: complexity-report
+          path: complexity-report/
+
+  # 3. Tests unitaires et couverture
+  test-coverage:
+    name: 🧪 Tests & Coverage
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        run: npm ci
+      
+      - name: 🧪 Run tests with coverage
+        run: npm run test:coverage
+      
+      - name: 📊 Upload coverage to Codecov
+        uses: codecov/codecov-action@v4
+        with:
+          file: ./coverage/lcov.info
+          flags: unittests
+          name: codecov-umbrella
+          fail_ci_if_error: false
+
+  # 4. Security Audit
+  security-audit:
+    name: 🔒 Security Audit
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 🔒 Run npm audit
+        run: npm audit --audit-level moderate
+        continue-on-error: true
+      
+      - name: 🔍 Run Snyk security scan
+        uses: snyk/actions/node@master
+        continue-on-error: true
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          args: --severity-threshold=high
+
+  # 5. Analyse SonarCloud
+  sonarcloud:
+    name: ☁️ SonarCloud Analysis
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📦 Install dependencies
+        run: npm ci
+      
+      - name: 🧪 Run tests for SonarCloud
+        run: npm run test:coverage
+      
+      - name: ☁️ SonarCloud Scan
+        uses: SonarSource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  # 6. Code Quality Gate
+  quality-gate:
+    name: 🚦 Quality Gate
+    runs-on: ubuntu-latest
+    needs: [static-analysis, performance-check, test-coverage, security-audit]
+    if: always()
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🚦 Check Quality Gate
+        run: |
+          echo "## 🚦 Quality Gate Results" >> $GITHUB_STEP_SUMMARY
+          
+          # Check if critical jobs passed
+          if [ "${{ needs.static-analysis.result }}" = "success" ] && 
+             [ "${{ needs.test-coverage.result }}" = "success" ]; then
+            echo "✅ Quality gate PASSED" >> $GITHUB_STEP_SUMMARY
+            echo "All critical checks passed successfully." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "❌ Quality gate FAILED" >> $GITHUB_STEP_SUMMARY
+            echo "Some critical checks failed. Please review and fix." >> $GITHUB_STEP_SUMMARY
+            exit 1
+          fi
+
+  # 7. AI-Powered Code Review (CodeRabbit alternative)
+  ai-code-review:
+    name: 🤖 AI Code Review
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: 🤖 AI Code Review with OpenAI
+        uses: ./github/actions/ai-review  # Action personnalisée
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          review-level: 'detailed' # 'basic', 'detailed', 'comprehensive'
+
+  # 8. Generate Reports
+  generate-reports:
+    name: 📊 Generate Quality Reports
+    runs-on: ubuntu-latest
+    needs: [static-analysis, performance-check, test-coverage, sonarcloud]
+    if: always() && github.event_name == 'pull_request'
+    
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+      
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      
+      - name: 📊 Generate Quality Report
+        run: |
+          echo "## 📊 Code Quality Report" > quality-report.md
+          echo "" >> quality-report.md
+          echo "### 🔍 Static Analysis" >> quality-report.md
+          echo "- ESLint: ${{ needs.static-analysis.result }}" >> quality-report.md
+          echo "- Prettier: ${{ needs.static-analysis.result }}" >> quality-report.md
+          echo "" >> quality-report.md
+          echo "### ⚡ Performance" >> quality-report.md
+          echo "- Complexity Check: ${{ needs.performance-check.result }}" >> quality-report.md
+          echo "- Bundle Size: ${{ needs.performance-check.result }}" >> quality-report.md
+          echo "" >> quality-report.md
+          echo "### 🧪 Testing" >> quality-report.md
+          echo "- Unit Tests: ${{ needs.test-coverage.result }}" >> quality-report.md
+          echo "- Coverage: ${{ needs.test-coverage.result }}" >> quality-report.md
+          echo "" >> quality-report.md
+          echo "### ☁️ SonarCloud" >> quality-report.md
+          echo "- Quality Gate: ${{ needs.sonarcloud.result }}" >> quality-report.md
+      
+      - name: 💬 Comment PR with Report
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('quality-report.md', 'utf8');
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: report
+            });
