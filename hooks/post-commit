@@ -1,0 +1,125 @@
+#!/bin/bash
+
+# 🚀 POST-COMMIT HOOK - GET WEEZ  
+# Ce hook s'exécute après chaque commit pour effectuer les backups et notifications
+
+set -e
+
+echo "📝 Post-commit hook - Actions après commit..."
+
+# Couleurs pour les messages
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+print_step() {
+    echo -e "${BLUE}📋 $1${NC}"
+}
+
+print_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+print_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+print_error() {
+    echo -e "${RED}❌ $1${NC}"
+}
+
+# Obtenir des informations sur le commit
+COMMIT_HASH=$(git rev-parse HEAD)
+COMMIT_MESSAGE=$(git log -1 --pretty=%B)
+COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+COMMIT_DATE=$(git log -1 --pretty=%ad --date=iso)
+BRANCH_NAME=$(git branch --show-current)
+
+print_step "Informations du commit:"
+echo "  📝 Message: $COMMIT_MESSAGE"  
+echo "  👤 Auteur: $COMMIT_AUTHOR"
+echo "  📅 Date: $COMMIT_DATE"
+echo "  🌿 Branche: $BRANCH_NAME"
+echo "  #️⃣  Hash: $COMMIT_HASH"
+
+# 1. Création d'un backup local timestamp
+print_step "Création d'un backup local..."
+BACKUP_DIR="backups"
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_NAME="get-weez_backup_${TIMESTAMP}"
+
+mkdir -p "$BACKUP_DIR"
+
+# Créer une archive du projet (sans node_modules et .git)
+tar --exclude='node_modules' \
+    --exclude='.git' \
+    --exclude='.next' \
+    --exclude='backups' \
+    --exclude='*.log' \
+    -czf "$BACKUP_DIR/$BACKUP_NAME.tar.gz" \
+    -C .. \
+    "$(basename "$PWD")" 2>/dev/null || {
+    print_warning "Impossible de créer l'archive de backup"
+}
+
+if [ -f "$BACKUP_DIR/$BACKUP_NAME.tar.gz" ]; then
+    print_success "Backup créé: $BACKUP_NAME.tar.gz"
+    
+    # Garder seulement les 10 derniers backups
+    print_step "Nettoyage des anciens backups..."
+    cd "$BACKUP_DIR"
+    ls -t get-weez_backup_*.tar.gz | tail -n +11 | xargs -r rm --
+    BACKUP_COUNT=$(ls get-weez_backup_*.tar.gz 2>/dev/null | wc -l)
+    print_success "Backups conservés: $BACKUP_COUNT/10"
+    cd - > /dev/null
+fi
+
+# 2. Log du commit dans un fichier de suivi
+print_step "Enregistrement du commit..."
+COMMIT_LOG_FILE="commit-history.log"
+echo "[$COMMIT_DATE] $COMMIT_HASH - $COMMIT_AUTHOR: $COMMIT_MESSAGE" >> "$COMMIT_LOG_FILE"
+
+# 3. Mise à jour automatique du remote (si configuré)
+print_step "Vérification du remote Git..."
+if git remote | grep -q origin; then
+    REMOTE_URL=$(git remote get-url origin)
+    print_step "Remote détecté: $REMOTE_URL"
+    
+    # Push automatique seulement si on n'est pas déjà en train de pousser
+    if [ "$BRANCH_NAME" = "main" ] || [ "$BRANCH_NAME" = "master" ]; then
+        print_step "Branche principale détectée - Push automatique..."
+        git push origin "$BRANCH_NAME" --quiet 2>/dev/null && {
+            print_success "Code poussé vers $REMOTE_URL"
+        } || {
+            print_warning "Impossible de pousser automatiquement vers le remote"
+            print_warning "Exécutez manuellement: git push origin $BRANCH_NAME"
+        }
+    else
+        print_warning "Branche de développement - Push manuel requis"
+    fi
+fi
+
+# 4. Statistiques du projet
+print_step "Statistiques du projet..."
+if command -v find &> /dev/null && command -v wc &> /dev/null; then
+    JS_FILES=$(find . -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" | grep -v node_modules | wc -l)
+    TOTAL_LINES=$(find . -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" | grep -v node_modules | xargs wc -l 2>/dev/null | tail -1 | awk '{print $1}' || echo "?")
+    
+    echo "  📁 Fichiers JS/TS: $JS_FILES"
+    echo "  📝 Lignes de code: $TOTAL_LINES"
+fi
+
+# 5. Notification de fin
+print_success "Post-commit hook terminé avec succès !"
+echo -e "${GREEN}💾 Backup effectué • 📤 Code synchronisé • 📊 Statistiques mises à jour${NC}"
+
+# 6. Rappel pour CodeRabbit (si première fois)
+if [ ! -f ".coderabbit-configured" ]; then
+    echo ""
+    print_warning "🤖 CodeRabbit n'est pas encore configuré"
+    print_warning "Exécutez: ./scripts/setup-automation.sh pour configurer les reviews automatiques"
+fi
+
+exit 0

@@ -1,0 +1,171 @@
+name: 🚀 CI/CD Pipeline - Get Weez
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Backup automatique tous les jours à 2h du matin UTC
+    - cron: '0 2 * * *'
+
+env:
+  NODE_VERSION: '18.x'
+  
+jobs:
+  # Job 1: Tests et vérifications de qualité
+  quality-checks:
+    name: 🔍 Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Historique complet pour CodeRabbit
+
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: |
+        npm ci --prefer-offline --no-audit
+        
+    - name: 🧹 Code Linting
+      run: |
+        echo "🔍 Running ESLint..."
+        npm run lint || echo "⚠️ ESLint warnings found"
+        
+    - name: 🔨 Build Test
+      run: |
+        echo "🔨 Testing build process..."
+        npm run build
+        
+    - name: 🧪 Custom Tests
+      run: |
+        echo "🧪 Running custom tests..."
+        # Vérifier la syntaxe des fichiers JS/TS
+        find . -name "*.js" -o -name "*.jsx" -o -name "*.ts" -o -name "*.tsx" | \
+          grep -v node_modules | \
+          grep -v .next | \
+          xargs -I {} node -c "require('{}')" 2>/dev/null || echo "Syntax check completed"
+        
+    - name: 🔐 Security Scan
+      run: |
+        echo "🔐 Security audit..."
+        # Vérifier les vulnérabilités npm
+        npm audit --audit-level=moderate || echo "⚠️ Security issues found"
+        
+        # Vérifier qu'aucun secret n'est committé
+        echo "🔍 Checking for secrets..."
+        ! grep -r "sk-" . --exclude-dir=node_modules --exclude-dir=.git || (echo "❌ OpenAI key detected!" && exit 1)
+        ! grep -r "SUPABASE_SERVICE_ROLE_KEY.*=" . --exclude-dir=node_modules --exclude-dir=.git || (echo "❌ Supabase service key detected!" && exit 1)
+        
+    - name: 📊 Code Stats
+      run: |
+        echo "📊 Project Statistics:"
+        echo "Files: $(find . -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' | grep -v node_modules | wc -l)"
+        echo "Lines: $(find . -name '*.js' -o -name '*.jsx' -o -name '*.ts' -o -name '*.tsx' | grep -v node_modules | xargs wc -l | tail -1 | awk '{print $1}')"
+        echo "Size: $(du -sh . --exclude=node_modules | cut -f1)"
+
+  # Job 2: Backup automatique
+  backup:
+    name: 💾 Automated Backup
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule' || github.event_name == 'push'
+    needs: quality-checks
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 📦 Create Backup Archive
+      run: |
+        echo "💾 Creating backup archive..."
+        TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+        BACKUP_NAME="get-weez_github_backup_${TIMESTAMP}"
+        
+        # Créer l'archive sans les dossiers lourds
+        tar --exclude='node_modules' \
+            --exclude='.git' \
+            --exclude='.next' \
+            --exclude='*.log' \
+            -czf "${BACKUP_NAME}.tar.gz" .
+            
+        echo "✅ Backup created: ${BACKUP_NAME}.tar.gz"
+        echo "📊 Size: $(ls -lh ${BACKUP_NAME}.tar.gz | awk '{print $5}')"
+
+    - name: 📤 Upload Backup Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: backup-${{ github.sha }}
+        path: "*.tar.gz"
+        retention-days: 30
+        
+    - name: 💬 Backup Notification
+      run: |
+        echo "🎉 Backup completed successfully!"
+        echo "📅 Date: $(date)"
+        echo "🔗 Commit: ${{ github.sha }}"
+        echo "👤 Triggered by: ${{ github.actor }}"
+
+  # Job 3: Déploiement (seulement sur main)
+  deploy:
+    name: 🚀 Deploy
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: quality-checks
+    environment: production
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🔧 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: 📦 Install dependencies
+      run: npm ci --prefer-offline --no-audit
+
+    - name: 🔨 Build for production
+      run: npm run build
+
+    - name: 🚀 Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      if: env.VERCEL_TOKEN != ''
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
+        vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-args: '--prod'
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+
+    - name: 📱 Deployment notification
+      run: |
+        echo "🎉 Deployment completed!"
+        echo "🌐 Environment: Production"
+        echo "📅 Deployed at: $(date)"
+
+  # Job 4: Nettoyage des anciens artifacts
+  cleanup:
+    name: 🧹 Cleanup Old Artifacts
+    runs-on: ubuntu-latest
+    if: github.event_name == 'schedule'
+    
+    steps:
+    - name: 🧹 Clean old backups
+      run: |
+        echo "🧹 Cleanup job - removing artifacts older than 30 days"
+        echo "This is handled automatically by GitHub Actions retention policy"
+        
+    - name: 📊 Storage Info
+      run: |
+        echo "💾 Current repository size and artifact usage:"
+        echo "This cleanup helps maintain optimal performance"

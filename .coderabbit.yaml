@@ -1,0 +1,162 @@
+# 🤖 Configuration CodeRabbit pour Get Weez
+# https://docs.coderabbit.ai/guides/review-instructions
+
+# Configuration globale
+language: fr
+reviews:
+  profile: chill  # Options: chill, assertive
+  request_changes_workflow: false
+  high_level_summary: true
+  high_level_summary_placeholder: "## 🎯 Résumé de la Review\n\n"
+  poem: true
+  review_status: true
+  collapse_level: 2
+  filter_mode: diff_context
+  auto_review:
+    enabled: true
+    drafts: false
+
+# Instructions spécifiques par chemin
+path_instructions:
+  - path: "**/*.js"
+    instructions: |
+      Concentre-toi sur :
+      - Les bonnes pratiques Next.js et React
+      - La gestion d'erreurs et l'expérience utilisateur
+      - La sécurité des routes API et performance
+      - Les fuites mémoire potentielles dans les composants React
+      - L'utilisation correcte des hooks React
+      - La validation des données et types
+  
+  - path: "**/*.jsx" 
+    instructions: |
+      Vérifie :
+      - La structure des composants et validation des props
+      - La conformité à l'accessibilité (a11y)
+      - Les principes de design responsive
+      - La gestion d'état appropriée
+      - L'optimisation des re-rendus
+      - La séparation des préoccupations
+      
+  - path: "components/chat/**"
+    instructions: |
+      Analyse spécialement :
+      - La fonctionnalité de chat et features temps réel
+      - Les connexions WebSocket et gestion d'erreurs
+      - Le traitement des messages et persistance d'état
+      - Les optimisations de performance pour mobile
+      - L'intégration OpenAI et gestion des tokens
+      - L'UX/UI pour chat mobile
+      
+  - path: "components/mobile/**"
+    instructions: |
+      Focus sur :
+      - L'optimisation mobile et responsive design
+      - Les performances sur appareils lents
+      - La gestion des gestures et touch events  
+      - L'accessibilité mobile
+      - La compatibilité cross-browser mobile
+      
+  - path: "pages/api/**"
+    instructions: |
+      Révise attentivement :
+      - La sécurité API et authentification
+      - La limitation de taux et validation d'entrée
+      - Les opérations base de données et gestion d'erreurs
+      - Les codes de statut HTTP appropriés
+      - La performance des requêtes
+      - La conformité RGPD/protection données
+      
+  - path: "**/*.css"
+    instructions: |
+      Examine :
+      - Le design responsive et optimisation mobile
+      - L'accessibilité dans les choix de style
+      - Les problèmes de performance (gros fichiers, styles inutilisés)
+      - L'utilisation cohérente du design system
+      - La compatibilité cross-browser
+      
+  - path: "lib/**"
+    instructions: |
+      Contrôle :
+      - La logique utilitaire et réutilisabilité
+      - La gestion d'erreurs robuste
+      - Les performances et optimisations
+      - La sécurité des fonctions sensibles
+      - La documentation et types TypeScript
+      
+  - path: "hooks/**"
+    instructions: |
+      Vérifie :
+      - L'utilisation correcte des hooks React
+      - La gestion des dépendances et effets
+      - Les optimisations de performance
+      - La réutilisabilité et composition
+      - La gestion d'état locale vs globale
+
+# Instructions spécifiques au domaine
+knowledge_base:
+  - |
+    Get Weez est une application de conciergerie IA premium pour Marbella.
+    Elle utilise Next.js, React, OpenAI API, et Supabase.
+    L'accent est mis sur l'expérience mobile et les performances.
+    
+  - |
+    Architecture clé :
+    - Frontend : Next.js avec React 18
+    - Backend : API Routes Next.js
+    - Base de données : Supabase (PostgreSQL)
+    - IA : OpenAI GPT pour le chat
+    - Déploiement : Vercel
+    - Internationalisation : next-i18next
+    
+  - |
+    Considérations spéciales :
+    - Performance mobile critique
+    - Sécurité API (clés OpenAI, tokens)
+    - UX/UI responsive et accessible
+    - Optimisation pour marché européen (RGPD)
+
+# Modèles de commentaires
+chat:
+  auto_reply: true
+  
+# Exclusions
+ignore_paths:
+  - "node_modules/**"
+  - ".next/**"
+  - "*.log"
+  - "backups/**"
+  - "*.md"  # Sauf pour les docs importantes
+
+# Règles de review
+rules:
+  # JavaScript/React
+  - pattern: "useState|useEffect"
+    message: "Vérifier que les hooks React sont utilisés correctement avec les dépendances appropriées"
+    
+  - pattern: "fetch\\("
+    message: "Considérer l'ajout de gestion d'erreurs et loading states pour les appels API"
+    
+  - pattern: "console\\.(log|warn|error)"
+    message: "Les console.log doivent être supprimés en production"
+    
+  - pattern: "process\\.env\\."
+    message: "Vérifier que les variables d'environnement sont correctement sécurisées"
+    
+  # Sécurité
+  - pattern: "dangerouslySetInnerHTML"
+    message: "⚠️ Usage potentiellement dangereux - vérifier la sanitation des données"
+    
+  - pattern: "eval\\("
+    message: "❌ eval() est dangereux et doit être évité"
+
+# Configuration des notifications
+notifications:
+  slack:
+    webhook_url: ""  # À configurer si nécessaire
+  
+# Métriques et analytics
+analytics:
+  track_improvements: true
+  generate_reports: true
