@@ -77,31 +77,35 @@ function AccountContent({ user, setUser }) {
             padding: '1.5rem'
           }}
         >
-          <div className="container mx-auto px-4 py-6">
-            {/* Header simplifié */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-2">
+          <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-6">
+            {/* Header simplifié - PARFAITEMENT centré */}
+            <div className="text-center mb-6 lg:mb-8">
+              <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-2">
                 Mon Compte
               </h1>
-              <p className={`max-w-xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className={`text-sm lg:text-base max-w-xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                 Profil et conversations
               </p>
             </div>
 
-            {/* Sections principales - layout plus aéré */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 max-w-5xl mx-auto">
-              {/* Informations du compte */}
-              <div className="lg:col-span-1">
-                <AccountInfo 
-                  user={user} 
-                  onBecomeMember={handleBecomeMember}
-                  onReserve={handleReserve}
-                />
+            {/* Sections principales - CENTRÉES sur mobile */}
+            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto items-center lg:items-start">
+              {/* Informations du compte - CENTRÉE */}
+              <div className="w-full max-w-lg lg:max-w-none lg:col-span-1 flex justify-center">
+                <div className="w-full">
+                  <AccountInfo 
+                    user={user} 
+                    onBecomeMember={handleBecomeMember}
+                    onReserve={handleReserve}
+                  />
+                </div>
               </div>
 
-              {/* Historique des Conversations */}
-              <div className="lg:col-span-1">
-                <ChatHistory user={user} />
+              {/* Historique des Conversations - CENTRÉE */}
+              <div className="w-full max-w-lg lg:max-w-none lg:col-span-1 flex justify-center">
+                <div className="w-full">
+                  <ChatHistory user={user} />
+                </div>
               </div>
             </div>
 

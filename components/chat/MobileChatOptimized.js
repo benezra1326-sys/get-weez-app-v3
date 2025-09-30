@@ -385,36 +385,39 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
 
       <div 
         className="mobile-chat-container"
-        style={{
-          position: 'relative',
-          width: '100vw',
-          height: '100dvh', // Utiliser dvh au lieu de vh
-          minHeight: '-webkit-fill-available',
-          maxWidth: '100vw',
-          margin: 0,
-          padding: 0,
-          display: 'flex',
-          flexDirection: 'column',
-          overflow: 'hidden',
-          background: isDarkMode 
-            ? `
-              linear-gradient(135deg, 
-                rgba(0, 0, 0, 0.95) 0%, 
-                rgba(17, 24, 39, 0.90) 35%,
-                rgba(31, 41, 55, 0.95) 70%,
-                rgba(0, 0, 0, 0.98) 100%
-              )
-            `
-            : `
-              linear-gradient(135deg, 
-                rgba(255, 255, 255, 0.98) 0%, 
-                rgba(248, 250, 252, 0.93) 35%,
-                rgba(241, 245, 249, 0.98) 70%,
-                rgba(255, 255, 255, 1) 100%
-              )
-            `,
-          paddingBottom: 'env(safe-area-inset-bottom)', // Gestion safe area iOS
-        }}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: '100vw',
+            height: '100vh',
+            height: '100dvh',
+            margin: 0,
+            padding: 0,
+            display: 'flex',
+            flexDirection: 'column',
+            overflow: 'hidden',
+            zIndex: 9999,
+            background: isDarkMode 
+              ? `
+                linear-gradient(135deg, 
+                  rgba(0, 0, 0, 0.95) 0%, 
+                  rgba(17, 24, 39, 0.90) 35%,
+                  rgba(31, 41, 55, 0.95) 70%,
+                  rgba(0, 0, 0, 0.98) 100%
+                )
+              `
+              : `
+                linear-gradient(135deg, 
+                  rgba(255, 255, 255, 0.98) 0%, 
+                  rgba(248, 250, 252, 0.93) 35%,
+                  rgba(241, 245, 249, 0.98) 70%,
+                  rgba(255, 255, 255, 1) 100%
+                )
+              `,
+          }}
       >
         {/* Header chat BAISSÉ et VISIBLE immédiatement */}
         <div 
@@ -567,19 +570,20 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           )}
         </div>
 
-        {/* Zone de saisie REPOSITIONNÉE sous les messages, au-dessus des suggestions */}
+        {/* Zone de saisie FIXÉE en bas mobile - S'adapte à l'écran */}
         <div 
-          className="px-4 py-3 border-t"
+          className="fixed bottom-0 left-0 right-0 p-4 border-t"
           style={{
             background: isDarkMode 
-              ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.95) 0%, rgba(31, 41, 55, 0.9) 100%)'
-              : 'linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(255, 255, 255, 0.9) 100%)',
-            backdropFilter: 'blur(25px) saturate(180%)',
-            borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
-            zIndex: 100, // Z-index MAXIMUM pour ne jamais passer sous suggestions/footer
+              ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.95) 100%)'
+              : 'linear-gradient(135deg, rgba(248, 250, 252, 0.98) 0%, rgba(255, 255, 255, 0.95) 100%)',
+            backdropFilter: 'blur(30px) saturate(200%)',
+            borderTop: `2px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
+            zIndex: 1000,
+            paddingBottom: 'calc(env(safe-area-inset-bottom, 16px) + 16px)',
             boxShadow: isDarkMode 
-              ? '0 4px 12px rgba(0, 0, 0, 0.2)'
-              : '0 4px 12px rgba(0, 0, 0, 0.08)',
+              ? '0 -12px 40px rgba(0, 0, 0, 0.4)'
+              : '0 -12px 40px rgba(0, 0, 0, 0.1)',
           }}
         >
           {/* Croix de fermeture quand il y a des messages */}
@@ -587,9 +591,11 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             <div className="flex justify-start mb-2">
               <button
                 onClick={() => {
-                  if (typeof window !== 'undefined') {
-                    window.history.back()
-                  }
+                  // Fermer le chat proprement sans rediriger vers compte
+                  setMessages([])
+                  setInput('')
+                  setShowSuggestions(true)
+                  setIsLoading(false)
                 }}
                 className="p-2 rounded-full transition-all duration-300"
                 style={{
@@ -670,13 +676,15 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
 
-        {/* Suggestions SANS scroll - Affichage fixe */}
+        {/* Suggestions AGRANDIES - SANS scroll JAMAIS */}
         {showSuggestions && messages && messages.length === 0 && (
           <div 
-            className="flex-1 px-4 py-4"
+            className="flex-1 px-4 py-6"
             style={{
-              paddingBottom: '120px', // Espace pour zone saisie
-              overflow: 'hidden', // SANS scroll comme demandé
+              paddingBottom: '180px', // Plus d'espace pour zone saisie fixe
+              overflow: 'visible', // AUCUN scroll - affichage libre
+              maxHeight: 'calc(100vh - 300px)', // Plus de place pour bannières
+              minHeight: 'calc(100vh - 300px)', // Zone MAXIMISÉE
             }}
           >
             <div>
@@ -731,8 +739,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(248, 250, 252, 0.8) 100%)',
                         borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)',
                         backdropFilter: 'blur(15px)',
-                        minHeight: '140px', // Taille optimisée mobile - pas trop allongées
-                        maxHeight: '140px', // Hauteur fixe optimisée
+                        minHeight: '200px', // Taille AGRANDIE pour afficher TOUT le texte
+                        maxHeight: '200px', // Hauteur AUGMENTÉE pour lisibilité complète
                         boxShadow: isDarkMode
                           ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
                           : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
@@ -747,8 +755,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       }, 150)
                     }}
                   >
-                      {/* Image de fond - Taille optimisée mobile */}
-                      <div className="relative h-20 overflow-hidden">
+                      {/* Image de fond - Taille AGRANDIE pour bannières complètes */}
+                      <div className="relative h-32 overflow-hidden">
                     <img 
                       src={suggestion.image} 
                       alt={suggestion.title}
