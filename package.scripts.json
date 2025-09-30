@@ -1,0 +1,88 @@
+{
+  "scripts": {
+    
+    // 🔍 SCRIPTS DE REVIEW AUTOMATIQUE
+    "review": "node scripts/code-review.js",
+    "review:watch": "nodemon scripts/code-review.js --watch components",
+    "review:ci": "node scripts/code-review.js --format=json > code-quality-report.json",
+    
+    // 📏 QUALITÉ DE CODE
+    "lint": "eslint . --ext .js,.jsx",
+    "lint:performance": "eslint . --config .eslintrc.performance.js",
+    "lint:fix": "eslint . --ext .js,.jsx --fix",
+    "lint:staged": "lint-staged",
+    
+    // 📊 MÉTRIQUES ET ANALYSE
+    "analyze:size": "npx bundlesize",
+    "analyze:deps": "npx depcheck",
+    "analyze:duplicate": "npx jscpd src/",
+    "analyze:complexity": "npx es6-plato -r -d reports src/",
+    
+    // 🚀 PERFORMANCE
+    "audit:performance": "npm run review && npm run lint:performance && npm run analyze:size",
+    "audit:full": "npm run audit:performance && npm run analyze:duplicate && npm run analyze:complexity",
+    
+    // 🔧 MAINTENANCE
+    "clean:logs": "find . -name '*.log' -delete",
+    "clean:console": "sed -i '/console\\./d' components/**/*.js",
+    
+    // 🔄 PRE-COMMIT
+    "precommit": "npm run lint:staged && npm run review",
+    "prepush": "npm run audit:performance",
+    
+    // 📈 RAPPORTS
+    "report:quality": "npm run review:ci && cat code-quality-report.json | jq",
+    "report:full": "npm run audit:full && npm run report:quality"
+  },
+  
+  // 📦 DÉPENDANCES NÉCESSAIRES
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "eslint-plugin-react": "^7.0.0", 
+    "eslint-plugin-react-hooks": "^4.0.0",
+    "eslint-plugin-jsx-a11y": "^6.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^13.0.0",
+    "bundlesize": "^0.18.0",
+    "jscpd": "^3.0.0",
+    "es6-plato": "^1.0.0",
+    "nodemon": "^2.0.0",
+    "depcheck": "^1.0.0"
+  },
+  
+  // ⚙️ CONFIGURATION BUNDLESIZE
+  "bundlesize": [
+    {
+      "path": "./build/static/js/*.chunk.js",
+      "maxSize": "500kb",
+      "compression": "gzip"
+    },
+    {
+      "path": "./build/static/css/*.css", 
+      "maxSize": "50kb",
+      "compression": "gzip"
+    }
+  ],
+  
+  // 🔧 CONFIGURATION LINT-STAGED
+  "lint-staged": {
+    "*.{js,jsx}": [
+      "eslint --config .eslintrc.performance.js --fix",
+      "node scripts/code-review.js --file",
+      "git add"
+    ],
+    "*.{json,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  
+  // 🎯 CONFIGURATION HUSKY
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run precommit",
+      "pre-push": "npm run prepush",
+      "commit-msg": "node scripts/validate-commit-msg.js"
+    }
+  }
+}
