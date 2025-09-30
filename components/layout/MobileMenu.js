@@ -2,6 +2,8 @@ import { X, LogIn, UserPlus } from 'lucide-react'
 import Link from 'next/link'
 import { MessageCircle, Building, Ticket, User, CreditCard, HelpCircle, Settings } from 'lucide-react'
 import { useEffect } from 'react'
+import useChatTheme from '../../hooks/useChatTheme'
+import { SafeAreaView } from '../mobile/MobileOptimizations'
 
 const navItems = [
   { href: '/', label: 'Accueil', icon: MessageCircle },
@@ -13,6 +15,8 @@ const navItems = [
 ]
 
 export default function MobileMenu({ isOpen, onClose, user }) {
+  const { themeClasses } = useChatTheme()
+
   // Fermer le menu avec la touche Escape
   useEffect(() => {
     const handleEscape = (e) => {
@@ -36,16 +40,16 @@ export default function MobileMenu({ isOpen, onClose, user }) {
   if (!isOpen) return null
 
   return (
-    <div className="md:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm" onClick={onClose}>
-      <div 
-        className="bg-gray-900/80 backdrop-blur-md h-full w-80 max-w-full shadow-2xl border-r border-gray-700"
-        onClick={(e) => e.stopPropagation()}
-        style={{
-          backgroundColor: 'rgba(17, 24, 39, 0.8)',
-          backdropFilter: 'blur(16px)',
-          boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)'
-        }}
-      >
+    <div className="md:hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-sm mobile-optimized" onClick={onClose}>
+      <SafeAreaView edges={['top', 'bottom']} className="h-full">
+        <div 
+          className={`${themeClasses.main} backdrop-blur-md h-full w-80 max-w-full shadow-2xl border-r border-gray-700`}
+          onClick={(e) => e.stopPropagation()}
+          style={{
+            backdropFilter: 'blur(16px)',
+            boxShadow: '4px 0 20px rgba(0, 0, 0, 0.3)'
+          }}
+        >
         <div className="p-4 flex justify-between items-center border-b border-gray-700">
           {/* Logo Get Weez */}
           <Link href="/" onClick={onClose} className="flex items-center group">
