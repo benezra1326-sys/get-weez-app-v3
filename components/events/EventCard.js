@@ -65,7 +65,7 @@ export default function EventCard({ event }) {
         </div>
       </div>
       
-      <div className="p-6">
+      <div className="p-6 flex flex-col h-full">
         <div className="flex justify-between items-start mb-3">
           <h3 
             className="text-xl font-bold transition-colors"
@@ -105,18 +105,18 @@ export default function EventCard({ event }) {
           {event.description}
         </p>
         
-        <div className="space-y-3">
-          <button className="w-full btn-event animate-hover-lift">
-            Participer - {event.price}€
+        <div className="space-y-3 mt-auto">
+          <button className="w-full btn-event animate-hover-lift h-12 flex items-center justify-center">
+            🎟️ Réserver Maintenant
           </button>
           <Link href="/register" className="block">
-            <button className="w-full btn-secondary animate-hover-lift flex items-center justify-center">
+            <button className="w-full btn-secondary animate-hover-lift h-11 flex items-center justify-center">
               <Crown size={16} className="mr-2" />
               Devenir membre
             </button>
           </Link>
           <Link href="/login" className="block">
-            <button className="w-full btn-outline animate-hover-lift flex items-center justify-center">
+            <button className="w-full btn-outline animate-hover-lift h-11 flex items-center justify-center">
               <User size={16} className="mr-2" />
               Accès membre
             </button>

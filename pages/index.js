@@ -91,7 +91,9 @@ const Home = memo(({ user, setUser }) => {
         <main 
           style={{ 
             flex: 1, 
-            overflow: 'visible', // Scroll libre sur mobile
+            overflowY: 'auto', // Scroll libre sur mobile
+            overflowX: 'hidden',
+            WebkitOverflowScrolling: 'touch',
             backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
             width: '100vw', 
             minHeight: 'calc(100vh - 6rem)', 

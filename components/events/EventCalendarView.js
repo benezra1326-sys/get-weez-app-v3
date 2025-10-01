@@ -1,21 +1,27 @@
 import { useState } from 'react'
 import { Lock, Crown, User, MapPin, Calendar, Clock, Users, Euro, ChevronLeft, ChevronRight } from 'lucide-react'
 import Link from 'next/link'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function EventCalendarView({ events, user, onBecomeMember }) {
+  const { isDarkMode } = useTheme()
   const [currentDate, setCurrentDate] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState(null)
 
   if (!user?.is_member) {
     return (
       <div className="max-w-4xl mx-auto">
-        <div className="bg-gray-800 rounded-2xl p-8 text-center">
-          <Lock className="mx-auto text-gray-500 mb-4" size={48} />
-          <h2 className="text-xl font-bold text-white mb-2">Accès réservé aux membres</h2>
-          <p className="text-gray-400 mb-6">Rejoignez Get Weez pour accéder à nos événements exclusifs à Marbella</p>
+        <div className={`rounded-2xl p-8 text-center transition-all duration-300 ${
+          isDarkMode 
+            ? 'bg-gray-800/50 backdrop-blur-md border border-gray-700/50' 
+            : 'bg-white/80 backdrop-blur-md border border-gray-200/50 shadow-xl'
+        }`}>
+          <Lock className={`mx-auto mb-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} size={48} />
+          <h2 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Accès réservé aux membres</h2>
+          <p className={`mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Rejoignez Get Weez pour accéder à nos événements exclusifs à Marbella</p>
           <div className="space-y-3 max-w-sm mx-auto">
             <Link href="/register">
-              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center justify-center">
+              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center justify-center shadow-lg shadow-purple-500/25">
                 <Crown size={16} className="mr-2" />
                 Devenir membre
               </button>
@@ -92,27 +98,127 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
     <>
       <style jsx>{`
         .calendar-day {
-          transition: all 0.2s ease;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          border-radius: 12px;
         }
         
         .calendar-day:hover {
-          background: rgba(139, 92, 246, 0.1);
-          transform: scale(1.05);
+          background: ${isDarkMode ? 'rgba(139, 92, 246, 0.1)' : 'rgba(139, 92, 246, 0.08)'};
+          transform: scale(1.05) translateY(-2px);
+          box-shadow: ${isDarkMode 
+            ? '0 8px 25px rgba(139, 92, 246, 0.3)' 
+            : '0 8px 25px rgba(139, 92, 246, 0.15)'};
         }
         
         .calendar-day.has-events {
-          background: rgba(139, 92, 246, 0.2);
-          border: 1px solid rgba(139, 92, 246, 0.5);
+          background: ${isDarkMode 
+            ? 'rgba(139, 92, 246, 0.2)' 
+            : 'rgba(139, 92, 246, 0.12)'};
+          border: 1px solid ${isDarkMode 
+            ? 'rgba(139, 92, 246, 0.5)' 
+            : 'rgba(139, 92, 246, 0.3)'};
+          box-shadow: ${isDarkMode 
+            ? '0 4px 15px rgba(139, 92, 246, 0.2)' 
+            : '0 4px 15px rgba(139, 92, 246, 0.1)'};
         }
         
         .calendar-day.selected {
           background: linear-gradient(135deg, #8B5CF6, #3B82F6);
           color: white;
+          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+          transform: scale(1.1);
         }
         
         .calendar-day.today {
-          background: rgba(245, 158, 11, 0.2);
-          border: 1px solid rgba(245, 158, 11, 0.5);
+          background: ${isDarkMode 
+            ? 'rgba(245, 158, 11, 0.2)' 
+            : 'rgba(245, 158, 11, 0.15)'};
+          border: 1px solid ${isDarkMode 
+            ? 'rgba(245, 158, 11, 0.5)' 
+            : 'rgba(245, 158, 11, 0.4)'};
+          box-shadow: ${isDarkMode 
+            ? '0 4px 15px rgba(245, 158, 11, 0.2)' 
+            : '0 4px 15px rgba(245, 158, 11, 0.1)'};
+        }
+
+        .calendar-container {
+          backdrop-filter: blur(20px);
+          background: ${isDarkMode 
+            ? 'rgba(31, 41, 55, 0.8)' 
+            : 'rgba(255, 255, 255, 0.9)'};
+          border: 1px solid ${isDarkMode 
+            ? 'rgba(75, 85, 99, 0.3)' 
+            : 'rgba(209, 213, 219, 0.4)'};
+          box-shadow: ${isDarkMode 
+            ? '0 20px 60px rgba(0, 0, 0, 0.3)' 
+            : '0 20px 60px rgba(0, 0, 0, 0.1)'};
+        }
+
+        .events-sidebar {
+          backdrop-filter: blur(20px);
+          background: ${isDarkMode 
+            ? 'rgba(31, 41, 55, 0.8)' 
+            : 'rgba(255, 255, 255, 0.9)'};
+          border: 1px solid ${isDarkMode 
+            ? 'rgba(75, 85, 99, 0.3)' 
+            : 'rgba(209, 213, 219, 0.4)'};
+          box-shadow: ${isDarkMode 
+            ? '0 20px 60px rgba(0, 0, 0, 0.3)' 
+            : '0 20px 60px rgba(0, 0, 0, 0.1)'};
+          height: fit-content;
+          min-height: 600px;
+        }
+
+        .calendar-grid {
+          border: 1px solid ${isDarkMode 
+            ? 'rgba(75, 85, 99, 0.3)' 
+            : 'rgba(209, 213, 219, 0.3)'};
+          border-radius: 12px;
+          overflow: hidden;
+        }
+
+        .calendar-day-with-image {
+          position: relative;
+          overflow: hidden;
+          background-size: cover;
+          background-position: center;
+          background-repeat: no-repeat;
+        }
+
+        .calendar-day-with-image::before {
+          content: '';
+          position: absolute;
+          inset: 0;
+          background: ${isDarkMode 
+            ? 'rgba(0, 0, 0, 0.5)' 
+            : 'rgba(0, 0, 0, 0.3)'};
+          z-index: 1;
+        }
+
+        .calendar-day-content {
+          position: relative;
+          z-index: 2;
+        }
+
+        .event-card-upcoming {
+          backdrop-filter: blur(10px);
+          background: ${isDarkMode 
+            ? 'rgba(31, 41, 55, 0.9)' 
+            : 'rgba(255, 255, 255, 0.95)'};
+          border: 1px solid ${isDarkMode 
+            ? 'rgba(75, 85, 99, 0.3)' 
+            : 'rgba(209, 213, 219, 0.3)'};
+          box-shadow: ${isDarkMode 
+            ? '0 12px 32px rgba(0, 0, 0, 0.3)' 
+            : '0 12px 32px rgba(0, 0, 0, 0.1)'};
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .event-card-upcoming:hover {
+          transform: translateY(-8px) scale(1.02);
+          box-shadow: ${isDarkMode 
+            ? '0 20px 60px rgba(0, 0, 0, 0.4)' 
+            : '0 20px 60px rgba(0, 0, 0, 0.15)'};
         }
       `}</style>
       
@@ -120,50 +226,73 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Calendrier */}
           <div className="lg:col-span-2">
-            <div className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
+            <div className="calendar-container rounded-3xl p-8 transition-all duration-300">
               {/* Header du calendrier */}
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-white">
+              <div className="flex items-center justify-between mb-8">
+                <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   {monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}
                 </h2>
-                <div className="flex space-x-2">
+                <div className="flex space-x-3">
                   <button
                     onClick={() => navigateMonth(-1)}
-                    className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white transition-colors"
+                    className={`p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                      isDarkMode 
+                        ? 'bg-gray-700 hover:bg-gray-600 text-white shadow-lg shadow-gray-700/30' 
+                        : 'bg-white hover:bg-gray-50 text-gray-700 shadow-lg shadow-gray-200/50 border border-gray-200'
+                    }`}
                   >
-                    <ChevronLeft size={20} />
+                    <ChevronLeft size={22} />
                   </button>
                   <button
                     onClick={() => navigateMonth(1)}
-                    className="p-2 rounded-lg bg-gray-700 hover:bg-gray-600 text-white transition-colors"
+                    className={`p-3 rounded-xl transition-all duration-300 hover:scale-105 ${
+                      isDarkMode 
+                        ? 'bg-gray-700 hover:bg-gray-600 text-white shadow-lg shadow-gray-700/30' 
+                        : 'bg-white hover:bg-gray-50 text-gray-700 shadow-lg shadow-gray-200/50 border border-gray-200'
+                    }`}
                   >
-                    <ChevronRight size={20} />
+                    <ChevronRight size={22} />
                   </button>
                 </div>
               </div>
               
               {/* Grille du calendrier */}
-              <div className="grid grid-cols-7 gap-1 mb-2">
+              <div className="calendar-grid">
+                <div className="grid grid-cols-7">
                 {['Dim', 'Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam'].map(day => (
-                  <div key={day} className="p-2 text-center text-sm font-medium text-gray-400">
+                    <div key={day} className={`p-4 text-center text-sm font-semibold border-b ${
+                      isDarkMode 
+                        ? 'text-gray-400 border-gray-700/50' 
+                        : 'text-gray-600 border-gray-200/50'
+                    }`}>
                     {day}
                   </div>
                 ))}
               </div>
               
-              <div className="grid grid-cols-7 gap-1">
+                <div className="grid grid-cols-7">
                 {calendar.map((date, index) => {
                   const isCurrentMonth = date.getMonth() === currentDate.getMonth()
                   const isToday = date.toDateString() === new Date().toDateString()
                   const isSelected = selectedDate && date.toDateString() === selectedDate.toDateString()
                   const hasEvents = hasEventsOnDate(date)
+                    const dayEvents = getEventsForDate(date)
+                    const eventImage = dayEvents.length > 0 ? dayEvents[0].image_url : null
                   
                   return (
                     <button
                       key={index}
                       onClick={() => setSelectedDate(date)}
-                      className={`calendar-day p-2 h-12 rounded-lg text-sm transition-all duration-200 ${
-                        isCurrentMonth ? 'text-white' : 'text-gray-500'
+                        className={`calendar-day relative h-20 text-sm font-medium transition-all duration-300 border-r border-b ${
+                          isDarkMode 
+                            ? 'border-gray-700/30 hover:border-gray-600/50' 
+                            : 'border-gray-200/30 hover:border-gray-300/50'
+                        } ${
+                          hasEvents ? 'calendar-day-with-image' : ''
+                        } ${
+                          isCurrentMonth 
+                            ? (isDarkMode ? 'text-white' : 'text-gray-900') 
+                            : (isDarkMode ? 'text-gray-600' : 'text-gray-400')
                       } ${
                         isToday ? 'today' : ''
                       } ${
@@ -171,32 +300,41 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
                       } ${
                         hasEvents ? 'has-events' : ''
                       }`}
+                        style={{
+                          backgroundImage: eventImage ? `url(${eventImage})` : 'none'
+                        }}
                     >
-                      <div className="flex items-center justify-center">
-                        <span>{date.getDate()}</span>
+                        <div className="calendar-day-content flex flex-col items-center justify-center h-full">
+                          <span className="text-lg font-bold mb-1 drop-shadow-lg">{date.getDate()}</span>
                         {hasEvents && (
-                          <div className="w-2 h-2 bg-purple-500 rounded-full ml-1"></div>
+                            <div className="flex flex-col items-center">
+                              <div className="w-2 h-2 bg-purple-400 rounded-full mb-1 shadow-lg"></div>
+                              <span className="text-xs font-semibold text-white drop-shadow-lg">
+                                {dayEvents.length}
+                              </span>
+                            </div>
                         )}
                       </div>
                     </button>
                   )
                 })}
+                </div>
               </div>
             </div>
           </div>
           
           {/* Liste des événements */}
           <div className="lg:col-span-1">
-            <div className="bg-gray-800/50 backdrop-blur-md rounded-2xl p-6 border border-gray-700/50">
-              <h3 className="text-xl font-bold text-white mb-4">
+            <div className="events-sidebar rounded-3xl p-6 transition-all duration-300">
+              <h3 className={`text-xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 {selectedDate ? 
-                  `Événements du ${selectedDate.toLocaleDateString('fr-FR')}` : 
-                  'Événements à venir'
+                  `📅 Événements du ${selectedDate.toLocaleDateString('fr-FR')}` : 
+                  '🎉 Événements à venir'
                 }
               </h3>
               
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {(selectedDate ? getEventsForDate(selectedDate) : events.slice(0, 5)).map(event => {
+              <div className="space-y-6 max-h-[600px] overflow-y-auto scrollbar-thin pr-2">
+                {(selectedDate ? getEventsForDate(selectedDate) : events.slice(0, 8)).map(event => {
                   const eventDate = new Date(event.date)
                   const typeColors = {
                     party: '#EC4899',
@@ -205,72 +343,92 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
                     show: '#8B5CF6',
                     experience: '#F59E0B',
                     cultural: '#0EA5E9',
-                    workshop: '#06B6D4'
+                    workshop: '#06B6D4',
+                    sport: '#10B981',
+                    music: '#8B5CF6',
+                    fashion: '#EC4899',
+                    festival: '#F59E0B',
+                    gala: '#6D28D9',
+                    gaming: '#EF4444',
+                    competition: '#06B6D4',
+                    environmental: '#10B981',
+                    market: '#F59E0B'
                   }
                   
                   return (
                     <div 
                       key={event.id}
-                      className="p-4 rounded-xl border transition-all duration-300 hover:scale-105 cursor-pointer"
-                      style={{ 
-                        background: 'rgba(255, 255, 255, 0.05)',
-                        borderColor: typeColors[event.type] + '40',
-                        borderLeftColor: typeColors[event.type]
-                      }}
+                      className="event-card-upcoming rounded-2xl overflow-hidden cursor-pointer"
                     >
-                      <div className="flex items-start justify-between mb-2">
-                        <h4 className="text-white font-semibold text-sm">{event.name}</h4>
+                      {/* Image de l'événement */}
+                      <div className="relative h-32 overflow-hidden">
+                        <img 
+                          src={event.image_url} 
+                          alt={event.name} 
+                          className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                         <div 
-                          className="px-2 py-1 rounded-full text-xs font-bold text-white"
+                          className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs font-bold text-white shadow-lg"
                           style={{ backgroundColor: typeColors[event.type] }}
                         >
                           {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
                         </div>
+                        <div className="absolute bottom-3 left-3 right-3">
+                          <h4 className="font-bold text-white text-sm drop-shadow-lg line-clamp-2">
+                            {event.name}
+                          </h4>
+                        </div>
                       </div>
                       
-                      <div className="space-y-1 text-xs text-gray-400">
+                      {/* Contenu de la carte */}
+                      <div className="p-4">
+                        <div className={`space-y-2 text-xs mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                         <div className="flex items-center">
-                          <Calendar size={12} className="mr-1" />
+                            <Calendar size={12} className="mr-2 flex-shrink-0" />
                           <span>{eventDate.toLocaleDateString('fr-FR')}</span>
                         </div>
                         <div className="flex items-center">
-                          <Clock size={12} className="mr-1" />
+                            <Clock size={12} className="mr-2 flex-shrink-0" />
                           <span>{eventDate.toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}</span>
                         </div>
                         <div className="flex items-center">
-                          <MapPin size={12} className="mr-1" />
+                            <MapPin size={12} className="mr-2 flex-shrink-0" />
                           <span className="truncate">{event.location}</span>
                         </div>
                         <div className="flex items-center justify-between">
                           <div className="flex items-center">
-                            <Euro size={12} className="mr-1" />
-                            <span>{event.price}</span>
+                              <Euro size={12} className="mr-2 flex-shrink-0" />
+                              <span className="font-bold text-lg" style={{ color: typeColors[event.type] }}>
+                                {event.price}€
+                              </span>
                           </div>
                           <div className="flex items-center">
-                            <Users size={12} className="mr-1" />
-                            <span>{event.capacity}</span>
+                              <Users size={12} className="mr-2 flex-shrink-0" />
+                              <span>{event.capacity} places</span>
                           </div>
                         </div>
                       </div>
                       
+                        {/* Bouton élégant */}
                       <button 
-                        className="w-full mt-3 py-2 px-3 rounded-lg text-xs font-medium transition-all duration-300 hover:scale-105"
+                          className="w-full py-3 px-4 rounded-xl text-sm font-bold text-white transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl relative overflow-hidden"
                         style={{ 
-                          background: typeColors[event.type] + '20',
-                          color: typeColors[event.type],
-                          border: `1px solid ${typeColors[event.type]}40`
+                            background: `linear-gradient(135deg, ${typeColors[event.type]}, ${typeColors[event.type]}CC)`
                         }}
                       >
-                        Réserver
+                          <div className="absolute inset-0 bg-gradient-to-r from-white/20 via-transparent to-white/20 transform -skew-x-12 -translate-x-full hover:translate-x-full transition-transform duration-700"></div>
+                          <span className="relative z-10">🎟️ RÉSERVER MAINTENANT</span>
                       </button>
+                      </div>
                     </div>
                   )
                 })}
                 
-                {(!selectedDate ? events.slice(0, 5) : getEventsForDate(selectedDate)).length === 0 && (
+                {(!selectedDate ? events.slice(0, 8) : getEventsForDate(selectedDate)).length === 0 && (
                   <div className="text-center py-8">
-                    <Calendar size={32} className="mx-auto text-gray-500 mb-2" />
-                    <p className="text-gray-400 text-sm">
+                    <Calendar size={32} className={`mx-auto mb-2 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} />
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       {selectedDate ? 'Aucun événement ce jour' : 'Aucun événement à venir'}
                     </p>
                   </div>

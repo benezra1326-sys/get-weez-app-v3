@@ -174,10 +174,10 @@ export default function Services({ user, setUser }) {
                     Découvrez nos services premium à Marbella
                   </p>
                   
-                  <div className="max-w-2xl">
+                  <div className="max-w-2xl mx-auto w-full">
                     <ServiceSearchBar 
                       onSearch={handleSearch}
-                      className="max-w-2xl"
+                      className="w-full"
                     />
                   </div>
                 </div>
@@ -185,7 +185,7 @@ export default function Services({ user, setUser }) {
             </div>
 
             {/* Filtre par catégorie */}
-            <div className="mb-8">
+            <div className="mb-8 filters-section" style={{ position: 'relative', zIndex: 10 }}>
               <h2 
                 className="text-2xl font-bold mb-4 flex items-center"
                 style={{ color: isDarkMode ? '#F9FAFB' : '#1F2937' }}
@@ -196,9 +196,11 @@ export default function Services({ user, setUser }) {
               <div 
                 className="backdrop-blur-md rounded-2xl p-6 border"
                 style={{ 
-                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
                   borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
-                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)'
+                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
+                  position: 'relative',
+                  zIndex: 10
                 }}
               >
                 <ServiceCategoryFilter
@@ -209,7 +211,7 @@ export default function Services({ user, setUser }) {
             </div>
 
             {/* Liste des services */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 establishments-list" style={{ position: 'relative', zIndex: 1 }}>
               {filteredServices.map((service) => (
                 <ServiceCard
                   key={service.id}

@@ -33,8 +33,14 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
             <img 
               src={establishment.image_url} 
               alt={establishment.name} 
-          className="banner-image"
-        />
+              className="banner-image"
+              style={{
+                display: 'block',
+                verticalAlign: 'top',
+                lineHeight: 0,
+                fontSize: 0
+              }}
+            />
       )}
       
       {/* Overlay */}

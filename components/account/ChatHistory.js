@@ -66,27 +66,36 @@ const ChatHistory = ({ user }) => {
   }
 
   return (
-    <div className={`rounded-2xl p-6 transition-all duration-300 ${
+    <div className={`rounded-2xl p-6 transition-all duration-300 h-full flex flex-col ${
       isDarkMode 
         ? 'bg-gray-800/50 backdrop-blur-md border border-gray-700/50' 
         : 'bg-white border border-gray-200/50 shadow-xl'
     }`}>
-      <div className="flex items-center justify-between mb-6">
-        <h2 className={`text-2xl font-bold flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+      <div className="mb-6 text-center">
+        <h2 className={`text-2xl font-bold inline-flex items-center justify-center mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
           <MessageCircle size={24} className="mr-3 text-purple-500" />
           Historique des Conversations
         </h2>
-        <Link 
-          href="/"
-          className="flex items-center text-purple-500 hover:text-purple-600 transition-colors text-sm"
-        >
-          <span>Nouvelle conversation</span>
-          <ArrowRight size={16} className="ml-1" />
-        </Link>
+        
+        {/* Bouton nouvelle conversation - Version améliorée et centrée */}
+        <div className="flex justify-center">
+          <Link 
+            href="/"
+            className={`inline-flex items-center px-4 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40' 
+                : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40'
+            }`}
+          >
+            <MessageCircle size={18} className="mr-2" />
+            <span>💬 Nouvelle Conversation</span>
+            <ArrowRight size={16} className="ml-2" />
+          </Link>
+        </div>
       </div>
 
       {conversations && conversations.length > 0 ? (
-        <div className="space-y-4">
+        <div className="space-y-4 flex-1 overflow-y-auto">
           {conversations.map((conversation) => {
             const lastMessage = conversation.messages && conversation.messages.length > 0 
               ? conversation.messages[conversation.messages.length - 1]
@@ -130,21 +139,31 @@ const ChatHistory = ({ user }) => {
                       {getLastMessagePreview(conversation.messages)}
                     </p>
                     
-                    <div className="flex items-center justify-between">
+                    <div className="flex items-center justify-between gap-3">
+                      {/* Bouton continuer - Version améliorée */}
                       <Link
                         href="/"
-                        className="inline-flex items-center text-purple-500 hover:text-purple-600 transition-colors text-sm"
+                        className={`inline-flex items-center px-3 py-2 rounded-lg font-medium transition-all duration-300 transform hover:scale-105 flex-1 justify-center ${
+                          isDarkMode 
+                            ? 'bg-gradient-to-r from-emerald-600/80 to-teal-600/80 hover:from-emerald-600 hover:to-teal-600 text-white shadow-md shadow-emerald-500/20 hover:shadow-emerald-500/30' 
+                            : 'bg-gradient-to-r from-emerald-500/90 to-teal-500/90 hover:from-emerald-500 hover:to-teal-500 text-white shadow-md shadow-emerald-500/20 hover:shadow-emerald-500/30'
+                        }`}
                       >
-                        <span>Continuer la conversation</span>
+                        <span className="text-sm font-semibold">▶️ Continuer</span>
                         <ArrowRight size={14} className="ml-1" />
                       </Link>
                       
+                      {/* Bouton supprimer - Version améliorée */}
                       <button
                         onClick={() => handleDeleteConversation(conversation.id, conversation.name)}
-                        className="p-2 rounded-lg bg-red-500/20 hover:bg-red-500/40 text-red-500 hover:text-red-600 transition-all duration-200 opacity-0 group-hover:opacity-100"
+                        className={`p-2.5 rounded-lg transition-all duration-300 opacity-0 group-hover:opacity-100 transform hover:scale-110 ${
+                          isDarkMode
+                            ? 'bg-red-500/20 hover:bg-red-500/30 text-red-400 hover:text-red-300 shadow-md shadow-red-500/10 hover:shadow-red-500/20'
+                            : 'bg-red-500/15 hover:bg-red-500/25 text-red-500 hover:text-red-600 shadow-md shadow-red-500/10 hover:shadow-red-500/20'
+                        }`}
                         title="Supprimer la conversation"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={16} />
                       </button>
                     </div>
                   </div>
@@ -154,7 +173,7 @@ const ChatHistory = ({ user }) => {
           })}
         </div>
       ) : (
-        <div className="text-center py-12">
+        <div className="text-center py-12 flex-1 flex flex-col justify-center">
           <div className="w-16 h-16 bg-gradient-to-r from-purple-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
             <MessageCircle size={32} className={isDarkMode ? 'text-gray-400' : 'text-gray-500'} />
           </div>
@@ -162,13 +181,20 @@ const ChatHistory = ({ user }) => {
           <p className={`text-sm mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             Commencez votre première conversation avec Get Weez
           </p>
-          <Link
-            href="/"
-            className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white rounded-lg font-medium transition-all duration-300"
-          >
-            <MessageCircle size={16} className="mr-2" />
-            Nouvelle conversation
-          </Link>
+          <div className="flex justify-center">
+            <Link
+              href="/"
+              className={`inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
+                isDarkMode 
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40' 
+                  : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40'
+              }`}
+            >
+              <MessageCircle size={18} className="mr-2" />
+              <span>🚀 Démarrer une Conversation</span>
+              <ArrowRight size={16} className="ml-2" />
+            </Link>
+          </div>
         </div>
       )}
 

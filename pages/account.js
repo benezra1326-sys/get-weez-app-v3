@@ -42,7 +42,8 @@ function AccountContent({ user, setUser }) {
         width: '100%', 
         minHeight: '100vh', 
         margin: 0, 
-        padding: 0
+        padding: 0,
+        backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF'
       }}
     >
       <div 
@@ -88,24 +89,20 @@ function AccountContent({ user, setUser }) {
               </p>
             </div>
 
-            {/* Sections principales - CENTRÉES sur mobile */}
-            <div className="flex flex-col lg:grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto items-center lg:items-start">
-              {/* Informations du compte - CENTRÉE */}
-              <div className="w-full max-w-lg lg:max-w-none lg:col-span-1 flex justify-center">
-                <div className="w-full">
-                  <AccountInfo 
-                    user={user} 
-                    onBecomeMember={handleBecomeMember}
-                    onReserve={handleReserve}
-                  />
-                </div>
+            {/* Sections principales - Colonnes équilibrées */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8 max-w-7xl mx-auto">
+              {/* Informations du compte - Colonne 1 */}
+              <div className="w-full h-full flex flex-col">
+                <AccountInfo 
+                  user={user} 
+                  onBecomeMember={handleBecomeMember}
+                  onReserve={handleReserve}
+                />
               </div>
 
-              {/* Historique des Conversations - CENTRÉE */}
-              <div className="w-full max-w-lg lg:max-w-none lg:col-span-1 flex justify-center">
-                <div className="w-full">
-                  <ChatHistory user={user} />
-                </div>
+              {/* Historique des Conversations - Colonne 2 */}
+              <div className="w-full h-full flex flex-col">
+                <ChatHistory user={user} />
               </div>
             </div>
 

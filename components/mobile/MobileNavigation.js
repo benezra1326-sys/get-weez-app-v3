@@ -144,7 +144,10 @@ export const MobileNavigation = memo(({
           position: fixed;
           top: 0;
           left: 0;
+          bottom: 0;
           height: 100vh;
+          height: 100dvh;
+          min-height: 100vh;
           width: 320px;
           max-width: 85vw;
           background: rgba(255, 255, 255, 0.95);
@@ -154,6 +157,8 @@ export const MobileNavigation = memo(({
           z-index: 51;
           overflow-y: auto;
           -webkit-overflow-scrolling: touch;
+          border-top-right-radius: 0;
+          border-bottom-right-radius: 24px;
         }
         
         .mobile-nav-panel.open {

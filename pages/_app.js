@@ -1,5 +1,6 @@
 import { appWithTranslation } from 'next-i18next'
 import '../styles/globals.css'
+import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
@@ -148,9 +149,11 @@ function MyApp({ Component, pageProps }) {
   }
 
   return (
-    <ThemeProvider>
-      <Component {...pageProps} user={user} setUser={setUser} />
-    </ThemeProvider>
+    <MobileTouchEnhancer enableHaptics={true}>
+      <ThemeProvider>
+        <Component {...pageProps} user={user} setUser={setUser} />
+      </ThemeProvider>
+    </MobileTouchEnhancer>
   )
 }
 

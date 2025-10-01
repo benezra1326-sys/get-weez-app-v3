@@ -250,8 +250,14 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
             
             {/* Avatar utilisateur */}
             <div 
-              className="w-8 h-8 lg:w-10 lg:h-10 rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
+              className="rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
               style={{ 
+                width: '32px',
+                height: '32px',
+                minWidth: '32px',
+                minHeight: '32px',
+                maxWidth: '32px',
+                maxHeight: '32px',
                 background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
                 borderRadius: '12px'
               }}

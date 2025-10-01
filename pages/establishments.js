@@ -269,10 +269,10 @@ export default function Establishments({ user, setUser }) {
                     Découvrez les meilleurs endroits de Marbella
                   </p>
                   
-                  <div className="max-w-2xl">
+                  <div className="max-w-2xl mx-auto w-full">
                     <EstablishmentSearchBar 
                       onSearch={handleSearch}
-                      className="max-w-2xl"
+                      className="w-full"
                     />
                   </div>
                 </div>
@@ -280,7 +280,7 @@ export default function Establishments({ user, setUser }) {
             </div>
 
             {/* Filtre par style */}
-            <div className="mb-8">
+            <div className="mb-8 filters-section" style={{ position: 'relative', zIndex: 10 }}>
               <h2 
                 className="text-2xl font-bold mb-4 flex items-center"
                 style={{ color: isDarkMode ? '#F9FAFB' : '#1F2937' }}
@@ -291,9 +291,11 @@ export default function Establishments({ user, setUser }) {
               <div 
                 className="backdrop-blur-md rounded-2xl p-6 border"
                 style={{ 
-                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.9)' : 'rgba(255, 255, 255, 0.9)',
+                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
                   borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
-                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)'
+                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
+                  position: 'relative',
+                  zIndex: 10
                 }}
               >
                 <RestaurantStyleFilter
@@ -303,16 +305,18 @@ export default function Establishments({ user, setUser }) {
               </div>
             </div>
 
-            <EstablishmentList 
-              establishments={filteredEstablishments.length > 0 ? filteredEstablishments : establishments} 
-              user={user} 
-              onReserve={handleReserve}
-              onSendMessage={(message) => {
-                // Rediriger vers la page d'accueil avec le message
-                router.push(`/?message=${encodeURIComponent(message)}`)
-              }}
-              isLoading={isLoading}
-            />
+            <div className="establishments-list" style={{ position: 'relative', zIndex: 1 }}>
+              <EstablishmentList 
+                establishments={filteredEstablishments.length > 0 ? filteredEstablishments : establishments} 
+                user={user} 
+                onReserve={handleReserve}
+                onSendMessage={(message) => {
+                  // Rediriger vers la page d'accueil avec le message
+                  router.push(`/?message=${encodeURIComponent(message)}`)
+                }}
+                isLoading={isLoading}
+              />
+            </div>
           </main>
           
           {/* Footer avec logo Get Weez */}

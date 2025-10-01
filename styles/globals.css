@@ -12,6 +12,14 @@
   box-sizing: border-box;
 }
 
+/* Correction globale pour toutes les images - Supprime les bandes blanches */
+img {
+  display: block;
+  vertical-align: top;
+  line-height: 0;
+  font-size: 0;
+}
+
 html, body {
   width: 100%;
   min-height: 100vh;
@@ -20,6 +28,7 @@ html, body {
   overflow-x: hidden;
   position: relative;
   scroll-behavior: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* Ensure no side spaces on any screen size */
@@ -33,24 +42,56 @@ html, body {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    height: auto !important;
+    min-height: 100vh;
   }
   
   #__next {
     width: 100%;
     max-width: 100%;
     overflow-x: hidden;
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100vh;
   }
   
   /* Force full width on mobile */
   .min-h-screen {
     width: 100% !important;
     max-width: 100% !important;
+    height: auto !important;
+    min-height: 100vh !important;
   }
   
   /* Remove any potential margins/padding causing black bars */
   * {
     margin-left: 0 !important;
     margin-right: 0 !important;
+  }
+  
+  /* Correction spéciale pour mobile chat container */
+  .mobile-chat-container {
+    position: static !important;
+    height: auto !important;
+    overflow: visible !important;
+    min-height: auto !important;
+  }
+  
+  /* Forcer le scroll sur tous les conteneurs mobiles */
+  main {
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  
+  /* S'assurer que les sections sont scrollables */
+  section, div {
+    overflow: visible !important;
+    height: auto !important;
   }
 }
 
@@ -218,8 +259,154 @@ body {
   perspective: 1000px;
 }
 
-/* Desktop layout - ensure full width */
-@media (min-width: 1024px) {
+/* === RESPONSIVE LAYOUT - TOUS MODÈLES === */
+
+/* Mobile (jusqu'à 768px) - SCROLL NATUREL - CENTRÉ */
+@media (max-width: 768px) {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  #__next {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  * {
+    box-sizing: border-box !important;
+  }
+}
+
+/* Tablette (768px - 1024px) - CENTRÉ SANS BARRES LATÉRALES */
+@media (min-width: 769px) and (max-width: 1024px) {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+    background: inherit !important;
+  }
+
+  #__next {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  * {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .mobile-chat-wrapper,
+  .mobile-chat-container,
+  .mobile-suggestions-container,
+  .mobile-suggestions-grid,
+  .uniform-banner {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+  }
+
+  .mobile-chat-input-container {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    transform: none !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 0 0 20px 20px !important;
+    margin: 0 !important;
+  }
+
+  .mobile-suggestions-grid {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 12px !important;
+    padding: 0 16px !important;
+  }
+
+  .uniform-banner {
+    margin-bottom: 12px !important;
+  }
+
+  .uniform-banner .banner-buttons {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .uniform-banner .banner-button {
+    flex: 1 1 calc(50% - 8px) !important;
+    min-width: 140px !important;
+    justify-content: center !important;
+  }
+}
+
+/* Grandes tablettes et petits desktops (1025px - 1280px) */
+@media (min-width: 1025px) and (max-width: 1280px) {
+  html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
+  }
+  
+  #__next {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  main {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Centrer la zone de saisie mobile */
+  .mobile-chat-input-container {
+    position: fixed !important;
+    top: 0 !important;
+    left: 50% !important;
+    right: auto !important;
+    transform: translateX(-50%) !important;
+    z-index: 30 !important;
+    width: calc(100% - 64px) !important;
+    max-width: 1000px !important;
+    border-radius: 20px !important;
+    margin: 0 !important;
+  }
+}
+
+/* Desktop layout (>1280px) - ensure full width */
+@media (min-width: 1281px) {
   /* Remove any margins/padding that could cause side spaces */
   html, body {
     margin: 0;
@@ -246,6 +433,12 @@ body {
   main > div {
     width: auto;
   }
+  
+  /* Interface mobile cachée sur desktop */
+  .mobile-chat-input-container,
+  .mobile-chat-container {
+    display: none !important;
+  }
 }
 
 /* Mobile scroll improvements only */
@@ -253,6 +446,7 @@ body {
   /* Force scroll on mobile for chat areas */
   .overflow-y-auto {
     -webkit-overflow-scrolling: touch;
+    overflow-y: auto !important;
   }
   
   /* Ensure chat messages area is scrollable on mobile */
@@ -260,6 +454,7 @@ body {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
     scrollbar-color: #4B5563 #1F2937;
+    overflow-y: auto !important;
   }
   
   /* Improve scrollbar visibility on mobile */
@@ -279,6 +474,26 @@ body {
   
   .chat-messages-container::-webkit-scrollbar-thumb:hover {
     background: #6B7280;
+  }
+  
+  /* Forcer le scroll sur tous les éléments mobiles */
+  .mobile-chat-wrapper {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  /* S'assurer que le contenu est scrollable */
+  .mobile-chat-container {
+    overflow: visible !important;
+    height: auto !important;
+    min-height: 100vh !important;
+  }
+  
+  /* Forcer le scroll sur les grilles et listes */
+  .grid, .establishments-container, .events-container {
+    overflow: visible !important;
+    height: auto !important;
   }
 }
 
@@ -924,11 +1139,50 @@ body {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
   border: 1px solid rgba(255, 255, 255, 0.1);
+  line-height: 0;
+  font-size: 0;
+  margin-bottom: 16px;
 }
 
 .uniform-banner:hover {
   transform: translateY(-4px) scale(1.02);
   box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25);
+}
+
+/* Effets du header appliqués aux bannières */
+.uniform-banner {
+  position: relative;
+  overflow: hidden;
+}
+
+.uniform-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  transition: left 0.6s ease;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.uniform-banner:hover::before {
+  left: 100%;
+}
+
+@keyframes banner-pulse-glow {
+  0%, 100% {
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 5px rgba(139, 92, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2);
+  }
+}
+
+.uniform-banner:hover {
+  animation: banner-pulse-glow 1.5s infinite;
 }
 
 .uniform-banner .banner-image {
@@ -939,6 +1193,10 @@ body {
   top: 0;
   left: 0;
   z-index: 1;
+  display: block;
+  vertical-align: top;
+  line-height: 0;
+  font-size: 0;
 }
 
 .uniform-banner .banner-overlay {
@@ -1011,9 +1269,9 @@ body {
 }
 
 .uniform-banner .banner-button {
-  padding: 8px 16px;
-  border-radius: 12px;
-  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-size: 12px;
   font-weight: 600;
   border: none;
   cursor: pointer;
@@ -1041,4 +1299,110 @@ body {
 .uniform-banner .banner-button.secondary:hover {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* === CORRECTIONS AFFICHAGE FILTRES === */
+/* Assure que les filtres restent visibles au-dessus des bannières */
+.filters-section {
+  position: relative !important;
+  z-index: 20 !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  backdrop-filter: blur(20px) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+  margin-bottom: 24px !important;
+}
+
+[data-theme="dark"] .filters-section {
+  background: rgba(31, 41, 55, 0.98) !important;
+  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2) !important;
+}
+
+/* Liste des établissements en dessous */
+.establishments-list {
+  position: relative;
+  z-index: 1;
+}
+
+/* Mobile optimizations pour les filtres */
+@media (max-width: 768px) {
+  .filters-section {
+    margin-bottom: 32px !important;
+    padding: 16px !important;
+  }
+}
+
+/* === BOUTONS ÉVÉNEMENTS === */
+.btn-event {
+  @apply font-semibold transition-all duration-300;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
+  color: white;
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-xl);
+  padding: var(--spacing-md) var(--spacing-xl);
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+.btn-event::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
+}
+
+.btn-event:hover::before {
+  left: 100%;
+}
+
+.btn-event:hover {
+  background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent-light) 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 35px rgba(139, 92, 246, 0.4);
+}
+
+.btn-outline {
+  @apply font-medium transition-all duration-300;
+  background: transparent;
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--radius-lg);
+  padding: var(--spacing-sm) var(--spacing-lg);
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.btn-outline:hover {
+  background: var(--color-primary);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+}
+
+/* === SCROLLBAR CUSTOM === */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  border-radius: 3px;
+  transition: background 0.2s ease;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent-light));
 }

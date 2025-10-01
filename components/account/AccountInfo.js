@@ -7,7 +7,7 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
   const { isDarkMode } = useTheme()
   return (
     <div 
-      className="relative rounded-3xl shadow-2xl transition-all duration-300"
+      className="relative rounded-3xl shadow-2xl transition-all duration-300 h-full flex flex-col"
       style={{
         background: isDarkMode 
           ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
@@ -78,7 +78,7 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
       </div>
 
       {/* Actions */}
-      <div className="space-y-4">
+      <div className="space-y-4 mt-auto">
         <button 
           onClick={() => router.push('/subscriptions')}
           className="w-full flex items-center justify-center p-4 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95"

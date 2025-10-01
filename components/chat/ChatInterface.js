@@ -415,8 +415,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     if (!item) return null
 
     return (
-      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center p-4">
-        <div className={`w-full max-w-4xl max-h-[90vh] overflow-y-auto rounded-2xl shadow-2xl ${
+      <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-start justify-center p-4" style={{ paddingTop: '60px' }}>
+        <div className={`w-full max-w-4xl max-h-[85vh] overflow-y-auto rounded-2xl shadow-2xl ${
           isDarkMode ? 'bg-gray-900 border border-gray-700' : 'bg-white border border-gray-200'
         }`}>
           {/* Header */}
@@ -762,17 +762,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         }
         
         .banner-button {
-          padding: 6px 12px;
-          border-radius: 12px;
-          font-size: 11px;
+          padding: 4px 8px;
+          border-radius: 8px;
+          font-size: 10px;
           font-weight: 600;
           text-transform: uppercase;
-          letter-spacing: 0.5px;
+          letter-spacing: 0.3px;
           transition: all 0.3s ease;
           cursor: pointer;
           border: none;
           white-space: nowrap;
-          min-height: 28px;
+          min-height: 24px;
           display: flex;
           align-items: center;
           justify-content: center;
