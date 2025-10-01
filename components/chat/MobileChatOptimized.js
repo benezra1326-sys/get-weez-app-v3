@@ -789,7 +789,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               >
                 <MessageCircle size={20} className="text-white" />
                 <div className="absolute -top-1 -right-1">
-                  <Sparkles size={12} className="text-yellow-300 animate-pulse" />
+                  <Sparkles size={12} className={`${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} animate-pulse drop-shadow-lg`} />
                 </div>
               </div>
               <div>
@@ -857,7 +857,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               >
                 <MessageCircle size={28} className="text-white" />
                 <div className="absolute -top-1 -right-1">
-                  <Sparkles size={12} className="text-yellow-300 animate-pulse" />
+                  <Sparkles size={12} className={`${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} animate-pulse drop-shadow-lg`} />
               </div>
             </div>
               <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -1130,7 +1130,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 >
                   <MessageCircle size={20} className="text-white" />
                   <div className="absolute -top-1 -right-1">
-                    <Sparkles size={12} className="text-yellow-300 animate-pulse" />
+                    <Sparkles size={12} className={`${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} animate-pulse drop-shadow-lg`} />
                   </div>
                 </div>
                 <div>
