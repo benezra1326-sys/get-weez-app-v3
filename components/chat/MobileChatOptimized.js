@@ -1113,8 +1113,18 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             left: 0,
             right: 0,
             bottom: 0,
+            // Masquer complètement l'arrière-plan
+            backdropFilter: 'blur(10px)',
           }}
         >
+          {/* Overlay pour masquer complètement l'arrière-plan */}
+          <div 
+            className="absolute inset-0"
+            style={{
+              background: isDarkMode ? '#0B0B0F' : '#FFFFFF',
+              zIndex: -1,
+            }}
+          />
           {/* Header du chat FIXE EN HAUT */}
           <div 
             style={{
