@@ -403,6 +403,25 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
     }
   }, [])
 
+  // Fonction pour ouvrir l'historique des conversations
+  const openHistory = useCallback(() => {
+    setShowHistory(true)
+  }, [])
+
+  // Fonction pour charger une conversation depuis l'historique
+  const loadConversation = useCallback((conversation) => {
+    setMessages(conversation.messages)
+    setShowHistory(false)
+    setShowSuggestions(false)
+  }, [])
+
+  // Fonction pour supprimer une conversation de l'historique
+  const deleteFromHistory = useCallback((conversationId) => {
+    const updatedHistory = conversationHistory.filter(conv => conv.id !== conversationId)
+    setConversationHistory(updatedHistory)
+    localStorage.setItem('get-weez-conversations', JSON.stringify(updatedHistory))
+  }, [conversationHistory])
+
   // Suggestions data complètes
   const suggestions = [
     {
