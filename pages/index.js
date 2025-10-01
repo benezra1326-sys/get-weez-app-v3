@@ -224,102 +224,115 @@ const Home = memo(({ user, setUser }) => {
           maxWidth: 'none'
         }}
     >
-      {/* Popup d'introduction */}
+      {/* Popup d'introduction - Petit en bas */}
       {showIntroModal && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          className="fixed bottom-4 right-4 z-50"
           style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-            backdropFilter: 'blur(10px)'
+            width: '320px',
+            maxHeight: '400px'
           }}
         >
           <div 
-            className="w-full max-w-md rounded-3xl shadow-2xl overflow-hidden"
+            className="rounded-2xl shadow-2xl overflow-hidden"
             style={{
               background: isDarkMode
-                ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.90) 100%)'
-                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
+                ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
+                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
               backdropFilter: 'blur(20px) saturate(150%)',
-              border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
+              border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+              boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)'
             }}
           >
             {/* Header du popup */}
             <div 
-              className="p-6 text-center border-b"
+              className="p-4 text-center border-b"
               style={{
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
               }}
             >
-              <div className="flex justify-center mb-4">
+              <div className="flex justify-center mb-3">
                 {introSteps[currentStep].icon}
               </div>
-              <h2 className={`text-2xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-lg font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 {introSteps[currentStep].title}
               </h2>
-              <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <p className={`text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 {introSteps[currentStep].description}
               </p>
             </div>
 
             {/* Contenu du popup */}
-            <div className="p-6">
-              <div className="space-y-3 mb-6">
+            <div className="p-4">
+              <div className="space-y-2 mb-4">
                 {introSteps[currentStep].features.map((feature, index) => (
                   <div 
                     key={index}
-                    className="flex items-center space-x-3 p-3 rounded-xl transition-all duration-300 hover:scale-105"
+                    className="flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 hover:scale-105"
                     style={{
-                      background: isDarkMode ? 'rgba(55, 65, 81, 0.4)' : 'rgba(248, 250, 252, 0.6)',
+                      background: isDarkMode ? 'rgba(55, 65, 81, 0.4)' : 'rgba(248, 250, 252, 0.8)',
                     }}
                   >
-                    <span className="text-lg">{feature}</span>
+                    <span className="text-sm">{feature}</span>
                   </div>
                 ))}
               </div>
 
               {/* Indicateurs de progression */}
-              <div className="flex justify-center space-x-2 mb-6">
+              <div className="flex justify-center space-x-1 mb-4">
                 {introSteps.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
                       index === currentStep 
                         ? 'bg-purple-500 scale-125' 
-                        : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
+                        : isDarkMode ? 'bg-gray-600' : 'bg-gray-400'
                     }`}
                   />
                 ))}
               </div>
 
               {/* Boutons de navigation */}
-              <div className="flex justify-between">
+              <div className="flex justify-between items-center">
                 <button
                   onClick={prevStep}
                   disabled={currentStep === 0}
-                  className={`px-4 py-2 rounded-xl transition-all duration-300 ${
+                  className={`px-3 py-1.5 rounded-lg text-xs transition-all duration-300 ${
                     currentStep === 0
                       ? 'opacity-50 cursor-not-allowed'
                       : 'hover:scale-105 active:scale-95'
                   }`}
                   style={{
-                    background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.6)',
-                    color: isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                    background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
+                    color: isDarkMode ? '#d1d5db' : '#4b5563'
                   }}
                 >
                   Précédent
                 </button>
 
+                {/* Bouton passer */}
+                <button
+                  onClick={closeIntroModal}
+                  className="px-3 py-1.5 rounded-lg text-xs transition-all duration-300 hover:scale-105 active:scale-95"
+                  style={{
+                    background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
+                    color: isDarkMode ? '#d1d5db' : '#4b5563'
+                  }}
+                >
+                  Passer
+                </button>
+
                 <button
                   onClick={nextStep}
-                  className="px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center space-x-2"
+                  className="px-4 py-1.5 rounded-lg text-xs transition-all duration-300 hover:scale-105 active:scale-95 flex items-center space-x-1"
                   style={{
                     background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)',
                     color: 'white',
-                    boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)'
+                    boxShadow: '0 2px 8px rgba(139, 92, 246, 0.4)'
                   }}
                 >
                   <span>{currentStep === 3 ? 'Commencer' : 'Suivant'}</span>
-                  {currentStep < 3 && <ArrowRight size={16} />}
+                  {currentStep < 3 && <ArrowRight size={12} />}
                 </button>
               </div>
             </div>
@@ -327,12 +340,12 @@ const Home = memo(({ user, setUser }) => {
             {/* Bouton fermer */}
             <button
               onClick={closeIntroModal}
-              className="absolute top-4 right-4 p-2 rounded-full transition-all duration-300 hover:scale-110"
+              className="absolute top-2 right-2 p-1.5 rounded-full transition-all duration-300 hover:scale-110"
               style={{
-                background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.6)',
+                background: isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(243, 244, 246, 0.8)',
               }}
             >
-              <X size={16} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />
+              <X size={14} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />
             </button>
           </div>
         </div>
