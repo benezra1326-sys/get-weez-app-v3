@@ -7,10 +7,24 @@ import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { usePreloader } from '../lib/preloader'
+import { 
+  Sparkles, 
+  MessageCircle, 
+  MapPin, 
+  Mic, 
+  Volume2, 
+  History,
+  X,
+  ArrowRight,
+  Star,
+  Heart
+} from 'lucide-react'
 
 const Home = memo(({ user, setUser }) => {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [showIntroModal, setShowIntroModal] = useState(false)
+  const [currentStep, setCurrentStep] = useState(0)
   const { isDarkMode, toggleTheme, isLoaded } = useTheme()
   const { preloadPage } = usePreloader()
   
@@ -32,6 +46,36 @@ const Home = memo(({ user, setUser }) => {
     return () => clearTimeout(timer)
   }, [preloadPage])
 
+  // Afficher le popup d'introduction au premier chargement
+  useEffect(() => {
+    const hasSeenIntro = localStorage.getItem('get-weez-intro-seen')
+    if (!hasSeenIntro) {
+      const timer = setTimeout(() => {
+        setShowIntroModal(true)
+      }, 1500) // Délai pour laisser le temps au chargement
+      return () => clearTimeout(timer)
+    }
+  }, [])
+
+  const closeIntroModal = () => {
+    setShowIntroModal(false)
+    localStorage.setItem('get-weez-intro-seen', 'true')
+  }
+
+  const nextStep = () => {
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1)
+    } else {
+      closeIntroModal()
+    }
+  }
+
+  const prevStep = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1)
+    }
+  }
+
   // Récupérer le message de réservation depuis les query parameters
   const reservationMessage = router.query.message
   const establishmentName = router.query.establishment
@@ -48,6 +92,34 @@ const Home = memo(({ user, setUser }) => {
     )
   }
 
+  // Données du popup d'introduction
+  const introSteps = [
+    {
+      icon: <Sparkles size={48} className="text-purple-500" />,
+      title: "Bienvenue sur Get Weez",
+      description: "Votre assistant personnel pour découvrir les meilleures expériences à Marbella",
+      features: ["🎯 Recommandations personnalisées", "🗺️ Géolocalisation intelligente", "💬 Chat en temps réel"]
+    },
+    {
+      icon: <MessageCircle size={48} className="text-blue-500" />,
+      title: "Chat Intelligent",
+      description: "Posez vos questions et obtenez des réponses instantanées",
+      features: ["🎤 Dictée vocale", "🔊 Réponse vocale", "📚 Historique des conversations"]
+    },
+    {
+      icon: <MapPin size={48} className="text-green-500" />,
+      title: "Géolocalisation",
+      description: "Découvrez les meilleurs endroits près de vous",
+      features: ["📍 Détection automatique de zone", "🏆 Établissements premium", "⭐ Avis et recommandations"]
+    },
+    {
+      icon: <Heart size={48} className="text-red-500" />,
+      title: "Expériences Exclusives",
+      description: "Accédez aux meilleures expériences de Marbella",
+      features: ["🍽️ Restaurants gastronomiques", "🏨 Hôtels de luxe", "🎉 Événements VIP"]
+    }
+  ]
+
   return (
     <div 
         style={{ 
@@ -59,6 +131,120 @@ const Home = memo(({ user, setUser }) => {
           maxWidth: 'none'
         }}
     >
+      {/* Popup d'introduction */}
+      {showIntroModal && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+            backdropFilter: 'blur(10px)'
+          }}
+        >
+          <div 
+            className="w-full max-w-md rounded-3xl shadow-2xl overflow-hidden"
+            style={{
+              background: isDarkMode
+                ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.90) 100%)'
+                : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
+              backdropFilter: 'blur(20px) saturate(150%)',
+              border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
+            }}
+          >
+            {/* Header du popup */}
+            <div 
+              className="p-6 text-center border-b"
+              style={{
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
+              }}
+            >
+              <div className="flex justify-center mb-4">
+                {introSteps[currentStep].icon}
+              </div>
+              <h2 className={`text-2xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                {introSteps[currentStep].title}
+              </h2>
+              <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                {introSteps[currentStep].description}
+              </p>
+            </div>
+
+            {/* Contenu du popup */}
+            <div className="p-6">
+              <div className="space-y-3 mb-6">
+                {introSteps[currentStep].features.map((feature, index) => (
+                  <div 
+                    key={index}
+                    className="flex items-center space-x-3 p-3 rounded-xl transition-all duration-300 hover:scale-105"
+                    style={{
+                      background: isDarkMode ? 'rgba(55, 65, 81, 0.4)' : 'rgba(248, 250, 252, 0.6)',
+                    }}
+                  >
+                    <span className="text-lg">{feature}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Indicateurs de progression */}
+              <div className="flex justify-center space-x-2 mb-6">
+                {introSteps.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                      index === currentStep 
+                        ? 'bg-purple-500 scale-125' 
+                        : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
+                    }`}
+                  />
+                ))}
+              </div>
+
+              {/* Boutons de navigation */}
+              <div className="flex justify-between">
+                <button
+                  onClick={prevStep}
+                  disabled={currentStep === 0}
+                  className={`px-4 py-2 rounded-xl transition-all duration-300 ${
+                    currentStep === 0
+                      ? 'opacity-50 cursor-not-allowed'
+                      : 'hover:scale-105 active:scale-95'
+                  }`}
+                  style={{
+                    background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.6)',
+                    color: isDarkMode ? 'text-gray-300' : 'text-gray-600'
+                  }}
+                >
+                  Précédent
+                </button>
+
+                <button
+                  onClick={nextStep}
+                  className="px-6 py-2 rounded-xl transition-all duration-300 hover:scale-105 active:scale-95 flex items-center space-x-2"
+                  style={{
+                    background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)',
+                    color: 'white',
+                    boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)'
+                  }}
+                >
+                  <span>{currentStep === 3 ? 'Commencer' : 'Suivant'}</span>
+                  {currentStep < 3 && <ArrowRight size={16} />}
+                </button>
+              </div>
+            </div>
+
+            {/* Bouton fermer */}
+            <button
+              onClick={closeIntroModal}
+              className="absolute top-4 right-4 p-2 rounded-full transition-all duration-300 hover:scale-110"
+              style={{
+                background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.6)',
+              }}
+            >
+              <X size={16} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />
+            </button>
+          </div>
+        </div>
+      )}
+
       <div 
         style={{ 
           display: 'flex', 
