@@ -83,11 +83,104 @@ const Home = memo(({ user, setUser }) => {
   // Ne pas rendre avant que le thème soit chargé
   if (!isLoaded) {
     return (
-      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#000000' : '#FFFFFF' }}>
+      <div 
+        className="w-full min-h-screen flex items-center justify-center" 
+        style={{ 
+          backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
+          background: isDarkMode 
+            ? 'linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%)'
+            : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%)'
+        }}
+      >
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
+          {/* Logo Get Weez animé */}
+          <div className="relative mb-8">
+            {/* Cercle de fond avec animation de pulsation */}
+            <div 
+              className="absolute inset-0 rounded-full animate-ping"
+              style={{
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)',
+                width: '120px',
+                height: '120px',
+                margin: '0 auto',
+                opacity: 0.3
+              }}
+            />
+            
+            {/* Logo principal avec rotation */}
+            <div 
+              className="relative rounded-full flex items-center justify-center mx-auto animate-spin"
+              style={{
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)',
+                width: '100px',
+                height: '100px',
+                boxShadow: '0 20px 40px rgba(139, 92, 246, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
+                animation: 'spin 2s linear infinite, pulse 2s ease-in-out infinite'
+              }}
+            >
+              {/* Icône MessageCircle au centre */}
+              <MessageCircle size={40} className="text-white drop-shadow-lg" />
+              
+              {/* Éclats de magie autour du logo */}
+              <div className="absolute -top-2 -right-2">
+                <Sparkles 
+                  size={16} 
+                  className="text-yellow-300 animate-pulse drop-shadow-lg" 
+                  style={{ animation: 'bounce 1s ease-in-out infinite' }}
+                />
+              </div>
+              <div className="absolute -bottom-1 -left-1">
+                <Sparkles 
+                  size={12} 
+                  className="text-yellow-400 animate-pulse drop-shadow-lg" 
+                  style={{ animation: 'bounce 1.5s ease-in-out infinite' }}
+                />
+              </div>
+              <div className="absolute top-1 -left-2">
+                <Sparkles 
+                  size={10} 
+                  className="text-yellow-500 animate-pulse drop-shadow-lg" 
+                  style={{ animation: 'bounce 2s ease-in-out infinite' }}
+                />
+              </div>
+            </div>
+          </div>
+          
+          {/* Texte de chargement avec animation */}
+          <div className="space-y-2">
+            <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              Get Weez
+            </h2>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              Chargement de votre expérience Marbella...
+            </p>
+            
+            {/* Barre de progression animée */}
+            <div className="w-48 h-1 bg-gray-200 rounded-full mx-auto mt-4 overflow-hidden">
+              <div 
+                className="h-full rounded-full animate-pulse"
+                style={{
+                  background: 'linear-gradient(90deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)',
+                  animation: 'loading-bar 2s ease-in-out infinite'
+                }}
+              />
+            </div>
+          </div>
         </div>
+        
+        {/* Styles CSS pour les animations personnalisées */}
+        <style jsx>{`
+          @keyframes loading-bar {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+          }
+          
+          @keyframes bounce {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-10px) scale(1.1); }
+          }
+        `}</style>
       </div>
     )
   }
