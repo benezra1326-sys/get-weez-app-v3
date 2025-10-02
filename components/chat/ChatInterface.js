@@ -60,14 +60,18 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     }
   }, [initialMessage])
   
-  // Effet pour créer une nouvelle conversation par défaut au chargement
+  // État pour suivre si l'utilisateur a délibérément fermé une conversation
+  const [hasUserClosedConversation, setHasUserClosedConversation] = useState(false)
+  
+  // Effet pour créer une nouvelle conversation par défaut au chargement initial uniquement
   useEffect(() => {
-    // Créer une nouvelle conversation si aucune n'est sélectionnée
-    if (!currentConversationId && conversations.length >= 0 && createConversation) {
-      console.log('🆕 Création d\'une nouvelle conversation par défaut')
+    // Créer une nouvelle conversation seulement au premier chargement
+    // ET seulement si l'utilisateur n'a pas délibérément fermé une conversation
+    if (!currentConversationId && conversations.length === 0 && createConversation && !hasUserClosedConversation) {
+      console.log('🆕 Création d\'une nouvelle conversation par défaut au premier chargement')
       createConversation()
     }
-  }, [conversations.length, createConversation, currentConversationId])
+  }, [conversations.length, createConversation, currentConversationId, hasUserClosedConversation])
 
   // Fonction pour scroller vers le bas
   const scrollToBottom = useCallback(() => {
@@ -239,6 +243,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       console.log('🔄 Fermeture de conversation:', currentConversationId)
       
       try {
+        // Marquer qu'une conversation a été fermée délibérément
+        setHasUserClosedConversation(true)
+        
         // Fermer la conversation actuelle et revenir à l'écran d'accueil
         selectConversation(null)
         
@@ -943,7 +950,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             <div className="space-y-1 lg:space-y-4">
               {/* Bouton Nouvelle Conversation - Design Optimisé */}
               <button 
-                onClick={createConversation}
+                onClick={() => {
+                  console.log('🆕 Clic sur nouvelle conversation (sidebar)')
+                  setHasUserClosedConversation(false) // Réinitialiser le flag
+                  createConversation()
+                }}
                 className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -1090,7 +1101,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 </button>
                 
                 <button 
-                  onClick={createConversation}
+                  onClick={() => {
+                    console.log('🆕 Clic sur nouvelle conversation')
+                    setHasUserClosedConversation(false) // Réinitialiser le flag
+                    createConversation()
+                  }}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
                     backgroundColor: '#3B82F6',
