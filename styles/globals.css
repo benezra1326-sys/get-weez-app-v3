@@ -1265,18 +1265,23 @@ body {
 
 .uniform-banner .banner-buttons {
   display: flex;
-  gap: 8px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .uniform-banner .banner-button {
-  padding: 6px 12px;
-  border-radius: 10px;
-  font-size: 12px;
+  padding: 10px 16px;
+  border-radius: 12px;
+  font-size: 13px;
   font-weight: 600;
   border: none;
   cursor: pointer;
   transition: all 0.2s ease;
   backdrop-filter: blur(10px);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .uniform-banner .banner-button.primary {

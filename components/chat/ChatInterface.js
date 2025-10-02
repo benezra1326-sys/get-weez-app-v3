@@ -1017,7 +1017,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
 
         {/* Chat Section - Largeur ajustée avec scroll mobile LIBRE */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:p-6 h-full w-full" style={{ 
+        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:px-6 lg:pt-6 lg:pb-2 h-full w-full" style={{ 
           width: '100%', 
           maxWidth: 'none', 
           flex: '1 1 0%',
@@ -1025,7 +1025,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           WebkitOverflowScrolling: 'touch', // Scroll fluide iOS
           position: 'relative'
         }}>
-          <div className="rounded-2xl border p-2 lg:p-6 lg:h-full flex flex-col overflow-y-auto" style={{ 
+          <div className="rounded-2xl border p-2 lg:px-6 lg:pt-6 lg:pb-2 lg:h-full flex flex-col overflow-y-auto" style={{ 
             backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', 
             borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB',
             WebkitOverflowScrolling: 'touch',
@@ -1453,7 +1453,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             </div>
 
               {/* Zone de saisie */}
-              <div className="flex-shrink-0 space-y-2 lg:space-y-2 lg:pt-2">
+              <div className="flex-shrink-0 space-y-2 lg:space-y-2">
                 {/* Mobile: bouton intégré */}
                 <div className="relative lg:hidden">
                   <textarea
