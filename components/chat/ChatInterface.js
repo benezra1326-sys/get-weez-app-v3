@@ -237,21 +237,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     if (currentConversationId) {
       console.log('🔄 Fermeture de conversation:', currentConversationId)
       
-      // Supprimer la conversation de la liste
-      const conversationToClose = currentConversationId
-      
-      // Fermer la conversation actuelle
+      // Fermer la conversation actuelle et revenir à l'écran d'accueil
       selectConversation(null)
-      
-      // Créer une nouvelle conversation vide avec message de bienvenue
-      setTimeout(() => {
-        const newId = createConversation()
-        if (newId) {
-          console.log('✅ Nouvelle conversation créée:', newId)
-          selectConversation(newId)
-          showToast('Nouvelle conversation', 'success')
-        }
-      }, 100) // Délai court pour éviter les conflits
       
       showToast('Conversation fermée', 'info')
     }
@@ -1563,7 +1550,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       backgroundColor: isDarkMode ? '#2D2D2D' : '#F9FAFB', 
                       borderColor: isDarkMode ? '#374151' : '#D1D5DB', 
                       color: isDarkMode ? '#FFFFFF' : '#1F2937',
-                      minHeight: '48px',
+                      minHeight: '56px',
                       boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
                       fontSize: '16px' // Empêche le zoom sur iOS
                     }}
@@ -1586,7 +1573,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     handleSend()
                   }}
                   disabled={!input.trim() || isLoading}
-                    className="px-4 py-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-1 font-medium text-sm"
+                    className="px-3 py-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center font-medium text-sm"
                   style={{
                     backgroundColor: !input.trim() || isLoading ? '#374151' : '#3B82F6',
                     boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
@@ -1604,16 +1591,13 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     }
                   }}
                 >
-                    {isLoading ? (
+                  {isLoading ? (
                       <Loader2 size={16} className="animate-spin" />
                     ) : (
-                      <>
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
-                        </svg>
-                        <span className="text-xs">Envoyer</span>
-                      </>
-                    )}
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                    </svg>
+                  )}
                 </button>
               </div>
                 
@@ -2186,7 +2170,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                     style={{
-                        background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                       width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2251,7 +2238,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #E11D48 0%, #EC4899 50%, #8B5CF6 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1566737236500-c8ac43014a8b?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                       width: '100%',
                         height: '100%',
                         position: 'absolute',

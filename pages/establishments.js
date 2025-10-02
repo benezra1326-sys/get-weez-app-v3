@@ -241,7 +241,6 @@ export default function Establishments({ user, setUser }) {
         <main 
           style={{ 
             flex: 1,
-            overflow: 'auto',
             backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
             width: '100vw',
             minHeight: 'calc(100vh - 6rem)',
