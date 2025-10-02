@@ -11,8 +11,8 @@ import SuggestionsSidebar from './SuggestionsSidebar'
 import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
-const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🎨 VRAI COMPOSANT CHARGÉ - BEAU DESIGN RESTAURÉ')
+const GetWeezChatV2 = ({ user, initialMessage, establishmentName }) => {
+  console.log('💎 GET WEEZ CHAT V2 - DESIGN PREMIUM FINAL 💎')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   
@@ -3152,5 +3152,5 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   )
 }
 
-export default memo(ChatInterface)
+export default memo(GetWeezChatV2)
 

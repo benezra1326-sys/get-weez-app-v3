@@ -1,11 +1,101 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 const STORAGE_KEY = 'getweez_conversations'
 
 export function useConversations() {
   const [conversations, setConversations] = useState([])
-  const [currentConversationId, setCurrentConversationId] = useState(null)
+  const [currentConversationId, setCurrentConversationIdRaw] = useState(null)
   const [isCreating, setIsCreating] = useState(false)
+  
+  // ID unique pour tracer chaque instance du hook
+  const hookInstanceId = useRef('hook-' + Math.random().toString(36).substr(2, 9)).current
+  
+  // Référence pour annuler les timeouts en cours
+  const timeoutRef = useRef(null)
+  
+  // INTERCEPTEUR GLOBAL - Tracer TOUS les renders
+  console.log(`🔄 useConversations [${hookInstanceId}] RENDER:`, {
+    conversationsCount: conversations.length,
+    currentConversationId,
+    isCreating
+  })
+
+  // COMPTEUR GLOBAL D'INSTANCES
+  if (typeof window !== 'undefined') {
+    if (!window.conversationHookInstances) {
+      window.conversationHookInstances = new Set()
+    }
+    window.conversationHookInstances.add(hookInstanceId)
+    console.log(`🚨 INSTANCES ACTIVES useConversations:`, Array.from(window.conversationHookInstances))
+    
+    // TRAÇAGE GLOBAL DES APPELS
+    if (!window.allHookCalls) {
+      window.allHookCalls = []
+    }
+    
+    // Calculer messagesCount de façon sûre sans appeler getCurrentMessages()
+    const currentMessages = currentConversationId 
+      ? conversations.find(conv => conv.id === currentConversationId)?.messages || []
+      : []
+    
+    window.allHookCalls.push({
+      hookId: hookInstanceId,
+      timestamp: new Date().toISOString(),
+      conversationId: currentConversationId,
+      messagesCount: currentMessages.length
+    })
+    
+    // Garder seulement les 20 derniers appels
+    if (window.allHookCalls.length > 20) {
+      window.allHookCalls = window.allHookCalls.slice(-20)
+    }
+    
+    console.log('📈 HISTORIQUE DES HOOKS:', window.allHookCalls)
+  }
+
+  // Wrapper pour tracer les changements de currentConversationId
+  const setCurrentConversationId = (newId) => {
+    const stack = new Error().stack
+    console.log(`📝📝📝 [${hookInstanceId}] setCurrentConversationId APPELÉ!`)
+    console.log('📝 Ancien ID:', currentConversationId)
+    console.log('📝 Nouveau ID:', newId) 
+    console.log('📝 Stack trace complet:')
+    console.log(stack)
+    console.log('📝📝📝 FIN TRACE')
+    
+    // PROTECTION ULTIME: Bloquer tout changement qui remet un ID après fermeture
+    if (typeof window !== 'undefined' && (window.conversationJustClosed || window.conversationForceClosed) && newId !== null) {
+      console.log('🚫🚫🚫 BLOCAGE! Tentative de réouverture après fermeture détectée!')
+      console.log('🚫 Hook:', hookInstanceId)
+      console.log('🚫 Tentative de remettre ID:', newId)
+      console.log('🚫 IGNORÉ pour éviter réouverture automatique!')
+      return // BLOQUER la réouverture
+    }
+    
+    // Marquer qu'on a fermé si newId = null
+    if (newId === null && typeof window !== 'undefined') {
+      console.log('✅ Fermeture détectée - marquage pour bloquer réouvertures')
+      window.conversationJustClosed = true
+      // Reset après 1 seconde pour permettre créations manuelles futures
+      setTimeout(() => {
+        window.conversationJustClosed = false
+        console.log('✅ Reset - réouvertures redeviennent possibles')
+      }, 1000)
+    }
+    
+    // Ajouter une pause pour voir dans les logs
+    if (typeof window !== 'undefined') {
+      window.lastConversationChange = {
+        hookInstanceId,
+        from: currentConversationId,
+        to: newId,
+        timestamp: new Date().toISOString(),
+        stack: stack
+      }
+    }
+    
+    setCurrentConversationIdRaw(newId)
+  }
 
   // Nettoyer les conversations vides
   const cleanEmptyConversations = (conversationsList) => {
@@ -19,6 +109,8 @@ export function useConversations() {
 
   // Charger les conversations depuis localStorage
   useEffect(() => {
+    console.log('🏃 useEffect CHARGEMENT localStorage EXECUTE')
+    
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
     
@@ -36,6 +128,7 @@ export function useConversations() {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned))
         }
         
+        console.log('📁 Conversations chargées:', cleaned.length)
         setConversations(cleaned)
         
         // Ne pas sélectionner automatiquement une conversation existante
@@ -53,16 +146,21 @@ export function useConversations() {
 
   // Sauvegarder les conversations dans localStorage
   useEffect(() => {
+    console.log('🏃 useEffect SAUVEGARDE localStorage EXECUTE - conversations:', conversations.length)
+    
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
     
     if (conversations.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations))
+      console.log('💾 Conversations sauvegardées:', conversations.length)
     }
   }, [conversations])
 
   // Créer une nouvelle conversation
   const createConversation = () => {
+    console.log(`✅ [${hookInstanceId}] createConversation - Version corrigée`)
+    
     // Protection contre les créations multiples
     if (isCreating) {
       console.log('⚠️ Création déjà en cours, annulation')
@@ -108,10 +206,18 @@ export function useConversations() {
       return updated.slice(0, 10)
     })
     
+    // Annuler tout timeout en cours
+    if (timeoutRef.current) {
+      console.log('⏰ Annulation du timeout précédent')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
     // Utiliser setTimeout pour éviter les problèmes de state
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setCurrentConversationId(newConversation.id)
       setIsCreating(false)
+      timeoutRef.current = null
     }, 0)
     
     return newConversation.id
@@ -119,17 +225,40 @@ export function useConversations() {
 
   // Sélectionner une conversation
   const selectConversation = (id) => {
+    const stack = new Error().stack
+    console.log('🎯🎯🎯🎯🎯 selectConversation APPELÉ!')
+    console.log('🎯 Ancien ID:', currentConversationId)
+    console.log('🎯 Nouveau ID:', id)
+    console.log('🎯 Stack trace COMPLET:')
+    console.log(stack)
+    console.log('🎯🎯🎯🎯🎯 FIN TRACE SELECT')
+    
+    // CRITICAL: Annuler les timeouts en cours si on ferme (id = null)
+    if (id === null && timeoutRef.current) {
+      console.log('🚫 ANNULATION du timeout createConversation en cours!')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
     setCurrentConversationId(id)
   }
 
   // Supprimer une conversation
   const deleteConversation = (id) => {
+    // CRITICAL: Annuler les timeouts en cours
+    if (timeoutRef.current) {
+      console.log('🚫 ANNULATION du timeout createConversation lors de la suppression!')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
     setConversations(prev => {
       const filtered = prev.filter(conv => conv.id !== id)
       
-      // Si on supprime la conversation actuelle, sélectionner la première disponible
+      // Si on supprime la conversation actuelle, la fermer (ne pas en sélectionner une autre)
       if (currentConversationId === id) {
-        setCurrentConversationId(filtered.length > 0 ? filtered[0].id : null)
+        console.log('🗑️ Suppression de la conversation actuelle - fermeture')
+        setCurrentConversationId(null) // Fermer au lieu de sélectionner une autre
       }
       
       return filtered
@@ -177,19 +306,10 @@ export function useConversations() {
       if (cleaned.length !== updated.length) {
         console.log('🧹 Conversations vides supprimées automatiquement')
         
-        // Si la conversation actuelle a été supprimée (elle était vide), créer une nouvelle
+        // Si la conversation actuelle a été supprimée (elle était vide), la fermer
         if (!cleaned.find(conv => conv.id === conversationId)) {
-          console.log('🆕 Création d\'une nouvelle conversation car l\'ancienne était vide')
-          const newConv = {
-            id: Date.now().toString(),
-            title: 'Nouvelle conversation',
-            messages: [],
-            lastMessage: '',
-            createdAt: formatDate(new Date()),
-            updatedAt: formatDate(new Date())
-          }
-          setCurrentConversationId(newConv.id)
-          return [...cleaned, newConv]
+          console.log('🗑️ Conversation actuelle supprimée car vide - fermeture')
+          setCurrentConversationId(null) // Fermer au lieu de créer une nouvelle
         }
       }
       
