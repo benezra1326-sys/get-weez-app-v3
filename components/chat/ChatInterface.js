@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import { useTranslation } from 'next-i18next'
-import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon, Mic, MicOff } from 'lucide-react'
+import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon } from 'lucide-react'
 import { useConversations } from '../../hooks/useConversations'
 import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
@@ -21,7 +21,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   const [conversationToDelete, setConversationToDelete] = useState(null)
   const [sidebarFilter, setSidebarFilter] = useState('all') // 'all', 'events', 'establishments'
   const [showMobileHistory, setShowMobileHistory] = useState(false)
-  const [isListening, setIsListening] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null) // Pour stocker l'élément sélectionné
   const [showDetailPage, setShowDetailPage] = useState(false) // Pour afficher la page dédiée
   const textareaRef = useRef(null)
@@ -79,23 +78,23 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
   // Effet pour scroller automatiquement vers le bas quand les messages changent
   useEffect(() => {
-    // Seulement si on est en train de charger ou si c'est un nouveau message
-    if (isLoading || (messages && messages.length > 0)) {
+    // Seulement si on est en train de charger un nouveau message (pas lors de la création de conversation)
+    if (isLoading && messages && messages.length > 1) {
       // Délai pour éviter le scroll intempestif
       setTimeout(() => scrollToBottom(), 100)
     }
   }, [messages, isLoading, scrollToBottom])
 
-  // Effet pour scroller vers le bas quand on change de conversation
+  // Effet pour scroller vers le bas quand on change de conversation (seulement si elle a déjà des messages)
   useEffect(() => {
-    // Seulement si on a des messages dans la conversation
-    if (currentConversationId && messages && messages.length > 0) {
+    // Seulement si on a des messages dans la conversation ET qu'on ne vient pas de la créer
+    if (currentConversationId && messages && messages.length > 1) {
       // Petit délai pour s'assurer que les messages sont rendus
       setTimeout(() => {
         scrollToBottom()
       }, 100)
     }
-  }, [currentConversationId, scrollToBottom, messages])
+  }, [currentConversationId, scrollToBottom])
 
   console.log('📊 ChatInterface state:', {
     conversationsCount: conversations?.length || 0,
@@ -233,45 +232,29 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     setShowDeleteConfirm(false)
   }
 
-  // Fonction de dictée
-  const startListening = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      const recognition = new SpeechRecognition()
-      
-      recognition.continuous = false
-      recognition.interimResults = false
-      recognition.lang = 'fr-FR'
-      
-      recognition.onstart = () => {
-        setIsListening(true)
-      }
-      
-      recognition.onresult = (event) => {
-        const transcript = event.results[0][0].transcript
-        setInput(transcript)
-        setIsListening(false)
-      }
-      
-      recognition.onerror = () => {
-        setIsListening(false)
-        showToast('Erreur de reconnaissance vocale', 'error')
-      }
-      
-      recognition.onend = () => {
-        setIsListening(false)
-      }
-      
-      recognition.start()
-    } else {
-      showToast('Reconnaissance vocale non supportée', 'error')
-    }
-  }
 
   const handleCloseConversation = () => {
     if (currentConversationId) {
-      selectConversation(null)
-      showToast('Conversation fermée', 'info')
+      // Trouver une autre conversation à sélectionner ou créer une nouvelle
+      const otherConversations = conversations.filter(conv => conv.id !== currentConversationId)
+      
+      if (otherConversations.length > 0) {
+        // Sélectionner la conversation la plus récente
+        const mostRecent = otherConversations.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+        selectConversation(mostRecent.id)
+        showToast('Conversation fermée', 'info')
+    } else {
+        // Créer une nouvelle conversation
+        selectConversation(null)
+        setTimeout(() => {
+          const newId = createConversation()
+          if (newId) {
+            showToast('Nouvelle conversation créée', 'success')
+          }
+        }, 100)
+      }
     }
   }
 
@@ -1181,9 +1164,28 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               </div>
             </div>
 
-            {/* En-tête de la conversation */}
+            {/* En-tête de la conversation avec effet relief */}
             {currentConversationId && messages && messages.length > 0 && (
-              <div className="flex items-center justify-between p-4 border-b border-gray-700 bg-gray-800/50 backdrop-blur-sm">
+              <div 
+                className="flex items-center justify-between p-4 border-b backdrop-blur-sm relative"
+                style={{
+                  background: isDarkMode 
+                    ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)' 
+                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.9) 100%)',
+                  borderColor: isDarkMode 
+                    ? 'rgba(75, 85, 99, 0.5)' 
+                    : 'rgba(229, 231, 235, 0.8)',
+                  boxShadow: isDarkMode
+                    ? '0 4px 20px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1), inset 0 -1px 0 rgba(0, 0, 0, 0.2)'
+                    : '0 2px 15px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8), inset 0 -1px 0 rgba(0, 0, 0, 0.05)',
+                  borderTop: isDarkMode 
+                    ? '1px solid rgba(255, 255, 255, 0.1)' 
+                    : '1px solid rgba(255, 255, 255, 0.8)',
+                  borderBottom: isDarkMode 
+                    ? '1px solid rgba(0, 0, 0, 0.2)' 
+                    : '1px solid rgba(0, 0, 0, 0.05)'
+                }}
+              >
                 <div className="flex items-center space-x-3">
                   <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
                     <MessageCircle size={16} className="text-white" />
@@ -1199,7 +1201,25 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 </div>
                 <button
                   onClick={handleCloseConversation}
-                  className="p-2 rounded-lg bg-gray-700/50 hover:bg-gray-600/50 text-gray-400 hover:text-white transition-all duration-300"
+                  className="p-2 rounded-lg transition-all duration-300"
+                  style={{
+                    background: isDarkMode 
+                      ? 'rgba(55, 65, 81, 0.5)' 
+                      : 'rgba(243, 244, 246, 0.8)',
+                    color: isDarkMode ? '#9CA3AF' : '#6B7280'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.target.style.background = isDarkMode 
+                      ? 'rgba(75, 85, 99, 0.5)' 
+                      : 'rgba(229, 231, 235, 0.9)'
+                    e.target.style.color = isDarkMode ? '#FFFFFF' : '#374151'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.target.style.background = isDarkMode 
+                      ? 'rgba(55, 65, 81, 0.5)' 
+                      : 'rgba(243, 244, 246, 0.8)'
+                    e.target.style.color = isDarkMode ? '#9CA3AF' : '#6B7280'
+                  }}
                   title="Fermer la conversation"
                 >
                   <X size={16} />
@@ -1210,7 +1230,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             {/* Zone des messages */}
             <div className="flex-1 lg:overflow-y-auto mb-2 lg:mb-6 lg:min-h-0 chat-messages-container scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 p-2 lg:p-0">
               {messages && messages.length > 0 ? (
-                <div className="space-y-2 lg:space-y-4">
+                <div className="space-y-2 lg:space-y-4 pt-4 lg:pt-6">
                   {messages.map((msg) => {
                     console.log('🔍 Affichage message:', msg)
                     return (
@@ -1461,7 +1481,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     }}
                     onKeyDown={handleKeyDown}
                     placeholder={messages.length === 0 ? "Demandez-moi n'importe quoi sur Marbella..." : t('chat.placeholder')}
-                    className="w-full px-4 py-4 lg:px-4 lg:py-6 pr-12 lg:pr-24 border rounded-xl resize-none text-sm lg:text-lg transition-all duration-300 focus:outline-none"
+                    className="w-full px-4 py-4 lg:px-4 lg:py-6 pr-16 lg:pr-20 border rounded-xl resize-none text-sm lg:text-lg transition-all duration-300 focus:outline-none"
                     style={{ 
                       backgroundColor: isDarkMode ? '#2D2D2D' : '#F9FAFB', 
                       borderColor: isDarkMode ? '#374151' : '#D1D5DB', 
@@ -1482,40 +1502,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     disabled={isLoading}
                   />
                 
-                {/* Bouton de dictée */}
-                <button
-                  onClick={startListening}
-                  disabled={isListening}
-                  className="absolute right-12 lg:right-16 top-1/2 transform -translate-y-1/2 p-2 lg:p-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300"
-                  style={{
-                    backgroundColor: isListening ? '#EF4444' : '#6B7280',
-                    boxShadow: isListening ? '0 4px 12px rgba(239, 68, 68, 0.3)' : '0 2px 8px rgba(107, 114, 128, 0.3)'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (!isListening) {
-                      e.target.style.backgroundColor = '#4B5563'
-                      e.target.style.boxShadow = '0 4px 12px rgba(107, 114, 128, 0.4)'
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (!isListening) {
-                      e.target.style.backgroundColor = '#6B7280'
-                      e.target.style.boxShadow = '0 2px 8px rgba(107, 114, 128, 0.3)'
-                    }
-                  }}
-                  title={isListening ? "Arrêter la dictée" : "Dictée vocale"}
-                >
-                  {isListening ? (
-                    <MicOff size={14} className="lg:hidden" />
-                  ) : (
-                    <Mic size={14} className="lg:hidden" />
-                  )}
-                  {isListening ? (
-                    <MicOff size={16} className="hidden lg:block" />
-                  ) : (
-                    <Mic size={16} className="hidden lg:block" />
-                  )}
-                </button>
                 
                 {/* Bouton d'envoi */}
                 <button
@@ -1524,7 +1510,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     handleSend()
                   }}
                   disabled={!input.trim() || isLoading}
-                  className="absolute right-2 lg:right-3 top-1/2 transform -translate-y-1/2 p-2 lg:p-4 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300"
+                  className="absolute right-3 lg:right-4 top-1/2 transform -translate-y-1/2 p-2 lg:p-3 disabled:cursor-not-allowed text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
                   style={{
                     backgroundColor: !input.trim() || isLoading ? '#374151' : '#3B82F6',
                     boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
@@ -2945,9 +2931,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         isOpen={showDeleteConfirm}
         onClose={handleDeleteCancel}
         onConfirm={handleDeleteConfirm}
-        title="Supprimer la conversation"
-        message="Êtes-vous sûr de vouloir supprimer cette conversation ? Cette action est irréversible."
-        confirmText="Supprimer"
+        title="🗑️ Supprimer la conversation"
+        message={`Voulez-vous vraiment supprimer cette conversation${conversationToDelete ? ` "${conversations.find(c => c.id === conversationToDelete)?.name || 'Sans titre'}"` : ''} ? Tous les messages et l'historique seront définitivement perdus.`}
+        confirmText="Oui, supprimer"
         cancelText="Annuler"
         type="danger"
       />

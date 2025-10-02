@@ -17,8 +17,8 @@ const navItems = [
   { href: '/establishments', label: 'Établissements', icon: Building, emoji: '🏨' },
   { href: '/services', label: 'Services', icon: Settings, emoji: '⚙️' },
   { href: '/events', label: 'Événements', icon: Ticket, emoji: '🎉' },
-  { href: '/account', label: 'Compte', icon: User, emoji: '👤' },
   { href: '/aide', label: 'Aide', icon: HelpCircle, emoji: '❓' },
+  { href: '/account', label: 'Compte', icon: User, emoji: '👤' },
 ]
 
 const MobileMenu = memo(({ isOpen, onClose, user }) => {
@@ -81,7 +81,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
         {/* Sidebar avec glassmorphism ultra moderne */}
         <MobilePageTransition isVisible={isOpen} direction="slide" duration={200}>
           <div 
-            className="h-full w-80 max-w-[85vw] relative flex flex-col"
+            className="h-screen w-80 max-w-[85vw] relative flex flex-col"
             onClick={(e) => e.stopPropagation()}
             style={{
               background: isDarkMode
@@ -103,6 +103,8 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                 `,
               backdropFilter: 'blur(40px) saturate(180%)',
               borderRight: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
+              borderTopRightRadius: '24px',
+              borderBottomRightRadius: '24px',
               boxShadow: isDarkMode 
                 ? `
                   8px 0 40px rgba(0, 0, 0, 0.5),
@@ -188,7 +190,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
         </div>
 
             {/* Navigation moderne */}
-            <nav className="px-4 py-6 space-y-2 flex-1">
+            <nav className="px-4 py-6 pb-6 space-y-2 flex-1 overflow-y-auto">
               {navItems.map((item, index) => {
             const Icon = item.icon
                 const isActive = activeItem === item.href
@@ -297,7 +299,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
         </nav>
 
             {/* Section utilisateur */}
-            <div className="absolute bottom-0 left-0 right-0 p-4">
+            <div className="absolute bottom-0 left-0 right-0 p-4 pt-2">
         {user ? (
           <div 
                   className="p-5 rounded-2xl border relative overflow-hidden"

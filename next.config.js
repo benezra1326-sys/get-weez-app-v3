@@ -33,6 +33,11 @@ const nextConfig = {
   experimental: {
     // Désactiver les optimisations qui peuvent causer des problèmes
     optimizeCss: false,
+  },
+  
+  // Désactiver styled-jsx pour éviter les erreurs de compilation
+  compiler: {
+    styledComponents: false,
   }
 }
 

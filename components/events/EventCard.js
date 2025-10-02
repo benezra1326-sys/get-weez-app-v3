@@ -30,7 +30,7 @@ export default function EventCard({ event }) {
 
   return (
     <div 
-      className="card-premium overflow-hidden animate-fade-in animate-hover-lift group transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:rotate-1"
+      className="card-premium overflow-hidden animate-fade-in animate-hover-lift group transition-all duration-300 md:hover:scale-105 md:hover:shadow-2xl md:hover:rotate-1"
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
         border: '1px solid var(--color-border)',
@@ -42,7 +42,7 @@ export default function EventCard({ event }) {
         <img 
           src={event.image_url || `https://placehold.co/400x300/1a1a1a/E0E0E0?text=${encodeURIComponent(event.name)}`} 
           alt={event.name} 
-          className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+          className="w-full h-48 object-cover md:group-hover:scale-105 transition-transform duration-300"
         />
         <div className="absolute top-3 right-3">
           <div 

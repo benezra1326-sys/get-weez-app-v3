@@ -586,12 +586,23 @@ export default function Events({ user, setUser }) {
               </div>
             </div>
 
-            {/* Toggle d'affichage */}
+            {/* Toggle d'affichage - AMÉLIORÉ POUR MOBILE */}
             <div className="mb-8">
-              <EventDisplayToggle
-                displayMode={displayMode}
-                onModeChange={handleDisplayModeChange}
-              />
+              <div 
+                className="backdrop-blur-md rounded-2xl p-4 md:p-6 border"
+                style={{ 
+                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+                  borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
+                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
+                  position: 'relative',
+                  zIndex: 10
+                }}
+              >
+                <EventDisplayToggle
+                  displayMode={displayMode}
+                  onModeChange={handleDisplayModeChange}
+                />
+              </div>
             </div>
 
             {/* Contenu selon le mode d'affichage */}

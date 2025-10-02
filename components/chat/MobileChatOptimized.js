@@ -18,11 +18,7 @@ import {
   Plane,
   Building,
   Sparkles,
-  History,
-  Mic,
-  MicOff,
-  Volume2,
-  VolumeX
+  History
 } from 'lucide-react'
 import { useToast } from '../ui/Toast'
 import { useTheme } from '../../contexts/ThemeContextSimple'
@@ -38,13 +34,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
   const [selectedSuggestion, setSelectedSuggestion] = useState(null)
   const [showDetailPage, setShowDetailPage] = useState(false)
   const [userLocation, setUserLocation] = useState(null)
-  const [isListening, setIsListening] = useState(false)
-  const [isSpeaking, setIsSpeaking] = useState(false)
   const [showHistory, setShowHistory] = useState(false)
   const [conversationHistory, setConversationHistory] = useState([])
   const textareaRef = useRef(null)
-  const recognitionRef = useRef(null)
-  const speechSynthesisRef = useRef(null)
   
   // Vérification de sécurité pour useTheme
   let isDarkMode = false
@@ -151,20 +143,35 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
     setShowSuggestions(false)
   }, [])
 
-  // Bloquer le scroll du body quand le chat est ouvert
+  // Bloquer complètement le scroll du body quand le chat est ouvert
   useEffect(() => {
     if (messages && messages.length > 0) {
-      // Bloquer le scroll
+      // Bloquer complètement le scroll
       document.body.style.overflow = 'hidden'
       document.body.style.position = 'fixed'
       document.body.style.width = '100%'
       document.body.style.height = '100%'
+      document.body.style.top = '0'
+      document.body.style.left = '0'
+      document.body.style.right = '0'
+      document.body.style.bottom = '0'
+      // Masquer le header et footer
+      document.body.style.zIndex = '9998'
+      // Ajouter la classe pour masquer header/footer
+      document.body.classList.add('chat-open')
     } else {
       // Restaurer le scroll
       document.body.style.overflow = 'unset'
       document.body.style.position = 'unset'
       document.body.style.width = 'unset'
       document.body.style.height = 'unset'
+      document.body.style.top = 'unset'
+      document.body.style.left = 'unset'
+      document.body.style.right = 'unset'
+      document.body.style.bottom = 'unset'
+      document.body.style.zIndex = 'unset'
+      // Supprimer la classe
+      document.body.classList.remove('chat-open')
     }
 
     // Cleanup au démontage
@@ -173,11 +180,19 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
       document.body.style.position = 'unset'
       document.body.style.width = 'unset'
       document.body.style.height = 'unset'
+      document.body.style.top = 'unset'
+      document.body.style.left = 'unset'
+      document.body.style.right = 'unset'
+      document.body.style.bottom = 'unset'
+      document.body.style.zIndex = 'unset'
+      document.body.classList.remove('chat-open')
     }
   }, [messages])
 
   // Fonction de géolocalisation AMÉLIORÉE
   const requestLocation = useCallback(() => {
+    console.log('Géolocalisation demandée')
+    
     if (!navigator.geolocation) {
       showToast('Géolocalisation non supportée par votre navigateur', 'error')
       return
@@ -209,6 +224,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         }
         
         showToast(`📍 Localisation activée ! Zone détectée: ${zone}`, 'success')
+        console.log('Géolocalisation réussie:', location)
         
         // Optionnel: Trier les suggestions par proximité
         // TODO: Implémenter le tri par distance
@@ -237,174 +253,13 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
     )
   }, [showToast])
 
-  // Fonction de reconnaissance vocale AMÉLIORÉE
-  const startListening = useCallback(() => {
-    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      showToast('Reconnaissance vocale non supportée par votre navigateur', 'error')
-      return
-    }
 
-    try {
-      const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
-      const recognition = new SpeechRecognition()
-      
-      // Configuration optimisée
-      recognition.lang = 'fr-FR'
-      recognition.continuous = true // Permet une écoute continue
-      recognition.interimResults = true // Affiche les résultats en temps réel
-      recognition.maxAlternatives = 1
 
-      recognition.onstart = () => {
-        console.log('🎤 Reconnaissance vocale démarrée')
-        setIsListening(true)
-        showToast('🎤 Parlez maintenant...', 'info')
-      }
 
-      recognition.onresult = (event) => {
-        let finalTranscript = ''
-        let interimTranscript = ''
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript
-          if (event.results[i].isFinal) {
-            finalTranscript += transcript
-          } else {
-            interimTranscript += transcript
-          }
-        }
-
-        // Afficher le texte en temps réel
-        if (finalTranscript) {
-          setInput(prev => prev + finalTranscript)
-          console.log('🎤 Texte final:', finalTranscript)
-        } else if (interimTranscript) {
-          // Optionnel: afficher le texte temporaire
-          console.log('🎤 Texte temporaire:', interimTranscript)
-        }
-      }
-
-      recognition.onerror = (event) => {
-        console.error('❌ Erreur reconnaissance vocale:', event.error)
-        setIsListening(false)
-        
-        switch(event.error) {
-          case 'no-speech':
-            showToast('Aucune parole détectée. Réessayez.', 'warning')
-            break
-          case 'audio-capture':
-            showToast('Impossible d\'accéder au microphone', 'error')
-            break
-          case 'not-allowed':
-            showToast('Permission microphone refusée', 'error')
-            break
-          default:
-            showToast('Erreur lors de la reconnaissance vocale', 'error')
-        }
-      }
-
-      recognition.onend = () => {
-        console.log('🎤 Reconnaissance vocale terminée')
-        setIsListening(false)
-      }
-
-      recognitionRef.current = recognition
-      recognition.start()
-      
-    } catch (error) {
-      console.error('❌ Erreur lors du démarrage:', error)
-      setIsListening(false)
-      showToast('Impossible de démarrer la reconnaissance vocale', 'error')
-    }
-  }, [showToast])
-
-  const stopListening = useCallback(() => {
-    if (recognitionRef.current) {
-      recognitionRef.current.stop()
-      setIsListening(false)
-    }
-  }, [])
-
-  // Fonction de synthèse vocale MODERNE comme ChatGPT
-  const speakMessage = useCallback((text) => {
-    if ('speechSynthesis' in window) {
-      // Arrêter toute synthèse en cours
-      window.speechSynthesis.cancel()
-      
-      // Attendre que les voix soient chargées
-      const loadVoices = () => {
-        const voices = window.speechSynthesis.getVoices()
-        
-        // Chercher les meilleures voix françaises modernes
-        const preferredVoices = [
-          // Voix premium françaises
-          voices.find(voice => voice.name.includes('Amélie') && voice.lang.includes('fr')),
-          voices.find(voice => voice.name.includes('Thomas') && voice.lang.includes('fr')),
-          voices.find(voice => voice.name.includes('Marie') && voice.lang.includes('fr')),
-          // Voix système modernes
-          voices.find(voice => voice.name.includes('Google') && voice.lang.includes('fr')),
-          voices.find(voice => voice.name.includes('Microsoft') && voice.lang.includes('fr')),
-          // Voix neural/premium
-          voices.find(voice => voice.name.includes('Neural') && voice.lang.includes('fr')),
-          voices.find(voice => voice.name.includes('Premium') && voice.lang.includes('fr')),
-          // Fallback vers toute voix française de qualité
-          voices.find(voice => voice.lang === 'fr-FR' && voice.localService === false),
-          voices.find(voice => voice.lang.includes('fr') && voice.name.includes('Enhanced')),
-          voices.find(voice => voice.lang.includes('fr'))
-        ].filter(Boolean)
-
-        const selectedVoice = preferredVoices[0] || voices.find(voice => voice.lang.includes('fr'))
-        
-        const utterance = new SpeechSynthesisUtterance(text)
-        
-        if (selectedVoice) {
-          utterance.voice = selectedVoice
-          utterance.lang = selectedVoice.lang
-        } else {
-          utterance.lang = 'fr-FR'
-        }
-        
-        // Paramètres optimisés pour une voix naturelle
-        utterance.rate = 1.1 // Légèrement plus rapide, plus naturel
-        utterance.pitch = 0.95 // Légèrement plus grave, plus agréable
-        utterance.volume = 0.9 // Volume optimal
-
-        utterance.onstart = () => {
-          setIsSpeaking(true)
-        }
-
-        utterance.onend = () => {
-          setIsSpeaking(false)
-        }
-
-        utterance.onerror = () => {
-          setIsSpeaking(false)
-          showToast('Erreur lors de la synthèse vocale', 'error')
-        }
-
-        speechSynthesisRef.current = utterance
-        window.speechSynthesis.speak(utterance)
-      }
-
-      // Charger les voix si pas encore disponibles
-      if (window.speechSynthesis.getVoices().length === 0) {
-        window.speechSynthesis.addEventListener('voiceschanged', loadVoices, { once: true })
-      } else {
-        loadVoices()
-      }
-    } else {
-      showToast('Synthèse vocale non supportée', 'error')
-    }
-  }, [showToast])
-
-  const stopSpeaking = useCallback(() => {
-    if ('speechSynthesis' in window) {
-      window.speechSynthesis.cancel()
-      setIsSpeaking(false)
-    }
-  }, [])
 
   // Fonction pour ouvrir l'historique des conversations
   const openHistory = useCallback(() => {
+    console.log('Ouverture de l\'historique')
     setShowHistory(true)
   }, [])
 
@@ -808,7 +663,20 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               >
                 <MessageCircle size={20} className="text-white" />
                 <div className="absolute -top-1 -right-1">
-                  <Sparkles size={12} className={`${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} animate-pulse drop-shadow-lg`} />
+                  <Sparkles 
+                    size={14} 
+                    className={`${
+                      isDarkMode 
+                        ? 'text-yellow-300' 
+                        : 'text-purple-600'
+                    } animate-pulse drop-shadow-lg`} 
+                    style={{
+                      filter: isDarkMode 
+                        ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))' 
+                        : 'drop-shadow(0 0 12px rgba(147, 51, 234, 0.8))',
+                      animation: 'sparkle-twinkle 3s ease-in-out infinite'
+                    }}
+                  />
                 </div>
               </div>
               <div>
@@ -822,11 +690,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 onClick={startNewChat}
               className="p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 group"
                 style={{ 
-                background: isDarkMode 
-                  ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.4) 0%, rgba(55, 65, 81, 0.6) 100%)'
-                  : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6) 0%, rgba(229, 231, 235, 0.8) 100%)',
-                  backdropFilter: 'blur(10px)',
-                border: `1px solid ${isDarkMode ? 'rgba(156, 163, 175, 0.2)' : 'rgba(209, 213, 219, 0.3)'}`,
+                background: 'transparent',
+                border: 'none',
                 }}
                 title="Ouvrir un nouveau chat"
               >
@@ -876,7 +741,20 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               >
                 <MessageCircle size={28} className="text-white" />
                 <div className="absolute -top-1 -right-1">
-                  <Sparkles size={12} className={`${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} animate-pulse drop-shadow-lg`} />
+                  <Sparkles 
+                    size={14} 
+                    className={`${
+                      isDarkMode 
+                        ? 'text-yellow-300' 
+                        : 'text-purple-600'
+                    } animate-pulse drop-shadow-lg`} 
+                    style={{
+                      filter: isDarkMode 
+                        ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))' 
+                        : 'drop-shadow(0 0 12px rgba(147, 51, 234, 0.8))',
+                      animation: 'sparkle-twinkle 3s ease-in-out infinite'
+                    }}
+                  />
               </div>
             </div>
               <h3 className={`text-xl font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -888,12 +766,12 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               </div>
         </div>
 
-          {/* Bouton pour ouvrir un nouveau chat AVEC ANIMATIONS */}
+          {/* Bouton pour ouvrir un nouveau chat AVEC FOND BOUTON SANS FOND TEXTE */}
           <div className="flex justify-center px-4 py-4">
             <button
               onClick={startNewChat}
               className="flex items-center space-x-3 px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-110 hover:-translate-y-2 active:scale-95 group"
-          style={{
+              style={{
                 background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
                 boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -909,10 +787,10 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             >
               <div 
                 className="rounded-xl flex items-center justify-center"
-            style={{
+          style={{
                   width: '32px',
                   height: '32px',
-                  background: 'rgba(255, 255, 255, 0.2)',
+                  background: 'transparent',
                 }}
               >
                 <MessageCircle size={18} className="text-white" />
@@ -923,8 +801,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             </button>
         </div>
 
-          {/* Suggestions VISIBLES */}
-          <div className="px-4 py-2">
+          {/* Suggestions VISIBLES - CENTRÉES */}
+          <div className="px-4 py-2 text-center">
               <h3 className={`text-lg font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 ✨ Que puis-je faire pour vous ?
             </h3>
@@ -1014,19 +892,22 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                           borderTopRightRadius: '24px',
                           }}
                         />
-                      {/* Badge BIEN POSITIONNÉ */}
+                      {/* Badge CENTRÉ SUR LA BANNIÈRE */}
                         <div 
-                        className="absolute top-2 right-2 px-2 py-1 rounded-full text-xs font-bold"
+                        className="absolute top-1 left-1/2 transform -translate-x-1/2 px-2 py-1 rounded-full text-xs font-bold"
                           style={{
                             background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 100%)',
                             color: '#1A1A1A',
                             border: '1px solid rgba(255, 215, 0, 0.6)',
                             boxShadow: '0 2px 8px rgba(255, 165, 0, 0.3)',
-                          fontSize: '9px',
+                          fontSize: '8px',
                           maxWidth: '80px',
+                          minWidth: '50px',
                           overflow: 'hidden',
                           textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
+                          whiteSpace: 'nowrap',
+                          textAlign: 'center',
+                          lineHeight: '1.2'
                           }}
                         >
                           {suggestion.badge}
@@ -1037,11 +918,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                     <div className="p-3 h-24 flex flex-col justify-between">
                       <div>
                         <div className="flex items-start justify-between mb-2">
-                          <div 
-                            className={`w-5 h-5 rounded-lg flex items-center justify-center bg-gradient-to-r ${suggestion.color}`}
-                          >
-                            <Icon size={10} className="text-white" />
-                      </div>
+                          <div className="flex-1">
+                            {/* Espace pour l'icône supprimée */}
+                          </div>
                           <span className={`text-xs font-bold ${isDarkMode ? 'text-yellow-400' : 'text-yellow-600'}`}>
                             ⭐ {suggestion.rating}
                           </span>
@@ -1094,8 +973,9 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               </div>
             </div>
           </div>
+
       ) : (
-        // CHAT DÉDIÉ PLEIN ÉCRAN - BLOQUÉ SANS SCROLL
+        // CHAT DÉDIÉ PLEIN ÉCRAN - COMPLÈTEMENT BLOQUÉ
         <div 
           className="fixed inset-0"
           style={{
@@ -1107,8 +987,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             flexDirection: 'column',
             background: isDarkMode ? '#0B0B0F' : '#FFFFFF',
             zIndex: 9999,
-            overflow: 'hidden', // BLOQUE tout scroll
-            position: 'fixed', // Force le blocage
+            overflow: 'hidden',
+            position: 'fixed',
             top: 0,
             left: 0,
             right: 0,
@@ -1159,7 +1039,20 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 >
                   <MessageCircle size={20} className="text-white" />
                   <div className="absolute -top-1 -right-1">
-                    <Sparkles size={12} className={`${isDarkMode ? 'text-yellow-300' : 'text-yellow-500'} animate-pulse drop-shadow-lg`} />
+                    <Sparkles 
+                      size={14} 
+                      className={`${
+                        isDarkMode 
+                          ? 'text-yellow-300' 
+                          : 'text-purple-600'
+                      } animate-pulse drop-shadow-lg`} 
+                      style={{
+                        filter: isDarkMode 
+                          ? 'drop-shadow(0 0 8px rgba(251, 191, 36, 0.6))' 
+                          : 'drop-shadow(0 0 12px rgba(147, 51, 234, 0.8))',
+                        animation: 'sparkle-twinkle 3s ease-in-out infinite'
+                      }}
+                    />
                   </div>
                 </div>
                 <div>
@@ -1172,7 +1065,15 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
               <div className="flex items-center space-x-2">
                 {/* Bouton géolocalisation */}
                 <button
-                  onClick={requestLocation}
+                  onClick={() => {
+                    console.log('Clic sur géolocalisation')
+                    try {
+                      requestLocation()
+                    } catch (error) {
+                      console.error('Erreur géolocalisation:', error)
+                      showToast('Erreur lors de l\'activation de la géolocalisation', 'error')
+                    }
+                  }}
                   className="p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 group"
                   style={{ 
                     background: userLocation 
@@ -1193,23 +1094,41 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
 
                 {/* Bouton historique FONCTIONNEL */}
                 <button
-                  onClick={openHistory}
-                  className="p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 group"
+                  onClick={() => {
+                    console.log('Clic sur historique')
+                    if (conversationHistory.length > 0) {
+                      openHistory()
+                    } else {
+                      showToast('Aucune conversation dans l\'historique', 'info')
+                    }
+                  }}
+                  disabled={conversationHistory.length === 0}
+                  className={`p-2 rounded-xl transition-all duration-300 group ${
+                    conversationHistory.length > 0 
+                      ? 'hover:scale-110 active:scale-95 cursor-pointer' 
+                      : 'cursor-not-allowed opacity-50'
+                  }`}
                   style={{ 
                     background: conversationHistory.length > 0
                       ? 'linear-gradient(135deg, #F59E0B 0%, #F97316 100%)'
                       : isDarkMode 
-                        ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.4) 0%, rgba(55, 65, 81, 0.6) 100%)'
-                        : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6) 0%, rgba(229, 231, 235, 0.8) 100%)',
+                        ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.2) 0%, rgba(55, 65, 81, 0.3) 100%)'
+                        : 'linear-gradient(135deg, rgba(243, 244, 246, 0.3) 0%, rgba(229, 231, 235, 0.4) 100%)',
                     backdropFilter: 'blur(10px)',
-                    border: `1px solid ${conversationHistory.length > 0 ? 'rgba(245, 158, 11, 0.3)' : isDarkMode ? 'rgba(156, 163, 175, 0.2)' : 'rgba(209, 213, 219, 0.3)'}`,
+                    border: `1px solid ${conversationHistory.length > 0 ? 'rgba(245, 158, 11, 0.3)' : isDarkMode ? 'rgba(75, 85, 99, 0.1)' : 'rgba(209, 213, 219, 0.2)'}`,
                     position: 'relative'
                   }}
-                  title={`Historique (${conversationHistory.length} conversations)`}
+                  title={conversationHistory.length > 0 ? `Historique (${conversationHistory.length} conversations)` : 'Aucune conversation dans l\'historique'}
                 >
                   <History 
                     size={18} 
-                    className={`${conversationHistory.length > 0 ? 'text-white' : isDarkMode ? 'text-gray-300 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'} transition-colors`}
+                    className={`${
+                      conversationHistory.length > 0 
+                        ? 'text-white' 
+                        : isDarkMode 
+                          ? 'text-gray-500' 
+                          : 'text-gray-400'
+                    } transition-colors`}
                   />
                   {conversationHistory.length > 0 && (
                     <div 
@@ -1217,8 +1136,8 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                       style={{ fontSize: '10px' }}
                     >
                       {conversationHistory.length}
-          </div>
-        )}
+                    </div>
+                  )}
                 </button>
 
                 {/* Bouton fermer */}
@@ -1249,208 +1168,174 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
 
           {/* Zone des messages FIXE AU MILIEU */}
-          <div 
-            style={{
-              flex: 1,
-              paddingLeft: '16px',
-              paddingRight: '16px',
-              paddingTop: '16px',
-              paddingBottom: '16px',
+        <div
+          className="mobile-chat-messages"
+          style={{
+            flex: 1,
+            paddingLeft: '16px',
+            paddingRight: '16px',
+            paddingTop: '16px',
+            paddingBottom: '16px',
               overflowY: 'auto', // Scroll seulement pour les messages
-              WebkitOverflowScrolling: 'touch',
-              height: 'calc(100vh - 160px)', // Hauteur fixe entre header et input
-              maxHeight: 'calc(100vh - 160px)', // Bloque la hauteur
+            WebkitOverflowScrolling: 'touch',
+              height: 'calc(100vh - 120px)', // Hauteur ajustée pour la boîte de saisie
+              maxHeight: 'calc(100vh - 120px)', // Bloque la hauteur
               position: 'relative',
-            }}
-          >
-            {messages.map((msg) => (
+              marginBottom: 'calc(100px + env(safe-area-inset-bottom, 20px))', // Marge pour la boîte de saisie toujours visible
+          }}
+        >
+              {messages.map((msg) => (
               <div
                 key={msg.id}
-                className={`flex mb-4 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-              >
-                <div
-                  className={`max-w-[85%] px-4 py-3 rounded-2xl backdrop-blur-lg ${
-                    msg.role === 'user'
-                      ? 'rounded-br-md'
-                      : 'rounded-bl-md border'
-                  }`}
-                  style={{
-                    background: msg.role === 'user' 
-                      ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
-                      : isDarkMode
-                        ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
-                        : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
-                    color: msg.role === 'user' 
-                      ? '#FFFFFF' 
-                      : isDarkMode ? '#F9FAFB' : '#111827',
-                    borderColor: msg.role === 'user' 
-                      ? 'transparent' 
-                      : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
-                    boxShadow: msg.role === 'user'
-                      ? '0 4px 12px rgba(16, 163, 127, 0.3)'
-                      : isDarkMode
-                        ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
-                        : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
+                  className={`flex mb-4 animate-fade-in-up ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  <div
+                    className={`max-w-[85%] px-4 py-3 rounded-2xl backdrop-blur-lg ${
+                      msg.role === 'user'
+                        ? 'rounded-br-md'
+                        : 'rounded-bl-md border'
+                    }`}
+                    style={{
+                      background: msg.role === 'user' 
+                        ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
+                        : isDarkMode
+                          ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+                          : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
+                      color: msg.role === 'user' 
+                        ? '#FFFFFF' 
+                        : isDarkMode ? '#F9FAFB' : '#111827',
+                      borderColor: msg.role === 'user' 
+                        ? 'transparent' 
+                        : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
+                      boxShadow: msg.role === 'user'
+                        ? '0 4px 12px rgba(16, 163, 127, 0.3)'
+                        : isDarkMode
+                          ? '0 4px 12px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                          : '0 4px 12px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.6)',
                     wordWrap: 'break-word',
                     wordBreak: 'break-word',
                     position: 'relative'
-                  }}
-                >
+                    }}
+                  >
                   {msg.content || 'Message vide'}
                   
-                  {/* Bouton écouter pour les messages de l'IA */}
-                  {msg.role === 'assistant' && (
-                    <button
-                      onClick={() => isSpeaking ? stopSpeaking() : speakMessage(msg.content)}
-                      className="absolute top-2 right-2 w-6 h-6 rounded-lg border-none transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95"
-                      style={{
-                        background: isSpeaking
-                          ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
-                          : 'rgba(139, 92, 246, 0.8)',
-                        color: 'white',
-                        boxShadow: isSpeaking ? '0 0 15px rgba(239, 68, 68, 0.5)' : '0 2px 6px rgba(139, 92, 246, 0.3)',
-                      }}
-                      title={isSpeaking ? "Arrêter la lecture" : "Écouter le message"}
-                    >
-                      {isSpeaking ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                    </button>
-                  )}
                 </div>
               </div>
-            ))}
-            {isLoading && (
-              <div className="flex justify-start mb-4">
-                <div
-                  className="px-4 py-3 rounded-2xl rounded-bl-md border backdrop-blur-lg"
-                  style={{
-                    background: isDarkMode
-                      ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
-                      : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
-                    borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
-                  }}
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
-                    <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                      Get Weez réfléchit...
-                    </span>
-                  </div>
-                </div>
+              ))}
+              {isLoading && (
+                <div className="flex justify-start mb-4">
+                  <div
+                    className="px-4 py-3 rounded-2xl rounded-bl-md border backdrop-blur-lg"
+                    style={{
+                      background: isDarkMode
+                        ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+                        : 'linear-gradient(135deg, rgba(248, 250, 252, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%)',
+                      borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
+                    }}
+                  >
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-purple-500 border-t-transparent rounded-full animate-spin"></div>
+                      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                        Get Weez réfléchit...
+                      </span>
+                    </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+        </div>
 
-          {/* Boîte de saisie FIXE EN BAS - BLOQUÉE */}
-          <div 
-            style={{
-              position: 'absolute', // Absolue dans le conteneur fixe
-              bottom: 0,
+          {/* Boîte de saisie FIXE EN BAS - ADAPTÉE À L'ÉCRAN */}
+        <div 
+          className="mobile-chat-input-container"
+          style={{
+              position: 'fixed', // Fixe par rapport à la fenêtre
+              bottom: '0px', // Position fixe au bas de l'écran
               left: 0,
               right: 0,
               width: '100%',
               padding: '16px',
-              background: 'transparent',
-              zIndex: 1000,
-              flexShrink: 0, // Ne se réduit jamais
+              paddingBottom: 'calc(16px + env(safe-area-inset-bottom, 0px))', // Padding + safe area
+              background: isDarkMode ? '#0B0B0F' : '#FFFFFF',
+              borderTop: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
+              zIndex: 10000,
+              flexShrink: 0,
+              // Support pour Safari mobile - Force la position au-dessus de la barre d'adresse
+              WebkitTransform: 'translateZ(0)',
+              transform: 'translateZ(0)',
+              // Assure que la boîte est toujours visible même avec la barre d'adresse Safari
+              minHeight: '80px',
+              boxShadow: '0 -4px 20px rgba(0, 0, 0, 0.1)',
             }}
           >
-            <div 
-              className="relative border transition-all duration-300"
-              style={{
-                borderRadius: '16px',
+          <div 
+            className="relative border transition-all duration-300"
+            style={{
+              borderRadius: '16px',
                 background: '#FFFFFF',
                 borderColor: 'rgba(209, 213, 219, 0.4)',
-                boxShadow: input.trim() 
-                  ? '0 0 0 2px rgba(139, 92, 246, 0.3), 0 4px 12px rgba(139, 92, 246, 0.15)'
+              boxShadow: input.trim() 
+                ? '0 0 0 2px rgba(139, 92, 246, 0.3), 0 4px 12px rgba(139, 92, 246, 0.15)'
                   : '0 2px 8px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <textarea
+              ref={textareaRef}
+              value={input}
+              onChange={(e) => {
+                setInput(e.target.value)
+                const textarea = e.target
+                textarea.style.height = 'auto'
+                const newHeight = Math.min(Math.max(textarea.scrollHeight, 44), 120)
+                textarea.style.height = `${newHeight}px`
               }}
-            >
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => {
-                  setInput(e.target.value)
-                  const textarea = e.target
-                  textarea.style.height = 'auto'
-                  const newHeight = Math.min(Math.max(textarea.scrollHeight, 44), 120)
-                  textarea.style.height = `${newHeight}px`
-                }}
-                onKeyDown={handleKeyDown}
+              onKeyDown={handleKeyDown}
                 placeholder="Demandez-moi n'importe quoi..."
-                className="w-full border-none outline-none bg-transparent resize-none px-4 py-3 pr-24"
-                style={{ 
-                  fontSize: '16px',
-                  lineHeight: '1.4',
+                className="w-full border-none outline-none bg-transparent resize-none px-4 py-3 pr-32"
+              style={{ 
+                fontSize: '16px',
+                lineHeight: '1.4',
                   color: '#000000',
-                  minHeight: '44px',
-                  maxHeight: '120px',
-                }}
-                rows={1}
-                disabled={isLoading}
-              />
-              
-              {/* Boutons vocaux AMÉLIORÉS */}
-              <div className="absolute right-2 bottom-2 flex items-center space-x-2">
-                {/* Bouton dictée */}
-                <button
-                  onClick={isListening ? stopListening : startListening}
-                  className="w-10 h-10 rounded-xl border-none transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95"
-                  style={{
-                    background: isListening
-                      ? 'linear-gradient(135deg, #EF4444 0%, #DC2626 100%)'
-                      : 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
-                    color: 'white',
-                    boxShadow: isListening 
-                      ? '0 0 25px rgba(239, 68, 68, 0.6), 0 0 10px rgba(239, 68, 68, 0.4)' 
-                      : '0 4px 12px rgba(139, 92, 246, 0.4)',
-                    border: isListening ? '2px solid rgba(255, 255, 255, 0.3)' : 'none',
-                    animation: isListening ? 'pulse 1.5s infinite' : 'none',
-                  }}
-                  title={isListening ? "🔴 Arrêter la dictée" : "🎤 Commencer la dictée"}
-                >
-                  {isListening ? (
-                    <div className="flex items-center justify-center">
-                      <MicOff size={16} />
-                      <div className="absolute w-3 h-3 bg-red-500 rounded-full animate-ping"></div>
-                    </div>
-                  ) : (
-                    <Mic size={16} />
-                  )}
-                </button>
-
-                {/* Bouton envoyer */}
-                <button
-                  onClick={handleSend}
-                  disabled={!input.trim() || isLoading}
-                  className="w-10 h-10 rounded-xl border-none transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95"
-                  style={{
-                    background: input.trim() && !isLoading
-                      ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
-                      : 'rgba(156, 163, 175, 0.5)',
-                    color: 'white',
-                    opacity: input.trim() && !isLoading ? 1 : 0.5,
-                    cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
+                minHeight: '44px',
+                maxHeight: '120px',
+              }}
+              rows={1}
+              disabled={isLoading}
+            />
+            
+              {/* Bouton envoyer */}
+              <div className="absolute right-3 bottom-3">
+            <button
+              onClick={handleSend}
+              disabled={!input.trim() || isLoading}
+                  className="w-9 h-9 rounded-xl border-none transition-all duration-300 flex items-center justify-center hover:scale-110 active:scale-95"
+              style={{
+                background: input.trim() && !isLoading
+                  ? 'linear-gradient(135deg, #10A37F 0%, #0D8A6B 100%)'
+                          : 'rgba(156, 163, 175, 0.5)',
+                color: 'white',
+                opacity: input.trim() && !isLoading ? 1 : 0.5,
+                cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
                     boxShadow: input.trim() && !isLoading ? '0 4px 12px rgba(16, 163, 127, 0.4)' : 'none',
-                  }}
-                  title={input.trim() ? "Envoyer le message" : "Tapez ou dictez votre message"}
-                >
-                  {isLoading ? (
+              }}
+                  title={input.trim() ? "Envoyer le message" : "Tapez votre message"}
+            >
+              {isLoading ? (
                     <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-                  ) : (
+              ) : (
                     <Send size={16} />
-                  )}
-                </button>
-              </div>
-            </div>
+              )}
+            </button>
+          </div>
+        </div>
           </div>
         </div>
       )}
 
       {/* Modal Historique des conversations */}
       {showHistory && (
-        <div 
+          <div 
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md"
-          style={{
+            style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -1459,7 +1344,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
         >
           <div 
             className="w-full max-w-md rounded-3xl shadow-2xl"
-            style={{
+                  style={{
               background: isDarkMode
                 ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.90) 100%)'
                 : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
@@ -1472,7 +1357,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
             {/* Header historique */}
             <div 
               className="p-4 border-b"
-              style={{
+                    style={{
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
               }}
             >
@@ -1483,14 +1368,14 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 <button
                   onClick={() => setShowHistory(false)}
                   className="p-2 rounded-full transition-all duration-300 hover:scale-110"
-                  style={{
+                          style={{
                     background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.6)',
                   }}
                 >
                   <X size={16} className={isDarkMode ? 'text-gray-300' : 'text-gray-600'} />
                 </button>
-              </div>
-            </div>
+                    </div>
+                    </div>
 
             {/* Liste des conversations */}
             <div className="p-4">
@@ -1510,10 +1395,10 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                         <div className="flex-1">
                           <h4 className={`font-semibold text-sm mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                             {conversation.title}
-                          </h4>
+                        </h4>
                           <p className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                             {new Date(conversation.timestamp).toLocaleDateString()} - {conversation.messages.length} messages
-                          </p>
+                        </p>
                         </div>
                         <button
                           onClick={(e) => {
@@ -1521,14 +1406,14 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                             deleteFromHistory(conversation.id)
                           }}
                           className="p-1 rounded-full transition-all duration-300 hover:scale-110 opacity-0 group-hover:opacity-100"
-                          style={{
+                        style={{
                             background: 'rgba(239, 68, 68, 0.8)',
-                          }}
+                        }}
                         >
                           <X size={12} className="text-white" />
                         </button>
-                      </div>
-                    </div>
+                  </div>
+              </div>
                   ))}
                 </div>
               ) : (
@@ -1540,35 +1425,40 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
                 </div>
               )}
             </div>
+            </div>
           </div>
-        </div>
-      )}
+        )}
 
-      {/* Page dédiée pour les suggestions - PARFAITEMENT CENTRÉE */}
+      {/* Page dédiée pour les suggestions - ADAPTÉE À LA POSITION */}
         {showDetailPage && selectedSuggestion && (
         <div 
           className="fixed inset-0 z-50 bg-black/50 backdrop-blur-md"
           style={{
             display: 'flex',
-            alignItems: 'center',
+            alignItems: 'flex-start',
             justifyContent: 'center',
-            padding: '20px',
+            padding: '20px 10px',
             height: '100vh',
             width: '100vw',
+            overflowY: 'auto',
+            WebkitOverflowScrolling: 'touch',
+            paddingTop: '10vh', // Position fixe depuis le haut
           }}
         >
           <div 
-            className="w-full max-w-lg rounded-3xl shadow-2xl"
+            className="w-full max-w-md rounded-3xl shadow-2xl modal-detail-page"
               style={{
                 background: isDarkMode
                   ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.90) 100%)'
                   : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.90) 100%)',
                 backdropFilter: 'blur(20px) saturate(150%)',
                 border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(209, 213, 219, 0.5)'}`,
-              maxHeight: '85vh', // Hauteur adaptée à l'écran
-              overflowY: 'auto',
-              WebkitOverflowScrolling: 'touch',
-              position: 'relative',
+                maxHeight: '90vh',
+                overflowY: 'auto',
+                WebkitOverflowScrolling: 'touch',
+                position: 'relative',
+                margin: 'auto',
+                animation: 'modal-appear 0.3s ease-out forwards'
               }}
             >
               {/* Header avec image */}
@@ -1719,42 +1609,7 @@ const MobileChatOptimized = ({ user, initialMessage, establishmentName }) => {
           </div>
         )}
 
-      {/* Styles CSS */}
-        <style jsx global>{`
-          .animate-fade-in-up {
-            animation: fadeInUp 0.3s ease-out;
-          }
-          
-          @keyframes fadeInUp {
-            from {
-              opacity: 0;
-              transform: translateY(20px);
-            }
-            to {
-              opacity: 1;
-              transform: translateY(0);
-            }
-          }
-          
-          .jsx-maximized-suggestions {
-            max-height: calc(100vh - 180px) !important;
-            overflow: visible !important;
-          }
-          
-          @media (max-width: 768px) {
-            .jsx-maximized-suggestions {
-              grid-template-columns: repeat(3, 1fr) !important;
-              gap: 8px !important;
-              padding: 0 !important;
-            }
-          }
-          
-          .mobile-chat-container input,
-          .mobile-chat-container textarea {
-            font-size: 16px !important;
-            -webkit-appearance: none;
-          }
-        `}</style>
+
 
       <ToastContainer />
     </>

@@ -1009,9 +1009,16 @@ body.keyboard-open .mobile-messages-container {
     height: 280px !important;
     min-height: 280px !important;
     margin-bottom: 8px !important;
-    border-radius: 20px;
+    border-radius: 20px !important;
     overflow: hidden;
     position: relative;
+  }
+  
+  /* Assurer que toutes les bannières ont des coins arrondis */
+  .establishment-card,
+  .service-card {
+    border-radius: 20px !important;
+    overflow: hidden !important;
   }
   
   /* Correction des bandes noires/blanches selon le mode */
@@ -1030,39 +1037,73 @@ body.keyboard-open .mobile-messages-container {
 
   .uniform-banner .banner-content {
     padding: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    height: 100% !important;
   }
 
   .uniform-banner .banner-title {
-    font-size: 1.1rem !important;
+    font-size: 1.2rem !important;
     line-height: 1.3 !important;
     margin-bottom: 8px !important;
-    font-weight: 700;
+    font-weight: 700 !important;
+    color: white !important;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5) !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
   }
 
   .uniform-banner .banner-description {
     font-size: 0.9rem !important;
     line-height: 1.4 !important;
-    margin-bottom: 12px !important;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+    margin-bottom: 16px !important;
+    display: -webkit-box !important;
+    -webkit-line-clamp: 3 !important;
+    line-clamp: 3 !important;
+    -webkit-box-orient: vertical !important;
+    overflow: hidden !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5) !important;
+    flex-grow: 1 !important;
   }
 
-  .uniform-banner .banner-buttons {
+  .uniform-banner .banner-footer {
+    margin-top: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
     gap: 12px !important;
   }
 
+  .uniform-banner .banner-rating {
+    align-self: flex-start !important;
+    background: rgba(0, 0, 0, 0.3) !important;
+    padding: 4px 8px !important;
+    border-radius: 8px !important;
+    backdrop-filter: blur(10px) !important;
+  }
+
+  .uniform-banner .banner-buttons {
+    gap: 8px !important;
+    display: flex !important;
+    width: 100% !important;
+  }
+
   .uniform-banner .banner-button {
-    padding: 6px 12px !important;
-    font-size: 0.75rem !important;
-    font-weight: 600;
-    border-radius: 10px;
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    padding: 10px 16px !important;
+    font-size: 0.8rem !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    min-height: 40px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 1 !important;
+    text-align: center !important;
+    white-space: nowrap !important;
+    backdrop-filter: blur(15px) !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    transition: all 0.3s ease !important;
   }
   
   /* Réduire l'espacement des grilles sur mobile */

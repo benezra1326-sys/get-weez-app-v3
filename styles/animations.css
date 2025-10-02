@@ -1,0 +1,44 @@
+/* Animations pour Get Weez */
+@keyframes fadeInScale {
+  0% {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    box-shadow: 0 4px 20px rgba(139, 92, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 6px 25px rgba(139, 92, 246, 0.4);
+  }
+}
+
+@keyframes loading-bar {
+  0% {
+    width: 0%;
+    opacity: 0.6;
+  }
+  50% {
+    width: 70%;
+    opacity: 1;
+  }
+  100% {
+    width: 100%;
+    opacity: 0.8;
+  }
+}
+
+/* Classes utilitaires pour les animations */
+.animate-fade-in-scale {
+  animation: fadeInScale 2s ease-in-out infinite alternate, pulse 3s ease-in-out infinite;
+}
+
+.animate-loading-bar {
+  animation: loading-bar 1.5s ease-in-out infinite;
+}

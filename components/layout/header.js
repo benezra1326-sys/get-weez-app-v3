@@ -2,7 +2,6 @@ import { Menu, Crown, User, LogIn, UserPlus, Sun, Moon } from 'lucide-react'
 import Link from 'next/link'
 import { useState, memo, useCallback } from 'react'
 import { useRouter } from 'next/router'
-import LanguageSelector from '../LanguageSelector'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import { usePreloader } from '../../lib/preloader'
 
@@ -231,7 +230,6 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>
         
-        <LanguageSelector />
         
         <div className="relative">
           {user ? (

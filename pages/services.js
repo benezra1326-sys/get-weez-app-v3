@@ -39,17 +39,8 @@ export default function Services({ user, setUser }) {
     loadServices()
   }, [])
 
-  // Ne pas rendre avant que le thème soit chargé
-  if (!isLoaded) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' }}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
-        </div>
-      </div>
-    )
-  }
+  // Simplifier temporairement - ne pas attendre le thème
+  const isDarkModeSafe = isLoaded ? isDarkMode : false
 
   // Fonction de recherche et filtrage
   const handleSearch = (query) => {
@@ -112,7 +103,7 @@ export default function Services({ user, setUser }) {
           minHeight: '100vh', 
           margin: 0, 
           padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
+          backgroundColor: isDarkModeSafe ? '#0D0D0D' : '#FFFFFF',
           maxWidth: 'none'
         }}
     >
@@ -184,11 +175,25 @@ export default function Services({ user, setUser }) {
               </div>
             </div>
 
-            {/* Filtre par catégorie */}
-            <div className="mb-8 filters-section" style={{ position: 'relative', zIndex: 10 }}>
+            {/* Filtre par catégorie - AMÉLIORÉ POUR MOBILE */}
+            <div 
+              className="mb-8 filters-section" 
+              style={{ 
+                position: 'relative', 
+                zIndex: 10,
+                backgroundColor: isDarkModeSafe ? 'rgba(31, 41, 55, 0.98) !important' : 'rgba(255, 255, 255, 0.95) !important',
+                borderRadius: '16px',
+                padding: '24px',
+                border: `1px solid ${isDarkModeSafe ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`,
+                backdropFilter: 'blur(20px)',
+                boxShadow: isDarkModeSafe 
+                  ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                  : '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
+              }}
+            >
               <h2 
                 className="text-2xl font-bold mb-4 flex items-center"
-                style={{ color: isDarkMode ? '#F9FAFB' : '#1F2937' }}
+                style={{ color: isDarkModeSafe ? '#FFFFFF !important' : '#1F2937 !important' }}
               >
                 <span className="mr-3">🏷️</span>
                 Filtres par Catégorie
@@ -196,9 +201,9 @@ export default function Services({ user, setUser }) {
               <div 
                 className="backdrop-blur-md rounded-2xl p-6 border"
                 style={{ 
-                  backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-                  borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
-                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
+                  backgroundColor: isDarkModeSafe ? 'rgba(31, 41, 55, 0.98) !important' : 'rgba(255, 255, 255, 0.95)',
+                  borderColor: isDarkModeSafe ? 'rgba(75, 85, 99, 0.5) !important' : 'rgba(139, 92, 246, 0.5)',
+                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3) !important',
                   position: 'relative',
                   zIndex: 10
                 }}

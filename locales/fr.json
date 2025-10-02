@@ -1,0 +1,166 @@
+{
+  "common": {
+    "loading": "Chargement...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "close": "Fermer",
+    "search": "Rechercher",
+    "filter": "Filtrer",
+    "clear": "Effacer",
+    "back": "Retour",
+    "next": "Suivant",
+    "previous": "Précédent",
+    "yes": "Oui",
+    "no": "Non",
+    "ok": "OK",
+    "error": "Erreur",
+    "success": "Succès",
+    "warning": "Attention",
+    "info": "Information"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "account": "Mon compte",
+    "settings": "Réglages",
+    "help": "Aide",
+    "establishments": "Établissements",
+    "services": "Services",
+    "events": "Événements"
+  },
+  "account": {
+    "title": "Mon Compte",
+    "subtitle": "Profil et préférences",
+    "language": {
+      "title": "Langue",
+      "subtitle": "Choisir votre langue préférée",
+      "auto_detect": "Détection automatique",
+      "manual_select": "Sélection manuelle"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "subtitle": "Gérer vos notifications",
+      "requests": "Demandes",
+      "suggestions": "Suggestions",
+      "reminders": "Rappels",
+      "marketing": "Marketing",
+      "push": "Notifications push",
+      "email": "Notifications email",
+      "sms": "Notifications SMS"
+    },
+    "preferences": {
+      "title": "Préférences",
+      "subtitle": "Personnaliser votre expérience",
+      "priority_services": "Services prioritaires",
+      "budget": "Budget préféré",
+      "schedule": "Horaires préférés",
+      "cuisine_types": "Types de cuisine",
+      "activity_level": "Niveau d'activité"
+    },
+    "payment": {
+      "title": "Compte & Paiement",
+      "subtitle": "Gérer vos moyens de paiement",
+      "payment_methods": "Moyens de paiement",
+      "history": "Historique",
+      "subscription": "Abonnement",
+      "billing": "Facturation",
+      "add_card": "Ajouter une carte",
+      "default_payment": "Paiement par défaut"
+    },
+    "chat_history": {
+      "title": "Historique des Conversations",
+      "subtitle": "Retrouvez vos échanges avec l'IA",
+      "search_placeholder": "Rechercher dans les conversations...",
+      "categories": {
+        "all": "Toutes",
+        "travel": "Voyage",
+        "restaurant": "Restaurant",
+        "health": "Santé",
+        "entertainment": "Divertissement",
+        "shopping": "Shopping",
+        "transport": "Transport"
+      },
+      "pin": "Épingler",
+      "unpin": "Désépingler",
+      "delete": "Supprimer la conversation"
+    }
+  },
+  "settings": {
+    "title": "Réglages",
+    "subtitle": "Configuration de l'application",
+    "appearance": {
+      "title": "Apparence",
+      "subtitle": "Thème et affichage",
+      "theme": "Thème",
+      "light": "Clair",
+      "dark": "Sombre",
+      "auto": "Automatique"
+    },
+    "permissions": {
+      "title": "Permissions",
+      "subtitle": "Gérer les autorisations",
+      "microphone": "Microphone",
+      "location": "Géolocalisation",
+      "notifications": "Notifications",
+      "camera": "Caméra"
+    },
+    "performance": {
+      "title": "Performance",
+      "subtitle": "Optimiser l'application",
+      "clear_cache": "Vider le cache",
+      "manage_storage": "Gérer le stockage",
+      "offline_mode": "Mode hors ligne"
+    },
+    "privacy": {
+      "title": "Confidentialité",
+      "subtitle": "Protéger vos données",
+      "delete_history": "Supprimer l'historique",
+      "reset_app": "Réinitialiser l'app",
+      "terms": "Conditions d'utilisation",
+      "privacy_policy": "Politique de confidentialité"
+    },
+    "security": {
+      "title": "Sécurité",
+      "subtitle": "Protéger votre compte",
+      "two_factor": "Authentification à deux facteurs",
+      "sessions": "Gérer les sessions",
+      "change_password": "Changer le mot de passe"
+    },
+    "about": {
+      "title": "À propos",
+      "version": "Version de l'application",
+      "build": "Build"
+    }
+  },
+  "help": {
+    "title": "Centre d'Aide",
+    "subtitle": "Trouvez des réponses à vos questions",
+    "search_placeholder": "Rechercher dans l'aide...",
+    "faq": {
+      "title": "Questions Fréquentes",
+      "general": "Général",
+      "account": "Compte",
+      "payments": "Paiements",
+      "technical": "Technique"
+    },
+    "tutorials": {
+      "title": "Tutoriels",
+      "getting_started": "Premiers pas",
+      "advanced": "Fonctions avancées"
+    },
+    "contact": {
+      "title": "Contacter le Support",
+      "chat": "Chat en direct",
+      "email": "Email",
+      "form": "Formulaire de contact",
+      "phone": "Téléphone"
+    },
+    "status": {
+      "title": "Statut du Service",
+      "operational": "Opérationnel",
+      "maintenance": "Maintenance",
+      "issues": "Problèmes signalés"
+    }
+  }
+}

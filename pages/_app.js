@@ -1,5 +1,8 @@
 import { appWithTranslation } from 'next-i18next'
 import '../styles/globals.css'
+import '../styles/animations.css'
+import '../styles/mobile-chat.css'
+import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'

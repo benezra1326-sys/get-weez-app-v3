@@ -253,6 +253,49 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
             transform: translateY(-1px);
           }
         }
+        
+        /* Mobile optimizations - Bannières légèrement plus petites */
+        @media (max-width: 768px) {
+          .banner-container {
+            padding: 0 12px;
+          }
+          
+          .banner-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+          }
+          
+          .banner-card {
+            height: 420px; /* Réduit de 480px à 420px */
+            max-width: 100%;
+          }
+          
+          .banner-image {
+            height: 160px; /* Réduit de 176px à 160px */
+          }
+          
+          .banner-title {
+            font-size: 1rem; /* Réduit de 1.1rem */
+            margin-bottom: 6px;
+          }
+          
+          .banner-text {
+            font-size: 0.8rem; /* Réduit de 0.85rem */
+            margin-bottom: 10px;
+            -webkit-line-clamp: 2; /* Réduit de 3 à 2 lignes */
+          }
+          
+          .banner-info {
+            font-size: 0.7rem; /* Réduit de 0.75rem */
+            margin-bottom: 10px;
+          }
+          
+          .banner-button {
+            padding: 0.4rem 0.7rem; /* Réduit légèrement */
+            font-size: 0.75rem; /* Réduit de 0.8rem */
+          }
+        }
       `}</style>
       
       <div className="banner-container">
@@ -272,7 +315,7 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
             return (
               <div 
                 key={event.id}
-                className="banner-card group relative overflow-hidden rounded-3xl border shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 cursor-pointer"
+                className="banner-card group relative overflow-hidden rounded-3xl border shadow-xl hover:shadow-2xl transition-all duration-500 md:hover:scale-105 cursor-pointer"
                 style={{ 
                   background: typeColors[event.type] || 'linear-gradient(135deg, #6B7280, #4B5563)',
                   borderColor: 'rgba(255, 255, 255, 0.2)',
@@ -281,11 +324,11 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
                 onClick={() => setSelectedEvent(event)}
               >
                 {/* Image de l'événement - Plus compacte */}
-                <div className="relative h-44 overflow-hidden flex-shrink-0">
+                <div className="relative h-40 overflow-hidden flex-shrink-0">
                   <img 
                     src={event.image_url} 
                     alt={event.name}
-                    className="banner-image w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                    className="banner-image w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-105"
                     style={{
                       display: 'block',
                       verticalAlign: 'top',

@@ -11,8 +11,6 @@ import {
   Sparkles, 
   MessageCircle, 
   MapPin, 
-  Mic, 
-  Volume2, 
   History,
   X,
   ArrowRight,
@@ -76,6 +74,7 @@ const Home = memo(({ user, setUser }) => {
     }
   }
 
+
   // Récupérer le message de réservation depuis les query parameters
   const reservationMessage = router.query.message
   const establishmentName = router.query.establishment
@@ -86,130 +85,219 @@ const Home = memo(({ user, setUser }) => {
       <div 
         className="w-full min-h-screen flex items-center justify-center" 
         style={{ 
-          backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
+          backgroundColor: isDarkMode ? '#0A0A0F' : '#FAFAFA',
           background: isDarkMode 
-            ? 'linear-gradient(135deg, #000000 0%, #1a1a2e 50%, #16213e 100%)'
-            : 'linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%)'
+            ? 'radial-gradient(ellipse at center, #1a1a2e 0%, #0A0A0F 100%)'
+            : 'radial-gradient(ellipse at center, #f8fafc 0%, #FAFAFA 100%)'
         }}
       >
         <div className="text-center">
-          {/* Logo Get Weez animé */}
-          <div className="relative mb-8">
-            {/* Cercle de fond avec animation de pulsation */}
-            <div 
-              className="absolute inset-0 rounded-full animate-ping"
-              style={{
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)',
-                width: '120px',
-                height: '120px',
-                margin: '0 auto',
-                opacity: 0.3
-              }}
-            />
+          {/* Loader discret avec sparkling */}
+          <div className="relative mb-6">
+            {/* Sparkling subtils */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              {/* Sparkles flottants */}
+              <div 
+                className="absolute w-1 h-1 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(139, 92, 246, 0.8)',
+                  top: '20%',
+                  left: '30%',
+                  animation: 'sparkle-float 3s ease-in-out infinite',
+                  boxShadow: isDarkMode ? '0 0 6px rgba(255, 255, 255, 0.6)' : '0 0 6px rgba(139, 92, 246, 0.6)'
+                }}
+              />
+              <div 
+                className="absolute w-1 h-1 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(59, 130, 246, 0.6)',
+                  top: '60%',
+                  right: '25%',
+                  animation: 'sparkle-float 3s ease-in-out infinite 1s',
+                  boxShadow: isDarkMode ? '0 0 4px rgba(255, 255, 255, 0.4)' : '0 0 4px rgba(59, 130, 246, 0.4)'
+                }}
+              />
+              <div 
+                className="absolute w-0.5 h-0.5 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(6, 182, 212, 0.4)',
+                  bottom: '30%',
+                  left: '60%',
+                  animation: 'sparkle-float 3s ease-in-out infinite 2s',
+                  boxShadow: isDarkMode ? '0 0 3px rgba(255, 255, 255, 0.3)' : '0 0 3px rgba(6, 182, 212, 0.3)'
+                }}
+              />
+              <div 
+                className="absolute w-0.5 h-0.5 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(139, 92, 246, 0.5)',
+                  top: '40%',
+                  right: '40%',
+                  animation: 'sparkle-float 3s ease-in-out infinite 0.5s',
+                  boxShadow: isDarkMode ? '0 0 3px rgba(255, 255, 255, 0.3)' : '0 0 3px rgba(139, 92, 246, 0.3)'
+                }}
+              />
+            </div>
             
-            {/* Logo principal avec rotation */}
+            {/* Cercle principal discret */}
             <div 
-              className="relative rounded-full flex items-center justify-center mx-auto animate-spin"
+              className="relative w-8 h-8 mx-auto"
               style={{
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)',
-                width: '100px',
-                height: '100px',
-                boxShadow: '0 20px 40px rgba(139, 92, 246, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.1)',
-                animation: 'spin 2s linear infinite, pulse 2s ease-in-out infinite'
+                borderRadius: '50%',
+                background: isDarkMode 
+                  ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)'
+                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
+                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(139, 92, 246, 0.2)'}`,
+                animation: 'gentle-pulse 2s ease-in-out infinite',
+                backdropFilter: 'blur(10px)'
               }}
             >
-              {/* Icône MessageCircle au centre */}
-              <MessageCircle size={40} className="text-white drop-shadow-lg" />
-              
-              {/* Éclats de magie autour du logo */}
-              <div className="absolute -top-2 -right-2">
-                <Sparkles 
-                  size={16} 
-                  className="text-yellow-300 animate-pulse drop-shadow-lg" 
-                  style={{ animation: 'bounce 1s ease-in-out infinite' }}
-                />
-              </div>
-              <div className="absolute -bottom-1 -left-1">
-                <Sparkles 
-                  size={12} 
-                  className="text-yellow-400 animate-pulse drop-shadow-lg" 
-                  style={{ animation: 'bounce 1.5s ease-in-out infinite' }}
-                />
-              </div>
-              <div className="absolute top-1 -left-2">
-                <Sparkles 
-                  size={10} 
-                  className="text-yellow-500 animate-pulse drop-shadow-lg" 
-                  style={{ animation: 'bounce 2s ease-in-out infinite' }}
-                />
-              </div>
+              {/* Point central */}
+              <div 
+                className="absolute inset-2 rounded-full"
+                style={{
+                  background: isDarkMode 
+                    ? 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%)'
+                    : 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)',
+                  animation: 'gentle-glow 2s ease-in-out infinite'
+                }}
+              />
             </div>
           </div>
           
-          {/* Texte de chargement avec animation */}
-          <div className="space-y-2">
-            <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-              Get Weez
+          {/* Texte discret */}
+          <div className="space-y-3">
+            <h2 
+              className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
+              style={{
+                opacity: 0.8
+              }}
+            >
+              Préparation...
             </h2>
-            <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              Chargement de votre expérience Marbella...
-            </p>
             
-            {/* Barre de progression animée */}
-            <div className="w-48 h-1 bg-gray-200 rounded-full mx-auto mt-4 overflow-hidden">
+            {/* Points de progression discrets */}
+            <div className="flex justify-center space-x-1">
               <div 
-                className="h-full rounded-full animate-pulse"
+                className="w-1 h-1 rounded-full"
                 style={{
-                  background: 'linear-gradient(90deg, #8B5CF6 0%, #A855F7 50%, #C084FC 100%)',
-                  animation: 'loading-bar 2s ease-in-out infinite'
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(139, 92, 246, 0.4)',
+                  animation: 'dot-pulse 1.5s ease-in-out infinite'
+                }}
+              />
+              <div 
+                className="w-1 h-1 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(59, 130, 246, 0.4)',
+                  animation: 'dot-pulse 1.5s ease-in-out infinite 0.3s'
+                }}
+              />
+              <div 
+                className="w-1 h-1 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(6, 182, 212, 0.4)',
+                  animation: 'dot-pulse 1.5s ease-in-out infinite 0.6s'
                 }}
               />
             </div>
           </div>
         </div>
         
-        {/* Styles CSS pour les animations personnalisées */}
+        {/* Styles CSS pour les animations modernes */}
         <style jsx>{`
-          @keyframes loading-bar {
-            0% { width: 0%; }
-            50% { width: 70%; }
-            100% { width: 100%; }
+          @keyframes pulse-modern {
+            0%, 100% {
+              transform: scale(1);
+              box-shadow: 0 0 40px rgba(139, 92, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2);
+            }
+            50% {
+              transform: scale(1.05);
+              box-shadow: 0 0 60px rgba(139, 92, 246, 0.6), 0 0 120px rgba(59, 130, 246, 0.3);
+            }
           }
           
-          @keyframes bounce {
-            0%, 100% { transform: translateY(0) scale(1); }
-            50% { transform: translateY(-10px) scale(1.1); }
+          @keyframes rotate {
+            from {
+              transform: rotate(0deg);
+            }
+            to {
+              transform: rotate(360deg);
+            }
+          }
+          
+          @keyframes float {
+            0%, 100% {
+              transform: translateY(0px);
+            }
+            50% {
+              transform: translateY(-8px);
+            }
+          }
+          
+          @keyframes loading-progress {
+            0% {
+              width: 0%;
+              opacity: 0.8;
+            }
+            50% {
+              width: 70%;
+              opacity: 1;
+            }
+            100% {
+              width: 100%;
+              opacity: 0.8;
+            }
           }
         `}</style>
       </div>
     )
   }
 
-  // Données du popup d'introduction
+  // Données du popup d'introduction - Version interactive et ludique
   const introSteps = [
     {
-      icon: <Sparkles size={48} className="text-purple-500" />,
-      title: "Bienvenue sur Get Weez",
-      description: "Votre assistant personnel pour découvrir les meilleures expériences à Marbella",
-      features: ["🎯 Recommandations personnalisées", "🗺️ Géolocalisation intelligente", "💬 Chat en temps réel"]
+      icon: <Sparkles size={48} className="text-purple-500 animate-pulse" />,
+      title: "✨ Bienvenue sur Get Weez !",
+      description: "Votre assistant IA personnel pour vivre Marbella comme un local ! 🏖️",
+      features: [
+        "🎯 Recommandations ultra-personnalisées basées sur vos goûts",
+        "🤖 IA qui apprend de vos préférences",
+        "⚡ Réponses instantanées 24h/7j"
+      ],
+      tip: "💡 Astuce : Plus vous chattez, plus je vous comprends !"
     },
     {
-      icon: <MessageCircle size={48} className="text-blue-500" />,
-      title: "Chat Intelligent",
-      description: "Posez vos questions et obtenez des réponses instantanées",
-      features: ["🎤 Dictée vocale", "🔊 Réponse vocale", "📚 Historique des conversations"]
+      icon: <MessageCircle size={48} className="text-blue-500 animate-bounce" />,
+      title: "💬 Chat Intelligent & Intuitif",
+      description: "Discutez naturellement, je comprends tout ! 🧠",
+      features: [
+        "🗣️ Parlez-moi comme à un ami local",
+        "📚 Historique de toutes vos conversations",
+        "🔄 Suggestions automatiques intelligentes"
+      ],
+      tip: "🎯 Essayez : 'Trouve-moi un resto romantique pour ce soir !'"
     },
     {
-      icon: <MapPin size={48} className="text-green-500" />,
-      title: "Géolocalisation",
-      description: "Découvrez les meilleurs endroits près de vous",
-      features: ["📍 Détection automatique de zone", "🏆 Établissements premium", "⭐ Avis et recommandations"]
+      icon: <MapPin size={48} className="text-green-500 animate-pulse" />,
+      title: "🗺️ Géolocalisation Magique",
+      description: "Je connais Marbella comme ma poche ! 📍",
+      features: [
+        "📍 Détection automatique de votre position",
+        "🏆 Sélection des meilleurs établissements premium",
+        "⭐ Avis authentiques et photos exclusives"
+      ],
+      tip: "🚀 Je peux même vous dire le temps d'attente en temps réel !"
     },
     {
-      icon: <Heart size={48} className="text-red-500" />,
-      title: "Expériences Exclusives",
-      description: "Accédez aux meilleures expériences de Marbella",
-      features: ["🍽️ Restaurants gastronomiques", "🏨 Hôtels de luxe", "🎉 Événements VIP"]
+      icon: <Heart size={48} className="text-red-500 animate-pulse" />,
+      title: "🌟 Expériences VIP Exclusives",
+      description: "Accès privilégié aux perles cachées de Marbella ! 💎",
+      features: [
+        "🍽️ Tables dans les restaurants les plus demandés",
+        "🏨 Suites d'hôtels avec vue mer garantie",
+        "🎉 Événements privés et soirées exclusives"
+      ],
+      tip: "🎭 Membre Get Weez = Traitement VIP partout !"
     }
   ]
 
@@ -227,10 +315,17 @@ const Home = memo(({ user, setUser }) => {
       {/* Popup d'introduction - Petit en bas */}
       {showIntroModal && (
         <div 
-          className="fixed bottom-4 right-4 z-50"
+          className="fixed z-50"
           style={{
+            bottom: '80px',
+            right: '20px',
             width: '320px',
-            maxHeight: '400px'
+            maxHeight: '400px',
+            // Sur desktop, positionner plus haut
+            '@media (min-width: 768px)': {
+              bottom: '120px',
+              right: '40px'
+            }
           }}
         >
           <div 
@@ -244,67 +339,123 @@ const Home = memo(({ user, setUser }) => {
               boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)'
             }}
           >
-            {/* Header du popup */}
+            {/* Header du popup AMÉLIORÉ */}
             <div 
               className="p-4 text-center border-b"
               style={{
-                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(139, 92, 246, 0.2)',
+                background: isDarkMode 
+                  ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
+                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%)',
               }}
             >
               <div className="flex justify-center mb-3">
-                {introSteps[currentStep].icon}
+                <div 
+                  className="p-3 rounded-2xl"
+                  style={{
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)'
+                      : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
+                    border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+                  }}
+                >
+                  {introSteps[currentStep].icon}
+                </div>
               </div>
-              <h2 className={`text-lg font-bold mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+              <h2 className={`text-lg font-bold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 {introSteps[currentStep].title}
               </h2>
-              <p className={`text-xs ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 {introSteps[currentStep].description}
               </p>
             </div>
 
-            {/* Contenu du popup */}
+            {/* Contenu du popup AMÉLIORÉ */}
             <div className="p-4">
-              <div className="space-y-2 mb-4">
+              <div className="space-y-3 mb-4">
                 {introSteps[currentStep].features.map((feature, index) => (
                   <div 
                     key={index}
-                    className="flex items-center space-x-2 p-2 rounded-lg transition-all duration-300 hover:scale-105"
+                    className="flex items-center space-x-3 p-3 rounded-xl transition-all duration-300 hover:scale-105 hover:-translate-y-1"
                     style={{
-                      background: isDarkMode ? 'rgba(55, 65, 81, 0.4)' : 'rgba(248, 250, 252, 0.8)',
+                      background: isDarkMode 
+                        ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.6) 0%, rgba(31, 41, 55, 0.4) 100%)'
+                        : 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%)',
+                      border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(139, 92, 246, 0.15)'}`,
+                      boxShadow: isDarkMode 
+                        ? '0 2px 8px rgba(0, 0, 0, 0.1)'
+                        : '0 2px 8px rgba(139, 92, 246, 0.1)',
                     }}
                   >
-                    <span className="text-sm">{feature}</span>
+                    <div 
+                      className="w-2 h-2 rounded-full animate-pulse"
+                      style={{
+                        background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+                      }}
+                    />
+                    <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
+                      {feature}
+                    </span>
                   </div>
                 ))}
               </div>
 
-              {/* Indicateurs de progression */}
-              <div className="flex justify-center space-x-1 mb-4">
+              {/* Astuce interactive */}
+              {introSteps[currentStep].tip && (
+                <div 
+                  className="mb-4 p-3 rounded-xl animate-pulse"
+                  style={{
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%)'
+                      : 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.08) 100%)',
+                    border: `1px solid ${isDarkMode ? 'rgba(245, 158, 11, 0.3)' : 'rgba(245, 158, 11, 0.2)'}`,
+                  }}
+                >
+                  <p className={`text-sm font-medium ${isDarkMode ? 'text-amber-200' : 'text-amber-800'}`}>
+                    {introSteps[currentStep].tip}
+                  </p>
+                </div>
+              )}
+
+              {/* Indicateurs de progression AMÉLIORÉS */}
+              <div className="flex justify-center space-x-2 mb-4">
                 {introSteps.map((_, index) => (
                   <div
                     key={index}
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${
                       index === currentStep 
-                        ? 'bg-purple-500 scale-125' 
-                        : isDarkMode ? 'bg-gray-600' : 'bg-gray-400'
+                        ? 'scale-125' 
+                        : 'opacity-50'
                     }`}
+                    style={{
+                      background: index === currentStep 
+                        ? 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)'
+                        : isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(156, 163, 175, 0.6)',
+                      boxShadow: index === currentStep 
+                        ? '0 0 8px rgba(139, 92, 246, 0.4)'
+                        : 'none'
+                    }}
                   />
                 ))}
               </div>
 
-              {/* Boutons de navigation */}
+
+              {/* Boutons de navigation AMÉLIORÉS */}
               <div className="flex justify-between items-center">
                 <button
                   onClick={prevStep}
                   disabled={currentStep === 0}
-                  className={`px-3 py-1.5 rounded-lg text-xs transition-all duration-300 ${
+                  className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 ${
                     currentStep === 0
                       ? 'opacity-50 cursor-not-allowed'
                       : 'hover:scale-105 active:scale-95'
                   }`}
                   style={{
-                    background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-                    color: isDarkMode ? '#d1d5db' : '#4b5563'
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.6) 0%, rgba(55, 65, 81, 0.4) 100%)'
+                      : 'linear-gradient(135deg, rgba(243, 244, 246, 0.8) 0%, rgba(229, 231, 235, 0.6) 100%)',
+                    color: isDarkMode ? '#d1d5db' : '#4b5563',
+                    border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
                   }}
                 >
                   Précédent
@@ -313,10 +464,13 @@ const Home = memo(({ user, setUser }) => {
                 {/* Bouton passer */}
                 <button
                   onClick={closeIntroModal}
-                  className="px-3 py-1.5 rounded-lg text-xs transition-all duration-300 hover:scale-105 active:scale-95"
+                  className="px-4 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95"
                   style={{
-                    background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-                    color: isDarkMode ? '#d1d5db' : '#4b5563'
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.6) 0%, rgba(55, 65, 81, 0.4) 100%)'
+                      : 'linear-gradient(135deg, rgba(243, 244, 246, 0.8) 0%, rgba(229, 231, 235, 0.6) 100%)',
+                    color: isDarkMode ? '#d1d5db' : '#4b5563',
+                    border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.4)'}`,
                   }}
                 >
                   Passer
@@ -324,15 +478,16 @@ const Home = memo(({ user, setUser }) => {
 
                 <button
                   onClick={nextStep}
-                  className="px-4 py-1.5 rounded-lg text-xs transition-all duration-300 hover:scale-105 active:scale-95 flex items-center space-x-1"
+                  className="px-5 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 flex items-center space-x-2"
                   style={{
-                    background: 'linear-gradient(135deg, #8B5CF6 0%, #A855F7 100%)',
+                    background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
                     color: 'white',
-                    boxShadow: '0 2px 8px rgba(139, 92, 246, 0.4)'
+                    boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)',
+                    border: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
                   <span>{currentStep === 3 ? 'Commencer' : 'Suivant'}</span>
-                  {currentStep < 3 && <ArrowRight size={12} />}
+                  {currentStep < 3 && <ArrowRight size={14} />}
                 </button>
               </div>
             </div>

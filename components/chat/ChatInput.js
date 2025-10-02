@@ -14,26 +14,28 @@ export default function ChatInput({ onSendMessage, disabled, loading }) {
 
   return (
     <div className="p-4 border-t border-gray-700 bg-gray-800">
-      <form onSubmit={handleSubmit} className="flex gap-2">
-        <input
-          type="text"
-          value={inputMessage}
-          onChange={(e) => setInputMessage(e.target.value)}
-          placeholder={disabled ? "Devenez membre pour accéder au chat IA" : "Demandez une expérience à Marbella..."}
-          disabled={disabled}
-          className="flex-1 bg-gray-700 text-white rounded-full py-4 px-6 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
-        />
-        <button
-          type="submit"
-          disabled={disabled || loading || !inputMessage.trim()}
-          className="bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full p-4 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {loading ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
-          ) : (
-            <Send size={24} />
-          )}
-        </button>
+      <form onSubmit={handleSubmit} className="flex items-end gap-3">
+        <div className="flex-1 relative">
+          <input
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder={disabled ? "Devenez membre pour accéder au chat IA" : "Demandez une expérience à Marbella..."}
+            disabled={disabled}
+            className="w-full bg-gray-700 text-white rounded-full py-4 px-6 pr-16 focus:outline-none focus:ring-2 focus:ring-purple-500 disabled:opacity-50 disabled:cursor-not-allowed text-lg"
+          />
+          <button
+            type="submit"
+            disabled={disabled || loading || !inputMessage.trim()}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-gradient-to-r from-purple-500 to-pink-500 text-white rounded-full p-3 hover:from-purple-600 hover:to-pink-600 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            ) : (
+              <Send size={20} />
+            )}
+          </button>
+        </div>
       </form>
       <div className="text-xs text-gray-500 mt-3 text-center">
         {disabled ? 

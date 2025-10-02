@@ -85,11 +85,19 @@ export function useConversations() {
       month: 'short' 
     })
     
+    // Message de bienvenue automatique
+    const welcomeMessage = {
+      id: `welcome-${Date.now()}`,
+      content: "👋 Bonjour ! Je suis votre assistant Get Weez pour Marbella. Comment puis-je vous aider à organiser votre séjour de rêve ? Vous pouvez me demander des recommandations de restaurants, d'événements, d'activités ou toute autre information sur Marbella !",
+      role: 'assistant',
+      timestamp: new Date()
+    }
+
     const newConversation = {
       id: Date.now().toString(),
       name: `Chat du ${dateString} à ${timeString}`,
-      messages: [],
-      lastMessage: '',
+      messages: [welcomeMessage],
+      lastMessage: 'Bonjour ! Comment puis-je vous aider ?',
       createdAt: new Date().toISOString(),
       updatedAt: formatDate(new Date())
     }

@@ -1,0 +1,166 @@
+{
+  "common": {
+    "loading": "Cargando...",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "search": "Buscar",
+    "filter": "Filtrar",
+    "clear": "Limpiar",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "error": "Error",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "info": "Información"
+  },
+  "navigation": {
+    "home": "Inicio",
+    "account": "Mi Cuenta",
+    "settings": "Configuración",
+    "help": "Ayuda",
+    "establishments": "Establecimientos",
+    "services": "Servicios",
+    "events": "Eventos"
+  },
+  "account": {
+    "title": "Mi Cuenta",
+    "subtitle": "Perfil y preferencias",
+    "language": {
+      "title": "Idioma",
+      "subtitle": "Elige tu idioma preferido",
+      "auto_detect": "Detección automática",
+      "manual_select": "Selección manual"
+    },
+    "notifications": {
+      "title": "Notificaciones",
+      "subtitle": "Gestiona tus notificaciones",
+      "requests": "Solicitudes",
+      "suggestions": "Sugerencias",
+      "reminders": "Recordatorios",
+      "marketing": "Marketing",
+      "push": "Notificaciones push",
+      "email": "Notificaciones por email",
+      "sms": "Notificaciones SMS"
+    },
+    "preferences": {
+      "title": "Preferencias",
+      "subtitle": "Personaliza tu experiencia",
+      "priority_services": "Servicios prioritarios",
+      "budget": "Presupuesto preferido",
+      "schedule": "Horarios preferidos",
+      "cuisine_types": "Tipos de cocina",
+      "activity_level": "Nivel de actividad"
+    },
+    "payment": {
+      "title": "Cuenta y Pago",
+      "subtitle": "Gestiona tus métodos de pago",
+      "payment_methods": "Métodos de pago",
+      "history": "Historial",
+      "subscription": "Suscripción",
+      "billing": "Facturación",
+      "add_card": "Añadir tarjeta",
+      "default_payment": "Pago por defecto"
+    },
+    "chat_history": {
+      "title": "Historial de Conversaciones",
+      "subtitle": "Encuentra tus conversaciones con la IA",
+      "search_placeholder": "Buscar en conversaciones...",
+      "categories": {
+        "all": "Todas",
+        "travel": "Viaje",
+        "restaurant": "Restaurante",
+        "health": "Salud",
+        "entertainment": "Entretenimiento",
+        "shopping": "Compras",
+        "transport": "Transporte"
+      },
+      "pin": "Fijar",
+      "unpin": "Desfijar",
+      "delete": "Eliminar conversación"
+    }
+  },
+  "settings": {
+    "title": "Configuración",
+    "subtitle": "Configuración de la aplicación",
+    "appearance": {
+      "title": "Apariencia",
+      "subtitle": "Tema y visualización",
+      "theme": "Tema",
+      "light": "Claro",
+      "dark": "Oscuro",
+      "auto": "Automático"
+    },
+    "permissions": {
+      "title": "Permisos",
+      "subtitle": "Gestionar permisos",
+      "microphone": "Micrófono",
+      "location": "Ubicación",
+      "notifications": "Notificaciones",
+      "camera": "Cámara"
+    },
+    "performance": {
+      "title": "Rendimiento",
+      "subtitle": "Optimizar aplicación",
+      "clear_cache": "Limpiar caché",
+      "manage_storage": "Gestionar almacenamiento",
+      "offline_mode": "Modo sin conexión"
+    },
+    "privacy": {
+      "title": "Privacidad",
+      "subtitle": "Protege tus datos",
+      "delete_history": "Eliminar historial",
+      "reset_app": "Restablecer app",
+      "terms": "Términos de servicio",
+      "privacy_policy": "Política de privacidad"
+    },
+    "security": {
+      "title": "Seguridad",
+      "subtitle": "Protege tu cuenta",
+      "two_factor": "Autenticación de dos factores",
+      "sessions": "Gestionar sesiones",
+      "change_password": "Cambiar contraseña"
+    },
+    "about": {
+      "title": "Acerca de",
+      "version": "Versión de la app",
+      "build": "Build"
+    }
+  },
+  "help": {
+    "title": "Centro de Ayuda",
+    "subtitle": "Encuentra respuestas a tus preguntas",
+    "search_placeholder": "Buscar en ayuda...",
+    "faq": {
+      "title": "Preguntas Frecuentes",
+      "general": "General",
+      "account": "Cuenta",
+      "payments": "Pagos",
+      "technical": "Técnico"
+    },
+    "tutorials": {
+      "title": "Tutoriales",
+      "getting_started": "Primeros pasos",
+      "advanced": "Funciones avanzadas"
+    },
+    "contact": {
+      "title": "Contactar Soporte",
+      "chat": "Chat en vivo",
+      "email": "Email",
+      "form": "Formulario de contacto",
+      "phone": "Teléfono"
+    },
+    "status": {
+      "title": "Estado del Servicio",
+      "operational": "Operativo",
+      "maintenance": "Mantenimiento",
+      "issues": "Problemas reportados"
+    }
+  }
+}

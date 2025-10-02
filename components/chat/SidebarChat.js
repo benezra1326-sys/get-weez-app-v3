@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { Plus, MessageSquare, Trash2, Edit3, Check, X, Sparkles, Zap, Star, Bot, User } from 'lucide-react'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function SidebarChat({ 
   conversations, 
@@ -11,6 +12,15 @@ export default function SidebarChat({
 }) {
   const [editingId, setEditingId] = useState(null)
   const [editName, setEditName] = useState('')
+  
+  // Vérification de sécurité pour useTheme
+  let isDarkMode = true
+  try {
+    const theme = useTheme()
+    isDarkMode = theme.isDarkMode
+  } catch (error) {
+    console.warn('ThemeProvider not available, using dark mode as default')
+  }
 
   const handleRename = (id, currentName) => {
     setEditingId(id)
@@ -39,9 +49,22 @@ export default function SidebarChat({
   }
 
   return (
-    <div className="w-64 sm:w-72 lg:w-80 h-full flex flex-col min-w-0 bg-gray-900/80 backdrop-blur-md border-r border-gray-700">
+    <div 
+      className="w-64 sm:w-72 lg:w-80 h-full flex flex-col min-w-0 backdrop-blur-md border-r"
+      style={{
+        background: isDarkMode 
+          ? 'rgba(17, 24, 39, 0.8)' 
+          : 'rgba(255, 255, 255, 0.9)',
+        borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'
+      }}
+    >
       {/* Header */}
-      <div className="p-4 border-b border-gray-700">
+      <div 
+        className="p-4 border-b"
+        style={{
+          borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'
+        }}
+      >
         <button
           onClick={onNewConversation}
           className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-102 hover:shadow-md hover:shadow-purple-500/20 group"
@@ -80,11 +103,38 @@ export default function SidebarChat({
             return (
               <div
                 key={conversation.id}
-                className={`group relative rounded-xl p-3 cursor-pointer transition-all duration-300 transform hover:scale-105 ${
-                  isActive
-                    ? 'bg-gradient-to-r from-purple-600/20 to-indigo-600/20 border border-purple-500/30 shadow-lg shadow-purple-500/10'
-                    : 'hover:bg-gray-800/50 border border-transparent hover:border-gray-600/30'
-                }`}
+                className={`group relative rounded-xl p-3 cursor-pointer transition-all duration-300 transform hover:scale-105 border`}
+                style={{
+                  background: isActive
+                    ? isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%)'
+                      : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%)'
+                    : 'transparent',
+                  borderColor: isActive
+                    ? isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
+                    : 'transparent',
+                  boxShadow: isActive
+                    ? isDarkMode 
+                      ? '0 4px 20px rgba(139, 92, 246, 0.1)'
+                      : '0 2px 10px rgba(139, 92, 246, 0.1)'
+                    : 'none'
+                }}
+                onMouseEnter={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'rgba(55, 65, 81, 0.5)' 
+                      : 'rgba(243, 244, 246, 0.8)'
+                    e.currentTarget.style.borderColor = isDarkMode 
+                      ? 'rgba(75, 85, 99, 0.3)' 
+                      : 'rgba(209, 213, 219, 0.5)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.borderColor = 'transparent'
+                  }
+                }}
                 onClick={() => onSelectConversation(conversation.id)}
               >
                 <div className="flex items-start space-x-3">
@@ -120,13 +170,30 @@ export default function SidebarChat({
                       </div>
                     ) : (
                       <div>
-                        <h3 className={`text-sm font-semibold truncate mb-1 ${isActive ? 'text-white' : 'text-gray-200'}`}>
+                        <h3 
+                          className="text-sm font-semibold truncate mb-1"
+                          style={{
+                            color: isActive 
+                              ? isDarkMode ? '#FFFFFF' : '#1F2937'
+                              : isDarkMode ? '#E5E7EB' : '#374151'
+                          }}
+                        >
                           {conversation.name}
                         </h3>
-                        <p className="text-xs text-gray-400 truncate mb-1">
+                        <p 
+                          className="text-xs truncate mb-1"
+                          style={{
+                            color: isDarkMode ? '#9CA3AF' : '#6B7280'
+                          }}
+                        >
                           {conversation.lastMessage || 'Nouvelle conversation'}
                         </p>
-                        <p className="text-xs text-gray-500">
+                        <p 
+                          className="text-xs"
+                          style={{
+                            color: isDarkMode ? '#6B7280' : '#9CA3AF'
+                          }}
+                        >
                           {conversation.updatedAt}
                         </p>
                       </div>
@@ -134,27 +201,39 @@ export default function SidebarChat({
                 </div>
               </div>
 
-                {/* Actions (visible au hover) */}
+                {/* Actions élégantes (visible au hover) */}
                 {editingId !== conversation.id && (
-                  <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                    <div className="flex space-x-1">
+                  <div className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-x-3 group-hover:translate-x-0">
+                    <div 
+                      className="flex space-x-1.5 backdrop-blur-xl rounded-xl p-1.5 border shadow-xl"
+                      style={{
+                        background: isDarkMode 
+                          ? 'rgba(17, 24, 39, 0.95)' 
+                          : 'rgba(255, 255, 255, 0.95)',
+                        borderColor: isDarkMode 
+                          ? 'rgba(75, 85, 99, 0.5)' 
+                          : 'rgba(229, 231, 235, 0.8)'
+                      }}
+                    >
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
                           handleRename(conversation.id, conversation.name)
                         }}
-                        className="p-2 bg-blue-600/80 hover:bg-blue-600 text-white rounded-lg transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+                        className="group/btn p-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/40 hover:to-cyan-500/40 text-blue-300 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/25 border border-blue-500/20 hover:border-blue-400/40"
+                        title="Renommer la conversation"
                       >
-                        <Edit3 size={12} />
+                        <Edit3 size={11} className="transition-transform duration-300 group-hover/btn:rotate-12" />
                       </button>
                       <button
                         onClick={(e) => {
                           e.stopPropagation()
                           onDeleteConversation(conversation.id)
                         }}
-                        className="p-2 bg-red-600/80 hover:bg-red-600 text-white rounded-lg transition-all duration-200 hover:scale-110 backdrop-blur-sm"
+                        className="group/btn p-2 bg-gradient-to-r from-red-500/20 to-rose-500/20 hover:from-red-500/40 hover:to-rose-500/40 text-red-300 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-red-500/25 border border-red-500/20 hover:border-red-400/40"
+                        title="Supprimer la conversation"
                       >
-                        <Trash2 size={12} />
+                        <Trash2 size={11} className="transition-transform duration-300 group-hover/btn:scale-110" />
                       </button>
                     </div>
                   </div>

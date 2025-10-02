@@ -4,6 +4,7 @@ import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import EstablishmentList from '../components/establishments/EstablishmentList'
 import RestaurantStyleFilter from '../components/establishments/RestaurantStyleFilter'
+import CategoryFilter from '../components/establishments/CategoryFilter'
 import { EstablishmentSearchBar } from '../components/ui/SearchBar'
 import { useToast } from '../components/ui/Toast'
 import { supabase } from '../lib/supabase'
@@ -17,6 +18,7 @@ export default function Establishments({ user, setUser }) {
   const [filteredEstablishments, setFilteredEstablishments] = useState([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedStyle, setSelectedStyle] = useState(null)
+  const [selectedCategory, setSelectedCategory] = useState(null)
   const [isLoading, setIsLoading] = useState(true)
   const { showToast } = useToast()
   const { isDarkMode, isLoaded } = useTheme()
@@ -279,11 +281,25 @@ export default function Establishments({ user, setUser }) {
               </div>
             </div>
 
-            {/* Filtre par style */}
-            <div className="mb-8 filters-section" style={{ position: 'relative', zIndex: 10 }}>
+            {/* Filtre par style - FORCER LE MODE SOMBRE */}
+            <div 
+              className="mb-8 filters-section" 
+              style={{ 
+                position: 'relative', 
+                zIndex: 50,
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.98) !important' : 'rgba(255, 255, 255, 0.95) !important',
+                borderRadius: '16px',
+                padding: '24px',
+                border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`,
+                backdropFilter: 'blur(20px)',
+                boxShadow: isDarkMode 
+                  ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                  : '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
+              }}
+            >
               <h2 
                 className="text-2xl font-bold mb-4 flex items-center"
-                style={{ color: isDarkMode ? '#F9FAFB' : '#1F2937' }}
+                style={{ color: isDarkMode ? '#FFFFFF !important' : '#1F2937 !important' }}
               >
                 <span className="mr-3">🎨</span>
                 Filtres par Style
@@ -292,10 +308,12 @@ export default function Establishments({ user, setUser }) {
                 className="backdrop-blur-md rounded-2xl p-6 border"
                 style={{ 
                   backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-                  borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
-                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
+                  borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.8)' : 'rgba(139, 92, 246, 0.5)',
+                  boxShadow: isDarkMode 
+                    ? '0 8px 32px rgba(0, 0, 0, 0.3)'
+                    : '0 8px 32px rgba(139, 92, 246, 0.15)',
                   position: 'relative',
-                  zIndex: 10
+                  zIndex: 60
                 }}
               >
                 <RestaurantStyleFilter
@@ -305,7 +323,7 @@ export default function Establishments({ user, setUser }) {
               </div>
             </div>
 
-            <div className="establishments-list" style={{ position: 'relative', zIndex: 1 }}>
+            <div className="establishments-list" style={{ position: 'relative', zIndex: 5 }}>
               <EstablishmentList 
                 establishments={filteredEstablishments.length > 0 ? filteredEstablishments : establishments} 
                 user={user} 

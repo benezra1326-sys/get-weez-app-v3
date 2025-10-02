@@ -1,33 +1,29 @@
 import { useState } from 'react'
-import { restaurantStyles } from '../../data/marbella-data'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
-export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) {
+export default function CategoryFilter({ onCategoryChange, selectedCategory, categories }) {
   const [isOpen, setIsOpen] = useState(false)
   const { isDarkMode } = useTheme()
 
-  // Utiliser le vrai mode du thème
-  const forceDarkMode = isDarkMode
-
-  const handleStyleSelect = (styleKey) => {
-    onStyleChange(styleKey)
+  const handleCategorySelect = (categoryKey) => {
+    onCategoryChange(categoryKey)
     setIsOpen(false)
   }
 
   return (
-      <div className="relative">
-        <button
-          onClick={() => setIsOpen(!isOpen)}
+    <div className="relative">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
         className="flex items-center justify-between w-full px-4 py-3 rounded-xl transition-all duration-300"
         style={{
-          background: forceDarkMode 
+          background: isDarkMode 
             ? 'rgba(31, 41, 55, 0.95) !important'
             : 'rgba(255, 255, 255, 0.95) !important',
           border: '1px solid',
-          borderColor: forceDarkMode ? 'rgba(75, 85, 99, 0.8) !important' : 'rgba(139, 92, 246, 0.5)',
-          color: forceDarkMode ? '#FFFFFF !important' : '#1F2937',
+          borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.8) !important' : 'rgba(139, 92, 246, 0.5)',
+          color: isDarkMode ? '#FFFFFF !important' : '#1F2937',
           backdropFilter: 'blur(20px)',
-          boxShadow: forceDarkMode 
+          boxShadow: isDarkMode 
             ? '0 4px 20px rgba(0, 0, 0, 0.3)'
             : '0 4px 20px rgba(139, 92, 246, 0.15)',
         }}
@@ -47,13 +43,13 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
           e.target.style.boxShadow = 'none'
           e.target.style.transform = 'translateY(0)'
         }}
-        >
+      >
         <div className="flex items-center w-full">
           <span className="text-lg mr-3 flex-shrink-0">
-            {selectedStyle ? restaurantStyles[selectedStyle].icon : '🍽️'}
+            {selectedCategory ? categories[selectedCategory]?.icon : '📂'}
           </span>
           <span className="font-medium flex-1 text-left">
-            {selectedStyle ? restaurantStyles[selectedStyle].name : 'Tous les styles'}
+            {selectedCategory ? categories[selectedCategory]?.name : 'Toutes les catégories'}
           </span>
         </div>
         <svg
@@ -85,72 +81,70 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
         >
           <div className="p-3">
             <button
-              onClick={() => handleStyleSelect(null)}
+              onClick={() => handleCategorySelect(null)}
               className="w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200"
               style={{
-                background: !selectedStyle 
+                background: !selectedCategory 
                   ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
-                  : isDarkMode 
-                    ? 'transparent'
-                    : 'transparent',
-                color: !selectedStyle 
+                  : 'transparent',
+                color: !selectedCategory 
                   ? 'white'
                   : isDarkMode ? '#F3F4F6' : '#1F2937',
-                boxShadow: !selectedStyle ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none',
+                boxShadow: !selectedCategory ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none',
               }}
               onMouseEnter={(e) => {
-                if (!selectedStyle) return
+                if (!selectedCategory) return
                 e.target.style.transform = 'translateX(5px)'
                 e.target.style.background = isDarkMode 
                   ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
                   : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
               }}
               onMouseLeave={(e) => {
-                if (!selectedStyle) return
+                if (!selectedCategory) return
                 e.target.style.transform = 'translateX(0)'
                 e.target.style.background = 'transparent'
               }}
             >
-              <span className="text-lg mr-3">🍽️</span>
-              Tous les styles
+              <span className="text-lg mr-3">📂</span>
+              Toutes les catégories
             </button>
             
-            {Object.entries(restaurantStyles).map(([key, style]) => (
+            {Object.entries(categories).map(([key, category]) => (
               <button
                 key={key}
-                onClick={() => handleStyleSelect(key)}
+                onClick={() => handleCategorySelect(key)}
                 className="w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200"
                 style={{
-                  background: selectedStyle === key 
+                  background: selectedCategory === key 
                     ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
                     : 'transparent',
-                  color: selectedStyle === key 
+                  color: selectedCategory === key 
                     ? 'white'
                     : isDarkMode ? '#F3F4F6' : '#1F2937',
-                  boxShadow: selectedStyle === key ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none',
+                  boxShadow: selectedCategory === key ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none',
                 }}
                 onMouseEnter={(e) => {
-                  if (selectedStyle === key) return
+                  if (selectedCategory === key) return
                   e.target.style.transform = 'translateX(5px)'
                   e.target.style.background = isDarkMode 
                     ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
                     : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
                 }}
                 onMouseLeave={(e) => {
-                  if (selectedStyle === key) return
+                  if (selectedCategory === key) return
                   e.target.style.transform = 'translateX(0)'
                   e.target.style.background = 'transparent'
                 }}
               >
-                <span className="text-lg mr-3">{style.icon}</span>
+                <span className="text-lg mr-3">{category.icon}</span>
                 <div className="text-left">
-                  <div className="font-medium">{style.name}</div>
+                  <div className="font-medium">{category.name}</div>
                   <div className="text-xs" style={{ 
-                    color: selectedStyle === key 
+                    color: selectedCategory === key 
                       ? 'rgba(255, 255, 255, 0.8)'
                       : isDarkMode ? '#9CA3AF' : '#6B7280' 
                   }}>
-                    {style.description}
+                    {category.description}
                   </div>
                 </div>
               </button>

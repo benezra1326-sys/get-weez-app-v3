@@ -1,22 +1,20 @@
 import { useState } from 'react'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
-import AccountInfo from '../components/account/AccountInfo'
-import ChatHistory from '../components/account/ChatHistory'
-import Promotions from '../components/account/Promotions'
-import Referral from '../components/account/Referral'
-import Favorites from '../components/account/Favorites'
-import LanguageSettings from '../components/account/LanguageSettings'
-import SimpleNotificationSettings from '../components/account/SimpleNotificationSettings'
-import SimpleSettings from '../components/settings/SimpleSettings'
 import { useTheme, ThemeProvider } from '../contexts/ThemeContextSimple'
 
-function AccountContent({ user, setUser }) {
+// Import des composants de réglages
+import AppearanceSettings from '../components/settings/AppearanceSettings'
+import PermissionsSettings from '../components/settings/PermissionsSettings'
+import PerformanceSettings from '../components/settings/PerformanceSettings'
+import PrivacySettings from '../components/settings/PrivacySettings'
+import SecuritySettings from '../components/settings/SecuritySettings'
+import AboutSettings from '../components/settings/AboutSettings'
+
+function SettingsContent({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { isDarkMode, isLoaded } = useTheme()
 
-
-  // Ne pas rendre avant que le thème soit chargé
   if (!isLoaded) {
     return (
       <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' }}>
@@ -26,16 +24,6 @@ function AccountContent({ user, setUser }) {
         </div>
       </div>
     )
-  }
-
-  const handleBecomeMember = () => {
-    console.log('Become member clicked')
-    // TODO: intégrer logique Supabase (update users.is_member = true)
-  }
-
-  const handleReserve = () => {
-    console.log('Reserve clicked')
-    // TODO: intégrer logique réservation avec Supabase
   }
 
   const toggleMobileMenu = () => {
@@ -85,75 +73,59 @@ function AccountContent({ user, setUser }) {
           }}
         >
           <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-6">
-            {/* Header simplifié - PARFAITEMENT centré */}
+            {/* Header */}
             <div className="text-center mb-6 lg:mb-8">
               <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-2">
-                Mon Compte
+                Réglages
               </h1>
               <p className={`text-sm lg:text-base max-w-xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Profil et préférences
+                Configuration de l'application
               </p>
             </div>
 
-            {/* Sections principales - Grille responsive */}
+            {/* Grille des réglages */}
             <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
-              {/* Informations du compte */}
+              {/* Apparence */}
               <div className="w-full h-full flex flex-col">
-                <AccountInfo 
-                  user={user} 
-                  onBecomeMember={handleBecomeMember}
-                  onReserve={handleReserve}
-                />
+                <AppearanceSettings />
               </div>
 
-              {/* Historique des Conversations */}
+              {/* Permissions */}
               <div className="w-full h-full flex flex-col">
-                <ChatHistory user={user} />
+                <PermissionsSettings />
               </div>
 
-              {/* Langue */}
+              {/* Performance */}
               <div className="w-full h-full flex flex-col">
-                <LanguageSettings />
+                <PerformanceSettings />
               </div>
 
-              {/* Notifications */}
+              {/* Confidentialité */}
               <div className="w-full h-full flex flex-col lg:col-span-2 xl:col-span-1">
-                <SimpleNotificationSettings />
+                <PrivacySettings />
               </div>
 
-              {/* Réglages rapides */}
-              <div className="w-full h-full flex flex-col">
-                <SimpleSettings />
-              </div>
-
-              {/* Promotions */}
-              <div className="w-full h-full flex flex-col">
-                <Promotions user={user} />
-              </div>
-
-              {/* Inviter des amis (Parrainage) */}
+              {/* Sécurité */}
               <div className="w-full h-full flex flex-col lg:col-span-2 xl:col-span-2">
-                <Referral user={user} />
+                <SecuritySettings user={user} />
               </div>
 
-              {/* Favoris */}
+              {/* À propos */}
               <div className="w-full h-full flex flex-col lg:col-span-2 xl:col-span-3">
-                <Favorites user={user} />
+                <AboutSettings />
               </div>
             </div>
-
-
           </div>
-          </main>
+        </main>
       </div>
     </div>
   )
 }
 
-export default function Account({ user, setUser }) {
+export default function Settings({ user, setUser }) {
   return (
     <ThemeProvider>
-      <AccountContent user={user} setUser={setUser} />
+      <SettingsContent user={user} setUser={setUser} />
     </ThemeProvider>
   )
 }

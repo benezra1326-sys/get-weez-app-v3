@@ -1132,7 +1132,7 @@ body {
   height: 250px;
   min-height: 250px;
   max-height: 250px;
-  border-radius: 16px;
+  border-radius: 20px;
   overflow: hidden;
   position: relative;
   cursor: pointer;
@@ -1306,13 +1306,19 @@ body {
 .filters-section {
   position: relative !important;
   z-index: 20 !important;
-  background: rgba(255, 255, 255, 0.98) !important;
   backdrop-filter: blur(20px) !important;
   border-radius: 16px !important;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
   margin-bottom: 24px !important;
 }
 
+/* Mode clair par défaut */
+body:not(.dark) .filters-section {
+  background: rgba(255, 255, 255, 0.98) !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Mode sombre */
+body.dark .filters-section,
 [data-theme="dark"] .filters-section {
   background: rgba(31, 41, 55, 0.98) !important;
   box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2) !important;

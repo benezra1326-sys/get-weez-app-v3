@@ -4,7 +4,7 @@ import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 import SupportSection from '../components/account/SupportSection'
 import { useTheme } from '../contexts/ThemeContextSimple'
-import { ChevronDown, ChevronRight, Search, HelpCircle, FileText, Shield, CreditCard, MessageCircle, Phone, Mail, Clock, Star, Users, Zap } from 'lucide-react'
+import { ChevronDown, ChevronRight, Search, HelpCircle, FileText, Shield, CreditCard, MessageCircle, Phone, Mail, Clock, Star, Users, Zap, Sparkles, MessageCircle as ChatIcon, Calendar, MapPin, Award } from 'lucide-react'
 
 export default function Aide({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -202,16 +202,81 @@ export default function Aide({ user, setUser }) {
         user={user} 
       />
       
-      <main className="flex-1 overflow-y-auto" style={{ background: isDarkMode ? '#0D0D0D' : '#F9FAFB' }}>
+      <main className="flex-1 overflow-y-auto" style={{ 
+        background: isDarkMode 
+          ? 'radial-gradient(ellipse at top, #1a1a2e 0%, #0D0D0D 70%)'
+          : 'radial-gradient(ellipse at top, #f8fafc 0%, #F9FAFB 70%)'
+      }}>
           <div className="container mx-auto px-4 py-8">
-            {/* Header */}
-            <div className="text-center mb-12">
-              <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-4">
-                Centre d'aide Get Weez
-              </h1>
-              <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Trouvez rapidement les réponses à vos questions
-              </p>
+            {/* Header Hero Section */}
+            <div className="text-center mb-16 relative">
+              {/* Background decoration */}
+              <div className="absolute inset-0 -z-10">
+                <div className="absolute top-10 left-1/4 w-32 h-32 bg-purple-500/10 rounded-full blur-xl"></div>
+                <div className="absolute top-20 right-1/4 w-24 h-24 bg-blue-500/10 rounded-full blur-lg"></div>
+                <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-pink-500/10 rounded-full blur-lg"></div>
+              </div>
+              
+              <div className="relative">
+                <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6" style={{
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
+                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
+                }}>
+                  <Sparkles size={32} className="text-white" />
+                </div>
+                
+                <h1 className="text-5xl md:text-6xl font-bold mb-6" style={{
+                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text'
+                }}>
+                  Centre d'aide
+                </h1>
+                
+                <p className={`text-xl md:text-2xl mb-8 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  Votre concierge personnel vous accompagne
+                </p>
+                
+                {/* Stats cards */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                  <div className={`p-6 rounded-2xl transition-all duration-300 hover:scale-105 ${
+                    isDarkMode 
+                      ? 'bg-gray-800/50 border border-gray-700/50' 
+                      : 'bg-white/80 border border-gray-200/50 shadow-xl backdrop-blur-sm'
+                  }`}>
+                    <div className="flex items-center justify-center mb-3">
+                      <Clock size={24} className="text-purple-500 mr-2" />
+                      <span className="text-2xl font-bold text-purple-500">24/7</span>
+                    </div>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Support disponible</p>
+                  </div>
+                  
+                  <div className={`p-6 rounded-2xl transition-all duration-300 hover:scale-105 ${
+                    isDarkMode 
+                      ? 'bg-gray-800/50 border border-gray-700/50' 
+                      : 'bg-white/80 border border-gray-200/50 shadow-xl backdrop-blur-sm'
+                  }`}>
+                    <div className="flex items-center justify-center mb-3">
+                      <Users size={24} className="text-blue-500 mr-2" />
+                      <span className="text-2xl font-bold text-blue-500">1000+</span>
+                    </div>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Utilisateurs satisfaits</p>
+                  </div>
+                  
+                  <div className={`p-6 rounded-2xl transition-all duration-300 hover:scale-105 ${
+                    isDarkMode 
+                      ? 'bg-gray-800/50 border border-gray-700/50' 
+                      : 'bg-white/80 border border-gray-200/50 shadow-xl backdrop-blur-sm'
+                  }`}>
+                    <div className="flex items-center justify-center mb-3">
+                      <Award size={24} className="text-pink-500 mr-2" />
+                      <span className="text-2xl font-bold text-pink-500">4.9★</span>
+                    </div>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Note moyenne</p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Barre de recherche */}
