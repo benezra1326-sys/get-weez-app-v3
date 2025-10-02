@@ -60,8 +60,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     }
   }, [initialMessage])
   
-  // État pour détecter si on est sur desktop (pas d'auto-création sur mobile)
-  const [isDesktop, setIsDesktop] = useState(false)
+  // État pour détecter si on est sur desktop (initialisation intelligente)
+  const [isDesktop, setIsDesktop] = useState(typeof window !== 'undefined' ? window.innerWidth >= 1024 : true)
   
   // Détection de la taille d'écran pour s'assurer qu'on est sur desktop
   useEffect(() => {
@@ -126,11 +126,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       isDesktop
     })
     
-    // PROTECTION: Ne fonctionne que sur desktop ET seulement si on a une conversation active
-    if (!isDesktop) {
-      console.log('❌ handleSend: Pas sur desktop, ignore')
-      return
-    }
+    // SUPPRESSION PROTECTION DESKTOP POUR TEST
+    // if (!isDesktop) {
+    //   console.log('❌ handleSend: Pas sur desktop, ignore')
+    //   return
+    // }
     
     if (!input.trim() || isLoading) {
       console.log('❌ handleSend: Conditions non remplies', { input: input.trim(), isLoading })
@@ -258,11 +258,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     console.log(stack)
     console.log('🔄🔄🔄🔄🔄 FIN TRACE CLOSE')
     
-    // Vérifier qu'on est bien sur desktop pour éviter les conflits avec mobile
-    if (!isDesktop) {
-      console.log('⚠️ Fermeture ignorée - pas sur desktop')
-      return
-    }
+    // SUPPRESSION DE LA PROTECTION DESKTOP POUR TEST
+    // if (!isDesktop) {
+    //   console.log('⚠️ Fermeture ignorée - pas sur desktop')
+    //   return
+    // }
     
     if (currentConversationId) {
       console.log('🔄 Fermeture de conversation desktop:', currentConversationId)
@@ -984,14 +984,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             <div className="space-y-1 lg:space-y-4">
               {/* Bouton Nouvelle Conversation - Design Optimisé */}
               <button 
-                onClick={() => {
-                  console.log('🆕 Clic sur nouvelle conversation (sidebar) - isDesktop:', isDesktop)
-                  if (isDesktop) {
+                  onClick={() => {
+                    console.log('🆕 Clic sur nouvelle conversation (sidebar)')
                     createConversation()
-                  } else {
-                    console.log('⚠️ Création ignorée - pas sur desktop')
-                  }
-                }}
+                  }}
                 className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -1139,12 +1135,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 
                 <button 
                   onClick={() => {
-                    console.log('🆕 Clic sur nouvelle conversation (toolbar) - isDesktop:', isDesktop)
-                    if (isDesktop) {
-                      createConversation()
-                    } else {
-                      console.log('⚠️ Création ignorée - pas sur desktop')
-                    }
+                    console.log('🆕 Clic sur nouvelle conversation (toolbar)')
+                    createConversation()
                   }}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
