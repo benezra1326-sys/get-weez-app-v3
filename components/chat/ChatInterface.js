@@ -250,7 +250,13 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
 
   const handleCloseConversation = () => {
-    console.log('🔄 handleCloseConversation appelée - currentConversationId:', currentConversationId, 'isDesktop:', isDesktop)
+    const stack = new Error().stack
+    console.log('🔄🔄🔄🔄🔄 handleCloseConversation APPELÉ!')
+    console.log('🔄 currentConversationId:', currentConversationId)
+    console.log('🔄 isDesktop:', isDesktop)
+    console.log('🔄 Stack trace COMPLET:')
+    console.log(stack)
+    console.log('🔄🔄🔄🔄🔄 FIN TRACE CLOSE')
     
     // Vérifier qu'on est bien sur desktop pour éviter les conflits avec mobile
     if (!isDesktop) {
@@ -262,7 +268,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       console.log('🔄 Fermeture de conversation desktop:', currentConversationId)
       
       try {
+        // Sauvegarder dans window pour debug
+        if (typeof window !== 'undefined') {
+          window.lastCloseAction = {
+            conversationId: currentConversationId,
+            timestamp: new Date().toISOString(),
+            stack: stack
+          }
+        }
+        
         // Fermer la conversation actuelle et revenir à l'écran d'accueil DESKTOP
+        console.log('🔄 Appel de selectConversation(null)...')
         selectConversation(null)
         
         console.log('✅ selectConversation(null) exécuté avec succès sur desktop')

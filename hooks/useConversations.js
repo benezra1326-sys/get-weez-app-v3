@@ -9,8 +9,24 @@ export function useConversations() {
 
   // Wrapper pour tracer les changements de currentConversationId
   const setCurrentConversationId = (newId) => {
-    console.log('📝 setCurrentConversationId:', currentConversationId, '->', newId)
-    console.log('📝 Stack trace:', new Error().stack.split('\n')[1])
+    const stack = new Error().stack
+    console.log('📝📝📝 setCurrentConversationId APPELÉ!')
+    console.log('📝 Ancien ID:', currentConversationId)
+    console.log('📝 Nouveau ID:', newId) 
+    console.log('📝 Stack trace complet:')
+    console.log(stack)
+    console.log('📝📝📝 FIN TRACE')
+    
+    // Ajouter une pause pour voir dans les logs
+    if (typeof window !== 'undefined') {
+      window.lastConversationChange = {
+        from: currentConversationId,
+        to: newId,
+        timestamp: new Date().toISOString(),
+        stack: stack
+      }
+    }
+    
     setCurrentConversationIdRaw(newId)
   }
 
@@ -70,10 +86,22 @@ export function useConversations() {
 
   // Créer une nouvelle conversation
   const createConversation = () => {
-    console.log('🆕🆕🆕 createConversation APPELÉ!')
-    console.log('🆕 Stack trace:', new Error().stack)
+    const stack = new Error().stack
+    console.log('🆕🆕🆕🆕🆕 createConversation APPELÉ!')
+    console.log('🆕 Stack trace COMPLET:')
+    console.log(stack)
     console.log('🆕 isCreating:', isCreating)
     console.log('🆕 currentConversationId:', currentConversationId)
+    console.log('🆕🆕🆕🆕🆕 FIN TRACE CREATE')
+    
+    // Ajouter une pause pour voir dans les logs
+    if (typeof window !== 'undefined') {
+      window.lastCreateConversation = {
+        timestamp: new Date().toISOString(),
+        stack: stack,
+        currentId: currentConversationId
+      }
+    }
     
     // Protection contre les créations multiples
     if (isCreating) {
@@ -131,9 +159,14 @@ export function useConversations() {
 
   // Sélectionner une conversation
   const selectConversation = (id) => {
-    console.log('🎯 selectConversation appelé avec ID:', id)
-    console.log('🎯 ID actuel:', currentConversationId)
-    console.log('🎯 Stack trace:', new Error().stack)
+    const stack = new Error().stack
+    console.log('🎯🎯🎯🎯🎯 selectConversation APPELÉ!')
+    console.log('🎯 Ancien ID:', currentConversationId)
+    console.log('🎯 Nouveau ID:', id)
+    console.log('🎯 Stack trace COMPLET:')
+    console.log(stack)
+    console.log('🎯🎯🎯🎯🎯 FIN TRACE SELECT')
+    
     setCurrentConversationId(id)
   }
 
