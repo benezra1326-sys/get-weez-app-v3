@@ -60,22 +60,22 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     }
   }, [initialMessage])
   
-  // État pour suivre si c'est le premier chargement
-  const [isFirstLoad, setIsFirstLoad] = useState(true)
+  // État pour détecter si on est sur desktop (pas d'auto-création sur mobile)
+  const [isDesktop, setIsDesktop] = useState(false)
   
-  // Effet pour gérer le premier chargement uniquement
+  // Détection de la taille d'écran pour s'assurer qu'on est sur desktop
   useEffect(() => {
-    // Au premier chargement, si pas de conversations et pas d'ID actuel, créer une conversation de bienvenue
-    if (isFirstLoad && !currentConversationId && conversations.length === 0 && createConversation) {
-      console.log('🆕 Premier chargement - création d\'une conversation de bienvenue')
-      createConversation()
+    const checkDesktop = () => {
+      setIsDesktop(window.innerWidth >= 1024)
     }
     
-    // Marquer que le premier chargement est terminé
-    if (isFirstLoad) {
-      setIsFirstLoad(false)
-    }
-  }, [isFirstLoad, conversations.length, createConversation, currentConversationId])
+    checkDesktop()
+    window.addEventListener('resize', checkDesktop)
+    
+    return () => window.removeEventListener('resize', checkDesktop)
+  }, [])
+
+  // PAS de création automatique de conversation - UNIQUEMENT manuelle sur desktop
 
   // Fonction pour scroller vers le bas
   const scrollToBottom = useCallback(() => {
@@ -244,22 +244,29 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
 
   const handleCloseConversation = () => {
-    console.log('🔄 handleCloseConversation appelée - currentConversationId:', currentConversationId)
+    console.log('🔄 handleCloseConversation appelée - currentConversationId:', currentConversationId, 'isDesktop:', isDesktop)
+    
+    // Vérifier qu'on est bien sur desktop pour éviter les conflits avec mobile
+    if (!isDesktop) {
+      console.log('⚠️ Fermeture ignorée - pas sur desktop')
+      return
+    }
+    
     if (currentConversationId) {
-      console.log('🔄 Fermeture de conversation:', currentConversationId)
+      console.log('🔄 Fermeture de conversation desktop:', currentConversationId)
       
       try {
-        // Fermer la conversation actuelle et revenir à l'écran d'accueil
+        // Fermer la conversation actuelle et revenir à l'écran d'accueil DESKTOP
         selectConversation(null)
         
-        console.log('✅ selectConversation(null) exécuté avec succès')
+        console.log('✅ selectConversation(null) exécuté avec succès sur desktop')
         
         showToast('Conversation fermée', 'info')
       } catch (error) {
-        console.error('❌ Erreur lors de la fermeture:', error)
+        console.error('❌ Erreur lors de la fermeture desktop:', error)
       }
     } else {
-      console.log('⚠️ Aucune conversation actuelle à fermer')
+      console.log('⚠️ Aucune conversation actuelle à fermer sur desktop')
     }
   }
 
@@ -955,8 +962,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {/* Bouton Nouvelle Conversation - Design Optimisé */}
               <button 
                 onClick={() => {
-                  console.log('🆕 Clic sur nouvelle conversation (sidebar)')
-                  createConversation()
+                  console.log('🆕 Clic sur nouvelle conversation (sidebar) - isDesktop:', isDesktop)
+                  if (isDesktop) {
+                    createConversation()
+                  } else {
+                    console.log('⚠️ Création ignorée - pas sur desktop')
+                  }
                 }}
                 className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
               >
@@ -1105,8 +1116,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 
                 <button 
                   onClick={() => {
-                    console.log('🆕 Clic sur nouvelle conversation')
-                    createConversation()
+                    console.log('🆕 Clic sur nouvelle conversation (toolbar) - isDesktop:', isDesktop)
+                    if (isDesktop) {
+                      createConversation()
+                    } else {
+                      console.log('⚠️ Création ignorée - pas sur desktop')
+                    }
                   }}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
