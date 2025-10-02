@@ -14,13 +14,18 @@ import '../../cache-buster.js' // FORCE REFRESH
 import '../../emergency-patch.js' // PATCH D'URGENCE
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('✅ ChatInterface - VERSION CORRIGÉE - Fermeture fonctionnelle')
+  console.log('🎨 BEAU DESIGN CHARGÉ - VERSION FINALE AVEC STYLE')
   const { t } = useTranslation('common')
+  
+  // ALERT pour confirmer le bon chargement
+  React.useEffect(() => {
+    alert('🎨 BEAU DESIGN CHARGÉ ! Fini le design cassé !')
+  }, [])
   const { showToast, ToastContainer } = useToast()
   
   // Plus d'alertes - patch appliqué
   useEffect(() => {
-    console.log('✅ Composant initialisé - fermeture corrigée')
+    console.log('🎨 Beau composant initialisé avec design complet')
   }, [])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
