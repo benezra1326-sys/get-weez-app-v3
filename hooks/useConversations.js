@@ -165,6 +165,11 @@ export function useConversations() {
     console.log(stack)
     console.log('🚫🚫🚫🚫🚫 FIN TRACE CREATE BLOQUE')
     
+    // ALERTER L'UTILISATEUR
+    if (typeof window !== 'undefined') {
+      alert('🚫 TENTATIVE DE CRÉATION BLOQUÉE ! Regardez la console pour la stack trace.')
+    }
+    
     // BLOQUER COMPLÈTEMENT LA CRÉATION
     return null
   }

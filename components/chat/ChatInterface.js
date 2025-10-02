@@ -14,20 +14,32 @@ import '../../cache-buster.js' // FORCE REFRESH
 import '../../emergency-patch.js' // PATCH D'URGENCE
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🔄 ChatInterface component loaded - VERSION 3.0 - PATCH D\'URGENCE')
+  console.log('🚨🚨🚨 VERSION 4.0 - SUPER NOUVELLE VERSION - CACHE DÉTRUIT 🚨🚨🚨')
+  console.log('🔥🔥🔥 SI VOUS VOYEZ CE MESSAGE, LE CACHE EST ENFIN VIDÉ ! 🔥🔥🔥')
+  alert('🚨 VERSION 4.0 CHARGÉE - LE CACHE EST VIDÉ ! 🚨')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   
   // PATCH D'URGENCE - Appliquer les intercepteurs
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      console.log('🚨 APPLICATION DU PATCH D\'URGENCE')
+      console.log('🚨🚨🚨 APPLICATION DU PATCH D\'URGENCE VERSION 4.0 🚨🚨🚨')
+      
+      // ALERTER SI UNE CRÉATION EST DÉTECTÉE
+      window.originalCreateConversation = window.createConversation
+      window.createConversation = function() {
+        alert('🚫 CRÉATION BLOQUÉE PAR LE PATCH !')
+        console.error('🚫🚫🚫 PATCH V4: CRÉATION BLOQUÉE!')
+        console.trace('Stack trace:')
+        return null
+      }
       
       // Si on détecte une création automatique, la bloquer
       const originalLog = console.log
       console.log = function(...args) {
         if (args[0] && args[0].includes && args[0].includes('🆕') && args[0].includes('Création')) {
-          console.error('🚫🚫🚫 PATCH: CRÉATION DÉTECTÉE ET BLOQUÉE!', args)
+          alert('🚫 CRÉATION AUTOMATIQUE DÉTECTÉE ET BLOQUÉE !')
+          console.error('🚫🚫🚫 PATCH V4: CRÉATION DÉTECTÉE ET BLOQUÉE!', args)
           console.trace('Stack trace de la création:')
           return
         }
