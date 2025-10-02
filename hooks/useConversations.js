@@ -32,11 +32,17 @@ export function useConversations() {
     if (!window.allHookCalls) {
       window.allHookCalls = []
     }
+    
+    // Calculer messagesCount de façon sûre sans appeler getCurrentMessages()
+    const currentMessages = currentConversationId 
+      ? conversations.find(conv => conv.id === currentConversationId)?.messages || []
+      : []
+    
     window.allHookCalls.push({
       hookId: hookInstanceId,
       timestamp: new Date().toISOString(),
       conversationId: currentConversationId,
-      messagesCount: getCurrentMessages().length
+      messagesCount: currentMessages.length
     })
     
     // Garder seulement les 20 derniers appels
