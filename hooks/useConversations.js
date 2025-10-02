@@ -20,6 +20,15 @@ export function useConversations() {
     isCreating
   })
 
+  // COMPTEUR GLOBAL D'INSTANCES
+  if (typeof window !== 'undefined') {
+    if (!window.conversationHookInstances) {
+      window.conversationHookInstances = new Set()
+    }
+    window.conversationHookInstances.add(hookInstanceId)
+    console.log(`🚨 INSTANCES ACTIVES useConversations:`, Array.from(window.conversationHookInstances))
+  }
+
   // Wrapper pour tracer les changements de currentConversationId
   const setCurrentConversationId = (newId) => {
     const stack = new Error().stack
@@ -29,6 +38,26 @@ export function useConversations() {
     console.log('📝 Stack trace complet:')
     console.log(stack)
     console.log('📝📝📝 FIN TRACE')
+    
+    // PROTECTION ULTIME: Bloquer tout changement qui remet un ID après fermeture
+    if (typeof window !== 'undefined' && window.conversationJustClosed && newId !== null) {
+      console.log('🚫🚫🚫 BLOCAGE! Tentative de réouverture après fermeture détectée!')
+      console.log('🚫 Hook:', hookInstanceId)
+      console.log('🚫 Tentative de remettre ID:', newId)
+      console.log('🚫 IGNORÉ pour éviter réouverture automatique!')
+      return // BLOQUER la réouverture
+    }
+    
+    // Marquer qu'on a fermé si newId = null
+    if (newId === null && typeof window !== 'undefined') {
+      console.log('✅ Fermeture détectée - marquage pour bloquer réouvertures')
+      window.conversationJustClosed = true
+      // Reset après 1 seconde pour permettre créations manuelles futures
+      setTimeout(() => {
+        window.conversationJustClosed = false
+        console.log('✅ Reset - réouvertures redeviennent possibles')
+      }, 1000)
+    }
     
     // Ajouter une pause pour voir dans les logs
     if (typeof window !== 'undefined') {
