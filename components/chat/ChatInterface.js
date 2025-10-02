@@ -608,8 +608,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       {/* Page dédiée */}
       {showDetailPage && <DetailPage item={selectedItem} onClose={closeDetailPage} />}
 
-      {/* Interface mobile - SEULEMENT si vraiment sur mobile */}
-      {!isDesktop && (
+      {/* Interface mobile - TEMPORAIREMENT DESACTIVEE POUR TEST */}
+      {false && !isDesktop && (
         <MobileChatInterface user={user} initialMessage={initialMessage} establishmentName={establishmentName} />
       )}
 
