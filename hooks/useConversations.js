@@ -9,6 +9,13 @@ export function useConversations() {
   
   // Référence pour annuler les timeouts en cours
   const timeoutRef = useRef(null)
+  
+  // INTERCEPTEUR GLOBAL - Tracer TOUS les renders
+  console.log('🔄 useConversations RENDER:', {
+    conversationsCount: conversations.length,
+    currentConversationId,
+    isCreating
+  })
 
   // Wrapper pour tracer les changements de currentConversationId
   const setCurrentConversationId = (newId) => {
@@ -45,6 +52,8 @@ export function useConversations() {
 
   // Charger les conversations depuis localStorage
   useEffect(() => {
+    console.log('🏃 useEffect CHARGEMENT localStorage EXECUTE')
+    
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
     
@@ -62,6 +71,7 @@ export function useConversations() {
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned))
         }
         
+        console.log('📁 Conversations chargées:', cleaned.length)
         setConversations(cleaned)
         
         // Ne pas sélectionner automatiquement une conversation existante
@@ -79,11 +89,14 @@ export function useConversations() {
 
   // Sauvegarder les conversations dans localStorage
   useEffect(() => {
+    console.log('🏃 useEffect SAUVEGARDE localStorage EXECUTE - conversations:', conversations.length)
+    
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
     
     if (conversations.length > 0) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations))
+      console.log('💾 Conversations sauvegardées:', conversations.length)
     }
   }, [conversations])
 
@@ -96,6 +109,10 @@ export function useConversations() {
     console.log('🆕 isCreating:', isCreating)
     console.log('🆕 currentConversationId:', currentConversationId)
     console.log('🆕🆕🆕🆕🆕 FIN TRACE CREATE')
+    
+    // BLOCAGE TEMPORAIRE POUR TEST
+    console.log('🚫🚫🚫 CRÉATION BLOQUÉE TEMPORAIREMENT POUR TEST!')
+    return null
     
     // Ajouter une pause pour voir dans les logs
     if (typeof window !== 'undefined') {
