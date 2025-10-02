@@ -54,6 +54,11 @@ export function useConversations() {
   useEffect(() => {
     console.log('🏃 useEffect CHARGEMENT localStorage EXECUTE')
     
+    // NETTOYAGE TEMPORAIRE POUR TEST
+    console.log('🧹 NETTOYAGE COMPLET localStorage pour test')
+    localStorage.clear()
+    console.log('🧹 localStorage vidé complètement')
+    
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
     
@@ -90,6 +95,10 @@ export function useConversations() {
   // Sauvegarder les conversations dans localStorage
   useEffect(() => {
     console.log('🏃 useEffect SAUVEGARDE localStorage EXECUTE - conversations:', conversations.length)
+    
+    // BLOCAGE TEMPORAIRE DE SAUVEGARDE POUR TEST
+    console.log('🚫 SAUVEGARDE BLOQUÉE TEMPORAIREMENT POUR TEST!')
+    return
     
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
