@@ -10,23 +10,12 @@ import ConversationSidebar from './ConversationSidebar'
 import SuggestionsSidebar from './SuggestionsSidebar'
 import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
-import '../../cache-buster.js' // FORCE REFRESH
-import '../../emergency-patch.js' // PATCH D'URGENCE
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🎨 BEAU DESIGN CHARGÉ - VERSION FINALE AVEC STYLE')
+  console.log('🎨 VRAI COMPOSANT CHARGÉ - BEAU DESIGN RESTAURÉ')
   const { t } = useTranslation('common')
-  
-  // ALERT pour confirmer le bon chargement
-  React.useEffect(() => {
-    alert('🎨 BEAU DESIGN CHARGÉ ! Fini le design cassé !')
-  }, [])
   const { showToast, ToastContainer } = useToast()
   
-  // Plus d'alertes - patch appliqué
-  useEffect(() => {
-    console.log('🎨 Beau composant initialisé avec design complet')
-  }, [])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
