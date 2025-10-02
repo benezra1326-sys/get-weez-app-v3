@@ -1,0 +1,181 @@
+version: '3.8'
+
+services:
+  # Infrastructure Services
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: getweez_rabbitmq
+    hostname: rabbitmq
+    restart: unless-stopped
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: getweez_admin
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD:-GetWeez2024!}
+      RABBITMQ_DEFAULT_VHOST: getweez
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq/rabbitmq.conf:/etc/rabbitmq/rabbitmq.conf:ro
+      - ./rabbitmq/definitions.json:/etc/rabbitmq/definitions.json:ro
+    networks:
+      - code_review_network
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    container_name: getweez_redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    command: redis-server --appendonly yes --requirepass ${REDIS_PASSWORD:-GetWeez2024!}
+    volumes:
+      - redis_data:/data
+    networks:
+      - code_review_network
+    healthcheck:
+      test: ["CMD", "redis-cli", "--raw", "incr", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  # Application Services
+  webhook-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.webhook
+    container_name: getweez_webhook_service
+    restart: unless-stopped
+    ports:
+      - "${WEBHOOK_PORT:-3001}:3001"
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_URL=amqp://getweez_admin:${RABBITMQ_PASSWORD:-GetWeez2024!}@rabbitmq:5672/getweez
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-GetWeez2024!}@redis:6379
+      - WEBHOOK_PORT=3001
+      - WEBHOOK_SECRET=${WEBHOOK_SECRET:-GetWeezWebhookSecret2024}
+      - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000}
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./logs:/app/logs
+    networks:
+      - code_review_network
+    depends_on:
+      - rabbitmq
+      - redis
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+
+  code-review-worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    container_name: getweez_code_review_worker
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+      - RABBITMQ_URL=amqp://getweez_admin:${RABBITMQ_PASSWORD:-GetWeez2024!}@rabbitmq:5672/getweez
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-GetWeez2024!}@redis:6379
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - WORK_DIR=/app/temp-repos
+      - LOG_LEVEL=${LOG_LEVEL:-info}
+    volumes:
+      - ./logs:/app/logs
+      - temp_repos:/app/temp-repos
+    networks:
+      - code_review_network
+    depends_on:
+      - rabbitmq
+      - redis
+    deploy:
+      resources:
+        limits:
+          memory: 2G
+          cpus: '1.0'
+        reservations:
+          memory: 512M
+          cpus: '0.5'
+
+  # Monitoring Services (Optional)
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: getweez_prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    networks:
+      - code_review_network
+    profiles:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: getweez_grafana
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning
+    networks:
+      - code_review_network
+    profiles:
+      - monitoring
+
+  # Reverse Proxy (Production)
+  nginx:
+    image: nginx:alpine
+    container_name: getweez_nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/ssl:/etc/nginx/ssl:ro
+      - nginx_logs:/var/log/nginx
+    networks:
+      - code_review_network
+    depends_on:
+      - webhook-service
+    profiles:
+      - production
+
+volumes:
+  rabbitmq_data:
+    driver: local
+  redis_data:
+    driver: local
+  temp_repos:
+    driver: local
+  prometheus_data:
+    driver: local
+  grafana_data:
+    driver: local
+  nginx_logs:
+    driver: local
+
+networks:
+  code_review_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

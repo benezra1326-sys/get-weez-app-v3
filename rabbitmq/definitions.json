@@ -1,0 +1,170 @@
+{
+  "rabbit_version": "3.12.0",
+  "rabbitmq_version": "3.12.0",
+  "product_name": "RabbitMQ",
+  "product_version": "3.12.0",
+  "users": [
+    {
+      "name": "getweez_admin",
+      "password_hash": "GetWeez2024!",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["administrator"]
+    },
+    {
+      "name": "code_reviewer",
+      "password_hash": "ReviewBot2024!",
+      "hashing_algorithm": "rabbit_password_hashing_sha256",
+      "tags": ["monitoring"]
+    }
+  ],
+  "vhosts": [
+    {
+      "name": "getweez"
+    }
+  ],
+  "permissions": [
+    {
+      "user": "getweez_admin",
+      "vhost": "getweez",
+      "configure": ".*",
+      "write": ".*",
+      "read": ".*"
+    },
+    {
+      "user": "code_reviewer",
+      "vhost": "getweez",
+      "configure": "code_review.*",
+      "write": "code_review.*",
+      "read": "code_review.*"
+    }
+  ],
+  "topic_permissions": [],
+  "parameters": [],
+  "global_parameters": [
+    {
+      "name": "cluster_name",
+      "value": "getweez_cluster"
+    }
+  ],
+  "policies": [
+    {
+      "vhost": "getweez",
+      "name": "code_review_policy",
+      "pattern": "code_review.*",
+      "apply-to": "all",
+      "definition": {
+        "message-ttl": 86400000,
+        "expires": 604800000,
+        "max-length": 10000,
+        "overflow": "drop-head"
+      },
+      "priority": 0
+    }
+  ],
+  "queues": [
+    {
+      "name": "code_review.git_events",
+      "vhost": "getweez",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 86400000,
+        "x-max-length": 1000,
+        "x-overflow": "drop-head"
+      }
+    },
+    {
+      "name": "code_review.analysis_results",
+      "vhost": "getweez",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 604800000,
+        "x-max-length": 5000,
+        "x-overflow": "drop-head"
+      }
+    },
+    {
+      "name": "code_review.notifications",
+      "vhost": "getweez",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 259200000,
+        "x-max-length": 2000,
+        "x-overflow": "drop-head"
+      }
+    },
+    {
+      "name": "code_review.dlq",
+      "vhost": "getweez",
+      "durable": true,
+      "auto_delete": false,
+      "arguments": {
+        "x-message-ttl": 2592000000
+      }
+    }
+  ],
+  "exchanges": [
+    {
+      "name": "code_review",
+      "vhost": "getweez",
+      "type": "topic",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    },
+    {
+      "name": "code_review.dlx",
+      "vhost": "getweez",
+      "type": "direct",
+      "durable": true,
+      "auto_delete": false,
+      "internal": false,
+      "arguments": {}
+    }
+  ],
+  "bindings": [
+    {
+      "source": "code_review",
+      "vhost": "getweez",
+      "destination": "code_review.git_events",
+      "destination_type": "queue",
+      "routing_key": "git.push",
+      "arguments": {}
+    },
+    {
+      "source": "code_review",
+      "vhost": "getweez",
+      "destination": "code_review.git_events",
+      "destination_type": "queue",
+      "routing_key": "git.pull_request",
+      "arguments": {}
+    },
+    {
+      "source": "code_review",
+      "vhost": "getweez",
+      "destination": "code_review.analysis_results",
+      "destination_type": "queue",
+      "routing_key": "analysis.completed",
+      "arguments": {}
+    },
+    {
+      "source": "code_review",
+      "vhost": "getweez",
+      "destination": "code_review.notifications",
+      "destination_type": "queue",
+      "routing_key": "notification.*",
+      "arguments": {}
+    },
+    {
+      "source": "code_review.dlx",
+      "vhost": "getweez",
+      "destination": "code_review.dlq",
+      "destination_type": "queue",
+      "routing_key": "*",
+      "arguments": {}
+    }
+  ]
+}
