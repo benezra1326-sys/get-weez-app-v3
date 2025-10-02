@@ -2,7 +2,12 @@ import React, { useState } from 'react'
 import { X } from 'lucide-react'
 
 const ChatInterfaceNew = ({ user, initialMessage, establishmentName }) => {
-  console.log('🟢 NOUVEAU COMPOSANT CHARGÉ - AUCUN CACHE POSSIBLE !')
+  console.log('🟢🟢🟢 NOUVEAU COMPOSANT CHARGÉ - VERSION FINALE 🟢🟢🟢')
+  
+  // ALERT VISIBLE POUR FORCER LE CACHE  
+  React.useEffect(() => {
+    alert('🟢 NOUVEAU COMPOSANT CHARGÉ ! Si vous voyez ce message, le cache est enfin vidé !')
+  }, [])
   
   const [conversations, setConversations] = useState([])
   const [currentConversationId, setCurrentConversationId] = useState(null)
