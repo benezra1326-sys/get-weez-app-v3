@@ -27,6 +27,24 @@ export function useConversations() {
     }
     window.conversationHookInstances.add(hookInstanceId)
     console.log(`🚨 INSTANCES ACTIVES useConversations:`, Array.from(window.conversationHookInstances))
+    
+    // TRAÇAGE GLOBAL DES APPELS
+    if (!window.allHookCalls) {
+      window.allHookCalls = []
+    }
+    window.allHookCalls.push({
+      hookId: hookInstanceId,
+      timestamp: new Date().toISOString(),
+      conversationId: currentConversationId,
+      messagesCount: getCurrentMessages().length
+    })
+    
+    // Garder seulement les 20 derniers appels
+    if (window.allHookCalls.length > 20) {
+      window.allHookCalls = window.allHookCalls.slice(-20)
+    }
+    
+    console.log('📈 HISTORIQUE DES HOOKS:', window.allHookCalls)
   }
 
   // Wrapper pour tracer les changements de currentConversationId

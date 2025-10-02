@@ -117,6 +117,24 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     hasAddMessage: typeof addMessage === 'function'
   })
 
+  // 🚨 INSTRUCTION POUR L'UTILISATEUR
+  if (typeof window !== 'undefined') {
+    window.DEBUG_INSTRUCTIONS = `
+    🔍 COPIEZ CES LOGS ET ENVOYEZ-MOI:
+    
+    1. 🚨 INSTANCES ACTIVES useConversations: [nombres]
+    2. 📈 HISTORIQUE DES HOOKS: [tableau]
+    3. 🚫🚫🚫 BLOCAGE! (si il y a des tentatives bloquées)
+    4. 📝📝📝 setCurrentConversationId APPELÉ (si il y a des changements)
+    
+    ÉTAT ACTUEL:
+    - Conversation: ${currentConversationId}
+    - Messages: ${messages?.length || 0}
+    - Instances: ${window.conversationHookInstances ? Array.from(window.conversationHookInstances).length : 0}
+    `
+    console.log('🚨🚨🚨 COPIEZ CES LOGS:', window.DEBUG_INSTRUCTIONS)
+  }
+
   const handleSend = useCallback(async () => {
     console.log('🚀🚀🚀 handleSend appelé', { 
       input: input.trim(), 
