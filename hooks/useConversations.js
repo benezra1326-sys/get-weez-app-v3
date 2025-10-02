@@ -127,9 +127,10 @@ export function useConversations() {
     setConversations(prev => {
       const filtered = prev.filter(conv => conv.id !== id)
       
-      // Si on supprime la conversation actuelle, sélectionner la première disponible
+      // Si on supprime la conversation actuelle, la fermer (ne pas en sélectionner une autre)
       if (currentConversationId === id) {
-        setCurrentConversationId(filtered.length > 0 ? filtered[0].id : null)
+        console.log('🗑️ Suppression de la conversation actuelle - fermeture')
+        setCurrentConversationId(null) // Fermer au lieu de sélectionner une autre
       }
       
       return filtered
@@ -177,19 +178,10 @@ export function useConversations() {
       if (cleaned.length !== updated.length) {
         console.log('🧹 Conversations vides supprimées automatiquement')
         
-        // Si la conversation actuelle a été supprimée (elle était vide), créer une nouvelle
+        // Si la conversation actuelle a été supprimée (elle était vide), la fermer
         if (!cleaned.find(conv => conv.id === conversationId)) {
-          console.log('🆕 Création d\'une nouvelle conversation car l\'ancienne était vide')
-          const newConv = {
-            id: Date.now().toString(),
-            title: 'Nouvelle conversation',
-            messages: [],
-            lastMessage: '',
-            createdAt: formatDate(new Date()),
-            updatedAt: formatDate(new Date())
-          }
-          setCurrentConversationId(newConv.id)
-          return [...cleaned, newConv]
+          console.log('🗑️ Conversation actuelle supprimée car vide - fermeture')
+          setCurrentConversationId(null) // Fermer au lieu de créer une nouvelle
         }
       }
       

@@ -586,13 +586,14 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       {/* Page dédiée */}
       {showDetailPage && <DetailPage item={selectedItem} onClose={closeDetailPage} />}
 
-      {/* Interface mobile - toujours présente mais cachée sur desktop */}
-      <div className="lg:hidden">
+      {/* Interface mobile - SEULEMENT si vraiment sur mobile */}
+      {!isDesktop && (
         <MobileChatInterface user={user} initialMessage={initialMessage} establishmentName={establishmentName} />
-      </div>
+      )}
 
-      {/* Interface desktop - cachée sur mobile */}
-      <div className="hidden lg:block">
+      {/* Interface desktop - SEULEMENT si vraiment sur desktop */}
+      {isDesktop && (
+        <div>
       <style jsx>{`
         @keyframes fadeInUp {
           from {
@@ -3084,6 +3085,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         type="danger"
       />
       </div> {/* Fermeture de l'interface desktop */}
+      )}
     </>
   )
 }
