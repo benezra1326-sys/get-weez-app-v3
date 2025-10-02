@@ -10,6 +10,7 @@ import ConversationSidebar from './ConversationSidebar'
 import SuggestionsSidebar from './SuggestionsSidebar'
 import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
+import '../../cache-buster.js' // FORCE REFRESH
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   console.log('🔄 ChatInterface component loaded - VERSION 2.0 - NOUVELLE VERSION')
