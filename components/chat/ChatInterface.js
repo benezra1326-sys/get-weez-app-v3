@@ -12,7 +12,7 @@ import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🔄 ChatInterface component loaded')
+  console.log('🔄 ChatInterface component loaded - VERSION 2.0 - NOUVELLE VERSION')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   const [input, setInput] = useState('')
