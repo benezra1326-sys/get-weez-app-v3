@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
-import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon, MapPin, History, Clock } from 'lucide-react'
+import { useTranslation } from 'next-i18next'
+import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon } from 'lucide-react'
 import { useConversations } from '../../hooks/useConversations'
 import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
@@ -12,6 +13,7 @@ import { useTheme } from '../../contexts/ThemeContextSimple'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   console.log('🔄 ChatInterface component loaded')
+  const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
@@ -76,17 +78,17 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
   // Effet pour scroller automatiquement vers le bas quand les messages changent
   useEffect(() => {
-    // Seulement si on est en train de charger un nouveau message ET qu'il y a plus de 2 messages
-    if (isLoading && messages && messages.length > 2) {
+    // Seulement si on est en train de charger un nouveau message (pas lors de la création de conversation)
+    if (isLoading && messages && messages.length > 1) {
       // Délai pour éviter le scroll intempestif
       setTimeout(() => scrollToBottom(), 100)
     }
   }, [messages, isLoading, scrollToBottom])
 
-  // Effet pour scroller vers le bas quand on change de conversation (seulement si elle a déjà plusieurs messages)
+  // Effet pour scroller vers le bas quand on change de conversation (seulement si elle a déjà des messages)
   useEffect(() => {
-    // Seulement si on a plusieurs messages dans la conversation (pas juste le message de bienvenue)
-    if (currentConversationId && messages && messages.length > 2) {
+    // Seulement si on a des messages dans la conversation ET qu'on ne vient pas de la créer
+    if (currentConversationId && messages && messages.length > 1) {
       // Petit délai pour s'assurer que les messages sont rendus
       setTimeout(() => {
         scrollToBottom()
@@ -233,12 +235,19 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
   const handleCloseConversation = () => {
     if (currentConversationId) {
-      // Simplement fermer la conversation actuelle sans basculer automatiquement
-      selectConversation(null)
-      showToast('Conversation fermée', 'info')
+      // Trouver une autre conversation à sélectionner ou créer une nouvelle
+      const otherConversations = conversations.filter(conv => conv.id !== currentConversationId)
       
-      // Créer une nouvelle conversation seulement si l'utilisateur n'en a aucune
-      if (conversations.length <= 1) {
+      if (otherConversations.length > 0) {
+        // Sélectionner la conversation la plus récente
+        const mostRecent = otherConversations.sort((a, b) => 
+          new Date(b.createdAt) - new Date(a.createdAt)
+        )[0]
+        selectConversation(mostRecent.id)
+        showToast('Conversation fermée', 'info')
+    } else {
+        // Créer une nouvelle conversation
+        selectConversation(null)
         setTimeout(() => {
           const newId = createConversation()
           if (newId) {
@@ -1190,69 +1199,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     </p>
                   </div>
                 </div>
-
-                {/* Actions du header */}
-                <div className="flex items-center space-x-2">
-                  {/* Géolocalisation */}
-                  <button
-                    onClick={() => {
-                      if (navigator.geolocation) {
-                        navigator.geolocation.getCurrentPosition(
-                          (position) => {
-                            const { latitude, longitude } = position.coords
-                            showToast(`Position: ${latitude.toFixed(4)}, ${longitude.toFixed(4)}`, 'success')
-                          },
-                          (error) => {
-                            showToast('Géolocalisation non disponible', 'error')
-                          }
-                        )
-                      } else {
-                        showToast('Géolocalisation non supportée', 'error')
-                      }
-                    }}
-                    className="p-2 rounded-lg transition-all duration-300 hover:scale-110"
-                    style={{
-                      background: isDarkMode 
-                        ? 'rgba(34, 197, 94, 0.2)' 
-                        : 'rgba(34, 197, 94, 0.1)',
-                      color: '#22C55E'
-                    }}
-                    title="Obtenir ma position"
-                  >
-                    <MapPin size={16} />
-                  </button>
-
-                  {/* Historique */}
-                  <button
-                    onClick={() => setShowMobileHistory(!showMobileHistory)}
-                    className="p-2 rounded-lg transition-all duration-300 hover:scale-110"
-                    style={{
-                      background: isDarkMode 
-                        ? 'rgba(59, 130, 246, 0.2)' 
-                        : 'rgba(59, 130, 246, 0.1)',
-                      color: '#3B82F6'
-                    }}
-                    title="Historique des conversations"
-                  >
-                    <History size={16} />
-                  </button>
-
-                  {/* Heure */}
-                  <div 
-                    className="px-2 py-1 rounded-lg text-xs font-medium"
-                    style={{
-                      background: isDarkMode 
-                        ? 'rgba(107, 114, 128, 0.2)' 
-                        : 'rgba(107, 114, 128, 0.1)',
-                      color: isDarkMode ? '#D1D5DB' : '#6B7280'
-                    }}
-                  >
-                    <Clock size={12} className="inline mr-1" />
-                    {new Date().toLocaleTimeString('fr-FR', { hour: '2-digit', minute: '2-digit' })}
-                  </div>
-
-                  {/* Bouton fermer */}
-                  <button
+                <button
                   onClick={handleCloseConversation}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{

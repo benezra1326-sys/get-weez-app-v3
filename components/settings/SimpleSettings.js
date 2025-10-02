@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Link from 'next/link'
 import { Settings, Palette, Sun, Moon, Monitor, Shield, Zap, Lock, Info } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
