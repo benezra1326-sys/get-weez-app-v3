@@ -475,7 +475,7 @@ const Home = memo(({ user, setUser }) => {
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
-                  <span>{currentStep === 3 ? 'Commencer' : 'Suivant'}</span>
+                  <span>{currentStep === 3 ? "C'est parti !" : 'Suivant'}</span>
                   {currentStep < 3 && <ArrowRight size={14} />}
                 </button>
               </div>

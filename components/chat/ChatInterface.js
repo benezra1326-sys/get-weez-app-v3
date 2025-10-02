@@ -235,21 +235,25 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
   const handleCloseConversation = () => {
     if (currentConversationId) {
-      // Simplement fermer la conversation actuelle sans en ouvrir une autre
-      selectConversation(null)
-      showToast('Conversation fermée', 'info')
+      console.log('🔄 Fermeture de conversation:', currentConversationId)
       
-      // Optionnel : Si l'utilisateur n'a plus de conversations, créer une nouvelle après un délai
-      // Mais seulement s'il n'y en a vraiment aucune
-      const remainingConversations = conversations.filter(conv => conv.id !== currentConversationId)
-      if (remainingConversations.length === 0) {
-        setTimeout(() => {
-          const newId = createConversation()
-          if (newId) {
-            showToast('Nouvelle conversation créée', 'success')
-          }
-        }, 500) // Délai plus long pour que l'utilisateur voie que la conversation est fermée
-      }
+      // Supprimer la conversation de la liste
+      const conversationToClose = currentConversationId
+      
+      // Fermer la conversation actuelle
+      selectConversation(null)
+      
+      // Créer une nouvelle conversation vide avec message de bienvenue
+      setTimeout(() => {
+        const newId = createConversation()
+        if (newId) {
+          console.log('✅ Nouvelle conversation créée:', newId)
+          selectConversation(newId)
+          showToast('Nouvelle conversation', 'success')
+        }
+      }, 100) // Délai court pour éviter les conflits
+      
+      showToast('Conversation fermée', 'info')
     }
   }
 
@@ -1462,8 +1466,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             </div>
 
               {/* Zone de saisie */}
-              <div className="flex-shrink-0 space-y-2 lg:space-y-3">
-                <div className="relative">
+              <div className="flex-shrink-0 space-y-2 lg:space-y-2 lg:pt-2">
+                {/* Mobile: bouton intégré */}
+                <div className="relative lg:hidden">
                   <textarea
                     ref={textareaRef}
                     value={input}
@@ -1476,7 +1481,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     }}
                     onKeyDown={handleKeyDown}
                     placeholder={messages.length === 0 ? "Demandez-moi n'importe quoi sur Marbella..." : t('chat.placeholder')}
-                    className="w-full px-4 py-4 lg:px-4 lg:py-6 pr-16 lg:pr-20 border rounded-xl resize-none text-sm lg:text-lg transition-all duration-300 focus:outline-none"
+                    className="w-full px-4 py-4 pr-16 border rounded-xl resize-none text-sm transition-all duration-300 focus:outline-none"
                     style={{ 
                       backgroundColor: isDarkMode ? '#2D2D2D' : '#F9FAFB', 
                       borderColor: isDarkMode ? '#374151' : '#D1D5DB', 
@@ -1497,8 +1502,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     disabled={isLoading}
                   />
                 
-                
-                {/* Bouton d'envoi */}
+                  {/* Bouton d'envoi mobile */}
                 <button
                   onClick={() => {
                     console.log('🖱️ Bouton d\'envoi cliqué', { input: input.trim(), isLoading })
@@ -1537,6 +1541,79 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
                     </svg>
                   )}
+                </button>
+                </div>
+
+                {/* Desktop: bouton séparé à droite */}
+                <div className="hidden lg:flex lg:gap-3">
+                  <textarea
+                    ref={textareaRef}
+                    value={input}
+                    onChange={(e) => {
+                      setInput(e.target.value)
+                      if (textareaRef.current) {
+                        textareaRef.current.style.height = 'auto'
+                        textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 120)}px`
+                      }
+                    }}
+                    onKeyDown={handleKeyDown}
+                    placeholder={messages.length === 0 ? "Demandez-moi n'importe quoi sur Marbella..." : t('chat.placeholder')}
+                    className="flex-1 px-4 py-4 border rounded-lg resize-none text-base transition-all duration-300 focus:outline-none"
+                    style={{ 
+                      backgroundColor: isDarkMode ? '#2D2D2D' : '#F9FAFB', 
+                      borderColor: isDarkMode ? '#374151' : '#D1D5DB', 
+                      color: isDarkMode ? '#FFFFFF' : '#1F2937',
+                      minHeight: '48px',
+                      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
+                      fontSize: '16px' // Empêche le zoom sur iOS
+                    }}
+                    onFocus={(e) => {
+                      e.target.style.borderColor = '#3B82F6'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
+                    }}
+                    onBlur={(e) => {
+                      e.target.style.borderColor = '#374151'
+                      e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.2)'
+                    }}
+                    rows={1}
+                    disabled={isLoading}
+                  />
+                  
+                  {/* Bouton d'envoi desktop */}
+                <button
+                  onClick={() => {
+                      console.log('🖱️ Bouton d\'envoi cliqué (desktop)', { input: input.trim(), isLoading })
+                    handleSend()
+                  }}
+                  disabled={!input.trim() || isLoading}
+                    className="px-4 py-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-1 font-medium text-sm"
+                  style={{
+                    backgroundColor: !input.trim() || isLoading ? '#374151' : '#3B82F6',
+                    boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isLoading && input.trim()) {
+                      e.target.style.backgroundColor = '#2563EB'
+                      e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isLoading && input.trim()) {
+                      e.target.style.backgroundColor = '#3B82F6'
+                      e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    }
+                  }}
+                >
+                    {isLoading ? (
+                      <Loader2 size={16} className="animate-spin" />
+                    ) : (
+                      <>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="currentColor"/>
+                        </svg>
+                        <span className="text-xs">Envoyer</span>
+                      </>
+                    )}
                 </button>
               </div>
                 
@@ -1841,12 +1918,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     {/* Image de fond */}
                     <div 
                       className="banner-image"
-                      style={{
+                    style={{
                         backgroundImage: 'url(https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=400&fit=crop&crop=center)',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         filter: 'brightness(0.8) saturate(1.2)',
-                        width: '100%',
+                      width: '100%',
                         height: '100%',
                         position: 'absolute',
                         top: 0,
@@ -1972,12 +2049,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     {/* Image de fond */}
                     <div 
                       className="banner-image"
-                      style={{
+                    style={{
                         backgroundImage: 'url(https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&h=400&fit=crop&crop=center)',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         filter: 'brightness(0.8) saturate(1.2)',
-                        width: '100%',
+                      width: '100%',
                         height: '100%',
                         position: 'absolute',
                         top: 0,
@@ -2040,12 +2117,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     {/* Image de fond */}
                     <div 
                       className="banner-image"
-                      style={{
+                    style={{
                         backgroundImage: 'url(https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop&crop=center)',
                         backgroundSize: 'cover',
                         backgroundPosition: 'center',
                         filter: 'brightness(0.8) saturate(1.2)',
-                        width: '100%',
+                      width: '100%',
                         height: '100%',
                         position: 'absolute',
                         top: 0,
@@ -2251,7 +2328,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #3B82F6 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2313,7 +2393,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #059669 0%, #14B8A6 50%, #06B6D4 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2375,7 +2458,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #06B6D4 0%, #3B82F6 50%, #1D4ED8 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2437,7 +2523,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #EC4899 0%, #F43F5E 50%, #E11D48 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2568,7 +2657,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #D97706 0%, #EA580C 50%, #DC2626 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2630,7 +2722,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #E11D48 0%, #EC4899 50%, #8B5CF6 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -2692,7 +2787,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                       style={{
-                        background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                         width: '100%',
                         height: '100%',
                         position: 'absolute',
