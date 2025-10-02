@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react'
 import { useTranslation } from 'next-i18next'
 import { MessageCircle, Sparkles, Trash2, Loader2, X, Sun, Moon } from 'lucide-react'
-import { useConversations } from '../../hooks/useConversations'
+import { useConversations } from '../../hooks/useConversationsSimplest'
 import { useToast } from '../ui/Toast'
 import ChatLoadingSpinner from '../ui/LoadingSpinner'
 import ConfirmModal from '../ui/ConfirmModal'
