@@ -888,8 +888,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 {/* Bouton nouvelle conversation mobile */}
                 <div 
                   onClick={() => {
-                    createConversation()
-                    setShowMobileHistory(false)
+                    console.log('🚫 CLICK BLOQUE - createConversation désactivé pour debug')
+                    // createConversation()
+                    // setShowMobileHistory(false)
                   }}
                   className="bg-gradient-to-r from-purple-600 to-indigo-600 rounded-lg p-3 mb-2 cursor-pointer hover:from-purple-700 hover:to-indigo-700 transition-all"
                 >
@@ -985,8 +986,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {/* Bouton Nouvelle Conversation - Design Optimisé */}
               <button 
                   onClick={() => {
-                    console.log('🆕 Clic sur nouvelle conversation (sidebar)')
-                    createConversation()
+                    console.log('🚫 CLICK BLOQUE - sidebar nouvelle conversation')
+                    // createConversation()
                   }}
                 className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
               >
@@ -1135,8 +1136,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 
                 <button 
                   onClick={() => {
-                    console.log('🆕 Clic sur nouvelle conversation (toolbar)')
-                    createConversation()
+                    console.log('🚫 CLICK BLOQUE - toolbar nouvelle conversation')
+                    // createConversation()
                   }}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
