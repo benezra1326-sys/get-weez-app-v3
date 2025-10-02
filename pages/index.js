@@ -1,7 +1,7 @@
 import { useState, useEffect, memo } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import ChatInterface from '../components/chat/ChatInterface'
+import ChatInterfaceNew from '../components/chat/ChatInterfaceNew'
 import Header from '../components/layout/header'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
@@ -541,7 +541,7 @@ const Home = memo(({ user, setUser }) => {
             overscrollBehavior: 'auto' // Permettre rebond naturel
           }}
         >
-          <ChatInterface 
+          <ChatInterfaceNew 
             user={user} 
             initialMessage={message || reservationMessage}
             establishmentName={establishmentName}
