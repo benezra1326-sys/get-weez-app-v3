@@ -4,8 +4,15 @@ const STORAGE_KEY = 'getweez_conversations'
 
 export function useConversations() {
   const [conversations, setConversations] = useState([])
-  const [currentConversationId, setCurrentConversationId] = useState(null)
+  const [currentConversationId, setCurrentConversationIdRaw] = useState(null)
   const [isCreating, setIsCreating] = useState(false)
+
+  // Wrapper pour tracer les changements de currentConversationId
+  const setCurrentConversationId = (newId) => {
+    console.log('📝 setCurrentConversationId:', currentConversationId, '->', newId)
+    console.log('📝 Stack trace:', new Error().stack.split('\n')[1])
+    setCurrentConversationIdRaw(newId)
+  }
 
   // Nettoyer les conversations vides
   const cleanEmptyConversations = (conversationsList) => {
@@ -63,6 +70,11 @@ export function useConversations() {
 
   // Créer une nouvelle conversation
   const createConversation = () => {
+    console.log('🆕🆕🆕 createConversation APPELÉ!')
+    console.log('🆕 Stack trace:', new Error().stack)
+    console.log('🆕 isCreating:', isCreating)
+    console.log('🆕 currentConversationId:', currentConversationId)
+    
     // Protection contre les créations multiples
     if (isCreating) {
       console.log('⚠️ Création déjà en cours, annulation')
@@ -119,6 +131,9 @@ export function useConversations() {
 
   // Sélectionner une conversation
   const selectConversation = (id) => {
+    console.log('🎯 selectConversation appelé avec ID:', id)
+    console.log('🎯 ID actuel:', currentConversationId)
+    console.log('🎯 Stack trace:', new Error().stack)
     setCurrentConversationId(id)
   }
 

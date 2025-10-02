@@ -122,40 +122,46 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       input: input.trim(), 
       isLoading, 
       currentConversationId,
-      hasInput: !!input.trim()
+      hasInput: !!input.trim(),
+      isDesktop
     })
+    
+    // PROTECTION: Ne fonctionne que sur desktop ET seulement si on a une conversation active
+    if (!isDesktop) {
+      console.log('❌ handleSend: Pas sur desktop, ignore')
+      return
+    }
     
     if (!input.trim() || isLoading) {
       console.log('❌ handleSend: Conditions non remplies', { input: input.trim(), isLoading })
+      return
+    }
+    
+    // NOUVELLE LOGIQUE: Pas de création automatique de conversation
+    if (!currentConversationId) {
+      console.log('❌ handleSend: Pas de conversation active - l\'utilisateur doit créer manuellement')
+      showToast('Veuillez créer une nouvelle conversation', 'info')
       return
     }
 
     const userMessage = input.trim()
     console.log('📝 Message utilisateur:', userMessage)
     setInput('')
-    
-    // Créer une conversation si nécessaire
-    let conversationId = currentConversationId
-    if (!conversationId) {
-      console.log('🔧 Création d\'une nouvelle conversation...')
-      conversationId = createConversation()
-      console.log('🔧 Nouveau conversationId:', conversationId)
-    }
 
     // Ajouter le message utilisateur
-    console.log('💬 Ajout du message utilisateur, conversationId:', conversationId)
+    console.log('💬 Ajout du message utilisateur, conversationId:', currentConversationId)
     addMessage({
       id: Date.now().toString(),
       content: userMessage,
       role: 'user',
       timestamp: new Date()
-    }, conversationId)
+    }, currentConversationId)
     
     setIsLoading(true)
 
     try {
       // Obtenir l'historique des messages de la conversation actuelle
-      const currentMessages = conversations.find(conv => conv.id === conversationId)?.messages || []
+      const currentMessages = conversations.find(conv => conv.id === currentConversationId)?.messages || []
       
       // Appeler l'API de chat
       const response = await fetch('/api/chat', {
@@ -183,7 +189,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         content: data.reply,
         role: 'assistant',
         timestamp: new Date()
-      }, conversationId)
+      }, currentConversationId)
       
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error)
@@ -193,12 +199,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         content: errorMessage,
         role: 'assistant',
         timestamp: new Date()
-      }, conversationId)
+      }, currentConversationId)
       showToast('Erreur lors de l\'envoi du message', 'error')
     } finally {
       setIsLoading(false)
     }
-  }, [input, isLoading, currentConversationId, createConversation, addMessage, showToast, conversations])
+  }, [input, isLoading, currentConversationId, addMessage, showToast, conversations, isDesktop])
 
   const handleKeyDown = useCallback((e) => {
     console.log('⌨️⌨️⌨️ Touche pressée:', e.key, { input: input.trim(), isLoading, inputLength: input.length })
