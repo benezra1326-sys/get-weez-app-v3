@@ -7,11 +7,14 @@ export function useConversations() {
   const [currentConversationId, setCurrentConversationIdRaw] = useState(null)
   const [isCreating, setIsCreating] = useState(false)
   
+  // ID unique pour tracer chaque instance du hook
+  const hookInstanceId = useRef('hook-' + Math.random().toString(36).substr(2, 9)).current
+  
   // Référence pour annuler les timeouts en cours
   const timeoutRef = useRef(null)
   
   // INTERCEPTEUR GLOBAL - Tracer TOUS les renders
-  console.log('🔄 useConversations RENDER:', {
+  console.log(`🔄 useConversations [${hookInstanceId}] RENDER:`, {
     conversationsCount: conversations.length,
     currentConversationId,
     isCreating
@@ -20,7 +23,7 @@ export function useConversations() {
   // Wrapper pour tracer les changements de currentConversationId
   const setCurrentConversationId = (newId) => {
     const stack = new Error().stack
-    console.log('📝📝📝 setCurrentConversationId APPELÉ!')
+    console.log(`📝📝📝 [${hookInstanceId}] setCurrentConversationId APPELÉ!`)
     console.log('📝 Ancien ID:', currentConversationId)
     console.log('📝 Nouveau ID:', newId) 
     console.log('📝 Stack trace complet:')
@@ -30,6 +33,7 @@ export function useConversations() {
     // Ajouter une pause pour voir dans les logs
     if (typeof window !== 'undefined') {
       window.lastConversationChange = {
+        hookInstanceId,
         from: currentConversationId,
         to: newId,
         timestamp: new Date().toISOString(),
@@ -103,7 +107,7 @@ export function useConversations() {
   // Créer une nouvelle conversation
   const createConversation = () => {
     const stack = new Error().stack
-    console.log('🆕🆕🆕🆕🆕 createConversation APPELÉ!')
+    console.log(`🆕🆕🆕🆕🆕 [${hookInstanceId}] createConversation APPELÉ!`)
     console.log('🆕 Stack trace COMPLET:')
     console.log(stack)
     console.log('🆕 isCreating:', isCreating)
@@ -113,6 +117,7 @@ export function useConversations() {
     // Ajouter une pause pour voir dans les logs
     if (typeof window !== 'undefined') {
       window.lastCreateConversation = {
+        hookInstanceId,
         timestamp: new Date().toISOString(),
         stack: stack,
         currentId: currentConversationId
