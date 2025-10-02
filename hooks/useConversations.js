@@ -85,10 +85,10 @@ export function useConversations() {
       month: 'short' 
     })
     
-    // Message de bienvenue automatique
+    // Message de bienvenue automatique amélioré
     const welcomeMessage = {
       id: `welcome-${Date.now()}`,
-      content: "👋 Bonjour ! Je suis votre assistant Get Weez pour Marbella. Comment puis-je vous aider à organiser votre séjour de rêve ? Vous pouvez me demander des recommandations de restaurants, d'événements, d'activités ou toute autre information sur Marbella !",
+      content: "✨ **Bienvenue sur Get Weez !** 🏖️\n\nJe suis votre **concierge IA personnel** pour vivre Marbella comme un local ! 🇪🇸\n\n🎯 **Je peux vous aider avec :**\n• 🍽️ **Restaurants** exclusifs et tables VIP\n• 🎉 **Événements** et soirées privées\n• 🛥️ **Yachts** et expériences de luxe\n• 🏨 **Hébergements** premium\n• 🚁 **Activités** uniques\n\n💬 **Dites-moi simplement ce dont vous rêvez** et je m'occupe de tout ! ✨",
       role: 'assistant',
       timestamp: new Date()
     }

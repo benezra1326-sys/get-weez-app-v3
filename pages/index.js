@@ -44,13 +44,13 @@ const Home = memo(({ user, setUser }) => {
     return () => clearTimeout(timer)
   }, [preloadPage])
 
-  // Afficher le popup d'introduction au premier chargement
+  // Afficher le popup d'introduction au premier chargement UNIQUEMENT
   useEffect(() => {
     const hasSeenIntro = localStorage.getItem('get-weez-intro-seen')
     if (!hasSeenIntro) {
       const timer = setTimeout(() => {
         setShowIntroModal(true)
-      }, 1500) // Délai pour laisser le temps au chargement
+      }, 2000) // Délai pour laisser le temps au chargement
       return () => clearTimeout(timer)
     }
   }, [])
@@ -315,18 +315,7 @@ const Home = memo(({ user, setUser }) => {
       {/* Popup d'introduction - Petit en bas */}
       {showIntroModal && (
         <div 
-          className="fixed z-50"
-          style={{
-            bottom: '80px',
-            right: '20px',
-            width: '320px',
-            maxHeight: '400px',
-            // Sur desktop, positionner plus haut
-            '@media (min-width: 768px)': {
-              bottom: '120px',
-              right: '40px'
-            }
-          }}
+          className="fixed z-[1000] bottom-24 right-4 w-80 max-h-96 lg:bottom-auto lg:right-8 lg:top-1/2 lg:-translate-y-1/2"
         >
           <div 
             className="rounded-2xl shadow-2xl overflow-hidden"

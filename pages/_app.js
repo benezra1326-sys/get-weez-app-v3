@@ -4,6 +4,7 @@ import '../styles/animations.css'
 import '../styles/mobile-chat.css'
 import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
+import CookieBanner from '../components/ui/CookieBanner'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
@@ -155,6 +156,7 @@ function MyApp({ Component, pageProps }) {
     <MobileTouchEnhancer enableHaptics={true}>
       <ThemeProvider>
         <Component {...pageProps} user={user} setUser={setUser} />
+        <CookieBanner />
       </ThemeProvider>
     </MobileTouchEnhancer>
   )

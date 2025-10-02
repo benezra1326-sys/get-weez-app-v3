@@ -235,25 +235,20 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
   const handleCloseConversation = () => {
     if (currentConversationId) {
-      // Trouver une autre conversation à sélectionner ou créer une nouvelle
-      const otherConversations = conversations.filter(conv => conv.id !== currentConversationId)
+      // Simplement fermer la conversation actuelle sans en ouvrir une autre
+      selectConversation(null)
+      showToast('Conversation fermée', 'info')
       
-      if (otherConversations.length > 0) {
-        // Sélectionner la conversation la plus récente
-        const mostRecent = otherConversations.sort((a, b) => 
-          new Date(b.createdAt) - new Date(a.createdAt)
-        )[0]
-        selectConversation(mostRecent.id)
-        showToast('Conversation fermée', 'info')
-    } else {
-        // Créer une nouvelle conversation
-        selectConversation(null)
+      // Optionnel : Si l'utilisateur n'a plus de conversations, créer une nouvelle après un délai
+      // Mais seulement s'il n'y en a vraiment aucune
+      const remainingConversations = conversations.filter(conv => conv.id !== currentConversationId)
+      if (remainingConversations.length === 0) {
         setTimeout(() => {
           const newId = createConversation()
           if (newId) {
             showToast('Nouvelle conversation créée', 'success')
           }
-        }, 100)
+        }, 500) // Délai plus long pour que l'utilisateur voie que la conversation est fermée
       }
     }
   }
@@ -1713,11 +1708,14 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     className="hidden lg:block uniform-banner cursor-pointer hover:scale-105 transition-transform duration-300"
                     onClick={() => openDetailPage('beach-party')}
                   >
-                    {/* Image de fond avec gradient */}
+                    {/* Image de fond avec vraie image */}
                     <div 
                       className="banner-image"
                       style={{
-                        background: isDarkMode ? 'linear-gradient(135deg, #1E40AF 0%, #3730A3 50%, #581C87 100%)' : 'linear-gradient(135deg, #3B82F6 0%, #6366F1 50%, #8B5CF6 100%)'
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)'
                       }}
                     ></div>
                     
@@ -1776,7 +1774,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     <div 
                       className="banner-image"
                     style={{
-                        background: 'linear-gradient(135deg, #7C3AED 0%, #C026D3 50%, #DB2777 100%)',
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
                       width: '100%',
                         height: '100%',
                         position: 'absolute',
@@ -1840,9 +1841,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     {/* Image de fond */}
                     <div 
                       className="banner-image"
-                    style={{
-                        background: 'linear-gradient(135deg, #059669 0%, #10B981 50%, #14B8A6 100%)',
-                      width: '100%',
+                      style={{
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
+                        width: '100%',
                         height: '100%',
                         position: 'absolute',
                         top: 0,
@@ -1968,9 +1972,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     {/* Image de fond */}
                     <div 
                       className="banner-image"
-                    style={{
-                        background: 'linear-gradient(135deg, #D97706 0%, #EA580C 50%, #DC2626 100%)',
-                      width: '100%',
+                      style={{
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
+                        width: '100%',
                         height: '100%',
                         position: 'absolute',
                         top: 0,
@@ -2033,9 +2040,12 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     {/* Image de fond */}
                     <div 
                       className="banner-image"
-                    style={{
-                        background: 'linear-gradient(135deg, #0D9488 0%, #14B8A6 50%, #06B6D4 100%)',
-                      width: '100%',
+                      style={{
+                        backgroundImage: 'url(https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&h=400&fit=crop&crop=center)',
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center',
+                        filter: 'brightness(0.8) saturate(1.2)',
+                        width: '100%',
                         height: '100%',
                         position: 'absolute',
                         top: 0,
