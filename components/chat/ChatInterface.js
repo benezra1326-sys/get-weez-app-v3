@@ -1238,7 +1238,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             </div>
 
             {/* En-tête de la conversation avec effet relief */}
-            {currentConversationId && messages && messages.length > 0 && (
+            {/* TEST ULTIME : BLOQUER COMPLÈTEMENT L'AFFICHAGE */}
+            {false && currentConversationId && messages && messages.length > 0 && (
               <div 
                 className="flex items-center justify-between p-4 border-b backdrop-blur-sm relative"
                 style={{
@@ -1305,7 +1306,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
             {/* Zone des messages */}
             <div className="flex-1 lg:overflow-y-auto mb-2 lg:mb-6 lg:min-h-0 chat-messages-container scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 p-2 lg:p-0">
-              {messages && messages.length > 0 ? (
+              {/* ZONE DE MESSAGES - FORCÉE À FALSE POUR TEST */}
+              {false && messages && messages.length > 0 ? (
                 <div className="space-y-2 lg:space-y-4 pt-4 lg:pt-6">
                   {messages.map((msg) => {
                     console.log('🔍 Affichage message:', msg)
