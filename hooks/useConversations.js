@@ -159,19 +159,68 @@ export function useConversations() {
 
   // Créer une nouvelle conversation
   const createConversation = () => {
-    const stack = new Error().stack
-    console.log(`🚫🚫🚫🚫🚫 [${hookInstanceId}] createConversation BLOQUÉ POUR DEBUG!`)
-    console.log('🚫 Stack trace COMPLET:')
-    console.log(stack)
-    console.log('🚫🚫🚫🚫🚫 FIN TRACE CREATE BLOQUE')
+    console.log(`✅ [${hookInstanceId}] createConversation - Version corrigée`)
     
-    // ALERTER L'UTILISATEUR
-    if (typeof window !== 'undefined') {
-      alert('🚫 TENTATIVE DE CRÉATION BLOQUÉE ! Regardez la console pour la stack trace.')
+    // Protection contre les créations multiples
+    if (isCreating) {
+      console.log('⚠️ Création déjà en cours, annulation')
+      return currentConversationId
+    }
+
+    console.log('🔍 Tentative de création de conversation...')
+    console.log('🔍 Conversations actuelles:', conversations.length)
+    
+    setIsCreating(true)
+    
+    // Générer un nom intelligent basé sur l'heure et la date
+    const now = new Date()
+    const timeString = now.toLocaleTimeString('fr-FR', { 
+      hour: '2-digit', 
+      minute: '2-digit' 
+    })
+    const dateString = now.toLocaleDateString('fr-FR', { 
+      day: 'numeric', 
+      month: 'short' 
+    })
+    
+    // Message de bienvenue automatique amélioré
+    const welcomeMessage = {
+      id: `welcome-${Date.now()}`,
+      content: "✨ **Bienvenue sur Get Weez !** 🏖️\n\nJe suis votre **concierge IA personnel** pour vivre Marbella comme un local ! 🇪🇸\n\n🎯 **Je peux vous aider avec :**\n• 🍽️ **Restaurants** exclusifs et tables VIP\n• 🎉 **Événements** et soirées privées\n• 🛥️ **Yachts** et expériences de luxe\n• 🏨 **Hébergements** premium\n• 🚁 **Activités** uniques\n\n💬 **Dites-moi simplement ce dont vous rêvez** et je m'occupe de tout ! ✨",
+      role: 'assistant',
+      timestamp: new Date()
+    }
+
+    const newConversation = {
+      id: Date.now().toString(),
+      name: `Chat du ${dateString} à ${timeString}`,
+      messages: [welcomeMessage],
+      lastMessage: 'Bonjour ! Comment puis-je vous aider ?',
+      createdAt: new Date().toISOString(),
+      updatedAt: formatDate(new Date())
     }
     
-    // BLOQUER COMPLÈTEMENT LA CRÉATION
-    return null
+    setConversations(prev => {
+      const updated = [newConversation, ...prev]
+      // Limiter à 10 conversations maximum
+      return updated.slice(0, 10)
+    })
+    
+    // Annuler tout timeout en cours
+    if (timeoutRef.current) {
+      console.log('⏰ Annulation du timeout précédent')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
+    // Utiliser setTimeout pour éviter les problèmes de state
+    timeoutRef.current = setTimeout(() => {
+      setCurrentConversationId(newConversation.id)
+      setIsCreating(false)
+      timeoutRef.current = null
+    }, 0)
+    
+    return newConversation.id
   }
 
   // Sélectionner une conversation
