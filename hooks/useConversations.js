@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 
 const STORAGE_KEY = 'getweez_conversations'
 
@@ -6,6 +6,9 @@ export function useConversations() {
   const [conversations, setConversations] = useState([])
   const [currentConversationId, setCurrentConversationIdRaw] = useState(null)
   const [isCreating, setIsCreating] = useState(false)
+  
+  // Référence pour annuler les timeouts en cours
+  const timeoutRef = useRef(null)
 
   // Wrapper pour tracer les changements de currentConversationId
   const setCurrentConversationId = (newId) => {
@@ -148,10 +151,18 @@ export function useConversations() {
       return updated.slice(0, 10)
     })
     
+    // Annuler tout timeout en cours
+    if (timeoutRef.current) {
+      console.log('⏰ Annulation du timeout précédent')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
     // Utiliser setTimeout pour éviter les problèmes de state
-    setTimeout(() => {
+    timeoutRef.current = setTimeout(() => {
       setCurrentConversationId(newConversation.id)
       setIsCreating(false)
+      timeoutRef.current = null
     }, 0)
     
     return newConversation.id
@@ -167,11 +178,25 @@ export function useConversations() {
     console.log(stack)
     console.log('🎯🎯🎯🎯🎯 FIN TRACE SELECT')
     
+    // CRITICAL: Annuler les timeouts en cours si on ferme (id = null)
+    if (id === null && timeoutRef.current) {
+      console.log('🚫 ANNULATION du timeout createConversation en cours!')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
     setCurrentConversationId(id)
   }
 
   // Supprimer une conversation
   const deleteConversation = (id) => {
+    // CRITICAL: Annuler les timeouts en cours
+    if (timeoutRef.current) {
+      console.log('🚫 ANNULATION du timeout createConversation lors de la suppression!')
+      clearTimeout(timeoutRef.current)
+      timeoutRef.current = null
+    }
+    
     setConversations(prev => {
       const filtered = prev.filter(conv => conv.id !== id)
       
