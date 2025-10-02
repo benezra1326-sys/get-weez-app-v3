@@ -11,11 +11,30 @@ import SuggestionsSidebar from './SuggestionsSidebar'
 import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import '../../cache-buster.js' // FORCE REFRESH
+import '../../emergency-patch.js' // PATCH D'URGENCE
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🔄 ChatInterface component loaded - VERSION 2.0 - NOUVELLE VERSION')
+  console.log('🔄 ChatInterface component loaded - VERSION 3.0 - PATCH D\'URGENCE')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
+  
+  // PATCH D'URGENCE - Appliquer les intercepteurs
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      console.log('🚨 APPLICATION DU PATCH D\'URGENCE')
+      
+      // Si on détecte une création automatique, la bloquer
+      const originalLog = console.log
+      console.log = function(...args) {
+        if (args[0] && args[0].includes && args[0].includes('🆕') && args[0].includes('Création')) {
+          console.error('🚫🚫🚫 PATCH: CRÉATION DÉTECTÉE ET BLOQUÉE!', args)
+          console.trace('Stack trace de la création:')
+          return
+        }
+        originalLog.apply(console, args)
+      }
+    }
+  }, [])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
