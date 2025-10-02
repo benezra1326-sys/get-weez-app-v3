@@ -234,13 +234,22 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
 
 
   const handleCloseConversation = () => {
+    console.log('🔄 handleCloseConversation appelée - currentConversationId:', currentConversationId)
     if (currentConversationId) {
       console.log('🔄 Fermeture de conversation:', currentConversationId)
       
-      // Fermer la conversation actuelle et revenir à l'écran d'accueil
-      selectConversation(null)
-      
-      showToast('Conversation fermée', 'info')
+      try {
+        // Fermer la conversation actuelle et revenir à l'écran d'accueil
+        selectConversation(null)
+        
+        console.log('✅ selectConversation(null) exécuté avec succès')
+        
+        showToast('Conversation fermée', 'info')
+      } catch (error) {
+        console.error('❌ Erreur lors de la fermeture:', error)
+      }
+    } else {
+      console.log('⚠️ Aucune conversation actuelle à fermer')
     }
   }
 
@@ -1101,7 +1110,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 </button>
                 {currentConversationId && (
                   <button 
-                    onClick={handleCloseConversation}
+                    onClick={() => {
+                      console.log('🖱️ Clic sur bouton fermer desktop (toolbar)')
+                      handleCloseConversation()
+                    }}
                     className="p-2 rounded-lg transition-all duration-300"
                     style={{ 
                       backgroundColor: '#6B7280',
@@ -1186,7 +1198,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   </div>
                 </div>
                 <button
-                  onClick={handleCloseConversation}
+                  onClick={() => {
+                    console.log('🖱️ Clic sur bouton fermer desktop (header)')
+                    handleCloseConversation()
+                  }}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{
                     background: isDarkMode 
