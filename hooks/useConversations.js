@@ -40,7 +40,7 @@ export function useConversations() {
     console.log('📝📝📝 FIN TRACE')
     
     // PROTECTION ULTIME: Bloquer tout changement qui remet un ID après fermeture
-    if (typeof window !== 'undefined' && window.conversationJustClosed && newId !== null) {
+    if (typeof window !== 'undefined' && (window.conversationJustClosed || window.conversationForceClosed) && newId !== null) {
       console.log('🚫🚫🚫 BLOCAGE! Tentative de réouverture après fermeture détectée!')
       console.log('🚫 Hook:', hookInstanceId)
       console.log('🚫 Tentative de remettre ID:', newId)

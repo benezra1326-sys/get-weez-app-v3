@@ -1156,6 +1156,32 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 >
                   <Sparkles size={16} className="text-white" />
                 </button>
+
+                {/* BOUTON D'URGENCE POUR FORCER LA FERMETURE */}
+                <button 
+                  onClick={() => {
+                    console.log('🚨 BOUTON D\'URGENCE - FERMETURE FORCÉE!')
+                    // Forcer la fermeture dans window pour bloquer TOUTES les réouvertures
+                    if (typeof window !== 'undefined') {
+                      window.conversationJustClosed = true
+                      window.conversationForceClosed = true
+                    }
+                    // Fermer la conversation
+                    selectConversation(null)
+                    // Vider complètement le state
+                    setInput('')
+                    // Message d'urgence
+                    alert('FERMETURE FORCÉE ! Rechargez la page si le problème persiste.')
+                  }}
+                  className="p-2 rounded-lg transition-all duration-300"
+                  style={{ 
+                    backgroundColor: '#DC2626',
+                    boxShadow: '0 4px 12px rgba(220, 38, 38, 0.3)'
+                  }}
+                  title="URGENCE: Forcer la fermeture"
+                >
+                  ⚠️
+                </button>
                 {currentConversationId && (
                   <button 
                     onClick={() => {
