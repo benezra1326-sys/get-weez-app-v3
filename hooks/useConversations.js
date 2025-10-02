@@ -107,6 +107,16 @@ export function useConversations() {
   // Créer une nouvelle conversation
   const createConversation = () => {
     const stack = new Error().stack
+    console.log(`🚫🚫🚫🚫🚫 [${hookInstanceId}] createConversation BLOQUÉ POUR DEBUG!`)
+    console.log('🚫 Stack trace COMPLET:')
+    console.log(stack)
+    console.log('🚫🚫🚫🚫🚫 FIN TRACE CREATE BLOQUE')
+    
+    // BLOQUER COMPLÈTEMENT LA CRÉATION
+    return null
+    
+    // CODE ORIGINAL COMMENTÉ POUR DEBUG
+    /*
     console.log(`🆕🆕🆕🆕🆕 [${hookInstanceId}] createConversation APPELÉ!`)
     console.log('🆕 Stack trace COMPLET:')
     console.log(stack)
@@ -184,6 +194,7 @@ export function useConversations() {
     }, 0)
     
     return newConversation.id
+    */
   }
 
   // Sélectionner une conversation
