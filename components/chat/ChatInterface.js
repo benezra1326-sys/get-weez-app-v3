@@ -60,20 +60,22 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     }
   }, [initialMessage])
   
-  // État pour suivre si l'utilisateur a délibérément fermé une conversation (et ne veut pas qu'elle se rouvre)
-  const [userWantsNoConversation, setUserWantsNoConversation] = useState(false)
+  // État pour suivre si c'est le premier chargement
+  const [isFirstLoad, setIsFirstLoad] = useState(true)
   
-  // Effet pour créer une nouvelle conversation par défaut
+  // Effet pour gérer le premier chargement uniquement
   useEffect(() => {
-    // Créer une nouvelle conversation si :
-    // - Aucune conversation n'est sélectionnée
-    // - Il existe au moins une conversation OU il n'y en a aucune (premier chargement)
-    // - L'utilisateur n'a pas expressément demandé à rester sans conversation
-    if (!currentConversationId && createConversation && !userWantsNoConversation) {
-      console.log('🆕 Création d\'une nouvelle conversation par défaut')
+    // Au premier chargement, si pas de conversations et pas d'ID actuel, créer une conversation de bienvenue
+    if (isFirstLoad && !currentConversationId && conversations.length === 0 && createConversation) {
+      console.log('🆕 Premier chargement - création d\'une conversation de bienvenue')
       createConversation()
     }
-  }, [conversations.length, createConversation, currentConversationId, userWantsNoConversation])
+    
+    // Marquer que le premier chargement est terminé
+    if (isFirstLoad) {
+      setIsFirstLoad(false)
+    }
+  }, [isFirstLoad, conversations.length, createConversation, currentConversationId])
 
   // Fonction pour scroller vers le bas
   const scrollToBottom = useCallback(() => {
@@ -228,15 +230,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     if (conversationToDelete) {
       console.log('🗑️ Confirmation suppression de conversation:', conversationToDelete)
       
-      // Si c'est la dernière conversation, activer temporairement le flag pour éviter la recréation immédiate
-      if (conversations.length === 1) {
-        console.log('🗑️ Suppression de la dernière conversation (confirmation) - activation flag temporaire')
-        setUserWantsNoConversation(true)
-        setTimeout(() => {
-          setUserWantsNoConversation(false)
-        }, 1000)
-      }
-      
       deleteConversation(conversationToDelete)
       setConversationToDelete(null)
       setShowDeleteConfirm(false)
@@ -256,16 +249,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       console.log('🔄 Fermeture de conversation:', currentConversationId)
       
       try {
-        // Marquer que l'utilisateur veut rester sans conversation (temporairement)
-        setUserWantsNoConversation(true)
-        
         // Fermer la conversation actuelle et revenir à l'écran d'accueil
         selectConversation(null)
-        
-        // Réinitialiser le flag après un délai pour permettre à l'utilisateur de naviguer
-        setTimeout(() => {
-          setUserWantsNoConversation(false)
-        }, 2000) // 2 secondes pour éviter la recréation immédiate
         
         console.log('✅ selectConversation(null) exécuté avec succès')
         
@@ -943,16 +928,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                             e.stopPropagation()
                             if (confirm(`Supprimer "${conversation.name}" ?`)) {
                               console.log('🗑️ Suppression de conversation sidebar:', conversation.id)
-                              
-                              // Si c'est la dernière conversation, activer temporairement le flag pour éviter la recréation immédiate
-                              if (conversations.length === 1) {
-                                console.log('🗑️ Suppression de la dernière conversation (sidebar) - activation flag temporaire')
-                                setUserWantsNoConversation(true)
-                                setTimeout(() => {
-                                  setUserWantsNoConversation(false)
-                                }, 1000)
-                              }
-                              
                               deleteConversation(conversation.id)
                               showToast('Conversation supprimée', 'success')
                             }
@@ -981,7 +956,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               <button 
                 onClick={() => {
                   console.log('🆕 Clic sur nouvelle conversation (sidebar)')
-                  setUserWantsNoConversation(false) // Réinitialiser le flag
                   createConversation()
                 }}
                 className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
@@ -1132,7 +1106,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 <button 
                   onClick={() => {
                     console.log('🆕 Clic sur nouvelle conversation')
-                    setUserWantsNoConversation(false) // Réinitialiser le flag
                     createConversation()
                   }}
                   className="p-2 rounded-lg transition-all duration-300"
@@ -1182,16 +1155,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       if (confirm('Voulez-vous effacer cette conversation ?')) {
                         if (currentConversationId) {
                           console.log('🗑️ Suppression de conversation:', currentConversationId)
-                          
-                          // Si c'est la dernière conversation, activer temporairement le flag pour éviter la recréation immédiate
-                          if (conversations.length === 1) {
-                            console.log('🗑️ Suppression de la dernière conversation - activation flag temporaire')
-                            setUserWantsNoConversation(true)
-                            setTimeout(() => {
-                              setUserWantsNoConversation(false)
-                            }, 1000)
-                          }
-                          
                           deleteConversation(currentConversationId)
                           showToast('Conversation effacée', 'success')
                         }
