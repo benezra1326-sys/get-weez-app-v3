@@ -46,7 +46,7 @@ const Home = memo(({ user, setUser }) => {
 
   // Afficher le popup d'introduction au premier chargement UNIQUEMENT
   useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('get-weez-intro-seen')
+    const hasSeenIntro = localStorage.getItem('gliitz-intro-seen')
     if (!hasSeenIntro) {
       const timer = setTimeout(() => {
         setShowIntroModal(true)
@@ -57,7 +57,7 @@ const Home = memo(({ user, setUser }) => {
 
   const closeIntroModal = () => {
     setShowIntroModal(false)
-    localStorage.setItem('get-weez-intro-seen', 'true')
+    localStorage.setItem('gliitz-intro-seen', 'true')
   }
 
   const nextStep = () => {

@@ -64,7 +64,7 @@ function MyApp({ Component, pageProps }) {
           // Pas de session, utiliser l'utilisateur de démo
           setUser({
             id: 'demo-user',
-            email: 'demo@getweez.com',
+            email: 'demo@gliitz.com',
             first_name: 'Demo',
             last_name: 'User',
             is_member: true
@@ -119,7 +119,7 @@ function MyApp({ Component, pageProps }) {
             // Retourner à l'utilisateur de démo
             setUser({
               id: 'demo-user',
-              email: 'demo@getweez.com',
+              email: 'demo@gliitz.com',
               first_name: 'Demo',
               last_name: 'User',
               is_member: true
@@ -130,7 +130,7 @@ function MyApp({ Component, pageProps }) {
           // En cas d'erreur, utiliser l'utilisateur de démo
           setUser({
             id: 'demo-user',
-            email: 'demo@getweez.com',
+            email: 'demo@gliitz.com',
             first_name: 'Demo',
             last_name: 'User',
             is_member: true
