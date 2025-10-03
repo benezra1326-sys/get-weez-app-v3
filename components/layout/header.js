@@ -221,11 +221,12 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         <button 
           onClick={toggleTheme}
           className="p-2 rounded-xl transition-all duration-300 hover:bg-gray-800/50"
+          aria-label={isDarkMode ? "Activer le mode clair" : "Activer le mode sombre"}
+          title={isDarkMode ? "Basculer en mode clair" : "Basculer en mode sombre"}
           style={{ 
             color: 'var(--color-text-secondary)',
             borderRadius: 'var(--radius-lg)'
           }}
-          title={isDarkMode ? "Mode clair" : "Mode sombre"}
         >
           {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
         </button>

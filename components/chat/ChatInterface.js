@@ -10,9 +10,10 @@ import ConversationSidebar from './ConversationSidebar'
 import SuggestionsSidebar from './SuggestionsSidebar'
 import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
+import logger from '../../lib/logger'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🔄 ChatInterface component loaded')
+  logger.debug('ChatInterface component loaded')
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   const [input, setInput] = useState('')
@@ -35,7 +36,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     isDarkMode = theme.isDarkMode
     toggleTheme = theme.toggleTheme
   } catch (error) {
-    console.warn('ThemeProvider not available, using default theme')
+    logger.warn('ThemeProvider not available, using default theme')
   }
 
   // Hook useConversations - DOIT être déclaré avant les useEffect qui l'utilisent

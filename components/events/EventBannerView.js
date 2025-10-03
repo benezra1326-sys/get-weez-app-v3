@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Image from 'next/image'
 import { Lock, Crown, User, MapPin, Calendar, Clock, Users, Euro } from 'lucide-react'
 import Link from 'next/link'
 
@@ -325,9 +326,11 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
               >
                 {/* Image de l'événement - Plus compacte */}
                 <div className="relative h-40 overflow-hidden flex-shrink-0">
-                  <img 
+                  <Image
                     src={event.image_url} 
-                    alt={event.name}
+                    alt={event.name || 'Image événement'}
+                    width={400}
+                    height={160}
                     className="banner-image w-full h-full object-cover transition-transform duration-300 md:group-hover:scale-105"
                     style={{
                       display: 'block',
