@@ -7,7 +7,7 @@ export default function CookieBanner() {
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
-    const cookiesAccepted = localStorage.getItem('get-weez-cookies-accepted')
+    const cookiesAccepted = localStorage.getItem('gliitz-cookies-accepted')
     if (!cookiesAccepted) {
       // Délai pour laisser le temps au chargement de la page
       const timer = setTimeout(() => {
@@ -18,12 +18,12 @@ export default function CookieBanner() {
   }, [])
 
   const acceptCookies = () => {
-    localStorage.setItem('get-weez-cookies-accepted', 'true')
+    localStorage.setItem('gliitz-cookies-accepted', 'true')
     setShowBanner(false)
   }
 
   const rejectCookies = () => {
-    localStorage.setItem('get-weez-cookies-accepted', 'false')
+    localStorage.setItem('gliitz-cookies-accepted', 'false')
     setShowBanner(false)
   }
 

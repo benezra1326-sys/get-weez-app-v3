@@ -5,6 +5,7 @@ import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 import SupportSection from '../components/account/SupportSection'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { ChevronDown, ChevronRight, Search, HelpCircle, FileText, Shield, CreditCard, MessageCircle, Phone, Mail, Clock, Star, Users, Zap, Sparkles, MessageCircle as ChatIcon, Calendar, MapPin, Award } from 'lucide-react'
+import DOMPurify from 'dompurify'
 
 export default function Aide({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -382,7 +383,7 @@ export default function Aide({ user, setUser }) {
                     </div>
                     <div 
                       className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
-                      dangerouslySetInnerHTML={{ __html: section.content }}
+                      dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(section.content) }}
                     />
                   </div>
                 ))}
@@ -416,7 +417,7 @@ export default function Aide({ user, setUser }) {
                   </a>
                   
                   <a 
-                    href="mailto:support@getweez.com" 
+                    href="mailto:support@gliitz.com" 
                     className={`group rounded-xl p-6 transition-all duration-300 hover:scale-105 ${
                       isDarkMode 
                         ? 'bg-gray-700/50 hover:bg-gray-600/50' 
