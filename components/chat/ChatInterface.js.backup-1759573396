@@ -9,7 +9,6 @@ import MobileChatInterface from './MobileChatInterface'
 import ConversationSidebar from './ConversationSidebar'
 import SuggestionsSidebar from './SuggestionsSidebar'
 import ChatArea from './ChatArea'
-import DetailPage from './DetailPage'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
