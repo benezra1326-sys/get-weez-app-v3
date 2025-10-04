@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
       try {
         // Vérifier que les variables d'environnement sont définies
         if (!supabaseUrl || !supabaseKey) {
-          console.warn('Variables d\'environnement Supabase manquantes - mode démo')
+          console.warn('⚠️ Variables d\'environnement Supabase manquantes - mode démo activé')
           return
         }
         
