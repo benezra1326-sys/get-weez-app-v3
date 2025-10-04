@@ -12,7 +12,7 @@ export function useConversations() {
     return conversationsList.filter(conv => {
       // Garder la conversation si elle a des messages
       const hasMessages = conv.messages && conv.messages.length > 0
-      console.log(`🔍 Conversation ${conv.id} (${conv.title}): ${hasMessages ? 'GARDÉE' : 'SUPPRIMÉE (vide)'}`)
+      // Checking conversation: keep if has messages
       return hasMessages
     })
   }
@@ -31,7 +31,7 @@ export function useConversations() {
         const cleaned = cleanEmptyConversations(parsed)
         
         if (cleaned.length !== parsed.length) {
-          console.log('🧹 Conversations vides supprimées au chargement')
+          // Empty conversations cleaned on load
           // Sauvegarder la version nettoyée
           localStorage.setItem(STORAGE_KEY, JSON.stringify(cleaned))
         }
@@ -65,12 +65,11 @@ export function useConversations() {
   const createConversation = () => {
     // Protection contre les créations multiples
     if (isCreating) {
-      console.log('⚠️ Création déjà en cours, annulation')
+      // Protection against multiple creations
       return currentConversationId
     }
 
-    console.log('🔍 Tentative de création de conversation...')
-    console.log('🔍 Conversations actuelles:', conversations.length)
+    // Creating conversation...
     
     setIsCreating(true)
     
@@ -150,9 +149,9 @@ export function useConversations() {
   // Ajouter un message à la conversation actuelle
   const addMessage = (message, targetConversationId = null) => {
     const conversationId = targetConversationId || currentConversationId
-    console.log('🔧 addMessage appelé:', { message, targetConversationId, conversationId, currentConversationId })
+    // addMessage called
     if (!conversationId) {
-      console.log('❌ addMessage: Pas de conversationId, abandon')
+      // No conversationId found, aborting
       return
     }
 
@@ -175,11 +174,11 @@ export function useConversations() {
       
       // Si des conversations vides ont été supprimées, mettre à jour la conversation actuelle
       if (cleaned.length !== updated.length) {
-        console.log('🧹 Conversations vides supprimées automatiquement')
+        // Empty conversations automatically cleaned
         
         // Si la conversation actuelle a été supprimée (elle était vide), créer une nouvelle
         if (!cleaned.find(conv => conv.id === conversationId)) {
-          console.log('🆕 Création d\'une nouvelle conversation car l\'ancienne était vide')
+          // Creating new conversation as previous was empty
           const newConv = {
             id: Date.now().toString(),
             title: 'Nouvelle conversation',

@@ -1,8 +1,8 @@
 import { appWithTranslation } from 'next-i18next'
+import '../lib/i18n'
 import '../styles/globals.css'
 import '../styles/animations.css'
 import '../styles/mobile-chat.css'
-import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import { useEffect, useState } from 'react'
@@ -29,7 +29,7 @@ function MyApp({ Component, pageProps }) {
       try {
         // Vérifier que les variables d'environnement sont définies
         if (!supabaseUrl || !supabaseKey) {
-          console.warn('Variables d\'environnement Supabase manquantes - mode démo')
+          console.warn('⚠️ Variables d\'environnement Supabase manquantes - mode démo activé')
           return
         }
         
