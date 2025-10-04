@@ -3010,6 +3010,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           </div>
         </div>
       </div>
+      </div> {/* Fermeture de l'interface desktop */}
       
       {/* Container pour les notifications toast */}
       <ToastContainer />
@@ -3025,7 +3026,6 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         cancelText="Annuler"
         type="danger"
       />
-      </div> {/* Fermeture de l'interface desktop */}
     </>
   )
 }
