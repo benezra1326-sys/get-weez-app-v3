@@ -12,7 +12,7 @@ import ChatArea from './ChatArea'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 const ChatInterface = ({ user, initialMessage, establishmentName }) => {
-  console.log('🔄 ChatInterface component loaded')
+  // ChatInterface component loaded
   const { t } = useTranslation('common')
   const { showToast, ToastContainer } = useToast()
   const [input, setInput] = useState('')
@@ -64,7 +64,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
   useEffect(() => {
     // Créer une nouvelle conversation si aucune n'est sélectionnée
     if (!currentConversationId && conversations.length >= 0 && createConversation) {
-      console.log('🆕 Création d\'une nouvelle conversation par défaut')
+      // Creating new default conversation
       createConversation()
     }
   }, [conversations.length, createConversation, currentConversationId])
@@ -96,18 +96,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     }
   }, [currentConversationId, scrollToBottom])
 
-  console.log('📊 ChatInterface state:', {
-    conversationsCount: conversations?.length || 0,
-    currentConversationId,
-    messagesCount: messages?.length || 0,
-    messages: messages,
-    messagesType: typeof messages,
-    messagesArray: Array.isArray(messages),
-    input,
-    isLoading,
-    hasCreateConversation: typeof createConversation === 'function',
-    hasAddMessage: typeof addMessage === 'function'
-  })
+  // ChatInterface state debug info
+  // Removed debug logs to prevent build spam
 
   const handleSend = useCallback(async () => {
     console.log('🚀🚀🚀 handleSend appelé', { 
@@ -1218,7 +1208,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {messages && messages.length > 0 ? (
                 <div className="space-y-2 lg:space-y-4 pt-4 lg:pt-6">
                   {messages.map((msg) => {
-                    console.log('🔍 Affichage message:', msg)
+                    // Rendering message
                     return (
                       <div
                         key={msg.id}
