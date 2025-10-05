@@ -79,21 +79,21 @@ export function useConversationsClean() {
       timeString: timeString,
       messages: [welcomeMessage],
       createdAt: now,
-      lastActivity: now
+      lastActivity: now,
+      hasWelcomeMessage: true // Flag pour éviter les doublons
     }
 
+    // Mettre à jour l'état immédiatement (pas de setTimeout)
     setConversations(prev => {
       const updated = [newConversation, ...prev]
       return updated.slice(0, 10) // Limiter à 10 conversations
     })
 
-    // Utiliser setTimeout pour éviter les problèmes de timing
-    setTimeout(() => {
-      setCurrentConversationId(newConversation.id)
-      setIsCreating(false)
-      creationLock.current = false
-      console.log('✅ Nouvelle conversation créée:', newConversation.id)
-    }, 0)
+    // Sélectionner immédiatement la conversation
+    setCurrentConversationId(newConversation.id)
+    setIsCreating(false)
+    creationLock.current = false
+    console.log('✅ Nouvelle conversation créée avec message de bienvenue:', newConversation.id)
 
     return newConversation.id
   }, [isCreating, currentConversationId])

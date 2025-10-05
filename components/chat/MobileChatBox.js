@@ -22,11 +22,20 @@ export default function MobileChatBox({
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
-  // Auto-scroll vers le bas seulement si l'utilisateur n'est pas en train d'écrire
+  // Auto-scroll vers le bas UNIQUEMENT quand de NOUVEAUX messages arrivent
+  const prevMessagesLengthRef = useRef(messages.length)
+  
   useEffect(() => {
-    if (messagesEndRef.current && document.activeElement !== textareaRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+    // Scroll seulement si un nouveau message est ajouté (pas au focus du textarea)
+    if (messages.length > prevMessagesLengthRef.current) {
+      if (messagesEndRef.current) {
+        // Utiliser setTimeout pour s'assurer que le DOM est mis à jour
+        setTimeout(() => {
+          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
+        }, 100)
+      }
     }
+    prevMessagesLengthRef.current = messages.length
   }, [messages])
 
   // Géolocalisation
@@ -258,8 +267,13 @@ export default function MobileChatBox({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={(e) => {
-                  // Empêcher le scroll automatique
-                  e.target.scrollIntoView = () => {}
+                  // Empêcher complètement le scroll au focus - comportement natif WhatsApp
+                  e.preventDefault()
+                  window.scrollTo(0, 0)
+                }}
+                onTouchStart={(e) => {
+                  // Empêcher le scroll sur mobile lors du touch
+                  e.stopPropagation()
                 }}
                 placeholder="Écrivez votre message..."
                 className="w-full px-4 py-3 rounded-2xl resize-none focus:outline-none chat-input"
@@ -270,7 +284,8 @@ export default function MobileChatBox({
                   color: isDarkMode ? '#fff' : '#1f2937',
                   border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'}`,
                   maxHeight: '60px',
-                  minHeight: '48px'
+                  minHeight: '48px',
+                  touchAction: 'none' // Empêcher le scroll au touch
                 }}
                 rows={1}
               />
