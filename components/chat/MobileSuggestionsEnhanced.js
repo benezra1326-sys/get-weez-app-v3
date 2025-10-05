@@ -142,7 +142,7 @@ export default function MobileSuggestionsEnhanced({
   return (
     <div className="w-full pb-6" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
       {/* Barre de recherche TRÈS visible */}
-      <div className="px-4 mb-4">
+      <div className="px-4 mb-4 mt-4">
         <div className="relative">
           <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-500" size={20} />
           <input
@@ -150,7 +150,7 @@ export default function MobileSuggestionsEnhanced({
             placeholder="Rechercher établissements, événements, services..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="w-full pl-12 pr-4 py-3.5 rounded-2xl text-sm font-medium shadow-lg"
+            className="w-full pl-12 pr-4 py-3.5 rounded-2xl text-sm font-medium shadow-lg text-left"
             style={{
               background: isDarkMode ? 'rgba(55, 65, 81, 0.95)' : 'rgba(255, 255, 255, 0.98)',
               border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)'}`,
@@ -282,7 +282,7 @@ export default function MobileSuggestionsEnhanced({
         </div>
       </div>
 
-      {/* Tabs pour les catégories - Simplifiés */}
+      {/* Tabs pour les catégories - Avec noms */}
       <div className="grid grid-cols-5 gap-2 mb-4 px-4">
         <button
           onClick={() => setActiveTab('all')}
@@ -293,7 +293,10 @@ export default function MobileSuggestionsEnhanced({
             boxShadow: activeTab === 'all' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
-          ✨
+          <div className="flex flex-col items-center gap-0.5">
+            <span>✨</span>
+            <span className="text-[9px]">Tout</span>
+          </div>
         </button>
 
         <button
@@ -305,7 +308,10 @@ export default function MobileSuggestionsEnhanced({
             boxShadow: activeTab === 'establishments' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
-          🏨
+          <div className="flex flex-col items-center gap-0.5">
+            <span>🏨</span>
+            <span className="text-[9px]">Établis.</span>
+          </div>
         </button>
 
         <button
@@ -317,7 +323,10 @@ export default function MobileSuggestionsEnhanced({
             boxShadow: activeTab === 'services' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
-          🛍️
+          <div className="flex flex-col items-center gap-0.5">
+            <span>🛍️</span>
+            <span className="text-[9px]">Services</span>
+          </div>
         </button>
 
         <button
@@ -329,7 +338,10 @@ export default function MobileSuggestionsEnhanced({
             boxShadow: activeTab === 'events' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
-          🎉
+          <div className="flex flex-col items-center gap-0.5">
+            <span>🎉</span>
+            <span className="text-[9px]">Événem.</span>
+          </div>
         </button>
 
         <button
@@ -341,7 +353,10 @@ export default function MobileSuggestionsEnhanced({
             boxShadow: activeTab === 'luxe' ? '0 4px 12px rgba(250, 204, 21, 0.5)' : 'none'
           }}
         >
-          👑
+          <div className="flex flex-col items-center gap-0.5">
+            <span>👑</span>
+            <span className="text-[9px]">Luxe</span>
+          </div>
         </button>
       </div>
 

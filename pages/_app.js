@@ -7,6 +7,7 @@ import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
+import SimpleFloatingChatButton from '../components/ui/SimpleFloatingChatButton'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
@@ -185,6 +186,9 @@ function MyApp({ Component, pageProps }) {
         <Component {...pageProps} user={user} setUser={setUser} />
         {/* <CookieBanner /> */}
         {/* <TipsPopup /> */}
+        
+        {/* Bouton chat flottant simple - Mobile uniquement */}
+        <SimpleFloatingChatButton />
       </ThemeProvider>
     </MobileTouchEnhancer>
   )

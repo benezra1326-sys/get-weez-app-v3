@@ -19,26 +19,39 @@ export default function MobileChatBox({
   const [input, setInput] = useState('')
   const [location, setLocation] = useState(null)
   const [isGettingLocation, setIsGettingLocation] = useState(false)
+  const [showScrollButton, setShowScrollButton] = useState(false)
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
+  const messagesContainerRef = useRef(null)
 
   // Debug: afficher les messages reçus
   useEffect(() => {
     console.log('📨 MobileChatBox - Messages reçus:', messages.length, messages)
   }, [messages])
 
+  // Détecter si l'utilisateur a scrollé vers le haut
+  const handleScroll = () => {
+    if (messagesContainerRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current
+      const isAtBottom = scrollHeight - scrollTop - clientHeight < 100
+      setShowScrollButton(!isAtBottom)
+    }
+  }
+
   // Auto-scroll vers le bas UNIQUEMENT quand de NOUVEAUX messages arrivent
   const prevMessagesLengthRef = useRef(messages.length)
   
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
+      setShowScrollButton(false)
+    }
+  }
+
   useEffect(() => {
     // Scroll seulement si un nouveau message est ajouté OU à l'ouverture initiale
     if (messages.length > 0 && (messages.length > prevMessagesLengthRef.current || prevMessagesLengthRef.current === 0)) {
-      if (messagesEndRef.current) {
-        // Utiliser setTimeout pour s'assurer que le DOM est mis à jour
-        setTimeout(() => {
-          messagesEndRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' })
-        }, 100)
-      }
+      setTimeout(() => scrollToBottom(), 100)
     }
     prevMessagesLengthRef.current = messages.length
   }, [messages, isOpen])
@@ -113,13 +126,15 @@ export default function MobileChatBox({
 
       {/* Chat Box - Page dédiée plein écran */}
       <div 
-        className="chat-box-container fixed inset-0 z-[101] flex flex-col"
+        className="chat-box-container fixed inset-0 z-[101]"
         style={{
           background: isDarkMode 
             ? 'linear-gradient(135deg, rgba(10, 10, 15, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
             : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
           backdropFilter: 'blur(20px)',
-          paddingBottom: '100px' // Espace pour la barre de saisie
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100vh'
         }}
       >
         {/* Header avec bouton historique, fermer et géolocalisation */}
@@ -200,12 +215,17 @@ export default function MobileChatBox({
           </div>
         </div>
 
-        {/* Messages */}
+        {/* Messages - Zone scrollable */}
         <div 
+          ref={messagesContainerRef}
+          onScroll={handleScroll}
           className="flex-1 overflow-y-auto p-4"
           style={{
             overflowY: 'auto',
-            WebkitOverflowScrolling: 'touch'
+            WebkitOverflowScrolling: 'touch',
+            overscrollBehavior: 'contain',
+            paddingBottom: '120px', // Plus d'espace pour la barre de saisie
+            flex: '1 1 auto'
           }}
         >
           {messages.length === 0 ? (
@@ -228,7 +248,7 @@ export default function MobileChatBox({
               {messages.map((message, index) => (
                 <MessageBubble key={message.id || index} message={message} />
               ))}
-              <div ref={messagesEndRef} />
+              <div ref={messagesEndRef} style={{ height: '1px' }} />
             </>
           )}
 
@@ -239,16 +259,32 @@ export default function MobileChatBox({
                   background: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(243, 244, 246, 0.8)'
                 }}
               >
-                <Loader2 size={16} className="animate-spin text-purple-500" />
-                <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                  Gliitz réfléchit...
-                </span>
+              <Loader2 size={16} className="animate-spin text-purple-500" />
+              <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                Gliitz réfléchit...
+              </span>
               </div>
             </div>
           )}
         </div>
 
-        {/* Input Zone - Fixée en bas */}
+        {/* Bouton scroll to bottom */}
+        {showScrollButton && (
+          <button
+            onClick={scrollToBottom}
+            className="absolute bottom-32 right-4 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+            style={{
+              background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(99, 102, 241, 0.9))',
+              backdropFilter: 'blur(10px)'
+            }}
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+              <path d="M12 5v14M19 12l-7 7-7-7"/>
+            </svg>
+          </button>
+        )}
+
+        {/* Input Zone - En bas du conteneur */}
         <div 
           className="p-4 border-t"
           style={{
@@ -257,11 +293,8 @@ export default function MobileChatBox({
               ? 'rgba(31, 41, 55, 0.98)'
               : 'rgba(255, 255, 255, 0.98)',
             backdropFilter: 'blur(20px)',
-            position: 'fixed',
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 102
+            flexShrink: 0,
+            width: '100%'
           }}
         >
           <div className="flex items-end gap-2">

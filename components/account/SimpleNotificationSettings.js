@@ -196,23 +196,26 @@ export default function SimpleNotificationSettings() {
                   
                   <button
                     onClick={() => updateNotification(type.key, category.key, !notifications[type.key][category.key])}
-                    className={`relative inline-flex h-6 w-11 flex-shrink-0 items-center rounded-full transition-colors duration-200 ${
+                    className={`relative inline-flex h-7 w-12 flex-shrink-0 items-center rounded-full transition-all duration-300 ${
                       notifications[type.key][category.key]
-                        ? 'bg-blue-600' 
-                        : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
+                        ? 'bg-gradient-to-r from-blue-500 to-blue-600' 
+                        : isDarkMode ? 'bg-gray-700' : 'bg-gray-300'
                     }`}
                     style={{
-                      minWidth: '44px',
-                      minHeight: '24px',
-                      touchAction: 'manipulation'
+                      minWidth: '48px',
+                      minHeight: '28px',
+                      touchAction: 'manipulation',
+                      boxShadow: notifications[type.key][category.key] 
+                        ? '0 2px 8px rgba(59, 130, 246, 0.4)' 
+                        : '0 1px 3px rgba(0,0,0,0.1)'
                     }}
                   >
                     <span
-                      className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform duration-200 shadow-sm ${
+                      className={`inline-block h-5 w-5 transform rounded-full bg-white transition-all duration-300 shadow-md ${
                         notifications[type.key][category.key] ? 'translate-x-6' : 'translate-x-1'
                       }`}
                       style={{
-                        boxShadow: '0 1px 3px rgba(0,0,0,0.1)'
+                        boxShadow: '0 2px 6px rgba(0,0,0,0.2)'
                       }}
                     />
                   </button>

@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import HeaderGliitz from '../../components/layout/HeaderGliitz'
 import MobileMenu from '../../components/layout/MobileMenu'
-import ChatFloatingButton from '../../components/ui/ChatFloatingButton'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import { Star, MapPin, Clock, Calendar, Users, ArrowLeft, Euro } from 'lucide-react'
 
@@ -99,9 +98,6 @@ export default function EventDetail({ user, setUser }) {
         onClose={() => setIsMobileMenuOpen(false)} 
         user={user} 
       />
-
-      {/* Bouton flottant pour le chat */}
-      <ChatFloatingButton />
 
       {/* Contenu principal */}
       <main className="container mx-auto px-4 py-8">

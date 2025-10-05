@@ -6,7 +6,6 @@ import HeaderGliitz from '../components/layout/HeaderGliitz'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 import Newsletter from '../components/ui/Newsletter'
-import ChatFloatingButton from '../components/ui/ChatFloatingButton'
 import BrandCarousel, { DestinationsSection, PressSection } from '../components/ui/BrandCarousel'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { usePreloader } from '../lib/preloader'
@@ -92,7 +91,7 @@ const Home = memo(({ user, setUser }) => {
   const introSteps = [
     {
       icon: <Sparkles size={48} className="text-purple-500 animate-pulse" />,
-      title: "✨ Bienvenue sur Get Weez !",
+      title: "✨ Bienvenue sur Gliitz !",
       description: "Votre assistant IA personnel pour vivre Marbella comme un local ! 🏖️",
       features: [
         "🎯 Recommandations ultra-personnalisées basées sur vos goûts",
@@ -132,7 +131,7 @@ const Home = memo(({ user, setUser }) => {
         "🏨 Suites d'hôtels avec vue mer garantie",
         "🎉 Événements privés et soirées exclusives"
       ],
-      tip: "🎭 Membre Get Weez = Traitement VIP partout !"
+      tip: "🎭 Membre Gliitz = Traitement VIP partout !"
     }
   ]
 
@@ -360,26 +359,22 @@ const Home = memo(({ user, setUser }) => {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
-
-        {/* Bouton flottant pour le chat - apparaît après scroll */}
-        <ChatFloatingButton />
         
         {/* Contenu principal */}
         <main 
           style={{ 
             flex: 1, 
-            overflowY: 'auto', // Scroll libre sur mobile
+            overflowY: 'auto',
             overflowX: 'hidden',
             WebkitOverflowScrolling: 'touch',
             backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
             width: '100vw', 
             minHeight: 'calc(100vh - 6rem)', 
-            display: 'flex', 
+            display: 'flex',
             justifyContent: 'stretch', 
             alignItems: 'stretch', 
             maxWidth: 'none',
-            WebkitOverflowScrolling: 'touch', // Scroll fluide iOS
-            overscrollBehavior: 'auto' // Permettre rebond naturel
+            overscrollBehavior: 'auto'
           }}
         >
           <ChatMain 

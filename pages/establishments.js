@@ -8,7 +8,6 @@ import CategoryFilter from '../components/establishments/CategoryFilter'
 import MobileFilters from '../components/mobile/MobileFilters'
 import { EstablishmentSearchBar } from '../components/ui/SearchBar'
 import { useToast } from '../components/ui/Toast'
-import ChatFloatingButton from '../components/ui/ChatFloatingButton'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import { supabase } from '../lib/supabase'
 import { establishments as staticEstablishments, restaurantStyles, establishmentStats } from '../data/marbella-data'
@@ -198,9 +197,6 @@ export default function Establishments({ user, setUser }) {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
-
-        {/* Bouton flottant pour le chat */}
-        <ChatFloatingButton />
         
         {/* Contenu principal */}
         <main className="container mx-auto px-4 py-6">
@@ -258,20 +254,8 @@ export default function Establishments({ user, setUser }) {
               </div>
             </div>
 
-          {/* Filtres mobiles */}
-          <MobileFilters
-            categories={establishmentStats?.categories || {}}
-            selectedCategory={selectedCategory}
-            onCategoryChange={setSelectedCategory}
-            styles={restaurantStyles}
-            selectedStyle={selectedStyle}
-            onStyleChange={handleStyleChange}
-            onClearFilters={handleClearFilters}
-            showFilters={true}
-          />
-
-          {/* Section des filtres desktop - Cachée sur mobile */}
-          <div className="mb-6 relative z-50 hidden md:block">
+          {/* Section des filtres - Visible sur tous les écrans */}
+          <div className="mb-6 relative z-50">
             <div 
               className="relative overflow-hidden rounded-2xl p-6 border transition-all duration-300 hover:shadow-2xl"
               style={{
@@ -307,8 +291,8 @@ export default function Establishments({ user, setUser }) {
                   onSelectStyle={handleStyleChange}
                 />
               </div>
-              </div>
             </div>
+          </div>
 
           {/* Liste des établissements */}
               <EstablishmentList 

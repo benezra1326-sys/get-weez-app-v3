@@ -81,6 +81,14 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
     }
   }, [messages, isLoading, scrollToBottom])
 
+  // Créer une conversation dès qu'on ouvre le chat mobile
+  useEffect(() => {
+    if (showMobileChatBox && !currentConversationId && !isCreating) {
+      console.log('📱 Ouverture du chat mobile - Création conversation automatique')
+      createConversation()
+    }
+  }, [showMobileChatBox, currentConversationId, isCreating, createConversation])
+
   // Gestion des suggestions
   const handleSuggestionClick = useCallback((suggestion) => {
     if (isMobile) {
@@ -325,11 +333,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
   }, [input])
 
   if (!isLoaded) {
-    return (
-      <div className="flex items-center justify-center h-64">
-        <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
-      </div>
-    )
+    return null // Le loader principal gère déjà le chargement
   }
 
   // Utiliser DesktopChat pour les écrans desktop
@@ -386,12 +390,15 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
         messages={messages}
         isLoading={isLoading}
         onSendMessage={async (message) => {
-          // Créer conversation si besoin
+          // Créer conversation si besoin AVANT d'envoyer le message
           if (!currentConversationId) {
+            console.log('🆕 Création conversation avant envoi message')
             const newConvId = createConversation()
+            // Attendre que la conversation soit créée avec son message de bienvenue
             setTimeout(async () => {
+              console.log('📝 Envoi message dans nouvelle conversation:', newConvId)
               await processMessage(message, newConvId)
-            }, 100)
+            }, 200) // Augmenter le délai pour s'assurer que la conversation est bien créée
           } else {
             await processMessage(message, currentConversationId)
           }

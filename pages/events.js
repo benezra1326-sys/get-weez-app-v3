@@ -6,7 +6,6 @@ import EventBannerView from '../components/events/EventBannerView'
 import EventCalendarView from '../components/events/EventCalendarView'
 import EventDisplayToggle from '../components/events/EventDisplayToggle'
 import { EstablishmentSearchBar } from '../components/ui/SearchBar'
-import ChatFloatingButton from '../components/ui/ChatFloatingButton'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../contexts/ThemeContextSimple'
@@ -554,9 +553,6 @@ export default function Events({ user, setUser }) {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
-
-        {/* Bouton flottant pour le chat */}
-        <ChatFloatingButton />
         
         {/* Contenu principal */}
         <main className="container mx-auto px-4 py-6">

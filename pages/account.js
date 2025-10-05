@@ -11,7 +11,6 @@ import SimpleNotificationSettings from '../components/account/SimpleNotification
 import SimpleSettings from '../components/settings/SimpleSettings'
 import { useTheme, ThemeProvider } from '../contexts/ThemeContextSimple'
 import { User, Bell, Heart, Users, Settings, Gift } from 'lucide-react'
-import ChatFloatingButton from '../components/ui/ChatFloatingButton'
 
 function AccountContent({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -57,9 +56,6 @@ function AccountContent({ user, setUser }) {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
-        
-        {/* Bouton chat flottant */}
-        <ChatFloatingButton />
         
         <main className="container mx-auto px-4 py-6">
             {/* Header simplifié - PARFAITEMENT centré */}

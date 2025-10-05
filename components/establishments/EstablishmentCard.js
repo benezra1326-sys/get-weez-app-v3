@@ -43,8 +43,8 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
   
   return (
     <div 
-      className="uniform-banner"
-      onClick={handleCardClick}
+      className="uniform-banner cursor-pointer"
+      onClick={() => window.location.href = `/establishment/${establishment.id}`}
       style={{ cursor: 'pointer' }}
     >
       {/* Image de fond */}
@@ -116,6 +116,16 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
           
           <div className="banner-buttons">
                 <button 
+              onClick={(e) => {
+                e.stopPropagation()
+                const message = `Je souhaite réserver une table chez ${establishment.name}`
+                if (onSendMessage) {
+                  onSendMessage(message)
+                  window.scrollTo({ top: 0, behavior: 'smooth' })
+                } else {
+                  window.location.href = `/?message=${encodeURIComponent(message)}`
+                }
+              }}
               className="banner-button secondary"
               onClick={handleInfo}
             >

@@ -251,11 +251,14 @@ export default function EstablishmentDetail({ user, setUser }) {
 
               {/* Boutons d'action */}
               <div className="space-y-3">
-                <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
+                <button 
+                  onClick={() => {
+                    const message = `Je souhaite réserver une table chez ${establishment.name}`
+                    window.location.href = `/?message=${encodeURIComponent(message)}`
+                  }}
+                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
+                >
                   Réserver une table
-                </button>
-                <button className="w-full border border-purple-600 text-purple-600 py-3 px-6 rounded-lg font-semibold hover:bg-purple-50 transition-all duration-300">
-                  Contacter
                 </button>
               </div>
             </div>

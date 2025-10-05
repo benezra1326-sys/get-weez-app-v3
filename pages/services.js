@@ -6,7 +6,6 @@ import ServiceCard from '../components/services/ServiceCard'
 import ServiceCategoryFilter from '../components/services/ServiceCategoryFilter'
 import { ServiceSearchBar } from '../components/ui/SearchBar'
 import { useToast } from '../components/ui/Toast'
-import ChatFloatingButton from '../components/ui/ChatFloatingButton'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import { services as staticServices, serviceCategories } from '../data/services-data'
 import { useTheme } from '../contexts/ThemeContextSimple'
@@ -171,9 +170,6 @@ export default function Services({ user, setUser }) {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
-
-        {/* Bouton flottant pour le chat */}
-        <ChatFloatingButton />
         
         {/* Contenu principal */}
         <main className="container mx-auto px-4 py-6">

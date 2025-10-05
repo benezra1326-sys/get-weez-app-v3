@@ -68,7 +68,7 @@ export function useConversationsClean() {
     // Message de bienvenue automatique de l'IA
     const welcomeMessage = {
       id: `msg_${Date.now()}_welcome`,
-      content: "Bonjour ! 👋 Je suis votre assistant personnel Get Weez. Comment puis-je vous aider à découvrir Marbella aujourd'hui ? Restaurants, événements, services VIP... Je suis là pour vous ! 🌟",
+      content: "Bonjour ! 👋 Je suis votre assistant personnel Gliitz. Comment puis-je vous aider à découvrir Marbella aujourd'hui ? Restaurants, événements, services VIP... Je suis là pour vous !",
       role: 'assistant',
       timestamp: now
     }

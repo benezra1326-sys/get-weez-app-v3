@@ -10,19 +10,30 @@ import DesktopNavigation from './DesktopNavigation'
 const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [isDesktop, setIsDesktop] = useState(true) // Initialisation cohérente pour SSR
+  const [mounted, setMounted] = useState(false) // Pour éviter le flash hydration
   const router = useRouter()
+  
+  // Montage côté client
+  useEffect(() => {
+    setMounted(true)
+  }, [])
   
   // Vérification de sécurité pour useTheme
   let isDarkMode = false
   let toggleTheme = () => {}
+  let isLoaded = false
   
   try {
     const theme = useTheme()
     isDarkMode = theme.isDarkMode
     toggleTheme = theme.toggleTheme
+    isLoaded = theme.isLoaded
   } catch (error) {
     console.warn('Erreur useTheme:', error)
   }
+  
+  // Ne pas appliquer les styles dynamiques avant le montage
+  const shouldApplyTheme = mounted && isLoaded
 
   // Fonction pour déterminer si un lien est actif
   const isActive = useCallback((path) => {
@@ -40,7 +51,11 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
       return `${baseClasses} active`
     }
     
-    // Styles adaptatifs selon le thème
+    // Styles adaptatifs selon le thème (seulement après montage)
+    if (!shouldApplyTheme) {
+      return `${baseClasses} text-gray-700` // Style par défaut
+    }
+    
     if (isDarkMode) {
       return `${baseClasses} text-gray-300 hover:text-white hover:bg-gray-700/50 hover:shadow-lg hover:shadow-purple-500/20 hover:scale-105`
     } else {
@@ -61,8 +76,14 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
   }, [])
 
   // Utiliser DesktopNavigation pour les écrans desktop
-  if (isDesktop) {
+  // Attendre le montage ET la détection pour éviter le flash
+  if (mounted && isDesktop) {
     return <DesktopNavigation user={user} setUser={setUser} />
+  }
+  
+  // Ne pas rendre tant que pas monté pour éviter le flash
+  if (!mounted) {
+    return null
   }
 
   return (

@@ -20,6 +20,18 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const router = useRouter()
 
+  // Fermer le dropdown au clic extérieur
+  React.useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (isOpen && !event.target.closest('.profile-dropdown-container')) {
+        setIsOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [isOpen])
+
   const handleLinkClick = (href) => {
     setIsOpen(false)
     
@@ -132,7 +144,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           ]
 
   return (
-    <div className="relative">
+    <div className="relative profile-dropdown-container">
       {/* Bouton profil - Compact mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
@@ -194,7 +206,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
 
       {/* Menu déroulant */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style={{ zIndex: 99999 }}>
+        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style={{ zIndex: 999999, maxHeight: '80vh', overflowY: 'auto' }}>
           {/* Header du menu */}
           <div className="p-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
             <div className="flex items-center space-x-3">
