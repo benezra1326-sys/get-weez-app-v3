@@ -22,12 +22,17 @@ export default function MobileChatBox({
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
+  // Debug: afficher les messages reçus
+  useEffect(() => {
+    console.log('📨 MobileChatBox - Messages reçus:', messages.length, messages)
+  }, [messages])
+
   // Auto-scroll vers le bas UNIQUEMENT quand de NOUVEAUX messages arrivent
   const prevMessagesLengthRef = useRef(messages.length)
   
   useEffect(() => {
-    // Scroll seulement si un nouveau message est ajouté (pas au focus du textarea)
-    if (messages.length > prevMessagesLengthRef.current) {
+    // Scroll seulement si un nouveau message est ajouté OU à l'ouverture initiale
+    if (messages.length > 0 && (messages.length > prevMessagesLengthRef.current || prevMessagesLengthRef.current === 0)) {
       if (messagesEndRef.current) {
         // Utiliser setTimeout pour s'assurer que le DOM est mis à jour
         setTimeout(() => {
@@ -36,7 +41,7 @@ export default function MobileChatBox({
       }
     }
     prevMessagesLengthRef.current = messages.length
-  }, [messages])
+  }, [messages, isOpen])
 
   // Géolocalisation
   const handleGetLocation = () => {
@@ -266,14 +271,8 @@ export default function MobileChatBox({
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                onFocus={(e) => {
-                  // Empêcher complètement le scroll au focus - comportement natif WhatsApp
-                  e.preventDefault()
-                  window.scrollTo(0, 0)
-                }}
-                onTouchStart={(e) => {
-                  // Empêcher le scroll sur mobile lors du touch
-                  e.stopPropagation()
+                onFocus={() => {
+                  // Ne rien faire, laisser le comportement natif
                 }}
                 placeholder="Écrivez votre message..."
                 className="w-full px-4 py-3 rounded-2xl resize-none focus:outline-none chat-input"
@@ -284,8 +283,7 @@ export default function MobileChatBox({
                   color: isDarkMode ? '#fff' : '#1f2937',
                   border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'}`,
                   maxHeight: '60px',
-                  minHeight: '48px',
-                  touchAction: 'none' // Empêcher le scroll au touch
+                  minHeight: '48px'
                 }}
                 rows={1}
               />

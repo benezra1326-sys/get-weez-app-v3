@@ -159,10 +159,11 @@ const ChatFloatingButton = () => {
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          zIndex: 99999,
+          zIndex: 999999,
           pointerEvents: 'auto',
           willChange: 'transform',
-          transform: 'translateZ(0)'
+          transform: 'translateZ(0)',
+          isolation: 'isolate'
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
