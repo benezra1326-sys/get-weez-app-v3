@@ -85,10 +85,23 @@ export function useConversations() {
       month: 'short' 
     })
     
-    // Message de bienvenue automatique amélioré
+    // Messages de bienvenue variés
+    const welcomeMessages = [
+      "✨ **Bienvenue sur Get Weez !** 🏖️\n\nJe suis votre **concierge IA personnel** pour vivre Marbella comme un local ! 🇪🇸\n\n🎯 **Je peux vous aider avec :**\n• 🍽️ **Restaurants** exclusifs et tables VIP\n• 🎉 **Événements** et soirées privées\n• 🛥️ **Yachts** et expériences de luxe\n• 🏨 **Hébergements** premium\n• 🚁 **Activités** uniques\n\n💬 **Dites-moi simplement ce dont vous rêvez** et je m'occupe de tout ! ✨",
+      
+      "🌟 **Bonjour ! Je suis votre assistant Get Weez** 🏖️\n\nPrêt à vous faire découvrir les **meilleurs secrets de Marbella** ? 🇪🇸\n\n🎯 **Mes spécialités :**\n• 🍽️ **Tables VIP** dans les restaurants les plus exclusifs\n• 🎉 **Soirées privées** et événements exceptionnels\n• 🛥️ **Croisières de luxe** avec équipage professionnel\n• 🏨 **Suites premium** avec vue panoramique\n• 🚁 **Transports VIP** hélicoptère, yacht, voiture de luxe\n\n💬 **Que souhaitez-vous organiser aujourd'hui ?** ✨",
+      
+      "🏖️ **Salut ! Votre concierge Get Weez est là !** ✨\n\nEnvie de vivre **Marbella au maximum** ? Je connais tous les **endroits secrets** ! 🇪🇸\n\n🎯 **Je réserve pour vous :**\n• 🍽️ **Restaurants étoilés** et tables avec vue mer\n• 🎉 **Événements privés** et soirées exclusives\n• 🛥️ **Yachts de luxe** pour des escapades inoubliables\n• 🏨 **Hôtels 5 étoiles** et villas privées\n• 🚁 **Activités VIP** hélicoptère, golf, spa\n\n💬 **Parlez-moi de vos envies** et je m'en occupe ! 🌟",
+      
+      "💎 **Bienvenue dans l'univers Get Weez !** 🏖️\n\nVotre **concierge personnel** pour des expériences **uniques à Marbella** ! 🇪🇸\n\n🎯 **Services premium :**\n• 🍽️ **Cuisine gastronomique** dans les meilleures adresses\n• 🎉 **Soirées exclusives** et événements privés\n• 🛥️ **Expériences nautiques** de luxe\n• 🏨 **Hébergements d'exception** avec services VIP\n• 🚁 **Transports premium** pour vos déplacements\n\n💬 **Quelle expérience vous tente aujourd'hui ?** ✨"
+    ]
+    
+    // Sélectionner un message aléatoire
+    const randomMessage = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]
+    
     const welcomeMessage = {
       id: `welcome-${Date.now()}`,
-      content: "✨ **Bienvenue sur Get Weez !** 🏖️\n\nJe suis votre **concierge IA personnel** pour vivre Marbella comme un local ! 🇪🇸\n\n🎯 **Je peux vous aider avec :**\n• 🍽️ **Restaurants** exclusifs et tables VIP\n• 🎉 **Événements** et soirées privées\n• 🛥️ **Yachts** et expériences de luxe\n• 🏨 **Hébergements** premium\n• 🚁 **Activités** uniques\n\n💬 **Dites-moi simplement ce dont vous rêvez** et je m'occupe de tout ! ✨",
+      content: randomMessage,
       role: 'assistant',
       timestamp: new Date()
     }
@@ -111,7 +124,7 @@ export function useConversations() {
     // Utiliser setTimeout pour éviter les problèmes de state
     setTimeout(() => {
       setCurrentConversationId(newConversation.id)
-      setIsCreating(false)
+    setIsCreating(false)
     }, 0)
     
     return newConversation.id
@@ -127,9 +140,9 @@ export function useConversations() {
     setConversations(prev => {
       const filtered = prev.filter(conv => conv.id !== id)
       
-      // Si on supprime la conversation actuelle, sélectionner la première disponible
+      // Si on supprime la conversation actuelle, revenir à l'écran d'accueil
       if (currentConversationId === id) {
-        setCurrentConversationId(filtered.length > 0 ? filtered[0].id : null)
+        setCurrentConversationId(null)
       }
       
       return filtered

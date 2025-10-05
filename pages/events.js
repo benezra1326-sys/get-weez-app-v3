@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
-import Header from '../components/layout/header'
+import HeaderGliitz from '../components/layout/HeaderGliitz'
 import MobileMenu from '../components/layout/MobileMenu'
 import EventList from '../components/events/EventList'
 import EventBannerView from '../components/events/EventBannerView'
 import EventCalendarView from '../components/events/EventCalendarView'
 import EventDisplayToggle from '../components/events/EventDisplayToggle'
 import { EstablishmentSearchBar } from '../components/ui/SearchBar'
+import ChatFloatingButton from '../components/ui/ChatFloatingButton'
+import GliitzLoader from '../components/ui/GliitzLoader'
 import { supabase } from '../lib/supabase'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
@@ -463,14 +465,7 @@ export default function Events({ user, setUser }) {
 
   // Ne pas rendre avant que le thème soit chargé
   if (!isLoaded) {
-    return (
-      <div className="w-full min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF' }}>
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
-        </div>
-      </div>
-    )
+    return <GliitzLoader text="Chargement des événements..." />
   }
 
   // Fonction de recherche et filtrage
@@ -508,31 +503,45 @@ export default function Events({ user, setUser }) {
   }
 
   return (
-    <div 
-        style={{ 
-          width: '100vw', 
-          minHeight: '100vh', 
-          margin: 0, 
-          padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-          maxWidth: 'none'
-        }}
-    >
+      <>
+        <style jsx global>{`
+          /* Forcer le mode sombre sur toute la page */
+          body {
+            background-color: ${isDarkMode ? '#0a0a0f' : '#f9fafb'} !important;
+          }
+        `}</style>
+        <style jsx global>{`
+          /* Animation pour le gradient */
+          @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+          }
+          
+          @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+          }
+          
+          @keyframes sparkle-float {
+            0%, 100% {
+              transform: translateY(0px) scale(1);
+              opacity: 0.6;
+            }
+            50% {
+              transform: translateY(-12px) scale(1.2);
+              opacity: 1;
+            }
+          }
+        `}</style>
+        
       <div 
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          minHeight: '100vh', 
-          width: '100vw',
-          margin: 0,
-          padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-          position: 'relative',
-          maxWidth: 'none'
+        className="min-h-screen"
+        style={{
+          backgroundColor: isDarkMode ? '#0a0a0f' : '#f9fafb'
         }}
       >
         {/* Header */}
-        <Header 
+        <HeaderGliitz 
           user={user} 
           setUser={setUser}
           toggleMobileMenu={toggleMobileMenu} 
@@ -545,38 +554,55 @@ export default function Events({ user, setUser }) {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
+
+        {/* Bouton flottant pour le chat */}
+        <ChatFloatingButton />
         
         {/* Contenu principal */}
-        <main 
-          style={{ 
-            flex: 1,
-            overflow: 'auto',
-            backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-            width: '100vw',
-            minHeight: 'calc(100vh - 6rem)',
-            padding: '2rem',
-            maxWidth: 'none'
-          }}
-        >
-            {/* Header avec recherche */}
-            <div className="mb-8">
-              <div className="relative overflow-hidden rounded-3xl p-8 mb-8"
+        <main className="container mx-auto px-4 py-6">
+            {/* Header avec recherche - Amélioré avec sparkles */}
+            <div className="mb-6">
+              <div className="relative overflow-hidden rounded-2xl p-6 text-center group"
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #10B981 75%, #F59E0B 100%)',
+                  background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
                   backgroundSize: '400% 400%',
-                  animation: 'gradientShift 8s ease infinite'
+                  animation: 'gradientShift 8s ease infinite',
+                  boxShadow: '0 12px 48px rgba(168, 85, 247, 0.4)'
                 }}
               >
+                {/* Effet de brillance animé */}
+                <div 
+                  className="absolute inset-0 opacity-40 pointer-events-none"
+                  style={{
+                    background: 'linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%)',
+                    animation: 'shimmer 3s ease-in-out infinite'
+                  }}
+                />
+                
+                {/* Sparkles flottants */}
+                <div className="absolute top-4 left-8" style={{ animation: 'sparkle-float 3s ease-in-out infinite' }}>
+                  <div className="w-2 h-2 rounded-full bg-yellow-300" style={{ boxShadow: '0 0 8px rgba(253, 224, 71, 0.8)' }} />
+                </div>
+                <div className="absolute top-8 right-12" style={{ animation: 'sparkle-float 3s ease-in-out infinite 1s' }}>
+                  <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" style={{ boxShadow: '0 0 6px rgba(250, 204, 21, 0.8)' }} />
+                </div>
+                <div className="absolute bottom-6 left-16" style={{ animation: 'sparkle-float 3s ease-in-out infinite 2s' }}>
+                  <div className="w-1 h-1 rounded-full bg-yellow-200" style={{ boxShadow: '0 0 4px rgba(253, 230, 138, 0.8)' }} />
+                </div>
+                <div className="absolute bottom-8 right-20" style={{ animation: 'sparkle-float 3s ease-in-out infinite 0.5s' }}>
+                  <div className="w-1.5 h-1.5 rounded-full bg-white" style={{ boxShadow: '0 0 6px rgba(255, 255, 255, 0.8)' }} />
+                </div>
+                
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-                <div className="relative z-10 text-center">
-                  <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
+                <div className="relative z-10">
+                  <h1 className="text-3xl font-bold text-white mb-3 drop-shadow-lg transition-transform duration-300 group-hover:scale-105">
                     🎉 Événements
                   </h1>
-                  <p className="text-white/90 text-lg lg:text-xl mb-6 drop-shadow-md">
+                  <p className="text-white/90 text-lg mb-4 drop-shadow-md">
                     Découvrez les événements exclusifs de Marbella
                   </p>
                   
-                  <div className="max-w-2xl mx-auto w-full">
+                  <div className="max-w-2xl mx-auto">
                     <EstablishmentSearchBar 
                       onSearch={handleSearch}
                       className="w-full"
@@ -587,9 +613,9 @@ export default function Events({ user, setUser }) {
             </div>
 
             {/* Toggle d'affichage - AMÉLIORÉ POUR MOBILE */}
-            <div className="mb-8">
+            <div className="mb-8 flex justify-center">
               <div 
-                className="backdrop-blur-md rounded-2xl p-4 md:p-6 border"
+                className="backdrop-blur-md rounded-2xl p-2 border inline-block"
                 style={{ 
                   backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
                   borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
@@ -637,67 +663,7 @@ export default function Events({ user, setUser }) {
               </div>
             )}
           </main>
-          
-          {/* Footer avec logo Get Weez */}
-          <footer 
-            style={{ 
-              backgroundColor: isDarkMode ? '#1a1a1a' : '#f8f9fa',
-              padding: '1rem 2rem',
-              textAlign: 'center',
-              color: isDarkMode ? '#ffffff' : '#333333',
-              borderTop: isDarkMode ? '1px solid #333333' : '1px solid #e5e7eb',
-              marginTop: 'auto',
-              position: 'relative',
-              zIndex: 1,
-              width: '100%',
-              boxSizing: 'border-box',
-              marginBottom: 0,
-              flexShrink: 0
-            }}
-          >
-            {/* Logo Get Weez */}
-            <div style={{ marginBottom: '0.5rem' }}>
-              <div 
-                style={{
-                  background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-                  borderRadius: '12px',
-                  padding: '8px 16px',
-                  display: 'inline-block',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
-                  marginBottom: '0.5rem'
-                }}
-              >
-                <h1 
-                  style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    margin: 0,
-                    fontFamily: 'Blanka, sans-serif',
-                    letterSpacing: '0.1em'
-                  }}
-                >
-                  GET WEEZ
-                </h1>
-              </div>
-              <p 
-                style={{ 
-                  fontSize: '0.875rem', 
-                  color: isDarkMode ? '#a0a0a0' : '#666666', 
-                  margin: '0.125rem 0',
-                  fontWeight: '500'
-                }}
-              >
-                YOUR IA CONCIERGE
-              </p>
-            </div>
-            
-            {/* Copyright */}
-            <p style={{ fontSize: '0.75rem', color: isDarkMode ? '#666666' : '#999999', margin: 0 }}>
-              GET WEEZ - ALL RIGHTS RESERVED
-            </p>
-          </footer>
         </div>
-      </div>
+      </>
     )
-}
+  }

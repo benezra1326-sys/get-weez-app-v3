@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Header from '../components/layout/header'
+import HeaderGliitz from '../components/layout/HeaderGliitz'
 import MobileMenu from '../components/layout/MobileMenu'
 import AccountInfo from '../components/account/AccountInfo'
 import ChatHistory from '../components/account/ChatHistory'
@@ -10,6 +10,7 @@ import LanguageSettings from '../components/account/LanguageSettings'
 import SimpleNotificationSettings from '../components/account/SimpleNotificationSettings'
 import SimpleSettings from '../components/settings/SimpleSettings'
 import { useTheme, ThemeProvider } from '../contexts/ThemeContextSimple'
+import { User, Bell, Heart, Users, Settings, Gift } from 'lucide-react'
 
 function AccountContent({ user, setUser }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -43,26 +44,8 @@ function AccountContent({ user, setUser }) {
   }
 
   return (
-    <div 
-      style={{ 
-        width: '100%', 
-        minHeight: '100vh', 
-        margin: 0, 
-        padding: 0,
-        backgroundColor: isDarkMode ? '#1F2937' : '#FFFFFF'
-      }}
-    >
-      <div 
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          minHeight: '100vh', 
-          width: '100%',
-          margin: 0,
-          padding: 0
-        }}
-      >
-        <Header 
+    <div className="min-h-screen bg-gray-50">
+        <HeaderGliitz 
           user={user} 
           setUser={setUser}
           toggleMobileMenu={toggleMobileMenu} 
@@ -74,79 +57,118 @@ function AccountContent({ user, setUser }) {
           user={user} 
         />
         
-        <main 
-          style={{ 
-            flex: 1,
-            overflow: 'auto',
-            backgroundColor: isDarkMode ? '#0D0D0D' : '#F9FAFB',
-            width: '100%',
-            minHeight: 'calc(100vh - 8rem)',
-            padding: '1.5rem'
-          }}
-        >
-          <div className="container mx-auto px-4 lg:px-6 py-4 lg:py-6">
+        <main className="container mx-auto px-4 py-6">
             {/* Header simplifié - PARFAITEMENT centré */}
-            <div className="text-center mb-6 lg:mb-8">
-              <h1 className="text-2xl lg:text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-2">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-3">
                 Mon Compte
               </h1>
-              <p className={`text-sm lg:text-base max-w-xl mx-auto ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              <p className="text-gray-600 text-lg">
                 Profil et préférences
               </p>
             </div>
 
-            {/* Sections principales - Grille responsive */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
-              {/* Informations du compte */}
-              <div className="w-full h-full flex flex-col">
+            {/* Sections principales - Layout vertical une par ligne */}
+            <div className="max-w-4xl mx-auto space-y-8">
+              {/* Espace pour le scroll vers les sections */}
+              <div className="absolute -top-20" id="scroll-anchor"></div>
+              
+              {/* Section 1: Mon Profil */}
+              <section id="profile" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <User className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Mon Profil</h2>
+                </div>
                 <AccountInfo 
                   user={user} 
                   onBecomeMember={handleBecomeMember}
                   onReserve={handleReserve}
                 />
-              </div>
+              </section>
 
-              {/* Historique des Conversations */}
-              <div className="w-full h-full flex flex-col">
-                <ChatHistory user={user} />
-              </div>
-
-              {/* Langue */}
-              <div className="w-full h-full flex flex-col">
-                <LanguageSettings />
-              </div>
-
-              {/* Notifications */}
-              <div className="w-full h-full flex flex-col lg:col-span-2 xl:col-span-1">
+              {/* Section 2: Notifications */}
+              <section id="notifications" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Bell className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
+                </div>
                 <SimpleNotificationSettings />
-              </div>
+              </section>
 
-              {/* Réglages rapides */}
-              <div className="w-full h-full flex flex-col">
-                <SimpleSettings />
-              </div>
-
-              {/* Promotions */}
-              <div className="w-full h-full flex flex-col">
-                <Promotions user={user} />
-              </div>
-
-              {/* Inviter des amis (Parrainage) */}
-              <div className="w-full h-full flex flex-col lg:col-span-2 xl:col-span-2">
-                <Referral user={user} />
-              </div>
-
-              {/* Favoris */}
-              <div className="w-full h-full flex flex-col lg:col-span-2 xl:col-span-3">
+              {/* Section 3: Favoris */}
+              <section id="favorites" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Heart className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Favoris</h2>
+                </div>
                 <Favorites user={user} />
-              </div>
+              </section>
+
+              {/* Section 4: Historique Chat */}
+              <section id="chat-history" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Users className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Historique Chat</h2>
+                </div>
+                <ChatHistory user={user} />
+              </section>
+
+              {/* Section 5: Langue */}
+              <section id="language" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Settings className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Langue</h2>
+                </div>
+                <LanguageSettings />
+              </section>
+
+              {/* Section 6: Paramètres */}
+              <section id="settings" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Settings className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Paramètres</h2>
+                </div>
+                <SimpleSettings />
+              </section>
+
+              {/* Section 7: Promotions */}
+              <section id="promotions" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Gift className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Promotions</h2>
+                </div>
+                <Promotions user={user} />
+              </section>
+
+              {/* Section 8: Parrainage */}
+              <section id="referral" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+                <div className="flex items-center mb-4">
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <Users className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <h2 className="text-xl font-bold text-gray-900">Parrainage</h2>
+                </div>
+                <Referral user={user} />
+              </section>
             </div>
 
 
-          </div>
           </main>
-      </div>
-    </div>
+        </div>
   )
 }
 

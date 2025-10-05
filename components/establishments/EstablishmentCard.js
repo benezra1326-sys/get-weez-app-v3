@@ -21,13 +21,32 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
   const handleInfo = () => {
     if (onSendMessage) {
       onSendMessage(`Plus d'informations sur ${establishment.name}`)
+      // Scroll vers le chat après l'envoi du message
+      setTimeout(() => {
+        const chatElement = document.querySelector('.chat-interface, .mobile-chat-container, .chat-area')
+        if (chatElement) {
+          chatElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        }
+      }, 100)
     } else {
       console.log('Fonction de message non fournie pour:', establishment.name)
     }
   }
+
+  // Fonction pour naviguer vers la page de détails
+  const handleCardClick = (e) => {
+    // Ne pas naviguer si on clique sur un bouton
+    if (e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+      window.location.href = `/establishment/${establishment.id}`
+    }
+  }
   
   return (
-    <div className="uniform-banner">
+    <div 
+      className="uniform-banner"
+      onClick={handleCardClick}
+      style={{ cursor: 'pointer' }}
+    >
       {/* Image de fond */}
       {establishment.image_url && (
             <img 

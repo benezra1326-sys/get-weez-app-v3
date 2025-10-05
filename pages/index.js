@@ -1,10 +1,13 @@
 import { useState, useEffect, memo } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import ChatInterface from '../components/chat/ChatInterface'
-import Header from '../components/layout/header'
+import ChatMain from '../components/chat/ChatMain'
+import HeaderGliitz from '../components/layout/HeaderGliitz'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
+import Newsletter from '../components/ui/Newsletter'
+import ChatFloatingButton from '../components/ui/ChatFloatingButton'
+import BrandCarousel, { DestinationsSection, PressSection } from '../components/ui/BrandCarousel'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { usePreloader } from '../lib/preloader'
 import { 
@@ -74,183 +77,15 @@ const Home = memo(({ user, setUser }) => {
     }
   }
 
-
   // Récupérer le message de réservation depuis les query parameters
   const reservationMessage = router.query.message
   const establishmentName = router.query.establishment
 
-  // Ne pas rendre avant que le thème soit chargé
+  // Ne pas rendre avant que le thème soit chargé - Afficher le nouveau loader
   if (!isLoaded) {
-    return (
-      <div 
-        className="w-full min-h-screen flex items-center justify-center" 
-        style={{ 
-          backgroundColor: isDarkMode ? '#0A0A0F' : '#FAFAFA',
-          background: isDarkMode 
-            ? 'radial-gradient(ellipse at center, #1a1a2e 0%, #0A0A0F 100%)'
-            : 'radial-gradient(ellipse at center, #f8fafc 0%, #FAFAFA 100%)'
-        }}
-      >
-        <div className="text-center">
-          {/* Loader discret avec sparkling */}
-          <div className="relative mb-6">
-            {/* Sparkling subtils */}
-            <div className="absolute inset-0 flex items-center justify-center">
-              {/* Sparkles flottants */}
-              <div 
-                className="absolute w-1 h-1 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(139, 92, 246, 0.8)',
-                  top: '20%',
-                  left: '30%',
-                  animation: 'sparkle-float 3s ease-in-out infinite',
-                  boxShadow: isDarkMode ? '0 0 6px rgba(255, 255, 255, 0.6)' : '0 0 6px rgba(139, 92, 246, 0.6)'
-                }}
-              />
-              <div 
-                className="absolute w-1 h-1 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(59, 130, 246, 0.6)',
-                  top: '60%',
-                  right: '25%',
-                  animation: 'sparkle-float 3s ease-in-out infinite 1s',
-                  boxShadow: isDarkMode ? '0 0 4px rgba(255, 255, 255, 0.4)' : '0 0 4px rgba(59, 130, 246, 0.4)'
-                }}
-              />
-              <div 
-                className="absolute w-0.5 h-0.5 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(6, 182, 212, 0.4)',
-                  bottom: '30%',
-                  left: '60%',
-                  animation: 'sparkle-float 3s ease-in-out infinite 2s',
-                  boxShadow: isDarkMode ? '0 0 3px rgba(255, 255, 255, 0.3)' : '0 0 3px rgba(6, 182, 212, 0.3)'
-                }}
-              />
-              <div 
-                className="absolute w-0.5 h-0.5 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(139, 92, 246, 0.5)',
-                  top: '40%',
-                  right: '40%',
-                  animation: 'sparkle-float 3s ease-in-out infinite 0.5s',
-                  boxShadow: isDarkMode ? '0 0 3px rgba(255, 255, 255, 0.3)' : '0 0 3px rgba(139, 92, 246, 0.3)'
-                }}
-              />
-            </div>
-            
-            {/* Cercle principal discret */}
-            <div 
-              className="relative w-8 h-8 mx-auto"
-              style={{
-                borderRadius: '50%',
-                background: isDarkMode 
-                  ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)'
-                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
-                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(139, 92, 246, 0.2)'}`,
-                animation: 'gentle-pulse 2s ease-in-out infinite',
-                backdropFilter: 'blur(10px)'
-              }}
-            >
-              {/* Point central */}
-              <div 
-                className="absolute inset-2 rounded-full"
-                style={{
-                  background: isDarkMode 
-                    ? 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%)'
-                    : 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)',
-                  animation: 'gentle-glow 2s ease-in-out infinite'
-                }}
-              />
-            </div>
-          </div>
-          
-          {/* Texte discret */}
-          <div className="space-y-3">
-            <h2 
-              className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}
-              style={{
-                opacity: 0.8
-              }}
-            >
-              Préparation...
-            </h2>
-            
-            {/* Points de progression discrets */}
-            <div className="flex justify-center space-x-1">
-              <div 
-                className="w-1 h-1 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(139, 92, 246, 0.4)',
-                  animation: 'dot-pulse 1.5s ease-in-out infinite'
-                }}
-              />
-              <div 
-                className="w-1 h-1 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(59, 130, 246, 0.4)',
-                  animation: 'dot-pulse 1.5s ease-in-out infinite 0.3s'
-                }}
-              />
-              <div 
-                className="w-1 h-1 rounded-full"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(6, 182, 212, 0.4)',
-                  animation: 'dot-pulse 1.5s ease-in-out infinite 0.6s'
-                }}
-              />
-            </div>
-          </div>
-        </div>
-        
-        {/* Styles CSS pour les animations modernes */}
-        <style jsx>{`
-          @keyframes pulse-modern {
-            0%, 100% {
-              transform: scale(1);
-              box-shadow: 0 0 40px rgba(139, 92, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2);
-            }
-            50% {
-              transform: scale(1.05);
-              box-shadow: 0 0 60px rgba(139, 92, 246, 0.6), 0 0 120px rgba(59, 130, 246, 0.3);
-            }
-          }
-          
-          @keyframes rotate {
-            from {
-              transform: rotate(0deg);
-            }
-            to {
-              transform: rotate(360deg);
-            }
-          }
-          
-          @keyframes float {
-            0%, 100% {
-              transform: translateY(0px);
-            }
-            50% {
-              transform: translateY(-8px);
-            }
-          }
-          
-          @keyframes loading-progress {
-            0% {
-              width: 0%;
-              opacity: 0.8;
-            }
-            50% {
-              width: 70%;
-              opacity: 1;
-            }
-            100% {
-              width: 100%;
-              opacity: 0.8;
-            }
-          }
-        `}</style>
-      </div>
-    )
+    // Importer le loader dynamiquement
+    const GliitzLoader = require('../components/ui/GliitzLoader').default
+    return <GliitzLoader text="Préparation de votre expérience..." />
   }
 
   // Données du popup d'introduction - Version interactive et ludique
@@ -428,7 +263,6 @@ const Home = memo(({ user, setUser }) => {
                 ))}
               </div>
 
-
               {/* Boutons de navigation AMÉLIORÉS */}
               <div className="flex justify-between items-center">
                 <button
@@ -509,7 +343,7 @@ const Home = memo(({ user, setUser }) => {
         }}
       >
         {/* Header */}
-        <Header 
+        <HeaderGliitz 
           user={user} 
           setUser={setUser}
           toggleMobileMenu={toggleMobileMenu} 
@@ -522,6 +356,9 @@ const Home = memo(({ user, setUser }) => {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
+
+        {/* Bouton flottant pour le chat - apparaît après scroll */}
+        <ChatFloatingButton />
         
         {/* Contenu principal */}
         <main 
@@ -541,71 +378,205 @@ const Home = memo(({ user, setUser }) => {
             overscrollBehavior: 'auto' // Permettre rebond naturel
           }}
         >
-          <ChatInterface 
+          <ChatMain 
             user={user} 
             initialMessage={message || reservationMessage}
             establishmentName={establishmentName}
           />
         </main>
         
-        {/* Footer rétabli - visible sur mobile */}
+        {/* Carousel de partenaires - Pleine largeur - AVANT le footer */}
+        <div 
+          className="w-full"
+          style={{
+            background: isDarkMode
+              ? 'linear-gradient(180deg, transparent 0%, rgba(15, 23, 42, 0.3) 50%, transparent 100%)'
+              : 'linear-gradient(180deg, transparent 0%, rgba(248, 250, 252, 0.5) 50%, transparent 100%)'
+          }}
+        >
+          <BrandCarousel />
+        </div>
+        
+        {/* Section Destinations - Gliitz worldwide */}
+        <DestinationsSection />
+        
+        {/* Section Presse - On parle de nous */}
+        <PressSection />
+        
+        {/* Footer moderne et attrayant */}
         <footer 
-          className="block"
+          className="relative overflow-hidden"
           style={{ 
-            backgroundColor: isDarkMode ? '#000000' : '#FFFFFF',
-            padding: '1rem 2rem',
-            textAlign: 'center',
-            color: isDarkMode ? '#F9FAFB' : '#333333',
+            background: isDarkMode 
+              ? 'linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #334155 100%)'
+              : 'linear-gradient(135deg, #F8FAFC 0%, #E2E8F0 50%, #CBD5E1 100%)',
             marginTop: 'auto',
             position: 'relative',
             zIndex: 1,
             width: '100%',
             boxSizing: 'border-box',
-            marginBottom: 0,
-            flexShrink: 0
+            flexShrink: 0,
+            borderTop: isDarkMode ? 'none' : '1px solid rgba(0, 0, 0, 0.1)'
           }}
         >
-          {/* Logo Get Weez */}
-          <div style={{ marginBottom: '0.5rem' }}>
-            <div 
+          {/* Effets de fond */}
+          <div className="absolute inset-0" style={{ opacity: isDarkMode ? 0.05 : 0.08 }}>
+            <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full" style={{
+              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+              filter: 'blur(60px)'
+            }}></div>
+            <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full" style={{
+              background: 'linear-gradient(135deg, #F59E0B, #FCD34D)',
+              filter: 'blur(80px)'
+            }}></div>
+            <div className="absolute top-1/2 left-1/2 w-48 h-48 rounded-full" style={{
+              background: 'linear-gradient(135deg, #EC4899, #F97316)',
+              filter: 'blur(40px)',
+              transform: 'translate(-50%, -50%)'
+            }}></div>
+          </div>
+
+          <div className="relative z-10">
+            {/* Section principale du footer */}
+            <div className="py-16 px-4 lg:px-8">
+              <div className="max-w-7xl mx-auto">
+                {/* Logo et description centrés */}
+                <div className="text-center mb-12">
+                  <div className="inline-flex items-center justify-center mb-6">
+                    <div 
+                      className="px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105"
               style={{
                 background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-                borderRadius: '12px',
-                padding: '8px 16px',
-                display: 'inline-block',
-                boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
-                marginBottom: '0.5rem'
+                        borderRadius: '16px',
+                        boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '8px 24px'
               }}
             >
               <h1 
+                        className="logo-text"
                 style={{
-                  fontSize: '1.5rem',
-                  fontWeight: 'bold',
-                  color: 'white',
-                  margin: 0,
-                  fontFamily: 'Blanka, sans-serif',
-                  letterSpacing: '0.1em'
-                }}
-              >
-                GET WEEZ
+                          fontFamily: '"Proxima Soft Black", "Montserrat", "Proxima Nova", "Source Sans Pro", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                          fontSize: '2rem',
+                          fontWeight: '900',
+                          color: '#ffffff',
+                          letterSpacing: '-0.02em',
+                          textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)',
+                          margin: 0
+                        }}
+                      >
+                        Gliitz
               </h1>
             </div>
-            <p 
-              style={{ 
-                fontSize: '0.875rem', 
-                color: isDarkMode ? '#9CA3AF' : '#666666', 
-                margin: '0.125rem 0',
-                fontWeight: '500'
-              }}
-            >
-              Your luxury AI concierge, anytime, anywhere
-            </p>
+                  </div>
+                  
+                  <h3 className="text-2xl lg:text-3xl font-bold mb-4" style={{
+                    background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #F59E0B 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text'
+                  }}>
+                    Votre concierge IA magique
+                  </h3>
+                  
+                  <p className={`text-lg max-w-2xl mx-auto mb-8 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    Partout et toujours ✨ Découvrez Marbella comme jamais auparavant avec notre IA personnalisée
+                  </p>
+                </div>
+
+                {/* Grille d'informations - Icônes centrées */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                  {/* Contact */}
+                  <div className="text-center flex flex-col items-center">
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
+                      background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                      boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)'
+                    }}>
+                      <span className="text-white text-xl">📧</span>
+                    </div>
+                    <h4 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Contact</h4>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                      hello@gliitz.com<br />
+                      +34 123 456 789
+                    </p>
+                  </div>
+
+                  {/* Services */}
+                  <div className="text-center flex flex-col items-center">
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
+                      background: 'linear-gradient(135deg, #F59E0B, #FCD34D)',
+                      boxShadow: '0 4px 16px rgba(245, 158, 11, 0.3)'
+                    }}>
+                      <span className="text-white text-xl">⭐</span>
+                    </div>
+                    <h4 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Services</h4>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                      Recommandations IA<br />
+                      Réservations VIP<br />
+                      Conciergerie 24/7
+                    </p>
+                  </div>
+
+                  {/* Localisation */}
+                  <div className="text-center flex flex-col items-center">
+                    <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
+                      background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+                      boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
+                    }}>
+                      <span className="text-white text-xl">📍</span>
+                    </div>
+                    <h4 className={`text-lg font-semibold mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Localisation</h4>
+                    <p className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                      Marbella, Espagne<br />
+                      Costa del Sol
+                    </p>
+                  </div>
+                </div>
+                
+                {/* Newsletter */}
+                <Newsletter isDarkMode={isDarkMode} />
+
+                {/* Liens sociaux et copyright */}
+                <div className="pt-8">
+                  <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                    {/* Liens sociaux */}
+                    <div className="flex items-center gap-4">
+                      <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
+                        background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                        boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+                      }}>
+                        <span className="text-white text-sm">📘</span>
+                      </a>
+                      <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
+                        background: 'linear-gradient(135deg, #F59E0B, #FCD34D)',
+                        boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
+                      }}>
+                        <span className="text-white text-sm">📷</span>
+                      </a>
+                      <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
+                        background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                      }}>
+                        <span className="text-white text-sm">🐦</span>
+                      </a>
           </div>
           
           {/* Copyright */}
-          <p style={{ fontSize: '0.75rem', color: isDarkMode ? '#6B7280' : '#999999', margin: 0 }}>
-            GET WEEZ - ALL RIGHTS RESERVED
-          </p>
+                    <div className="text-center md:text-right">
+                      <p className={`text-sm mb-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                        © 2024 Get Weez. Tous droits réservés.
+                      </p>
+                      <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                        Fait avec ❤️ à Marbella
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </footer>
       </div>
     </div>

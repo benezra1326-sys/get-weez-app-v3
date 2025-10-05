@@ -133,7 +133,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
       conversationId = createConversation()
       console.log('🔧 Nouveau conversationId:', conversationId)
     }
-
+    
     // Ajouter le message utilisateur
     console.log('💬 Ajout du message utilisateur, conversationId:', conversationId)
     addMessage({
@@ -176,7 +176,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         role: 'assistant',
         timestamp: new Date()
       }, conversationId)
-      
+
     } catch (error) {
       console.error('Erreur lors de l\'envoi du message:', error)
       const errorMessage = 'Désolé, une erreur est survenue. Veuillez réessayer.'
@@ -237,10 +237,10 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
     if (currentConversationId) {
       console.log('🔄 Fermeture de conversation:', currentConversationId)
       
-      // Fermer la conversation actuelle et revenir à l'écran d'accueil
-      selectConversation(null)
-      
-      showToast('Conversation fermée', 'info')
+      // Supprimer la conversation de la liste
+      deleteConversation(currentConversationId)
+        
+        showToast('Conversation fermée', 'info')
     }
   }
 
@@ -806,9 +806,9 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           }
         }
       `}</style>
-      <div className="w-full min-h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF', width: '100vw', maxWidth: 'none' }}>
+      <div className="w-full h-screen flex flex-col lg:flex-row" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF', width: '100vw', maxWidth: 'none' }}>
       {/* Main Content */}
-      <main className="flex w-full flex-col lg:flex-row lg:h-screen min-h-[calc(100vh-8rem)] lg:min-h-screen" style={{ width: '100vw', maxWidth: 'none' }}>
+      <main className="flex w-full flex-col lg:flex-row lg:h-[calc(100vh-5rem)] min-h-[calc(100vh-5rem)]" style={{ width: '100vw', maxWidth: 'none' }}>
         
         {/* Sidebar gauche - Conversations */}
         <div className="hidden lg:block w-60 border-r overflow-y-auto h-full flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB' }}>
@@ -1017,7 +1017,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
         </div>
 
         {/* Chat Section - Largeur ajustée avec scroll mobile LIBRE */}
-        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:px-6 lg:pt-6 lg:pb-2 h-full w-full" style={{ 
+        <div className="flex-1 flex flex-col min-w-0 px-2 pt-1 pb-1 lg:px-6 lg:pt-0 lg:pb-0 h-full w-full" style={{ 
           width: '100%', 
           maxWidth: 'none', 
           flex: '1 1 0%',
@@ -1025,7 +1025,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
           WebkitOverflowScrolling: 'touch', // Scroll fluide iOS
           position: 'relative'
         }}>
-          <div className="rounded-2xl border p-2 lg:px-6 lg:pt-6 lg:pb-2 lg:h-full flex flex-col overflow-y-auto" style={{ 
+          <div className="rounded-2xl border p-2 lg:px-6 lg:pt-0 lg:pb-0 lg:h-full flex flex-col overflow-y-auto" style={{ 
             backgroundColor: isDarkMode ? '#1A1A1A' : '#FFFFFF', 
             borderColor: isDarkMode ? '#2D2D2D' : '#E5E7EB',
             WebkitOverflowScrolling: 'touch',
@@ -1214,7 +1214,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             )}
 
             {/* Zone des messages */}
-            <div className="flex-1 lg:overflow-y-auto mb-2 lg:mb-6 lg:min-h-0 chat-messages-container scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 p-2 lg:p-0">
+            <div className="flex-1 lg:overflow-y-auto mb-2 lg:mb-0 lg:min-h-0 chat-messages-container scrollbar-thin scrollbar-thumb-gray-600 scrollbar-track-gray-800 p-2 lg:p-0">
               {messages && messages.length > 0 ? (
                 <div className="space-y-2 lg:space-y-4 pt-4 lg:pt-6">
                   {messages.map((msg) => {
@@ -1453,7 +1453,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
             </div>
 
               {/* Zone de saisie */}
-              <div className="flex-shrink-0 space-y-2 lg:space-y-2">
+              <div className="flex-shrink-0">
                 {/* Mobile: bouton intégré */}
                 <div className="relative lg:hidden">
                   <textarea
@@ -1532,7 +1532,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 </div>
 
                 {/* Desktop: bouton séparé à droite */}
-                <div className="hidden lg:flex lg:gap-3">
+                <div className="hidden lg:flex lg:gap-1" style={{ alignItems: 'flex-end' }}>
                   <textarea
                     ref={textareaRef}
                     value={input}
@@ -1575,8 +1575,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   disabled={!input.trim() || isLoading}
                     className="px-3 py-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center font-medium text-sm"
                   style={{
-                    backgroundColor: !input.trim() || isLoading ? '#374151' : '#3B82F6',
-                    boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    backgroundColor: !input.trim() || isLoading ? '#6B7280' : '#3B82F6',
+                    boxShadow: !input.trim() || isLoading ? '0 2px 4px rgba(0, 0, 0, 0.1)' : '0 4px 12px rgba(59, 130, 246, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {

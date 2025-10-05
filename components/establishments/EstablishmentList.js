@@ -31,45 +31,16 @@ export default function EstablishmentList({ establishments, user, onReserve, onS
   }
 
   return (
-    <div 
-      style={{ 
-        background: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-        maxHeight: 'calc(100vh - 20rem)',
-        overflowY: 'auto',
-        padding: '1rem 0',
-        width: '100%',
-        minHeight: '400px'
-      }}
-    >
-      <div 
-        style={{ 
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-          gap: '1rem',
-          width: '100%',
-          visibility: 'visible',
-          opacity: 1,
-          padding: '1rem'
-        }}
-      >
-        {sortedEstablishments.map(est => (
-          <div key={est.id} style={{ 
-            display: 'block',
-            visibility: 'visible',
-            opacity: 1,
-            width: '100%',
-            minHeight: '300px',
-            margin: '0.5rem 0'
-          }}>
-            <EstablishmentCard 
-              establishment={est} 
-              user={user} 
-              onReserve={onReserve}
-              onSendMessage={onSendMessage}
-            />
-          </div>
-        ))}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {sortedEstablishments.map(est => (
+        <EstablishmentCard 
+          key={est.id}
+          establishment={est} 
+          user={user} 
+          onReserve={onReserve}
+          onSendMessage={onSendMessage}
+        />
+      ))}
     </div>
   )
 }

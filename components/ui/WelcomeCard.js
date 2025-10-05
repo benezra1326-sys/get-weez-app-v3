@@ -21,38 +21,134 @@ const WelcomeCard = memo(({
 
   return (
     <div className={`${styles.emptyState} ${className}`} {...props}>
-      {/* Version mobile - design compact */}
+      {/* Version mobile - design compact et centré */}
       {isMobile && (
         <div 
           className={`${styles.welcomeCard} ${styles.mobileOnly}`}
           onClick={handleCardClick}
+          style={{
+            background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+            width: '100%',
+            maxWidth: '100%',
+            margin: '0 auto',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'relative',
+            overflow: 'hidden',
+            boxShadow: '0 8px 32px rgba(168, 85, 247, 0.6), 0 0 80px rgba(168, 85, 247, 0.4), inset 0 0 60px rgba(255, 255, 255, 0.1)',
+            border: '2px solid rgba(255, 255, 255, 0.3)',
+            cursor: 'pointer',
+            transition: 'all 0.3s ease'
+          }}
         >
-          {/* Background gradients */}
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 opacity-90" />
+          {/* Sparkles et paillettes en fond */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full"
+                style={{
+                  width: `${2 + Math.random() * 3}px`,
+                  height: `${2 + Math.random() * 3}px`,
+                  background: 'linear-gradient(135deg, #fde047, #f59e0b)',
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random() * 0.8 + 0.2,
+                  animation: `sparkle-float ${2 + Math.random() * 2}s ease-in-out infinite`,
+                  animationDelay: `${Math.random() * 2}s`,
+                  boxShadow: '0 0 8px rgba(253, 224, 71, 0.8)'
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Effet de brillance animé */}
+          <div 
+            className="absolute inset-0 opacity-40 pointer-events-none"
+            style={{
+              background: 'linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%)',
+              animation: 'shimmer 3s ease-in-out infinite'
+            }}
+          />
+
+          {/* Overlay léger pour lisibilité */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
           
-          {/* Content */}
-          <div className="relative">
-            <div className="w-12 h-12 rounded-2xl flex items-center justify-center mb-3 bg-white/20 backdrop-blur-sm mx-auto shadow-xl">
-              <MessageCircle size={24} className="text-white" />
+          {/* Content centré */}
+          <div className="relative w-full text-center px-6 py-4 flex flex-col items-center">
+            {/* Icône principale centrée avec effet glow */}
+            <div 
+              className="w-16 h-16 rounded-full flex items-center justify-center mb-3 shadow-2xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.15)',
+                backdropFilter: 'blur(10px)',
+                border: '2px solid rgba(255, 255, 255, 0.3)',
+                boxShadow: '0 8px 32px rgba(0, 0, 0, 0.3), inset 0 0 20px rgba(255, 255, 255, 0.1)'
+              }}
+            >
+              <MessageCircle size={32} className="text-white" style={{ filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))' }} />
             </div>
-            <h3 className="text-lg font-bold mb-2 text-white">
-              Votre IA Concierge
+            
+            {/* Titre avec style logo */}
+            <h3 
+              className="text-xl font-black mb-4 text-white tracking-tight"
+              style={{ 
+                textShadow: '0 4px 12px rgba(0, 0, 0, 0.5)',
+                fontFamily: '"Proxima Soft Black", Montserrat, sans-serif'
+              }}
+            >
+              Bienvenue sur Gliitz
             </h3>
-            <p className="text-purple-100 text-sm px-2 leading-relaxed">
-              Demandez-moi n'importe quoi sur Marbella !
+            
+            <p 
+              className="text-white text-base px-2 leading-relaxed mb-5 font-medium" 
+              style={{ textShadow: '0 2px 6px rgba(0, 0, 0, 0.4)' }}
+            >
+              Votre concierge IA personnel pour Marbella
             </p>
             
-            {/* Animation dots */}
-            <div className="mt-3 flex items-center justify-center space-x-1">
-              <div className="w-1.5 h-1.5 bg-white/60 rounded-full animate-pulse" />
+            {/* Call-to-action pulsant */}
+            <div 
+              className="mt-5 px-6 py-3 rounded-full mx-auto inline-flex items-center gap-2 animate-pulse"
+              style={{
+                background: 'rgba(255, 255, 255, 0.25)',
+                backdropFilter: 'blur(10px)',
+                border: '2px solid rgba(255, 255, 255, 0.4)',
+                boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2), inset 0 2px 8px rgba(255, 255, 255, 0.2)',
+                animationDuration: '2s'
+              }}
+            >
+              <span className="text-2xl animate-bounce" style={{ animationDuration: '1s' }}>👆</span>
+              <p className="text-white text-sm font-bold" style={{ textShadow: '0 2px 4px rgba(0,0,0,0.4)' }}>
+                Touchez pour commencer
+              </p>
+            </div>
+            
+            {/* Indicateur animé */}
+            <div className="mt-6 flex items-center justify-center space-x-2">
               <div 
-                className="w-1.5 h-1.5 bg-white/60 rounded-full animate-pulse" 
-                style={{animationDelay: '0.2s'}}
+                className="w-2.5 h-2.5 rounded-full animate-pulse"
+                style={{ 
+                  background: 'linear-gradient(135deg, #fde047, #f59e0b)',
+                  boxShadow: '0 0 8px rgba(253, 224, 71, 0.8)'
+                }}
               />
               <div 
-                className="w-1.5 h-1.5 bg-white/60 rounded-full animate-pulse" 
-                style={{animationDelay: '0.4s'}}
+                className="w-2.5 h-2.5 rounded-full animate-pulse" 
+                style={{
+                  background: 'linear-gradient(135deg, #fde047, #f59e0b)',
+                  boxShadow: '0 0 8px rgba(253, 224, 71, 0.8)',
+                  animationDelay: '0.3s'
+                }}
+              />
+              <div 
+                className="w-2.5 h-2.5 rounded-full animate-pulse" 
+                style={{
+                  background: 'linear-gradient(135deg, #fde047, #f59e0b)',
+                  boxShadow: '0 0 8px rgba(253, 224, 71, 0.8)',
+                  animationDelay: '0.6s'
+                }}
               />
             </div>
           </div>
@@ -60,9 +156,13 @@ const WelcomeCard = memo(({
       )}
       
       {/* Version desktop - design premium */}
-      <div className={`${styles.welcomeCard} ${styles.desktopOnly}`}>
-        {/* Background gradients */}
-        <div className="absolute inset-0 bg-gradient-to-br from-purple-500 via-indigo-500 to-blue-500 opacity-90" />
+      <div 
+        className={`${styles.welcomeCard} ${styles.desktopOnly}`}
+        style={{
+          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important'
+        }}
+      >
+        {/* Overlay pour effet */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
         
         {/* Content */}
@@ -71,7 +171,7 @@ const WelcomeCard = memo(({
             <MessageCircle size={48} className="text-white" />
           </div>
           <h3 className="text-xl lg:text-3xl font-bold mb-3 lg:mb-4 text-white">
-            Bienvenue sur Get Weez
+            Bienvenue sur Gliitz
           </h3>
           <p className="text-purple-100 text-sm lg:text-lg px-2 lg:px-4 leading-relaxed">
             Votre concierge IA personnel pour Marbella
@@ -105,9 +205,8 @@ const WelcomeCard = memo(({
         </div>
       )}
       
-      {/* Instructions */}
+      {/* Instructions - Retirées pour mobile, gardées pour desktop */}
       <p className="text-xs lg:text-base text-gray-400 px-4 lg:px-6 mt-4">
-        <span className={styles.mobileOnly}>Tapez votre message ci-dessous</span>
         <span className={styles.desktopOnly}>Commencez à taper votre message ci-dessous pour commencer une conversation</span>
       </p>
     </div>

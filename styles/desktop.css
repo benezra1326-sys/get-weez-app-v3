@@ -1,0 +1,550 @@
+/* ========================================
+   DESKTOP-ONLY OPTIMIZATIONS
+   Optimisations exclusives pour desktop
+   ======================================== */
+
+/* === BREAKPOINT DESKTOP === */
+@media (min-width: 1024px) {
+  
+  /* === LAYOUT PRINCIPAL === */
+  .desktop-layout {
+    display: grid;
+    grid-template-columns: 320px 1fr 320px;
+    grid-template-rows: 1fr;
+    height: calc(100vh - 80px);
+    width: 100vw;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background: transparent;
+    position: relative;
+  }
+  
+  .desktop-sidebar-left {
+    grid-column: 1;
+    grid-row: 1;
+    border-right: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+    height: 100%;
+  }
+  
+  .desktop-main-content {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 80px);
+    width: 100%;
+    background: transparent;
+    overflow: hidden;
+  }
+  
+  .desktop-sidebar-right {
+    grid-column: 3;
+    grid-row: 1;
+    border-left: 1px solid var(--color-border);
+    background: var(--color-bg-primary);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+    height: calc(100vh - 80px);
+  }
+  
+  /* === CHAT DESKTOP OPTIMIZATIONS === */
+  .desktop-chat-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    background: transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .desktop-chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+    padding-right: 1rem;
+    padding-bottom: 0;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+    min-height: 0;
+    background: transparent;
+  }
+  
+  .desktop-chat-input {
+    flex-shrink: 0;
+    background: var(--color-bg-primary);
+    border-top: 1px solid var(--color-border);
+    backdrop-filter: blur(10px);
+    padding-right: 0.5rem;
+  }
+  
+  /* === SIDEBAR CONVERSATIONS === */
+  .desktop-conversations {
+    padding: 1rem;
+  }
+  
+  .desktop-conversation-item {
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid transparent;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .desktop-conversation-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+    border-color: var(--color-primary);
+  }
+  
+  .desktop-conversation-item.active {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3) !important;
+  }
+
+  /* FORCER LES CONVERSATIONS ACTIVES */
+  .desktop-conversation-item.active,
+  .desktop-conversation-item.active:hover,
+  .desktop-conversation-item.active:active,
+  .desktop-conversation-item.active:focus {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+  }
+  
+  .desktop-conversation-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .desktop-conversation-item:hover::before {
+    left: 100%;
+  }
+  
+  /* === SUGGESTIONS DESKTOP === */
+  .desktop-suggestions {
+    padding: 1rem;
+  }
+  
+  .desktop-suggestion-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+  
+  .desktop-suggestion-item {
+    padding: 1rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid var(--color-border);
+    background: var(--color-surface);
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .desktop-suggestion-item:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+    border-color: var(--color-primary);
+  }
+  
+  .desktop-suggestion-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .desktop-suggestion-item:hover::before {
+    left: 100%;
+  }
+  
+  /* === HEADER DESKTOP === */
+  .desktop-header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--color-border);
+    background: rgba(255, 255, 255, 0.95);
+  }
+  
+  .desktop-header.dark {
+    background: rgba(26, 26, 26, 0.95);
+  }
+  
+  /* === NAVIGATION DESKTOP === */
+  .desktop-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex: 1;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .desktop-nav-link {
+    position: relative;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    overflow: hidden;
+  }
+  
+  .desktop-nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+    transition: left 0.6s ease;
+  }
+  
+  .desktop-nav-link:hover::before {
+    left: 100%;
+  }
+  
+  .desktop-nav-link:hover {
+    background: rgba(168, 85, 247, 0.1) !important;
+    color: var(--color-text-primary) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+  }
+  
+  .desktop-nav-link.active {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+  }
+  
+  /* === MESSAGES DESKTOP === */
+  .desktop-message {
+    max-width: 60%;
+    width: fit-content;
+    margin-bottom: 1rem;
+    padding: 1rem 1.25rem;
+    border-radius: 18px;
+    position: relative;
+    word-wrap: break-word;
+    animation: messageSlide 0.3s ease-out;
+  }
+  
+  .desktop-message.user {
+    margin-left: auto !important;
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+    border-bottom-right-radius: 6px !important;
+  }
+
+  /* FORCER LES MESSAGES UTILISATEUR */
+  .desktop-message.user,
+  .desktop-message.user:hover,
+  .desktop-message.user:active,
+  .desktop-message.user:focus {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+  }
+  
+  .desktop-message.assistant {
+    margin-right: auto;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border);
+    border-bottom-left-radius: 6px;
+  }
+  
+  .desktop-message.assistant:hover {
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+  }
+  
+  /* === INPUT DESKTOP === */
+  .desktop-input-container {
+    position: sticky !important;
+    bottom: 16px !important;
+    left: 8px !important;
+    right: 8px !important;
+    display: flex !important;
+    align-items: flex-end !important;
+    gap: 0.75rem !important;
+    padding: 1rem 1.5rem !important;
+    background: var(--color-bg-primary) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(10px) !important;
+    z-index: 10 !important;
+    flex-shrink: 0 !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1) !important;
+    box-sizing: border-box !important;
+    width: calc(100% - 16px) !important;
+    margin: 0 !important;
+    max-width: calc(100% - 16px) !important;
+  }
+  
+  .desktop-input-field {
+    flex: 1;
+    min-height: 48px;
+    max-height: 120px;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    background: var(--color-surface);
+    color: var(--color-text-primary);
+    font-size: 0.95rem;
+    line-height: 1.5;
+    resize: none;
+    transition: all 0.3s ease;
+    font-family: inherit;
+  }
+  
+  .desktop-input-field:focus {
+    outline: none;
+    border-color: var(--color-primary);
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    background: var(--color-surface-elevated);
+  }
+  
+  .desktop-send-button {
+    padding: 0.75rem !important;
+    border: none !important;
+    border-radius: 12px !important;
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+    cursor: pointer !important;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3) !important;
+    min-width: 48px !important;
+    height: 48px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+  /* FORCER TOUTES LES COULEURS DE LA BANNIÈRE */
+  button.desktop-send-button,
+  .desktop-send-button[class*="desktop-send-button"],
+  .desktop-send-button:hover,
+  .desktop-send-button:active,
+  .desktop-send-button:focus {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    color: white !important;
+    border: none !important;
+  }
+  
+  .desktop-send-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+  }
+  
+  .desktop-send-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  /* === SCROLLBARS DESKTOP === */
+  .desktop-scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary) transparent;
+  }
+  
+  .desktop-scrollbar::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .desktop-scrollbar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .desktop-scrollbar::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    border-radius: 3px;
+    transition: background 0.2s ease;
+  }
+  
+  .desktop-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+  }
+  
+  /* === ANIMATIONS DESKTOP === */
+  @keyframes messageSlide {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes desktopFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .desktop-fade-in {
+    animation: desktopFadeIn 0.4s ease-out;
+  }
+  
+  /* === HOVER EFFECTS DESKTOP === */
+  .desktop-hover-lift {
+    transition: transform 0.2s ease;
+  }
+  
+  .desktop-hover-lift:hover {
+    transform: translateY(-2px);
+  }
+  
+  .desktop-hover-scale {
+    transition: transform 0.2s ease;
+  }
+  
+  .desktop-hover-scale:hover {
+    transform: scale(1.05);
+  }
+  
+  /* === GRID LAYOUTS DESKTOP === */
+  .desktop-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .desktop-grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+  
+  .desktop-grid-4 {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+  
+  /* === SPACING DESKTOP === */
+  .desktop-p-4 { padding: 1.5rem; }
+  .desktop-p-6 { padding: 2rem; }
+  .desktop-p-8 { padding: 2.5rem; }
+  
+  .desktop-m-4 { margin: 1.5rem; }
+  .desktop-m-6 { margin: 2rem; }
+  .desktop-m-8 { margin: 2.5rem; }
+  
+  /* === TYPOGRAPHY DESKTOP === */
+  .desktop-text-lg { font-size: 1.125rem; }
+  .desktop-text-xl { font-size: 1.25rem; }
+  .desktop-text-2xl { font-size: 1.5rem; }
+  .desktop-text-3xl { font-size: 1.875rem; }
+  
+  /* === UTILITIES DESKTOP === */
+  .desktop-hidden { display: none; }
+  .desktop-block { display: block; }
+  .desktop-flex { display: flex; }
+  .desktop-grid { display: grid; }
+  
+  .desktop-w-full { width: 100%; }
+  .desktop-h-full { height: 100%; }
+  .desktop-min-h-screen { min-height: 100vh; }
+  
+  /* === PERFORMANCE DESKTOP === */
+  .desktop-gpu-accelerated {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000px;
+  }
+  
+  .desktop-will-change-transform {
+    will-change: transform;
+  }
+  
+  .desktop-will-change-scroll {
+    will-change: scroll-position;
+  }
+}
+
+/* === LARGE DESKTOP OPTIMIZATIONS === */
+@media (min-width: 1280px) {
+  .desktop-layout {
+    grid-template-columns: 360px 1fr 360px;
+  }
+  
+  .desktop-conversation-item {
+    padding: 1.25rem;
+  }
+  
+  .desktop-suggestion-item {
+    padding: 1.25rem;
+  }
+  
+  .desktop-message {
+    max-width: 50%;
+  }
+}
+
+/* === ULTRA WIDE DESKTOP === */
+@media (min-width: 1536px) {
+  .desktop-layout {
+    grid-template-columns: 400px 1fr 400px;
+  }
+  
+  .desktop-nav {
+    max-width: 1000px;
+  }
+  
+  .desktop-message {
+    max-width: 45%;
+  }
+}
+/* Force reload Sat Oct  4 18:29:16 CEST 2025 */
+/* FORCE RELOAD Sat Oct  4 18:32:13 CEST 2025 - FIXED ALL GRADIENTS */
+/* FORCE RELOAD - BANNIERE COLORS Sat Oct  4 18:37:02 CEST 2025 */
+/* FORCE RELOAD - NEW GRADIENT COLORS FROM WELCOME BANNER - Oct 4 2025 */
+/* FORCE RELOAD - SIDEBAR VISIBLE + CAROUSEL BEFORE FOOTER - Oct 4 2025 */
+/* FORCE RELOAD - INPUT REMONTÉ + CONVERSATIONS COLORÉES - Oct 4 2025 */
+/* FORCE RELOAD - IBIZA PHOTO + BADGES ALIGNED - 20:00 Oct 4 2025 */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -70,12 +70,12 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
         <div 
           className="absolute top-full left-0 right-0 mt-2 backdrop-blur-md border rounded-xl shadow-2xl max-h-80 overflow-y-auto"
           style={{
-            backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)',
-            borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.8)' : 'rgba(209, 213, 219, 0.8)',
+            backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.98)' : 'rgba(255, 255, 255, 0.98)',
+            borderColor: isDarkMode ? 'rgba(168, 85, 247, 0.5)' : 'rgba(209, 213, 219, 0.8)',
             zIndex: 99999,
-            position: 'fixed',
+            position: 'absolute',
             boxShadow: isDarkMode 
-              ? '0 25px 50px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)'
+              ? '0 25px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(168, 85, 247, 0.3)'
               : '0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8)',
             backdropFilter: 'blur(30px) saturate(150%)'
           }}

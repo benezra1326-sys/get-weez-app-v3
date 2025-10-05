@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import Header from '../components/layout/header'
+import HeaderGliitz from '../components/layout/HeaderGliitz'
 import MobileMenu from '../components/layout/MobileMenu'
 import ServiceCard from '../components/services/ServiceCard'
 import ServiceCategoryFilter from '../components/services/ServiceCategoryFilter'
 import { ServiceSearchBar } from '../components/ui/SearchBar'
 import { useToast } from '../components/ui/Toast'
+import ChatFloatingButton from '../components/ui/ChatFloatingButton'
+import GliitzLoader from '../components/ui/GliitzLoader'
 import { services as staticServices, serviceCategories } from '../data/services-data'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
@@ -70,8 +72,8 @@ export default function Services({ user, setUser }) {
         service.name.toLowerCase().includes(query.toLowerCase()) ||
         service.description.toLowerCase().includes(query.toLowerCase()) ||
         service.category?.toLowerCase().includes(query.toLowerCase()) ||
-        service.features?.some(feature =>
-          feature.toLowerCase().includes(query.toLowerCase())
+        service.specialties?.some(specialty =>
+          specialty.toLowerCase().includes(query.toLowerCase())
         )
       )
     }
@@ -79,17 +81,38 @@ export default function Services({ user, setUser }) {
     setFilteredServices(filtered)
   }
 
-  const handleServiceRequest = (service) => {
-    console.log('Service request clicked for:', service)
+  const handleBook = (service) => {
+    console.log('Book clicked for:', service)
     
-    // TODO: Afficher détails du service au lieu de rediriger
-    showToast(`Service ${service.name} sélectionné`, 'info')
+    // Créer le message de réservation
+    const bookingMessage = `Je souhaite réserver le service ${service.name} (${service.category}). Pouvez-vous m'aider avec la réservation ?`
     
-    // CORRECTION: Ne plus rediriger automatiquement vers l'accueil
-    // Garder l'utilisateur sur la page services
+    // Rediriger vers la page d'accueil avec le message pré-rempli
+    router.push({
+      pathname: '/',
+      query: { 
+        message: bookingMessage,
+        service: service.name
+      }
+    })
     
-    // Si nécessaire, router.push vers page dédiée service :
-    // router.push(`/service/${service.id}`)
+    showToast(`Redirection vers le chat pour ${service.name}`, 'info')
+    
+    // Scroll vers le chat après la redirection
+    setTimeout(() => {
+      const chatElement = document.querySelector('.chat-interface, .mobile-chat-container, .chat-area')
+      if (chatElement) {
+        chatElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      }
+    }, 500)
+  }
+
+  const handleSendMessage = (message) => {
+    // Rediriger vers l'accueil avec le message
+    router.push({
+      pathname: '/',
+      query: { message: encodeURIComponent(message) }
+    })
   }
 
   const toggleMobileMenu = () => {
@@ -97,31 +120,45 @@ export default function Services({ user, setUser }) {
   }
 
   return (
-    <div 
-        style={{ 
-          width: '100vw', 
-          minHeight: '100vh', 
-          margin: 0, 
-          padding: 0,
-          backgroundColor: isDarkModeSafe ? '#0D0D0D' : '#FFFFFF',
-          maxWidth: 'none'
-        }}
-    >
+    <>
+      <style jsx global>{`
+        /* Forcer le mode sombre sur toute la page */
+        body {
+          background-color: ${isDarkModeSafe ? '#0a0a0f' : '#f9fafb'} !important;
+        }
+      `}</style>
+      <style jsx global>{`
+        /* Animation pour le gradient */
+        @keyframes gradientShift {
+          0%, 100% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+        }
+        
+        @keyframes shimmer {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        
+        @keyframes sparkle-float {
+          0%, 100% {
+            transform: translateY(0px) scale(1);
+            opacity: 0.6;
+          }
+          50% {
+            transform: translateY(-12px) scale(1.2);
+            opacity: 1;
+          }
+        }
+      `}</style>
+      
       <div 
-        style={{ 
-          display: 'flex', 
-          flexDirection: 'column', 
-          minHeight: '100vh', 
-          width: '100vw',
-          margin: 0,
-          padding: 0,
-          backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-          position: 'relative',
-          maxWidth: 'none'
+        className="min-h-screen"
+        style={{
+          backgroundColor: isDarkModeSafe ? '#0a0a0f' : '#f9fafb'
         }}
       >
         {/* Header */}
-        <Header 
+        <HeaderGliitz 
           user={user} 
           setUser={setUser}
           toggleMobileMenu={toggleMobileMenu} 
@@ -134,179 +171,134 @@ export default function Services({ user, setUser }) {
           onClose={() => setIsMobileMenuOpen(false)} 
           user={user} 
         />
+
+        {/* Bouton flottant pour le chat */}
+        <ChatFloatingButton />
         
         {/* Contenu principal */}
-        <main 
-          style={{ 
-            flex: 1,
-            overflow: 'auto',
-            backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF',
-            width: '100vw',
-            minHeight: 'calc(100vh - 6rem)',
-            padding: '2rem',
-            maxWidth: 'none'
-          }}
-        >
-            {/* Header avec recherche */}
-            <div className="mb-8">
-              <div className="relative overflow-hidden rounded-3xl p-8 mb-8"
+        <main className="container mx-auto px-4 py-6">
+          
+          {/* Bannière avec titre et recherche - Améliorée avec sparkles */}
+          <div className="mb-6">
+            <div 
+              className="relative overflow-hidden rounded-2xl p-6 text-center group"
+              style={{
+                background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                backgroundSize: '400% 400%',
+                animation: 'gradientShift 8s ease infinite',
+                boxShadow: '0 12px 48px rgba(168, 85, 247, 0.4)'
+              }}
+            >
+              {/* Effet de brillance animé */}
+              <div 
+                className="absolute inset-0 opacity-40 pointer-events-none"
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #10B981 75%, #F59E0B 100%)',
-                  backgroundSize: '400% 400%',
-                  animation: 'gradientShift 8s ease infinite'
+                  background: 'linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%)',
+                  animation: 'shimmer 3s ease-in-out infinite'
                 }}
-              >
-                <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
-                <div className="relative z-10 text-center">
-                  <h1 className="text-4xl lg:text-5xl font-bold text-white mb-4 drop-shadow-lg">
-                    🛎️ Services
-                  </h1>
-                  <p className="text-white/90 text-lg lg:text-xl mb-6 drop-shadow-md">
-                    Découvrez nos services premium à Marbella
-                  </p>
-                  
-                  <div className="max-w-2xl mx-auto w-full">
-                    <ServiceSearchBar 
-                      onSearch={handleSearch}
-                      className="w-full"
-                    />
-                  </div>
+              />
+              
+              {/* Sparkles flottants */}
+              <div className="absolute top-4 left-8" style={{ animation: 'sparkle-float 3s ease-in-out infinite' }}>
+                <div className="w-2 h-2 rounded-full bg-yellow-300" style={{ boxShadow: '0 0 8px rgba(253, 224, 71, 0.8)' }} />
+              </div>
+              <div className="absolute top-8 right-12" style={{ animation: 'sparkle-float 3s ease-in-out infinite 1s' }}>
+                <div className="w-1.5 h-1.5 rounded-full bg-yellow-400" style={{ boxShadow: '0 0 6px rgba(250, 204, 21, 0.8)' }} />
+              </div>
+              <div className="absolute bottom-6 left-16" style={{ animation: 'sparkle-float 3s ease-in-out infinite 2s' }}>
+                <div className="w-1 h-1 rounded-full bg-yellow-200" style={{ boxShadow: '0 0 4px rgba(253, 230, 138, 0.8)' }} />
+              </div>
+              <div className="absolute bottom-8 right-20" style={{ animation: 'sparkle-float 3s ease-in-out infinite 0.5s' }}>
+                <div className="w-1.5 h-1.5 rounded-full bg-white" style={{ boxShadow: '0 0 6px rgba(255, 255, 255, 0.8)' }} />
+              </div>
+              
+              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
+              <div className="relative z-10">
+                <h1 className="text-3xl font-bold text-white mb-3 drop-shadow-lg transition-transform duration-300 group-hover:scale-105">
+                  🛍️ Services
+                </h1>
+                <p className="text-white/90 text-lg mb-4 drop-shadow-md">
+                  Découvrez nos services premium à Marbella
+                </p>
+                
+                <div className="max-w-2xl mx-auto">
+                  <ServiceSearchBar 
+                    onSearch={handleSearch}
+                    className="w-full"
+                  />
                 </div>
               </div>
             </div>
+          </div>
 
-            {/* Filtre par catégorie - AMÉLIORÉ POUR MOBILE */}
+          {/* Section des filtres - Améliorée */}
+          <div className="mb-6 relative z-50">
             <div 
-              className="mb-8 filters-section" 
-              style={{ 
-                position: 'relative', 
-                zIndex: 10,
-                backgroundColor: isDarkModeSafe ? 'rgba(31, 41, 55, 0.98) !important' : 'rgba(255, 255, 255, 0.95) !important',
-                borderRadius: '16px',
-                padding: '24px',
-                border: `1px solid ${isDarkModeSafe ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`,
+              className="relative overflow-hidden rounded-2xl p-6 border transition-all duration-300 hover:shadow-2xl"
+              style={{
+                background: isDarkModeSafe 
+                  ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.98) 100%)'
+                  : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.98) 100%)',
                 backdropFilter: 'blur(20px)',
+                borderColor: isDarkModeSafe ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)',
                 boxShadow: isDarkModeSafe 
-                  ? '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                  : '0 8px 32px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
+                  ? '0 8px 32px rgba(0, 0, 0, 0.5)' 
+                  : '0 8px 32px rgba(168, 85, 247, 0.15)'
               }}
             >
-              <h2 
-                className="text-2xl font-bold mb-4 flex items-center"
-                style={{ color: isDarkModeSafe ? '#FFFFFF !important' : '#1F2937 !important' }}
-              >
-                <span className="mr-3">🏷️</span>
-                Filtres par Catégorie
-              </h2>
+              {/* Effet de grille subtil */}
               <div 
-                className="backdrop-blur-md rounded-2xl p-6 border"
-                style={{ 
-                  backgroundColor: isDarkModeSafe ? 'rgba(31, 41, 55, 0.98) !important' : 'rgba(255, 255, 255, 0.95)',
-                  borderColor: isDarkModeSafe ? 'rgba(75, 85, 99, 0.5) !important' : 'rgba(139, 92, 246, 0.5)',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3) !important',
-                  position: 'relative',
-                  zIndex: 10
+                className="absolute inset-0 opacity-5 pointer-events-none"
+                style={{
+                  backgroundImage: 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 1px, transparent 1px)',
+                  backgroundSize: '20px 20px'
                 }}
-              >
-                <ServiceCategoryFilter
-                  selectedCategory={selectedCategory}
-                  onSelectCategory={handleCategoryChange}
-                />
+              />
+              
+              <h2 className="text-xl font-bold mb-4 flex items-center relative z-10" style={{
+                color: isDarkModeSafe ? '#ffffff' : '#1f2937'
+              }}>
+              <span className="mr-2">🏷️</span>
+              Filtres par Catégorie
+            </h2>
+              
+              <div className="relative z-10">
+              <ServiceCategoryFilter
+                selectedCategory={selectedCategory}
+                onSelectCategory={handleCategoryChange}
+              />
               </div>
             </div>
+          </div>
 
-            {/* Liste des services */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 establishments-list" style={{ position: 'relative', zIndex: 1 }}>
-              {filteredServices.map((service) => (
-                <ServiceCard
+          {/* Liste des services */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {isLoading ? (
+              <div className="col-span-full flex items-center justify-center h-64">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+              </div>
+            ) : filteredServices.length > 0 ? (
+              filteredServices.map(service => (
+                <ServiceCard 
                   key={service.id}
-                  service={service}
-                  user={user}
-                  onRequest={handleServiceRequest}
-                  onSendMessage={(message) => {
-                    // Rediriger vers la page d'accueil avec le message
-                    router.push(`/?message=${encodeURIComponent(message)}`)
-                  }}
+                  service={service} 
+                  user={user} 
+                  onReserve={handleBook}
+                  onSendMessage={handleSendMessage}
                 />
-              ))}
-            </div>
-
-            {filteredServices.length === 0 && !isLoading && (
-              <div className="text-center py-12">
-                <div className="text-6xl mb-4">🔍</div>
-                <h3 
-                  className="text-xl font-semibold mb-2"
-                  style={{ color: isDarkMode ? '#F9FAFB' : '#1F2937' }}
-                >
-                  Aucun service trouvé
-                </h3>
-                <p style={{ color: isDarkMode ? '#9CA3AF' : '#6B7280' }}>
-                  Essayez de modifier vos critères de recherche
-                </p>
+              ))
+            ) : (
+              <div className="col-span-full flex items-center justify-center h-64">
+                <div className="text-center">
+                  <p className="text-lg text-gray-600">Aucun service trouvé</p>
+                  <p className="text-sm mt-2 text-gray-500">Veuillez réessayer plus tard</p>
+                </div>
               </div>
             )}
-          </main>
+          </div>
           
-          {/* Footer avec logo Get Weez */}
-          <footer 
-            style={{ 
-              backgroundColor: isDarkMode ? '#1F2937' : '#f8f9fa',
-              padding: '1rem 2rem',
-              textAlign: 'center',
-              color: isDarkMode ? '#F9FAFB' : '#333333',
-              borderTop: isDarkMode ? '1px solid #374151' : '1px solid #e5e7eb',
-              marginTop: 'auto',
-              position: 'relative',
-              zIndex: 1,
-              width: '100%',
-              boxSizing: 'border-box',
-              marginBottom: 0,
-              flexShrink: 0
-            }}
-          >
-            {/* Logo Get Weez */}
-            <div style={{ marginBottom: '0.5rem' }}>
-              <div 
-                style={{
-                  background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-                  borderRadius: '12px',
-                  padding: '8px 16px',
-                  display: 'inline-block',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
-                  marginBottom: '0.5rem'
-                }}
-              >
-                <h1 
-                  style={{
-                    fontSize: '1.5rem',
-                    fontWeight: 'bold',
-                    color: 'white',
-                    margin: 0,
-                    fontFamily: 'Blanka, sans-serif',
-                    letterSpacing: '0.1em'
-                  }}
-                >
-                  GET WEEZ
-                </h1>
-              </div>
-              <p 
-                style={{ 
-                  fontSize: '0.875rem', 
-                  color: isDarkMode ? '#9CA3AF' : '#666666', 
-                  margin: '0.125rem 0',
-                  fontWeight: '500'
-                }}
-              >
-                YOUR IA CONCIERGE
-              </p>
-            </div>
-            
-            {/* Copyright */}
-            <p style={{ fontSize: '0.75rem', color: isDarkMode ? '#6B7280' : '#999999', margin: 0 }}>
-              GET WEEZ - ALL RIGHTS RESERVED
-            </p>
-          </footer>
-        </div>
+        </main>
       </div>
-    )
+    </>
+  )
 }

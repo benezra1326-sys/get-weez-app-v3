@@ -28,14 +28,24 @@ export default function EventCard({ event }) {
     return colors[type] || 'from-gray-500 to-gray-600'
   }
 
+  // Fonction pour naviguer vers la page de détails
+  const handleCardClick = (e) => {
+    // Ne pas naviguer si on clique sur un bouton ou un lien
+    if (e.target.tagName !== 'BUTTON' && !e.target.closest('button') && !e.target.closest('a')) {
+      window.location.href = `/event/${event.id}`
+    }
+  }
+
   return (
     <div 
       className="card-premium overflow-hidden animate-fade-in animate-hover-lift group transition-all duration-300 md:hover:scale-105 md:hover:shadow-2xl md:hover:rotate-1"
+      onClick={handleCardClick}
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
         border: '1px solid var(--color-border)',
         transform: 'perspective(1000px)',
-        transformStyle: 'preserve-3d'
+        transformStyle: 'preserve-3d',
+        cursor: 'pointer'
       }}
     >
       <div className="relative">

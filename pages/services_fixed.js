@@ -165,7 +165,7 @@ export default function Services({ user, setUser }) {
             <div className="mb-8">
               <div className="relative overflow-hidden rounded-3xl p-8 mb-8"
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 25%, #06B6D4 50%, #10B981 75%, #F59E0B 100%)',
+                  background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
                   backgroundSize: '400% 400%',
                   animation: 'gradientShift 8s ease infinite'
                 }}

@@ -14,8 +14,20 @@ export default function ServiceCard({ service, user, onReserve, onRequest, onSen
       console.log('Fonction de message non fournie pour:', service.name)
     }
   }
+  // Fonction pour naviguer vers la page de détails
+  const handleCardClick = (e) => {
+    // Ne pas naviguer si on clique sur un bouton
+    if (e.target.tagName !== 'BUTTON' && !e.target.closest('button')) {
+      window.location.href = `/service/${service.id}`
+    }
+  }
+
   return (
-    <div className="uniform-banner">
+    <div 
+      className="uniform-banner"
+      onClick={handleCardClick}
+      style={{ cursor: 'pointer' }}
+    >
       {/* Image de fond */}
       {service.image_url && (
         <img 

@@ -1,11 +1,152 @@
 @import url('https://fonts.cdnfonts.com/css/blanka');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Proxima+Nova:wght@400;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+@font-face {
+  font-family: 'Proxima Soft Black';
+  src: url('/fonts/fonnts.com-Proxima_Soft_Black.otf') format('opentype');
+  font-weight: 900;
+  font-style: normal;
+}
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Animations Gliitz - Sparkles et effets magiques */
+@keyframes sparkle {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+  25% { 
+    transform: scale(1.2) rotate(90deg); 
+    opacity: 0.8; 
+  }
+  50% { 
+    transform: scale(0.8) rotate(180deg); 
+    opacity: 1; 
+  }
+  75% { 
+    transform: scale(1.1) rotate(270deg); 
+    opacity: 0.9; 
+  }
+}
+
+@keyframes sparkle-delayed {
+  0%, 100% { 
+    transform: scale(1) rotate(0deg); 
+    opacity: 1; 
+  }
+  25% { 
+    transform: scale(0.9) rotate(-90deg); 
+    opacity: 0.7; 
+  }
+  50% { 
+    transform: scale(1.3) rotate(-180deg); 
+    opacity: 1; 
+  }
+  75% { 
+    transform: scale(0.7) rotate(-270deg); 
+    opacity: 0.8; 
+  }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+/* Classes d'animation pour les sparkles */
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.animate-sparkle-delayed {
+  animation: sparkle-delayed 2s ease-in-out infinite 0.5s;
+}
+
+/* Retirer les points des i dans le logo */
+.logo-text {
+  font-variant-ligatures: none;
+}
+
+.logo-text i {
+  text-decoration: none;
+  position: relative;
+}
+
+.logo-text i::before {
+  content: '';
+  display: none !important;
+}
+
+.logo-text i::after {
+  content: '';
+  display: none !important;
+}
+
+/* Supprimer complètement les points des i */
+.logo-text i {
+  font-style: normal;
+  text-decoration: none;
+}
+
+.logo-text i:before,
+.logo-text i:after {
+  display: none !important;
+  content: none !important;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes sparkle-float {
+  0%, 100% { 
+    transform: translateY(0px) rotate(0deg); 
+    opacity: 0.7; 
+  }
+  50% { 
+    transform: translateY(-10px) rotate(180deg); 
+    opacity: 1; 
+  }
+}
+
+@keyframes sparkle-twinkle {
+  0%, 100% { 
+    opacity: 0.6;
+    transform: scale(1);
+  }
+  50% { 
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
+
+.animate-sparkle {
+  animation: sparkle 2s ease-in-out infinite;
+}
+
+.animate-sparkle-delayed {
+  animation: sparkle-delayed 2s ease-in-out infinite 0.5s;
+}
+
+.animate-shimmer {
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+.animate-sparkle-float {
+  animation: sparkle-float 3s ease-in-out infinite;
+}
+
 /* Import des optimisations mobiles */
 @import './mobile.css';
+
+/* Import des optimisations desktop */
+@import './desktop.css';
 
 /* Force full width and height for desktop layout */
 * {
@@ -26,8 +167,9 @@ html, body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
+  overflow-y: auto;
   position: relative;
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
 }
 
@@ -121,7 +263,7 @@ body {
 :root {
   /* 🎨 DESIGN SYSTEM - LUXURY & MODERN */
   
-  /* === COULEURS PRINCIPALES === */
+  /* === COULEURS PRINCIPALES (MODE SOMBRE PAR DÉFAUT) === */
   --color-bg-primary: #0A0A0A;        /* Noir profond luxueux */
   --color-bg-secondary: #141414;       /* Gris très foncé */
   --color-bg-tertiary: #1A1A1A;       /* Gris foncé */
@@ -196,12 +338,39 @@ body {
   --breakpoint-2xl: 1536px;
 }
 
+/* === MODE CLAIR === */
+body.light {
+  /* === COULEURS PRINCIPALES (MODE CLAIR) === */
+  --color-bg-primary: #FFFFFF;        /* Blanc pur */
+  --color-bg-secondary: #F8FAFC;      /* Gris très clair */
+  --color-bg-tertiary: #F1F5F9;       /* Gris clair */
+  
+  /* === SURFACES (MODE CLAIR) === */
+  --color-surface: #FFFFFF;           /* Surface principale */
+  --color-surface-elevated: #F8FAFC;  /* Surface élevée */
+  --color-surface-hover: #F1F5F9;     /* Surface hover */
+  --color-surface-glass: rgba(255, 255, 255, 0.8); /* Glass morphism */
+  
+  /* === TEXTE (MODE CLAIR) === */
+  --color-text-primary: #1F2937;      /* Texte principal */
+  --color-text-secondary: #6B7280;    /* Texte secondaire */
+  --color-text-muted: #9CA3AF;         /* Texte atténué */
+  --color-text-disabled: #D1D5DB;      /* Texte désactivé */
+  
+  /* === BORDURES (MODE CLAIR) === */
+  --color-border: #E5E7EB;             /* Bordure principale */
+  --color-border-light: #F3F4F6;      /* Bordure claire */
+  --color-border-accent: #8B5CF6;      /* Bordure accent */
+}
+
 * {
   box-sizing: border-box;
 }
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden !important;
+  max-width: 100vw !important;
 }
 
 body {
@@ -268,6 +437,7 @@ body {
     padding: 0 !important;
     width: 100% !important;
     overflow-x: hidden !important;
+    overflow-y: auto !important;
     box-sizing: border-box !important;
   }
   
@@ -275,6 +445,7 @@ body {
     width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    overflow-y: auto !important;
     box-sizing: border-box !important;
   }
   
@@ -413,12 +584,14 @@ body {
     padding: 0;
     width: 100vw;
     overflow-x: hidden;
+    overflow-y: auto; /* Permettre le scroll vertical sur desktop */
   }
   
   #__next {
     width: 100vw;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
   }
   
   /* Ensure main container uses full width */
@@ -427,11 +600,13 @@ body {
     max-width: 100vw;
     margin: 0;
     padding: 0;
+    overflow-y: auto;
   }
   
   /* Ensure all sections use proper desktop layout */
   main > div {
     width: auto;
+    overflow-y: auto;
   }
   
   /* Interface mobile cachée sur desktop */
@@ -439,6 +614,8 @@ body {
   .mobile-chat-container {
     display: none !important;
   }
+  
+  /* Position de la barre de saisie desktop - SUPPRIMÉ POUR ÉVITER LES CONFLITS */
 }
 
 /* Mobile scroll improvements only */
@@ -491,7 +668,7 @@ body {
   }
   
   /* Forcer le scroll sur les grilles et listes */
-  .grid, .establishments-container, .events-container {
+  .grid, .events-container {
     overflow: visible !important;
     height: auto !important;
   }
@@ -1129,9 +1306,9 @@ body {
 /* === BANNIÈRES UNIFORMES === */
 .uniform-banner {
   width: 100%;
-  height: 250px;
-  min-height: 250px;
-  max-height: 250px;
+  height: 200px;
+  min-height: 200px;
+  max-height: 200px;
   border-radius: 20px;
   overflow: hidden;
   position: relative;
@@ -1214,7 +1391,7 @@ body {
   flex-direction: column;
   justify-content: space-between;
   padding: 16px;
-  color: white;
+  color: white !important;
 }
 
 .uniform-banner .banner-header {
@@ -1239,6 +1416,7 @@ body {
   font-weight: bold;
   margin-bottom: 8px;
   line-height: 1.2;
+  color: white !important;
 }
 
 .uniform-banner .banner-description {
@@ -1246,6 +1424,7 @@ body {
   opacity: 0.9;
   margin-bottom: 16px;
   line-height: 1.4;
+  color: white !important;
 }
 
 .uniform-banner .banner-footer {
@@ -1261,6 +1440,7 @@ body {
   gap: 4px;
   font-size: 14px;
   font-weight: 600;
+  color: white !important;
 }
 
 .uniform-banner .banner-buttons {
@@ -1286,34 +1466,46 @@ body {
 
 .uniform-banner .banner-button.primary {
   background: linear-gradient(135deg, #3B82F6, #2563EB);
-  color: white;
+  color: white !important;
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
 }
 
 .uniform-banner .banner-button.primary:hover {
   background: linear-gradient(135deg, #2563EB, #1D4ED8);
   box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
+  transform: scale(1.05);
+}
+
+.uniform-banner .banner-button.primary:active {
+  transform: scale(0.98);
 }
 
 .uniform-banner .banner-button.secondary {
   background: rgba(255, 255, 255, 0.2);
-  color: white;
+  color: white !important;
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
 .uniform-banner .banner-button.secondary:hover {
   background: rgba(255, 255, 255, 0.3);
   border-color: rgba(255, 255, 255, 0.5);
+  transform: scale(1.05);
+}
+
+.uniform-banner .banner-button.secondary:active {
+  transform: scale(0.98);
 }
 
 /* === CORRECTIONS AFFICHAGE FILTRES === */
-/* Assure que les filtres restent visibles au-dessus des bannières */
+/* Assure que les filtres restent visibles et scrollables */
 .filters-section {
   position: relative !important;
-  z-index: 20 !important;
+  z-index: 10 !important;
   backdrop-filter: blur(20px) !important;
   border-radius: 16px !important;
   margin-bottom: 24px !important;
+  pointer-events: auto !important;
+  overflow: visible !important;
 }
 
 /* Mode clair par défaut */

@@ -67,6 +67,27 @@
    OPTIMISATIONS DE PERFORMANCE MOBILE
    ======================================== */
 
+/* Popup de chat flottant - toujours visible */
+.chat-floating-button {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  transform: translateZ(0) !important;
+  -webkit-transform: translateZ(0) !important;
+  will-change: transform !important;
+}
+
+@media (max-width: 768px) {
+  .chat-floating-button {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 99999 !important;
+  }
+}
+
 /* Optimisations de base pour mobile */
 @media (max-width: 1023px) {
   * {
@@ -1113,8 +1134,6 @@ body.keyboard-open .mobile-messages-container {
   }
   
   /* Container avec espacement réduit */
-  .establishments-container,
-  .events-container,
   .mobile-suggestions-container {
     padding-bottom: 0px !important;
     margin-bottom: 0px !important;

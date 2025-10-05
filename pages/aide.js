@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Header from '../components/layout/header'
+import HeaderGliitz from '../components/layout/HeaderGliitz'
 import MobileMenu from '../components/layout/MobileMenu'
 import ResponsiveLayout from '../components/layout/ResponsiveLayout'
 import SupportSection from '../components/account/SupportSection'
@@ -190,7 +190,7 @@ export default function Aide({ user, setUser }) {
 
   return (
     <div className="flex flex-col h-screen overflow-hidden">
-      <Header 
+      <HeaderGliitz 
         user={user} 
         setUser={setUser}
         toggleMobileMenu={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -301,7 +301,7 @@ export default function Aide({ user, setUser }) {
             </div>
 
             {/* FAQ */}
-            <div className="max-w-4xl mx-auto mb-16">
+            <div id="help-center" className="max-w-4xl mx-auto mb-16">
               <h2 className={`text-2xl font-bold mb-8 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 Questions Fréquentes
               </h2>
@@ -449,7 +449,7 @@ export default function Aide({ user, setUser }) {
             </div>
 
             {/* Section Support & Assistance */}
-            <div className="max-w-4xl mx-auto mt-16">
+            <div id="contact" className="max-w-4xl mx-auto mt-16">
               <SupportSection user={user} />
             </div>
           </div>

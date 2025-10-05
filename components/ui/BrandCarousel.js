@@ -1,102 +1,99 @@
-import React, { memo, useMemo } from 'react'
-import styles from '../../styles/ChatInterface.module.css'
-import useChatTheme from '../../hooks/useChatTheme'
+import { memo } from 'react'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 
-/**
- * Composant BrandCarousel optimisé
- * Affiche un carrousel des marques partenaires avec animation
- */
-const BrandCarousel = memo(({ 
-  className = '',
-  ...props 
-}) => {
-  const { isDarkMode, themeClasses } = useChatTheme()
+const BrandCarousel = memo(() => {
+  const { isDarkMode } = useTheme()
 
-  // Données des marques mémorisées
-  const brandData = useMemo(() => ({
-    firstRow: [
-      { name: 'Marriott', icon: '🏨' },
-      { name: 'Nobu', icon: '🍽️' },
-      { name: 'Nikki Beach', icon: '🏖️' },
-      { name: 'HeliMarbella', icon: '🚁' },
-      { name: 'Yacht Charter', icon: '🛥️' },
-      { name: 'Valderrama Golf', icon: '🏆' },
-      { name: 'Six Senses Spa', icon: '💆' },
-      { name: 'Dom Pérignon', icon: '🍾' },
-      { name: 'Rolls-Royce', icon: '🚗' },
-      { name: 'NetJets', icon: '✈️' }
-    ],
-    secondRow: [
-      { name: 'Four Seasons', icon: '🏨' },
-      { name: 'Cipriani', icon: '🍽️' },
-      { name: 'Puente Romano', icon: '🏖️' },
-      { name: 'Pacha Marbella', icon: '🎵' },
-      { name: 'Cartier', icon: '💎' },
-      { name: 'Real Club Valderrama', icon: '🏆' },
-      { name: 'Aman Spa', icon: '💆' },
-      { name: 'Moët & Chandon', icon: '🍾' },
-      { name: 'Bentley', icon: '🚗' },
-      { name: 'VistaJet', icon: '✈️' }
-    ]
-  }), [])
-
-  // Rendu d'une rangée de marques
-  const renderBrandRow = memo(({ brands, animationClass, reverse = false }) => (
-    <div className="relative overflow-hidden">
-      <div className={`flex ${animationClass}`}>
-        <div className="flex space-x-8 lg:space-x-12 items-center">
-          {brands.map((brand, index) => (
-            <div 
-              key={`${brand.name}-${index}`}
-              className={styles.brandItem}
-            >
-              <div className="text-white font-bold text-lg lg:text-xl">
-                {brand.icon} {brand.name}
-              </div>
-            </div>
-          ))}
-          {/* Duplication pour l'animation continue */}
-          {brands.map((brand, index) => (
-            <div 
-              key={`${brand.name}-duplicate-${index}`}
-              className={styles.brandItem}
-            >
-              <div className="text-white font-bold text-lg lg:text-xl">
-                {brand.icon} {brand.name}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  ))
+  const brands = [
+    { name: 'Nikki Beach', logo: '🏖️' },
+    { name: 'Puente Romano', logo: '🎾' },
+    { name: 'Nobu Marbella', logo: '🍽️' },
+    { name: 'La Sala', logo: '🍴' },
+    { name: 'Buddha Beach', logo: '🌅' },
+    { name: 'Mosh Beach', logo: '🎉' },
+    { name: 'Ocean Club', logo: '⛵' },
+    { name: 'Finca Cortesin', logo: '⛳' },
+    { name: 'Villa Tiberio', logo: '🍷' },
+    { name: 'Marbella Club', logo: '🏨' },
+    { name: 'El Lago', logo: '🦢' },
+    { name: 'Takara Spa', logo: '💆' }
+  ]
 
   return (
-    <div className={`${styles.brandCarousel} ${themeClasses.main} ${className}`} {...props}>
+    <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+      <style jsx>{`
+        @keyframes scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-100%); }
+        }
+        
+        .animate-scroll {
+          animation: scroll 40s linear infinite;
+        }
+        
+        .animate-scroll:hover {
+          animation-play-state: paused;
+        }
+      `}</style>
+      
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* En-tête */}
         <div className="text-center mb-8 lg:mb-12">
-          <h2 className={`text-2xl lg:text-4xl font-bold mb-4 ${themeClasses.text.primary}`}>
+          <h2 className={`text-4xl font-black mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+            style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif' }}
+          >
             Ils nous font confiance
           </h2>
-          <p className={`text-lg ${themeClasses.text.secondary}`}>
+          <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             Plus de 500+ partenaires premium nous font confiance
           </p>
         </div>
         
-        {/* Premier carrousel - animation gauche à droite */}
-        <renderBrandRow 
-          brands={brandData.firstRow}
-          animationClass={styles.animateScroll}
-        />
+        {/* Grille fixe pour mobile, carrousel pour desktop */}
+        <div className="lg:hidden grid grid-cols-3 gap-4">
+          {brands.map((brand, index) => (
+            <div
+              key={`${brand.name}-${index}`}
+              className="flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+              style={{
+                background: isDarkMode
+                  ? 'rgba(139, 92, 246, 0.1)'
+                  : 'rgba(255, 255, 255, 0.8)',
+                border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
+                boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)'
+              }}
+            >
+              <span className="text-3xl mb-1">{brand.logo}</span>
+              <span className={`text-xs font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                {brand.name}
+              </span>
+            </div>
+          ))}
+        </div>
         
-        {/* Deuxième carrousel - animation droite à gauche */}
-        <div className="mt-6 lg:mt-8">
-          <renderBrandRow 
-            brands={brandData.secondRow}
-            animationClass={styles.animateScrollReverse}
-            reverse
-          />
+        {/* Carrousel animé pour desktop */}
+        <div className="hidden lg:block relative overflow-hidden">
+          <div className="flex gap-6 lg:gap-12 animate-scroll">
+            {[...brands, ...brands, ...brands].map((brand, index) => (
+              <div
+                key={`${brand.name}-${index}`}
+                className="flex-shrink-0 flex flex-col items-center justify-center p-4 lg:p-6 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+                style={{
+                  minWidth: '140px',
+                  background: isDarkMode
+                    ? 'rgba(139, 92, 246, 0.1)'
+                    : 'rgba(255, 255, 255, 0.8)',
+                  border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
+                  boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)'
+                }}
+              >
+                <span className="text-4xl lg:text-5xl mb-2">{brand.logo}</span>
+                <span className={`text-xs lg:text-sm font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                  {brand.name}
+                </span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -106,3 +103,684 @@ const BrandCarousel = memo(({
 BrandCarousel.displayName = 'BrandCarousel'
 
 export default BrandCarousel
+
+// Composant Destinations
+export const DestinationsSection = memo(() => {
+  const { isDarkMode } = useTheme()
+  
+  // Import Sparkles pour les animations
+  const Sparkles = ({ className, style }) => (
+    <svg className={className} style={style} viewBox="0 0 24 24" fill="currentColor">
+      <path d="M12 0L14.59 8.41L23 11L14.59 13.59L12 22L9.41 13.59L1 11L9.41 8.41L12 0Z" />
+    </svg>
+  )
+  
+  const destinations = [
+    {
+      id: 1,
+      name: 'MARBELLA',
+      status: 'active',
+      tagline: 'Gliitz, anytime, everywhere',
+      image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800',
+      gradient: 'from-purple-500 via-indigo-500 to-blue-500'
+    },
+    {
+      id: 2,
+      name: 'MYKONOS',
+      status: 'coming-soon',
+      tagline: 'Coming Soon',
+      image: 'https://images.unsplash.com/photo-1601581987809-a874a81309c9?w=800',
+      gradient: 'from-blue-400 to-cyan-500'
+    },
+    {
+      id: 3,
+      name: 'IBIZA',
+      status: 'coming-soon',
+      tagline: 'Coming Soon',
+      image: 'https://images.unsplash.com/photo-1513415564515-763d91423bdd?w=800',
+      gradient: 'from-pink-500 to-rose-500'
+    },
+    {
+      id: 4,
+      name: 'SAINT-TROPEZ',
+      status: 'coming-soon',
+      tagline: 'Coming Soon',
+      image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
+      gradient: 'from-amber-500 to-orange-500'
+    },
+    {
+      id: 5,
+      name: 'MARRAKECH',
+      status: 'coming-soon',
+      tagline: 'Coming Soon',
+      image: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800',
+      gradient: 'from-red-500 to-orange-600'
+    }
+  ]
+
+  return (
+    <div className="w-full py-16 relative overflow-hidden" style={{ 
+      background: isDarkMode 
+        ? 'linear-gradient(180deg, #0D0D0D 0%, #1A1A1A 50%, #0D0D0D 100%)'
+        : 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #FFFFFF 100%)'
+    }}>
+      {/* Effet de particules en arrière-plan */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
+        <div className="absolute bottom-10 right-10 w-40 h-40 bg-blue-500 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-indigo-500 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-2 mb-4">
+            <Sparkles 
+              className="h-8 w-8 text-purple-500 animate-pulse" 
+              style={{ 
+                filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.6))',
+                background: 'transparent'
+              }}
+            />
+            <h2 className={`text-4xl font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif' }}
+            >
+              Gliitz, anytime, everywhere
+            </h2>
+            <Sparkles 
+              className="h-8 w-8 text-blue-500 animate-pulse" 
+              style={{ 
+                animationDelay: '0.5s',
+                filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.6))',
+                background: 'transparent'
+              }}
+            />
+          </div>
+          <p className={`text-xl ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            Votre concierge IA de luxe s'étend dans le monde entier
+          </p>
+        </div>
+
+        {/* Mobile : Carousel défilant / Desktop : Grille fixe */}
+        <div className="lg:hidden relative overflow-hidden px-4">
+          <div className="flex gap-4 animate-scroll" style={{ animation: 'scroll 30s linear infinite' }}>
+            {[...destinations, ...destinations].map((dest, idx) => (
+              <div
+                key={`${dest.id}-${idx}`}
+                className={`flex-shrink-0 relative rounded-3xl overflow-hidden group cursor-pointer transition-all duration-700 ${
+                  dest.status === 'coming-soon' ? 'grayscale-[60%] hover:grayscale-0' : ''
+                }`}
+                style={{
+                  width: 'calc(100vw - 64px)',
+                  maxWidth: '360px',
+                  minHeight: '380px',
+                  height: 'auto',
+                  boxShadow: dest.status === 'active' 
+                    ? '0 12px 48px rgba(168, 85, 247, 0.5), 0 0 80px rgba(168, 85, 247, 0.2)'
+                    : '0 8px 24px rgba(0, 0, 0, 0.3)'
+                }}
+              >
+                {/* Contenu identique */}
+                <div 
+                  className="absolute inset-0 group-hover:scale-110 transition-all duration-700"
+                  style={{
+                    backgroundImage: `url(${dest.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                  }}
+                />
+                <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/${dest.status === 'coming-soon' ? '70' : '40'} to-transparent`} />
+                
+                {dest.status === 'active' && (
+                  <div className="absolute top-4 right-4">
+                    <div className="px-3 py-1 rounded-full text-xs font-bold text-white animate-pulse"
+                      style={{
+                        background: 'linear-gradient(135deg, #10b981, #059669)',
+                        boxShadow: '0 0 20px rgba(16, 185, 129, 0.6)'
+                      }}
+                    >
+                      ✨ ACTIF
+                    </div>
+                  </div>
+                )}
+                
+                <div className="absolute inset-0 flex flex-col items-center justify-between p-6">
+                  <div className="flex-1 flex flex-col items-center justify-center">
+                    <div className="mb-4">
+                      <div className={`w-16 h-16 flex items-center justify-center ${dest.status === 'active' ? 'animate-bounce' : ''}`}
+                        style={{ background: 'transparent', animationDuration: '2s' }}
+                      >
+                        <span className="text-5xl" style={{
+                          filter: dest.status === 'active' 
+                            ? 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.6))'
+                            : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))'
+                        }}>
+                          {dest.status === 'active' ? '✨' : '🌍'}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <h3 className={`text-2xl md:text-3xl font-black text-white mb-3 tracking-wider text-center ${dest.status === 'active' ? 'animate-pulse' : ''}`}
+                      style={{
+                        textShadow: dest.status === 'active' 
+                          ? '0 0 40px rgba(168, 85, 247, 1), 0 0 80px rgba(168, 85, 247, 0.6), 0 4px 12px rgba(0, 0, 0, 0.9)'
+                          : '0 4px 16px rgba(0, 0, 0, 0.9)',
+                        fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
+                        animationDuration: '3s'
+                      }}
+                    >
+                      {dest.name}
+                    </h3>
+                    
+                    <p className={`text-sm font-semibold ${dest.status === 'active' ? 'text-purple-200' : 'text-gray-300'}`}>
+                      {dest.tagline}
+                    </p>
+                  </div>
+                  
+                  <div className="w-full flex justify-center">
+                    {dest.status === 'coming-soon' ? (
+                      <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
+                        <p className="text-xs font-bold text-gray-300">🔜 Bientôt disponible</p>
+                      </div>
+                    ) : (
+                      <div className="px-4 py-2 rounded-full animate-pulse" style={{
+                        background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(99, 102, 241, 0.4))',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.3)',
+                        boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
+                        animationDuration: '2s'
+                      }}>
+                        <p className="text-xs font-bold text-white">✅ Disponible maintenant</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {dest.status === 'active' && (
+                  <>
+                    <div className="absolute inset-0 opacity-40 pointer-events-none"
+                      style={{
+                        background: `linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.4) 50%, transparent 100%)`,
+                        animation: 'shimmer 3s ease-in-out infinite'
+                      }}
+                    />
+                    <div className="absolute top-8 left-8">
+                      <div className="w-4 h-4 text-yellow-300 animate-pulse" style={{ animationDuration: '2s' }}>✨</div>
+                    </div>
+                    <div className="absolute top-12 right-12">
+                      <div className="w-5 h-5 text-yellow-400 animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}>✨</div>
+                    </div>
+                    <div className="absolute bottom-8 left-12">
+                      <div className="w-4 h-4 text-yellow-200 animate-pulse" style={{ animationDuration: '3s', animationDelay: '1s' }}>✨</div>
+                    </div>
+                  </>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Desktop : Grille fixe */}
+        <div className="hidden lg:grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6">
+          {destinations.map((dest, idx) => (
+            <div
+              key={dest.id}
+              className={`relative h-80 rounded-3xl overflow-hidden group cursor-pointer transition-all duration-700 transform ${
+                dest.status === 'coming-soon' ? 'grayscale-[60%] hover:grayscale-0' : ''
+              }`}
+              style={{
+                boxShadow: dest.status === 'active' 
+                  ? '0 12px 48px rgba(168, 85, 247, 0.5), 0 0 80px rgba(168, 85, 247, 0.2)'
+                  : '0 8px 24px rgba(0, 0, 0, 0.3)',
+                animation: `fadeInUp 0.6s ease-out ${idx * 0.1}s backwards`
+              }}
+              onMouseEnter={(e) => {
+                if (dest.status === 'active') {
+                  e.currentTarget.style.transform = 'scale(1.08) translateY(-8px)'
+                } else {
+                  e.currentTarget.style.transform = 'scale(1.03) translateY(-4px)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1) translateY(0)'
+              }}
+            >
+              {/* Image de fond */}
+              <div 
+                className="absolute inset-0 group-hover:scale-110 transition-all duration-700"
+                style={{
+                  backgroundImage: `url(${dest.image})`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center'
+                }}
+              />
+              
+              {/* Overlay */}
+              <div 
+                className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/${dest.status === 'coming-soon' ? '70' : '40'} to-transparent`}
+              />
+              
+              {/* Badge status en haut */}
+              {dest.status === 'active' && (
+                <div className="absolute top-4 right-4">
+                  <div 
+                    className="px-3 py-1 rounded-full text-xs font-bold text-white animate-pulse"
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981, #059669)',
+                      boxShadow: '0 0 20px rgba(16, 185, 129, 0.6)'
+                    }}
+                  >
+                    ✨ ACTIF
+                  </div>
+                </div>
+              )}
+              
+              {/* Contenu */}
+              <div className="absolute inset-0 flex flex-col items-center justify-between p-6">
+                {/* Partie haute */}
+                <div className="flex-1 flex flex-col items-center justify-center">
+                  {/* Icône de destination - Sans rectangle, transparent */}
+                  <div className="mb-4">
+                    <div 
+                      className={`w-16 h-16 flex items-center justify-center ${
+                        dest.status === 'active' ? 'animate-bounce' : ''
+                      }`}
+                      style={{
+                        background: 'transparent',
+                        backdropFilter: 'none',
+                        border: 'none',
+                        animationDuration: '2s'
+                      }}
+                    >
+                      <span 
+                        className="text-5xl"
+                        style={{
+                          filter: dest.status === 'active' 
+                            ? 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.6))'
+                            : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))'
+                        }}
+                      >
+                        {dest.status === 'active' ? '✨' : '🌍'}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <h3 
+                    className={`text-2xl md:text-3xl font-black text-white mb-3 tracking-wider text-center ${
+                      dest.status === 'active' ? 'animate-pulse' : ''
+                    }`}
+                    style={{
+                      textShadow: dest.status === 'active' 
+                        ? '0 0 40px rgba(168, 85, 247, 1), 0 0 80px rgba(168, 85, 247, 0.6), 0 4px 12px rgba(0, 0, 0, 0.9)'
+                        : '0 4px 16px rgba(0, 0, 0, 0.9)',
+                      fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
+                      animationDuration: '3s'
+                    }}
+                  >
+                    {dest.name}
+                  </h3>
+                  
+                  <p className={`text-sm font-semibold ${
+                    dest.status === 'active' ? 'text-purple-200' : 'text-gray-300'
+                  }`}>
+                    {dest.tagline}
+                  </p>
+                </div>
+                
+                {/* Badge status en bas - Toujours à la même position */}
+                <div className="w-full flex justify-center">
+                  {dest.status === 'coming-soon' ? (
+                    <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
+                      <p className="text-xs font-bold text-gray-300">🔜 Bientôt disponible</p>
+                    </div>
+                  ) : (
+                    <div className="px-4 py-2 rounded-full animate-pulse" style={{
+                      background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(99, 102, 241, 0.4))',
+                      backdropFilter: 'blur(10px)',
+                      border: '1px solid rgba(255, 255, 255, 0.3)',
+                      boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
+                      animationDuration: '2s'
+                    }}>
+                      <p className="text-xs font-bold text-white">✅ Disponible maintenant</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+              
+              {/* Effet de brillance animé pour Marbella */}
+              {dest.status === 'active' && (
+                <>
+                  <div 
+                    className="absolute inset-0 opacity-40 pointer-events-none"
+                    style={{
+                      background: `linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.4) 50%, transparent 100%)`,
+                      animation: 'shimmer 3s ease-in-out infinite'
+                    }}
+                  />
+                  {/* Sparkles flottants */}
+                  <div className="absolute top-8 left-8">
+                    <Sparkles className="h-4 w-4 text-yellow-300 animate-pulse" style={{ animationDuration: '2s' }} />
+                  </div>
+                  <div className="absolute top-12 right-12">
+                    <Sparkles className="h-5 w-5 text-yellow-400 animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }} />
+                  </div>
+                  <div className="absolute bottom-8 left-12">
+                    <Sparkles className="h-4 w-4 text-yellow-200 animate-pulse" style={{ animationDuration: '3s', animationDelay: '1s' }} />
+                  </div>
+                </>
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+})
+
+DestinationsSection.displayName = 'DestinationsSection'
+
+// Composant Presse - On parle de nous
+export const PressSection = memo(() => {
+  const { isDarkMode } = useTheme()
+  
+  const pressLogos = [
+    { 
+      name: 'VOGUE', 
+      quote: '"Le concierge IA le plus sophistiqué d\'Europe"',
+      date: 'Septembre 2024',
+      logo: '👗',
+      color: 'from-pink-500 to-rose-500'
+    },
+    { 
+      name: 'FORBES', 
+      quote: '"Révolutionne le luxe à Marbella"',
+      date: 'Août 2024',
+      logo: '💼',
+      color: 'from-blue-600 to-indigo-600'
+    },
+    { 
+      name: 'GQ', 
+      quote: '"L\'assistant indispensable des gentlemen"',
+      date: 'Juillet 2024',
+      logo: '🎩',
+      color: 'from-gray-700 to-gray-900'
+    },
+    { 
+      name: 'CONDÉ NAST', 
+      quote: '"L\'excellence du service personnalisé"',
+      date: 'Juin 2024',
+      logo: '✨',
+      color: 'from-purple-600 to-pink-600'
+    },
+    { 
+      name: 'TATLER', 
+      quote: '"Le must-have des voyageurs de luxe"',
+      date: 'Mai 2024',
+      logo: '👑',
+      color: 'from-amber-500 to-yellow-600'
+    },
+    { 
+      name: 'VANITY FAIR', 
+      quote: '"Innovation et élégance réunis"',
+      date: 'Avril 2024',
+      logo: '💎',
+      color: 'from-red-600 to-pink-600'
+    }
+  ]
+
+  return (
+    <div className="w-full py-20 relative overflow-hidden" style={{
+      background: isDarkMode
+        ? 'radial-gradient(ellipse at center, #1A1A2E 0%, #0A0A0F 100%)'
+        : 'radial-gradient(ellipse at center, #F8FAFC 0%, #FFFFFF 100%)'
+    }}>
+      {/* Effet de grille subtil en arrière-plan */}
+      <div 
+        className="absolute inset-0 opacity-5"
+        style={{
+          backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(139, 92, 246, 0.3) 25%, rgba(139, 92, 246, 0.3) 26%, transparent 27%, transparent 74%, rgba(139, 92, 246, 0.3) 75%, rgba(139, 92, 246, 0.3) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(139, 92, 246, 0.3) 25%, rgba(139, 92, 246, 0.3) 26%, transparent 27%, transparent 74%, rgba(139, 92, 246, 0.3) 75%, rgba(139, 92, 246, 0.3) 76%, transparent 77%, transparent)',
+          backgroundSize: '50px 50px'
+        }}
+      />
+      
+      <div className="max-w-7xl mx-auto px-4 relative z-10">
+        {/* Titre avec effet premium */}
+        <div className="text-center mb-16">
+          <div className="inline-block mb-4">
+            <div 
+              className="px-6 py-2 rounded-full text-sm font-bold tracking-wider"
+              style={{
+                background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                color: 'white',
+                boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)'
+              }}
+            >
+              🎯 MÉDIAS & PRESSE
+            </div>
+          </div>
+          
+          <h2 
+            className={`text-4xl font-black mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+            style={{ 
+              fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            Ils parlent de nous
+          </h2>
+          <p className={`text-xl ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+            La presse internationale reconnaît l'excellence de Gliitz
+          </p>
+        </div>
+
+        {/* Grille de logos médias - Mobile : Carousel / Desktop : Grille */}
+        <div className="lg:hidden relative overflow-hidden mb-16 px-4">
+          <div className="flex gap-4" style={{ animation: 'scroll 40s linear infinite' }}>
+            {[...pressLogos, ...pressLogos].map((press, idx) => (
+              <div
+                key={`${press.name}-${idx}`}
+                className="flex-shrink-0 group relative"
+                style={{ 
+                  width: 'calc(100vw - 64px)',
+                  maxWidth: '360px',
+                  minHeight: '360px',
+                  height: '360px'
+                }}
+              >
+                <div 
+                  className="relative p-6 rounded-3xl overflow-hidden transition-all duration-500 cursor-pointer flex flex-col justify-between"
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9))'
+                      : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95))',
+                    backdropFilter: 'blur(20px)',
+                    minHeight: '360px',
+                    height: '360px',
+                    border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
+                    boxShadow: isDarkMode
+                      ? '0 12px 40px rgba(0, 0, 0, 0.4)'
+                      : '0 12px 40px rgba(139, 92, 246, 0.15)'
+                  }}
+                >
+                  <div className="flex items-center justify-center mb-6">
+                    <div className={`w-20 h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br ${press.color} shadow-2xl`}>
+                      <span className="text-4xl">{press.logo}</span>
+                    </div>
+                  </div>
+                  
+                  <h3 className={`text-2xl font-black text-center mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                    style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif', letterSpacing: '0.1em' }}
+                  >
+                    {press.name}
+                  </h3>
+                  
+                  <div className="relative mb-4">
+                    <p className={`text-sm italic text-center leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                      style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                    >
+                      {press.quote}
+                    </p>
+                  </div>
+                  
+                  <div className="text-center">
+                    <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                      isDarkMode ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
+                    }`}>
+                      {press.date}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Desktop : Grille */}
+        <div className="hidden lg:grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {pressLogos.map((press, idx) => (
+            <div
+              key={press.name}
+              className="group relative"
+              style={{
+                animation: `fadeInUp 0.8s ease-out ${idx * 0.15}s backwards`
+              }}
+            >
+              <div 
+                className="relative p-8 rounded-3xl overflow-hidden transition-all duration-500 hover:scale-105 cursor-pointer"
+                style={{
+                  background: isDarkMode
+                    ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9))'
+                    : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95))',
+                  backdropFilter: 'blur(20px)',
+                  border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
+                  boxShadow: isDarkMode
+                    ? '0 12px 40px rgba(0, 0, 0, 0.4)'
+                    : '0 12px 40px rgba(139, 92, 246, 0.15)'
+                }}
+              >
+                {/* Effet de brillance au hover */}
+                <div 
+                  className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                  style={{
+                    background: `linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.1) 50%, transparent 100%)`,
+                    transform: 'translateX(-100%)',
+                    animation: 'shimmer 2s ease-in-out infinite'
+                  }}
+                />
+                
+                {/* Logo emoji avec gradient */}
+                <div className="flex items-center justify-center mb-6">
+                  <div 
+                    className={`w-20 h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br ${press.color} shadow-2xl group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}
+                  >
+                    <span className="text-4xl">{press.logo}</span>
+                  </div>
+                </div>
+                
+                {/* Nom du média */}
+                <h3 
+                  className={`text-2xl font-black text-center mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'} group-hover:scale-105 transition-transform duration-300`}
+                  style={{ 
+                    fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
+                    letterSpacing: '0.1em'
+                  }}
+                >
+                  {press.name}
+                </h3>
+                
+                {/* Citation */}
+                <div className="relative mb-4">
+                  <div className="absolute -left-2 -top-2 text-4xl opacity-20" style={{ color: '#a855f7' }}>"</div>
+                  <p 
+                    className={`text-sm italic text-center leading-relaxed ${
+                      isDarkMode ? 'text-gray-300' : 'text-gray-700'
+                    }`}
+                    style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                  >
+                    {press.quote}
+                  </p>
+                  <div className="absolute -right-2 -bottom-2 text-4xl opacity-20" style={{ color: '#a855f7' }}>"</div>
+                </div>
+                
+                {/* Date */}
+                <div className="text-center">
+                  <span 
+                    className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                      isDarkMode ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
+                    }`}
+                  >
+                    {press.date}
+                  </span>
+                </div>
+                
+                {/* Badge "Featured" animé */}
+                <div className="absolute top-4 right-4">
+                  <div 
+                    className="px-2 py-1 rounded-full text-[10px] font-bold text-white animate-pulse"
+                    style={{
+                      background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                      boxShadow: '0 0 15px rgba(168, 85, 247, 0.5)'
+                    }}
+                  >
+                    ⭐
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        
+        {/* Statistiques en bas */}
+        <div className="mt-16 grid grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <div className="text-center">
+            <div 
+              className={`text-5xl font-black mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              style={{
+                background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              50+
+            </div>
+            <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Publications
+            </p>
+          </div>
+          <div className="text-center">
+            <div 
+              className={`text-5xl font-black mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              style={{
+                background: 'linear-gradient(135deg, #ec4899, #f43f5e)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              12
+            </div>
+            <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Prix remportés
+            </p>
+          </div>
+          <div className="text-center">
+            <div 
+              className={`text-5xl font-black mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              style={{
+                background: 'linear-gradient(135deg, #22c55e, #10b981)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              4.9
+            </div>
+            <p className={`text-sm font-medium ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+              Note moyenne
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+})
+
+PressSection.displayName = 'PressSection'

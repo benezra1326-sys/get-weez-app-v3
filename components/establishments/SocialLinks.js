@@ -39,13 +39,14 @@ export default function SocialLinks({ establishment }) {
       color: 'bg-green-500',
       hoverColor: 'hover:bg-green-600'
     },
-    {
-      name: 'Téléphone',
-      url: establishment.phone ? `tel:${establishment.phone}` : null,
-      icon: Phone,
-      color: 'bg-gray-500',
-      hoverColor: 'hover:bg-gray-600'
-    }
+    // Téléphone retiré pour confidentialité
+    // {
+    //   name: 'Téléphone',
+    //   url: establishment.phone ? `tel:${establishment.phone}` : null,
+    //   icon: Phone,
+    //   color: 'bg-gray-500',
+    //   hoverColor: 'hover:bg-gray-600'
+    // }
   ].filter(link => link.url)
 
   if (socialLinks.length === 0) return null
@@ -79,17 +80,7 @@ export default function SocialLinks({ establishment }) {
       <div className="p-4 bg-gray-100 rounded-lg border border-gray-200">
         <h4 className="font-semibold text-gray-800 mb-3">Contact rapide</h4>
         <div className="space-y-2 text-sm">
-          {establishment.phone && (
-            <div className="flex items-center space-x-2">
-              <Phone size={16} className="text-gray-600" />
-              <a 
-                href={`tel:${establishment.phone}`}
-                className="text-blue-600 hover:text-blue-800 transition-colors"
-              >
-                {establishment.phone}
-              </a>
-            </div>
-          )}
+          {/* Téléphone retiré pour confidentialité */}
           {establishment.whatsapp && (
             <div className="flex items-center space-x-2">
               <MessageCircle size={16} className="text-green-500" />

@@ -3,8 +3,17 @@ import { createContext, useContext, useState, useEffect } from 'react'
 export const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
-  const [isDarkMode, setIsDarkMode] = useState(false) // Par défaut en mode clair
-  const [isLoaded, setIsLoaded] = useState(true) // Forcer le chargement immédiat
+  // Charger le thème depuis localStorage AVANT le premier render
+  const getInitialTheme = () => {
+    if (typeof window !== 'undefined' && window.localStorage) {
+      const savedTheme = localStorage.getItem('theme')
+      return savedTheme === 'dark'
+    }
+    return false // Par défaut mode clair
+  }
+
+  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Charger le thème depuis localStorage au montage
   useEffect(() => {
@@ -12,18 +21,18 @@ export function ThemeProvider({ children }) {
       // Vérifier si localStorage est disponible (côté client)
       if (typeof window !== 'undefined' && window.localStorage) {
         const savedTheme = localStorage.getItem('theme')
-        if (savedTheme === 'dark') {
-          setIsDarkMode(true)
+        const shouldBeDark = savedTheme === 'dark'
+        
+        setIsDarkMode(shouldBeDark)
+        
+        if (shouldBeDark) {
           document.body.classList.add('dark')
           document.body.classList.remove('light')
-        } else if (savedTheme === 'light') {
-          setIsDarkMode(false)
-          document.body.classList.add('light')
-          document.body.classList.remove('dark')
+          document.body.style.backgroundColor = '#0a0a0f'
         } else {
-          // Par défaut mode clair si aucun thème sauvegardé
           document.body.classList.add('light')
           document.body.classList.remove('dark')
+          document.body.style.backgroundColor = '#f9fafb'
         }
       }
     } catch (error) {
@@ -43,9 +52,11 @@ export function ThemeProvider({ children }) {
           if (isDarkMode) {
             document.body.classList.add('dark')
             document.body.classList.remove('light')
+            document.body.style.backgroundColor = '#0a0a0f'
           } else {
             document.body.classList.add('light')
             document.body.classList.remove('dark')
+            document.body.style.backgroundColor = '#f9fafb'
           }
         }
       } catch (error) {

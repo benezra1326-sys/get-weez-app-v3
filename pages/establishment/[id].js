@@ -219,18 +219,7 @@ export default function EstablishmentDetail({ user, setUser }) {
                 </div>
               )}
 
-              {/* Téléphone */}
-              {establishment.phone && (
-                <div className="flex items-start space-x-3 mb-4">
-                  <Phone size={20} className={`mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
-                  <a 
-                    href={`tel:${establishment.phone}`}
-                    className={`${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'}`}
-                  >
-                    {establishment.phone}
-                  </a>
-                </div>
-              )}
+              {/* Téléphone - Retiré pour confidentialité */}
 
               {/* Email */}
               {establishment.email && (
