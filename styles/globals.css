@@ -178,7 +178,7 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Fix mobile layout issues - Version simplifiée */
+/* Fix mobile layout issues - Version ultra ciblée */
 @media (max-width: 1023px) {
   html, body {
     width: 100%;
@@ -187,50 +187,17 @@ html, body {
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    height: auto;
-    min-height: 100vh;
   }
   
   #__next {
     width: 100%;
     overflow-x: hidden;
     overflow-y: auto;
-    min-height: 100vh;
   }
   
-  /* Correction spéciale pour mobile chat container */
-  .mobile-chat-container {
-    position: static;
-    height: auto;
-    overflow: visible;
-    min-height: auto;
-  }
-  
-  /* Forcer le scroll sur tous les conteneurs mobiles */
-  main {
-    height: auto;
-    min-height: 100vh;
-    overflow-y: auto;
+  /* Empêcher UNIQUEMENT le scroll horizontal sur les conteneurs principaux */
+  main, section, article {
     overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-  }
-  
-  /* S'assurer que les sections sont scrollables */
-  section {
-    overflow: visible;
-    height: auto;
-  }
-  
-  /* Empêcher les icônes et SVG de s'élargir */
-  svg, img.icon, .icon {
-    width: auto !important;
-    height: auto !important;
-    flex-shrink: 0 !important;
-  }
-  
-  /* Protéger les icônes lucide-react */
-  [class*="lucide"] {
-    flex-shrink: 0 !important;
   }
 }
 
