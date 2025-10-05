@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Grid3x3, LayoutGrid, Search, MapPin, Calendar, Utensils, TrendingUp, DollarSign, Star, Heart, Sparkles, Wine, Waves, Moon, Sun, Music } from 'lucide-react'
+import { Grid3x3, LayoutGrid, RectangleVertical, Search, MapPin, Calendar, Utensils, TrendingUp, DollarSign, Star, Heart, Sparkles, Wine, Waves, Moon, Sun, Music } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import { useRouter } from 'next/router'
 import { luxuryEstablishments, luxuryServices, luxuryEvents } from '../../data/marbella-data'
