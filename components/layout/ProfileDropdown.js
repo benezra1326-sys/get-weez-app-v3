@@ -153,7 +153,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
         
         {/* Avatar */}
         <div 
-          className="rounded-xl flex items-center justify-center text-white text-xs font-semibold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
+          className="rounded-xl flex items-center justify-center text-white text-xs font-bold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
           style={{
             width: '28px',
             height: '28px',
@@ -163,10 +163,13 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             maxHeight: '28px',
             background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
             borderRadius: '8px',
-            flexShrink: 0
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center'
           }}
         >
-          <span className="relative z-10">D</span>
+          <span className="relative z-10" style={{ lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>D</span>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 group-hover:animate-shimmer"></div>
         </div>
         
@@ -183,7 +186,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
 
       {/* Menu déroulant */}
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 z-50 overflow-hidden">
+        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style={{ zIndex: 99999 }}>
           {/* Header du menu */}
           <div className="p-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
             <div className="flex items-center space-x-3">

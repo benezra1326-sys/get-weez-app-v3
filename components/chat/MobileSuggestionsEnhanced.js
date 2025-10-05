@@ -104,51 +104,33 @@ export default function MobileSuggestionsEnhanced({
         </button>
 
         <button
-          onClick={() => setActiveTab('establishments')}
-          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
-            activeTab === 'establishments' ? 'scale-105' : ''
-          }`}
+          onClick={() => router.push('/establishments')}
+          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 hover:scale-105 active:scale-95`}
           style={{
-            background: activeTab === 'establishments'
-              ? 'linear-gradient(135deg, #a855f7, #6366f1)'
-              : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            color: activeTab === 'establishments' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'establishments' ? '0 4px 12px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)' : 'none',
-            border: activeTab === 'establishments' ? '1px solid rgba(255, 255, 255, 0.3)' : 'none'
+            background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
+            color: isDarkMode ? '#d1d5db' : '#4b5563',
           }}
         >
           🏨 Établis.
         </button>
 
         <button
-          onClick={() => setActiveTab('services')}
-          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
-            activeTab === 'services' ? 'scale-105' : ''
-          }`}
+          onClick={() => router.push('/services')}
+          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 hover:scale-105 active:scale-95`}
           style={{
-            background: activeTab === 'services'
-              ? 'linear-gradient(135deg, #a855f7, #6366f1)'
-              : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            color: activeTab === 'services' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'services' ? '0 4px 12px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)' : 'none',
-            border: activeTab === 'services' ? '1px solid rgba(255, 255, 255, 0.3)' : 'none'
+            background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
+            color: isDarkMode ? '#d1d5db' : '#4b5563',
           }}
         >
           🛍️ Services
         </button>
 
         <button
-          onClick={() => setActiveTab('events')}
-          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${
-            activeTab === 'events' ? 'scale-105' : ''
-          }`}
+          onClick={() => router.push('/events')}
+          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 hover:scale-105 active:scale-95`}
           style={{
-            background: activeTab === 'events'
-              ? 'linear-gradient(135deg, #a855f7, #6366f1)'
-              : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            color: activeTab === 'events' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'events' ? '0 4px 12px rgba(168, 85, 247, 0.5), 0 0 20px rgba(168, 85, 247, 0.3)' : 'none',
-            border: activeTab === 'events' ? '1px solid rgba(255, 255, 255, 0.3)' : 'none'
+            background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
+            color: isDarkMode ? '#d1d5db' : '#4b5563',
           }}
         >
           🎉 Événem.

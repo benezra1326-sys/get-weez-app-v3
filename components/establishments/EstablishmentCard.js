@@ -71,19 +71,39 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
         <div className="banner-header">
           <div></div>
           {establishment.sponsored && (
-            <div className="banner-badge">
-              ⭐ SPONSORISÉ
+            <div className="banner-badge" style={{ 
+              padding: '4px 8px',
+              fontSize: '10px',
+              borderRadius: '8px',
+              minWidth: 'auto',
+              width: 'fit-content'
+            }}>
+              ⭐ VIP
             </div>
           )}
         </div>
         
         {/* Titre et description */}
-        <div>
-          <h3 className="banner-title">{establishment.name}</h3>
-          <p className="banner-description">{establishment.description}</p>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '8px', fontSize: '14px', opacity: 0.8 }}>
-            <MapPin size={14} />
-            <span>{establishment.zone}, Marbella</span>
+        <div style={{ marginBottom: '12px' }}>
+          <h3 className="banner-title" style={{ 
+            fontSize: '18px', 
+            fontWeight: '700',
+            marginBottom: '6px',
+            lineHeight: '1.2'
+          }}>{establishment.name}</h3>
+          <p className="banner-description" style={{
+            fontSize: '13px',
+            lineHeight: '1.4',
+            marginBottom: '8px',
+            display: '-webkit-box',
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: 'vertical',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis'
+          }}>{establishment.description}</p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', opacity: 0.9 }}>
+            <MapPin size={12} />
+            <span>{establishment.zone || establishment.location || 'Marbella'}</span>
           </div>
         </div>
         
