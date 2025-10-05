@@ -39,7 +39,7 @@ const ChatFloatingButton = () => {
   }, [])
 
   useEffect(() => {
-    // Afficher le bouton partout après scroll, même sur desktop
+    // Toujours afficher le bouton sur toutes les pages SAUF sur la page d'accueil avant le scroll
     const shouldShow = router.pathname !== '/' || hasScrolled
     setIsVisible(shouldShow)
     

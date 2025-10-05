@@ -147,10 +147,14 @@ const Home = memo(({ user, setUser }) => {
           maxWidth: 'none'
         }}
     >
-      {/* Popup d'introduction - Petit en bas */}
+      {/* Popup d'introduction - Position optimisée mobile */}
       {showIntroModal && (
         <div 
-          className="fixed z-[1000] bottom-24 right-4 w-80 max-h-96 lg:bottom-auto lg:right-8 lg:top-1/2 lg:-translate-y-1/2"
+          className="fixed z-[1000] inset-x-4 bottom-4 lg:bottom-auto lg:right-8 lg:left-auto lg:w-96 lg:top-1/2 lg:-translate-y-1/2"
+          style={{
+            maxHeight: 'calc(100vh - 100px)',
+            width: 'calc(100% - 2rem)'
+          }}
         >
           <div 
             className="rounded-2xl shadow-2xl overflow-hidden"

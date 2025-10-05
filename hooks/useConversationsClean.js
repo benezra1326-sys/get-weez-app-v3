@@ -65,12 +65,19 @@ export function useConversationsClean() {
       month: '2-digit' 
     })
 
-    // Pas de message de bienvenue automatique
+    // Message de bienvenue automatique de l'IA
+    const welcomeMessage = {
+      id: `msg_${Date.now()}_welcome`,
+      content: "Bonjour ! 👋 Je suis votre assistant personnel Get Weez. Comment puis-je vous aider à découvrir Marbella aujourd'hui ? Restaurants, événements, services VIP... Je suis là pour vous ! 🌟",
+      role: 'assistant',
+      timestamp: now
+    }
+    
     const newConversation = {
       id: `conv_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
       title: `Chat ${dateString} ${timeString}`,
       timeString: timeString,
-      messages: [],
+      messages: [welcomeMessage],
       createdAt: now,
       lastActivity: now
     }

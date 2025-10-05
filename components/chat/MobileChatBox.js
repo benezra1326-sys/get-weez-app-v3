@@ -22,10 +22,10 @@ export default function MobileChatBox({
   const messagesEndRef = useRef(null)
   const textareaRef = useRef(null)
 
-  // Auto-scroll vers le bas
+  // Auto-scroll vers le bas seulement si l'utilisateur n'est pas en train d'écrire
   useEffect(() => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+    if (messagesEndRef.current && document.activeElement !== textareaRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
     }
   }, [messages])
 
@@ -258,8 +258,8 @@ export default function MobileChatBox({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={(e) => {
-                  // Empêcher le scroll lors du focus
-                  e.preventDefault()
+                  // Empêcher le scroll automatique
+                  e.target.scrollIntoView = () => {}
                 }}
                 placeholder="Écrivez votre message..."
                 className="w-full px-4 py-3 rounded-2xl resize-none focus:outline-none chat-input"
