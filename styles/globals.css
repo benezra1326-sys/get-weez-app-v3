@@ -178,93 +178,59 @@ html, body {
   box-sizing: border-box;
 }
 
-/* Fix mobile layout issues */
+/* Fix mobile layout issues - Version simplifiée */
 @media (max-width: 1023px) {
   html, body {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    height: auto !important;
+    height: auto;
     min-height: 100vh;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
   }
   
   #__next {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-    overflow-y: auto !important;
-    height: auto !important;
+    width: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
     min-height: 100vh;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-  }
-  
-  /* Force full width on mobile */
-  .min-h-screen {
-    width: 100% !important;
-    max-width: 100vw !important;
-    height: auto !important;
-    min-height: 100vh !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-  }
-  
-  /* Remove any potential margins/padding causing horizontal scroll */
-  * {
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    box-sizing: border-box !important;
-    max-width: 100vw !important;
   }
   
   /* Correction spéciale pour mobile chat container */
   .mobile-chat-container {
-    position: static !important;
-    height: auto !important;
-    overflow: visible !important;
-    min-height: auto !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    position: static;
+    height: auto;
+    overflow: visible;
+    min-height: auto;
   }
   
   /* Forcer le scroll sur tous les conteneurs mobiles */
   main {
-    height: auto !important;
-    min-height: 100vh !important;
-    overflow-y: auto !important;
-    overflow-x: hidden !important;
-    -webkit-overflow-scrolling: touch !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    height: auto;
+    min-height: 100vh;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
   }
   
   /* S'assurer que les sections sont scrollables */
-  section, div {
-    overflow: visible !important;
-    height: auto !important;
-    width: 100% !important;
-    max-width: 100vw !important;
-    box-sizing: border-box !important;
+  section {
+    overflow: visible;
+    height: auto;
   }
   
-  /* Empêcher le scroll horizontal sur tous les éléments */
-  .grid, .flex, .container, .wrapper {
-    width: 100% !important;
-    max-width: 100vw !important;
-    overflow-x: hidden !important;
-    box-sizing: border-box !important;
+  /* Empêcher les icônes et SVG de s'élargir */
+  svg, img.icon, .icon {
+    width: auto !important;
+    height: auto !important;
+    flex-shrink: 0 !important;
+  }
+  
+  /* Protéger les icônes lucide-react */
+  [class*="lucide"] {
+    flex-shrink: 0 !important;
   }
 }
 

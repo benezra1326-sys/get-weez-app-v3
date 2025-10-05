@@ -133,50 +133,52 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
 
   return (
     <div className="relative">
-      {/* Bouton profil - Couleurs du logo */}
+      {/* Bouton profil - Compact mobile */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-3 p-2 rounded-2xl transition-all duration-300 group animate-hover-lift text-white"
+        className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift text-white"
         style={{
           background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
           boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
-          border: '1px solid rgba(139, 92, 246, 0.1)'
+          flexShrink: 0,
+          minWidth: 'fit-content'
         }}
       >
-        {/* Indicateur de statut avec sparkle */}
-        <div className="relative">
+        {/* Indicateur de statut avec sparkle - Hidden on small mobile */}
+        <div className="relative hidden sm:block">
           <div className="w-2 h-2 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full animate-pulse shadow-lg shadow-yellow-500/50"></div>
           <span className="absolute -top-1 -right-1 text-xs animate-sparkle-float">✨</span>
         </div>
         
         {/* Avatar */}
         <div 
-          className="rounded-2xl flex items-center justify-center text-white text-sm font-semibold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
+          className="rounded-xl flex items-center justify-center text-white text-xs font-semibold shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-105 relative overflow-hidden"
           style={{
-            width: '32px',
-            height: '32px',
-            minWidth: '32px',
-            minHeight: '32px',
-            maxWidth: '32px',
-            maxHeight: '32px',
+            width: '28px',
+            height: '28px',
+            minWidth: '28px',
+            minHeight: '28px',
+            maxWidth: '28px',
+            maxHeight: '28px',
             background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
-            borderRadius: '12px'
+            borderRadius: '8px',
+            flexShrink: 0
           }}
         >
           <span className="relative z-10">D</span>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 group-hover:animate-shimmer"></div>
         </div>
         
-        {/* Info utilisateur */}
+        {/* Info utilisateur - Hidden on mobile */}
         <div className="hidden lg:block text-left">
           <div className="text-sm font-semibold text-white">
             {user?.first_name || 'Utilisateur'}
           </div>
         </div>
         
-        {/* Flèche */}
-        <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+        {/* Flèche - Smaller on mobile */}
+        <ChevronDown className={`w-3 h-3 lg:w-4 lg:h-4 text-white/70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0 }} />
       </button>
 
       {/* Menu déroulant */}

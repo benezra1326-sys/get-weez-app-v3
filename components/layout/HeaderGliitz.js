@@ -133,46 +133,52 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         }
       `}</style>
     <header 
-        className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-2 lg:px-6 py-3 lg:py-4 w-full"
+        className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-2 lg:px-6 py-2 lg:py-4 w-full"
       style={{
           minHeight: '4rem',
         boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)',
         backgroundColor: isDarkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-        borderColor: isDarkMode ? 'rgba(45, 45, 45, 0.2)' : 'rgba(139, 92, 246, 0.2)'
+        borderColor: isDarkMode ? 'rgba(45, 45, 45, 0.2)' : 'rgba(139, 92, 246, 0.2)',
+        maxWidth: '100vw',
+        overflow: 'hidden'
       }}
     >
       {/* Logo et menu mobile */}
-      <div className="flex items-center">
+      <div className="flex items-center gap-2" style={{ flexShrink: 0 }}>
         {/* Menu mobile */}
         <button 
           onClick={toggleMobileMenu}
-          className="lg:hidden p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95 mr-2"
+          className="lg:hidden p-2 rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
           style={{
             background: 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.8))',
             backdropFilter: 'blur(10px)',
             border: '1px solid rgba(209, 213, 219, 0.3)',
-            borderRadius: '12px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
+            borderRadius: '8px',
+            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            minWidth: '36px',
+            minHeight: '36px',
+            flexShrink: 0
           }}
         >
-          <Menu size={20} className="text-gray-700" />
+          <Menu size={18} className="text-gray-700" />
         </button>
         
-        {/* Logo Gliitz - Plus grand */}
-        <Link href="/" className="flex items-center group">
+        {/* Logo Gliitz - Compact */}
+        <Link href="/" className="flex items-center group" style={{ flexShrink: 0 }}>
           <div 
-            className="px-4 py-3 lg:px-8 lg:py-4 rounded-xl transition-all duration-300 group-hover:scale-105"
+            className="px-2 py-1.5 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 group-hover:scale-105"
             style={{
               background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-              borderRadius: '16px',
-              boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
-              minWidth: '160px',
+              borderRadius: '8px',
+              boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              minWidth: 'auto',
+              maxWidth: 'fit-content'
             }}
           >
-            <GliitzLogo size="text-3xl lg:text-5xl" />
+            <GliitzLogo size="text-xl lg:text-5xl" />
           </div>
         </Link>
       </div>
