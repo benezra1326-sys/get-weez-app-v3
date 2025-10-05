@@ -243,7 +243,7 @@ export const MobileChatEnhanced = memo(({
               <div className="mobile-message-bubble">
                 <div className="flex items-center space-x-2">
                   <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-purple-600"></div>
-                  <span>Get Weez réfléchit...</span>
+                  <span>Gliitz réfléchit...</span>
                 </div>
               </div>
             </div>
@@ -383,6 +383,7 @@ export const MobileNavigationEnhanced = memo(({
           top: 0;
           right: 0;
           height: 100vh;
+          height: 100dvh;
           width: 320px;
           max-width: 85vw;
           background: rgba(255, 255, 255, 0.95);

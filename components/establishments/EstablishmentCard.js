@@ -118,12 +118,13 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
             <button 
               onClick={(e) => {
                 e.stopPropagation()
-                const message = `Je souhaite réserver une table chez ${establishment.name}`
-                window.location.href = `/?message=${encodeURIComponent(message)}`
+                const reservationMessage = `Je souhaite réserver une table pour ${establishment.name} à ${establishment.zone || establishment.location || 'Marbella'}`
+                // Rediriger vers le chat avec le message
+                window.location.href = `/?message=${encodeURIComponent(reservationMessage)}`
               }}
               className="banner-button primary"
             >
-              Réserver
+              💬 Réserver
             </button>
           </div>
         </div>

@@ -536,7 +536,9 @@ export default function Events({ user, setUser }) {
       <div 
         className="min-h-screen"
         style={{
-          backgroundColor: isDarkMode ? '#0a0a0f' : '#f9fafb'
+          backgroundColor: isDarkMode ? '#0a0a0f' : '#f9fafb',
+          overflow: 'visible',
+          position: 'relative'
         }}
       >
         {/* Header */}
@@ -555,9 +557,9 @@ export default function Events({ user, setUser }) {
         />
         
         {/* Contenu principal */}
-        <main className="container mx-auto px-4 py-6">
+        <main className="container mx-auto px-4 py-6" style={{ overflow: 'visible' }}>
             {/* Header avec recherche - Amélioré avec sparkles */}
-            <div className="mb-6">
+            <div className="mb-6" style={{ position: 'relative', zIndex: 1 }}>
               <div className="relative overflow-hidden rounded-2xl p-6 text-center group"
                 style={{
                   background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
@@ -617,7 +619,8 @@ export default function Events({ user, setUser }) {
                   borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
                   boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
                   position: 'relative',
-                  zIndex: 10
+                  zIndex: 100000,
+                  overflow: 'visible'
                 }}
               >
                 <EventDisplayToggle

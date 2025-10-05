@@ -233,6 +233,7 @@
   top: 0;
   left: 0;
   height: 100vh;
+  height: 100dvh;
   width: 320px;
   max-width: 85vw;
   background: rgba(255, 255, 255, 0.95);
@@ -1013,6 +1014,7 @@ body.keyboard-open .mobile-messages-container {
   left: 0;
   width: 20px;
   height: 100vh;
+  height: 100dvh;
   z-index: 60;
   background: linear-gradient(to right, rgba(139, 92, 246, 0.1), transparent);
   opacity: 0;

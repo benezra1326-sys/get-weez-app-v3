@@ -161,7 +161,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         backgroundColor: isDarkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
         borderColor: isDarkMode ? 'rgba(45, 45, 45, 0.2)' : 'rgba(139, 92, 246, 0.2)',
         maxWidth: '100vw',
-        overflow: 'hidden'
+        overflow: 'visible' // Important pour que le dropdown profil soit visible !
       }}
     >
       {/* Logo et menu mobile */}

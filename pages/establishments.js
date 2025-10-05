@@ -97,6 +97,11 @@ export default function Establishments({ user, setUser }) {
       filtered = filtered.filter(establishment =>
         styleRestaurantIds.includes(establishment.id)
       )
+    } else if (style === 'luxury') {
+      // Filtre spécial pour "luxury" basé sur les tags
+      filtered = filtered.filter(establishment =>
+        establishment.tags?.includes('luxe') || establishment.price_level >= 4
+      )
     }
 
     // Filtrage par recherche
@@ -180,7 +185,9 @@ export default function Establishments({ user, setUser }) {
       <div 
         className="min-h-screen"
         style={{
-          backgroundColor: isDarkModeSafe ? '#0a0a0f' : '#f9fafb'
+          backgroundColor: isDarkModeSafe ? '#0a0a0f' : '#f9fafb',
+          overflow: 'visible',
+          position: 'relative'
         }}
       >
         {/* Header */}
@@ -199,10 +206,10 @@ export default function Establishments({ user, setUser }) {
         />
         
         {/* Contenu principal */}
-        <main className="container mx-auto px-4 py-6">
+        <main className="container mx-auto px-4 py-6" style={{ overflow: 'visible' }}>
           
           {/* Bannière avec titre et recherche - Améliorée avec sparkles */}
-          <div className="mb-6">
+          <div className="mb-6" style={{ position: 'relative', zIndex: 1 }}>
             <div 
               className="relative overflow-hidden rounded-2xl p-6 text-center group"
                 style={{
@@ -255,9 +262,9 @@ export default function Establishments({ user, setUser }) {
             </div>
 
           {/* Section des filtres - Visible sur tous les écrans */}
-          <div className="mb-6 relative z-50">
+          <div className="mb-6 relative" style={{ zIndex: 100000, overflow: 'visible' }}>
             <div 
-              className="relative overflow-hidden rounded-2xl p-6 border transition-all duration-300 hover:shadow-2xl"
+              className="relative rounded-2xl p-6 border transition-all duration-300 hover:shadow-2xl"
               style={{
                 background: isDarkModeSafe 
                   ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.98) 100%)'
@@ -266,7 +273,8 @@ export default function Establishments({ user, setUser }) {
                 borderColor: isDarkModeSafe ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)',
                 boxShadow: isDarkModeSafe 
                   ? '0 8px 32px rgba(0, 0, 0, 0.5)' 
-                  : '0 8px 32px rgba(168, 85, 247, 0.15)'
+                  : '0 8px 32px rgba(168, 85, 247, 0.15)',
+                overflow: 'visible'
               }}
             >
               {/* Effet de grille subtil */}

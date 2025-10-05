@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { createPortal } from 'react-dom'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { 
@@ -13,23 +14,45 @@ import {
   ChevronDown,
   Sparkles,
   Crown,
-  Shield
+  Shield,
+  History
 } from 'lucide-react'
 
 const ProfileDropdown = ({ user, isDarkMode }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [canCloseOverlay, setCanCloseOverlay] = useState(false)
   const router = useRouter()
 
   // Fermer le dropdown au clic extérieur
   React.useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (isOpen && !event.target.closest('.profile-dropdown-container')) {
-        setIsOpen(false)
-      }
-    }
+    if (!isOpen) return // Ne rien faire si le dropdown est fermé
 
-    document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    // Petit délai pour éviter que le clic d'ouverture ne le referme immédiatement
+    const timeoutId = setTimeout(() => {
+      const handleClickOutside = (event) => {
+        // Vérifier si le clic est sur le bouton, l'overlay, ou le menu
+        const isClickOnButton = event.target.closest('.profile-dropdown-container')
+        const isClickOnOverlay = event.target.classList.contains('profile-overlay')
+        const isClickOnMenu = event.target.closest('.mobile-profile-dropdown')
+        
+        if (!isClickOnButton && !isClickOnMenu && !isClickOnOverlay) {
+          console.log('🔴 Fermeture dropdown - clic extérieur')
+          setIsOpen(false)
+        }
+      }
+
+      document.addEventListener('mousedown', handleClickOutside)
+      
+      // Cleanup
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }, 100) // Délai de 100ms
+
+    return () => clearTimeout(timeoutId)
+  }, [isOpen])
+
+  // Debug : Log à chaque changement d'état
+  React.useEffect(() => {
+    console.log('🟢 ProfileDropdown isOpen:', isOpen)
   }, [isOpen])
 
   const handleLinkClick = (href) => {
@@ -79,29 +102,29 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
 
   const profileItems = [
     {
-      title: "🙋 Mon Profil",
+      title: "Mon Profil",
       icon: User,
       href: "/account#profile",
       description: "Informations personnelles",
       color: "text-blue-500"
     },
     {
-      title: "🔔 Notifications",
+      title: "Notifications",
       icon: Bell,
       href: "/account#notifications",
       description: "Gérer vos alertes",
       color: "text-green-500"
     },
     {
-      title: "❤️ Favoris",
+      title: "Favoris",
       icon: Heart,
       href: "/account#favorites",
       description: "Vos endroits préférés",
       color: "text-red-500"
     },
     {
-      title: "💬 Historique Chat",
-      icon: Users,
+      title: "Historique Chat",
+      icon: History,
       href: "/account#chat-history",
       description: "Vos conversations"
     },
@@ -150,7 +173,22 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
     <div className="relative profile-dropdown-container">
       {/* Bouton profil - Compact mobile */}
       <button
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={(e) => {
+          e.preventDefault()
+          e.stopPropagation()
+          console.log('🔵 Bouton profil cliqué, état actuel:', isOpen, 'nouveau:', !isOpen)
+          const newState = !isOpen
+          setIsOpen(newState)
+          
+          // Si on ouvre, désactiver temporairement le clic sur l'overlay
+          if (newState) {
+            setCanCloseOverlay(false)
+            setTimeout(() => {
+              setCanCloseOverlay(true)
+              console.log('✅ Overlay maintenant cliquable')
+            }, 200) // 200ms de protection
+          }
+        }}
         className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift text-white"
         style={{
           background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
@@ -207,9 +245,45 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
         <ChevronDown className={`w-3 h-3 lg:w-4 lg:h-4 text-white/70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0 }} />
       </button>
 
-      {/* Menu déroulant */}
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-80 bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden" style={{ zIndex: 999999, maxHeight: '80vh', overflowY: 'auto' }}>
+      {/* Menu déroulant - Rendu via Portal dans le body */}
+      {isOpen && typeof window !== 'undefined' && createPortal(
+        <>
+        {/* Overlay DERRIÈRE le dropdown - rendu EN PREMIER */}
+        <div 
+          className="fixed inset-0 bg-black/20 backdrop-blur-sm profile-overlay" 
+          onClick={() => {
+            if (canCloseOverlay) {
+              console.log('🟡 Clic sur overlay - fermeture autorisée')
+              setIsOpen(false)
+            } else {
+              console.log('⏸️ Clic sur overlay ignoré (protection active)')
+            }
+          }}
+          style={{ 
+            zIndex: 99998,
+            position: 'fixed',
+            inset: 0
+          }}
+        />
+        
+        {/* Dropdown AU-DESSUS de l'overlay */}
+        <div 
+          className="mobile-profile-dropdown rounded-2xl shadow-xl overflow-y-auto" 
+          style={{ 
+            position: 'fixed',
+            right: '10px',
+            top: '70px',
+            zIndex: 99999, 
+            maxHeight: '80vh',
+            width: '320px',
+            maxWidth: 'calc(100vw - 40px)',
+            background: isDarkMode 
+              ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
+              : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
+            backdropFilter: 'blur(20px)',
+            border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`
+          }}
+        >
           {/* Header du menu */}
           <div className="p-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
             <div className="flex items-center space-x-3">
@@ -226,7 +300,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
 
           {/* Section Profil */}
           <div className="p-4">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+            <h4 className={`text-sm font-semibold mb-3 flex items-center ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
               <User className="w-4 h-4 mr-2" />
               Mon Profil
             </h4>
@@ -235,14 +309,26 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                 <button
                   key={index}
                   onClick={() => handleLinkClick(item.href)}
-                  className="w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 group text-left"
+                  className="w-full flex items-center space-x-3 p-3 rounded-lg transition-colors duration-200 group text-left"
+                  style={{
+                    backgroundColor: 'transparent',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = isDarkMode ? 'rgba(55, 65, 81, 0.5)' : 'rgba(243, 244, 246, 0.8)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent'
+                  }}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                    <item.icon className="w-4 h-4 text-purple-600" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+                    <item.icon className="w-5 h-5 text-purple-600" />
                   </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{item.title}</div>
-                    <div className="text-xs text-gray-500">{item.description}</div>
+                  <div className="flex-1 flex flex-col justify-center">
+                    <div className={`text-sm font-medium leading-tight mb-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.title}</div>
+                    <div className={`text-xs leading-tight ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{item.description}</div>
                   </div>
                 </button>
               ))}
@@ -250,8 +336,8 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           </div>
 
           {/* Section Aide */}
-          <div className="p-4 border-t border-gray-100">
-            <h4 className="text-sm font-semibold text-gray-700 mb-3 flex items-center">
+          <div className="p-4 border-t" style={{ borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(229, 231, 235, 0.5)' }}>
+            <h4 className={`text-sm font-semibold mb-3 flex items-center ${isDarkMode ? 'text-gray-200' : 'text-gray-700'}`}>
               <HelpCircle className="w-4 h-4 mr-2" />
               Support & Aide
             </h4>
@@ -260,14 +346,26 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                 <button
                   key={index}
                   onClick={() => handleLinkClick(item.href)}
-                  className="w-full flex items-center space-x-3 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 group text-left"
+                  className="w-full flex items-center space-x-3 p-3 rounded-lg transition-colors duration-200 group text-left"
+                  style={{
+                    backgroundColor: 'transparent',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'flex-start'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = isDarkMode ? 'rgba(55, 65, 81, 0.5)' : 'rgba(243, 244, 246, 0.8)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent'
+                  }}
                 >
-                  <div className="w-8 h-8 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-200">
-                    <item.icon className="w-4 h-4 text-blue-600" />
+                  <div className="w-10 h-10 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
+                    <item.icon className="w-5 h-5 text-blue-600" />
                   </div>
-                  <div>
-                    <div className="text-sm font-medium text-gray-900">{item.title}</div>
-                    <div className="text-xs text-gray-500">{item.description}</div>
+                  <div className="flex-1 flex flex-col justify-center">
+                    <div className={`text-sm font-medium leading-tight mb-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.title}</div>
+                    <div className={`text-xs leading-tight ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{item.description}</div>
                   </div>
                 </button>
               ))}
@@ -275,23 +373,37 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           </div>
 
           {/* Footer avec sparkles */}
-          <div className="p-3 bg-gradient-to-r from-purple-50 to-blue-50 border-t border-gray-100">
-            <div className="text-xs text-gray-600 text-center flex items-center justify-center">
+          <div 
+            className="p-3 border-t"
+            style={{
+              background: isDarkMode 
+                ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)'
+                : 'linear-gradient(135deg, rgba(243, 232, 255, 0.8) 0%, rgba(219, 234, 254, 0.8) 100%)',
+              borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(229, 231, 235, 0.5)'
+            }}
+          >
+            <div className={`text-xs text-center flex items-center justify-center ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
               <Sparkles className="w-3 h-3 mr-1 animate-sparkle" />
               Gliitz - Votre concierge magique
               <Sparkles className="w-3 h-3 ml-1 animate-sparkle-delayed" />
             </div>
           </div>
         </div>
+        </>,
+        document.body
       )}
-
-      {/* Overlay pour fermer le menu */}
-      {isOpen && (
-        <div 
-          className="fixed inset-0 z-40" 
-          onClick={() => setIsOpen(false)}
-        />
-      )}
+      
+      {/* Styles globaux */}
+      <style jsx global>{`
+        @media (min-width: 768px) {
+          .mobile-profile-dropdown {
+            position: absolute !important;
+            right: 0 !important;
+            top: 100% !important;
+            margin-top: 0.5rem !important;
+          }
+        }
+      `}</style>
     </div>
   )
 }

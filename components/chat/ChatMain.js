@@ -9,7 +9,7 @@ import MobileChatBox from './MobileChatBox'
 import SuggestionsGrid from './SuggestionsGrid'
 import MobileSuggestionsEnhanced from './MobileSuggestionsEnhanced'
 import WelcomeCard from '../ui/WelcomeCard'
-import { establishments as staticEstablishments } from '../../data/marbella-data'
+import { establishments as staticEstablishments, events as staticEvents } from '../../data/marbella-data'
 import { services as staticServices } from '../../data/services-data'
 
 const ChatMain = ({ user, initialMessage, establishmentName }) => {
@@ -46,6 +46,19 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
     renameConversation,
     getCurrentConversation
   } = useConversationsClean()
+
+  // Écouter l'événement personnalisé pour ouvrir le chat depuis le bouton flottant
+  useEffect(() => {
+    const handleOpenChat = () => {
+      setShowMobileChatBox(true)
+      if (!currentConversationId && !isCreating) {
+        createConversation()
+      }
+    }
+
+    window.addEventListener('openMobileChat', handleOpenChat)
+    return () => window.removeEventListener('openMobileChat', handleOpenChat)
+  }, [currentConversationId, isCreating, createConversation])
 
   // Détection mobile/desktop
   useEffect(() => {
@@ -340,30 +353,6 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
   if (!isMobile) {
     return <DesktopChat user={user} initialMessage={initialMessage} establishmentName={establishmentName} />
   }
-
-  // Préparer les événements statiques
-  const staticEvents = [
-    {
-      id: 1,
-      name: "Sunset Beach Party",
-      description: "DJ set exclusif, cocktails premium et feu au coucher du soleil",
-      date: "2024-09-15T20:00:00Z",
-      image_url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&q=80",
-      location: "Ocean Club Marbella",
-      price: 85,
-      type: "party"
-    },
-    {
-      id: 2,
-      name: "Mediterranean Wine & Tapas",
-      description: "Dégustation de vins méditerranéens et tapas authentiques",
-      date: "2024-09-20T19:30:00Z",
-      image_url: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800&h=600&fit=crop&q=80",
-      location: "La Terraza del Mar",
-      price: 65,
-      type: "gastronomy"
-    }
-  ]
 
   // Interface mobile simplifiée avec chatbox
   return (

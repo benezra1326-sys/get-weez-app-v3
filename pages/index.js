@@ -23,8 +23,6 @@ import {
 const Home = memo(({ user, setUser }) => {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [showIntroModal, setShowIntroModal] = useState(false)
-  const [currentStep, setCurrentStep] = useState(0)
   const { isDarkMode, toggleTheme, isLoaded } = useTheme()
   const { preloadPage } = usePreloader()
   
@@ -46,35 +44,7 @@ const Home = memo(({ user, setUser }) => {
     return () => clearTimeout(timer)
   }, [preloadPage])
 
-  // Afficher le popup d'introduction au premier chargement UNIQUEMENT
-  useEffect(() => {
-    const hasSeenIntro = localStorage.getItem('get-weez-intro-seen')
-    if (!hasSeenIntro) {
-      const timer = setTimeout(() => {
-        setShowIntroModal(true)
-      }, 2000) // Délai pour laisser le temps au chargement
-      return () => clearTimeout(timer)
-    }
-  }, [])
-
-  const closeIntroModal = () => {
-    setShowIntroModal(false)
-    localStorage.setItem('get-weez-intro-seen', 'true')
-  }
-
-  const nextStep = () => {
-    if (currentStep < 3) {
-      setCurrentStep(currentStep + 1)
-    } else {
-      closeIntroModal()
-    }
-  }
-
-  const prevStep = () => {
-    if (currentStep > 0) {
-      setCurrentStep(currentStep - 1)
-    }
-  }
+  // Le popup d'introduction est désormais géré par TipsPopup dans _app.js
 
   // Récupérer le message de réservation depuis les query parameters
   const reservationMessage = router.query.message
@@ -87,54 +57,6 @@ const Home = memo(({ user, setUser }) => {
     return <GliitzLoader text="Préparation de votre expérience..." />
   }
 
-  // Données du popup d'introduction - Version interactive et ludique
-  const introSteps = [
-    {
-      icon: <Sparkles size={48} className="text-purple-500 animate-pulse" />,
-      title: "✨ Bienvenue sur Gliitz !",
-      description: "Votre assistant IA personnel pour vivre Marbella comme un local ! 🏖️",
-      features: [
-        "🎯 Recommandations ultra-personnalisées basées sur vos goûts",
-        "🤖 IA qui apprend de vos préférences",
-        "⚡ Réponses instantanées 24h/7j"
-      ],
-      tip: "💡 Astuce : Plus vous chattez, plus je vous comprends !"
-    },
-    {
-      icon: <MessageCircle size={48} className="text-blue-500 animate-bounce" />,
-      title: "💬 Chat Intelligent & Intuitif",
-      description: "Discutez naturellement, je comprends tout ! 🧠",
-      features: [
-        "🗣️ Parlez-moi comme à un ami local",
-        "📚 Historique de toutes vos conversations",
-        "🔄 Suggestions automatiques intelligentes"
-      ],
-      tip: "🎯 Essayez : 'Trouve-moi un resto romantique pour ce soir !'"
-    },
-    {
-      icon: <MapPin size={48} className="text-green-500 animate-pulse" />,
-      title: "🗺️ Géolocalisation Magique",
-      description: "Je connais Marbella comme ma poche ! 📍",
-      features: [
-        "📍 Détection automatique de votre position",
-        "🏆 Sélection des meilleurs établissements premium",
-        "⭐ Avis authentiques et photos exclusives"
-      ],
-      tip: "🚀 Je peux même vous dire le temps d'attente en temps réel !"
-    },
-    {
-      icon: <Heart size={48} className="text-red-500 animate-pulse" />,
-      title: "🌟 Expériences VIP Exclusives",
-      description: "Accès privilégié aux perles cachées de Marbella ! 💎",
-      features: [
-        "🍽️ Tables dans les restaurants les plus demandés",
-        "🏨 Suites d'hôtels avec vue mer garantie",
-        "🎉 Événements privés et soirées exclusives"
-      ],
-      tip: "🎭 Membre Gliitz = Traitement VIP partout !"
-    }
-  ]
-
   return (
     <div 
         style={{ 
@@ -146,8 +68,8 @@ const Home = memo(({ user, setUser }) => {
           maxWidth: 'none'
         }}
     >
-      {/* Popup d'introduction - Position optimisée mobile */}
-      {showIntroModal && (
+      {/* Le popup d'intro est maintenant géré par TipsPopup dans _app.js */}
+      {false && (
         <div 
           className="fixed z-[1000] inset-x-4 bottom-4 lg:bottom-auto lg:right-8 lg:left-auto lg:w-96 lg:top-1/2 lg:-translate-y-1/2"
           style={{

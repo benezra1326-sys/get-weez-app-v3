@@ -551,5 +551,62 @@ export const services = [
     sponsored: false,
     duration: '1-3 heures',
     rating: 4.5
+  },
+  // Services de luxe VIP
+  {
+    id: 46,
+    name: 'Yacht Charter Premium',
+    description: 'Location de yachts de luxe avec équipage complet',
+    category: 'luxe',
+    image_url: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&h=400&fit=crop&q=80',
+    icon: '🛥️',
+    price_level: 5,
+    tags: ['luxe', 'premium', 'vip', 'yacht'],
+    sponsored: true,
+    duration: 'À la journée ou demi-journée',
+    rating: 4.9,
+    priceRange: '€€€€€'
+  },
+  {
+    id: 47,
+    name: 'Spa Privé VIP',
+    description: 'Spa privé avec thérapeutes personnels et soins exclusifs',
+    category: 'luxe',
+    image_url: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=400&fit=crop&q=80',
+    icon: '💆',
+    price_level: 4,
+    tags: ['luxe', 'premium', 'spa', 'wellness'],
+    sponsored: true,
+    duration: '2-4 heures',
+    rating: 4.8,
+    priceRange: '€€€€'
+  },
+  {
+    id: 48,
+    name: 'Concierge VIP 24/7',
+    description: 'Service de concierge personnel disponible 24/7 pour toutes vos demandes',
+    category: 'luxe',
+    image_url: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=400&fit=crop&q=80',
+    icon: '🎩',
+    price_level: 5,
+    tags: ['luxe', 'premium', 'vip', 'concierge'],
+    sponsored: true,
+    duration: 'Service continu',
+    rating: 4.9,
+    priceRange: '€€€€€'
+  },
+  {
+    id: 49,
+    name: 'Jet Privé & Hélicoptère',
+    description: 'Transport VIP en jet privé ou hélicoptère',
+    category: 'luxe',
+    image_url: 'https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&h=600&fit=crop&q=80',
+    icon: '🚁',
+    price_level: 5,
+    tags: ['luxe', 'premium', 'vip', 'transport'],
+    sponsored: true,
+    duration: 'Variable selon destination',
+    rating: 5.0,
+    priceRange: '€€€€€'
   }
 ]

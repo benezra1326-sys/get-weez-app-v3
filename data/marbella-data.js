@@ -84,6 +84,9 @@ export const establishments = [
     website: "https://laterrazadelmar.com",
     rating: 4.7,
     price_range: "€€€",
+    price_level: 3,
+    tags: ["romantic", "vue mer", "terrasse"],
+    sponsored: false,
     specialties: ["Paella", "Poisson grillé", "Tapas", "Sangria", "Gazpacho", "Jamón Ibérico", "Pulpo", "Gambas", "Tortilla", "Churros"],
     dishes: [
       "Paella Valenciana (€45)",
@@ -200,6 +203,8 @@ export const establishments = [
     phone: "+34 952 77 48 06",
     rating: 4.6,
     price_range: "€€€",
+    price_level: 3,
+    tags: ["romantic", "italien", "élégant"],
     specialties: ["Pizza", "Pasta", "Risotto", "Tiramisu"],
     ambiance: "Élégant, Romantique, Authentique",
     capacity: 50,
@@ -230,7 +235,9 @@ export const establishments = [
     ],
     ambiance: "Luxueux, Gastronomique, Historique",
     capacity: 80,
-    sponsored: true,
+    sponsored: false,
+    price_level: 5,
+    tags: ["luxe", "gastronomique", "étoilé"],
     opening_hours: "19:30-23:30",
     features: ["Terrasse", "Vue mer", "Parking", "WiFi", "Climatisation", "Sommelier", "Chef étoilé"]
   },
@@ -318,7 +325,9 @@ export const establishments = [
     ],
     ambiance: "Plage, Décontracté, Vue mer",
     capacity: 100,
-    sponsored: true,
+    sponsored: false,
+    price_level: 3,
+    tags: ["beachside", "seafood", "casual"],
     opening_hours: "10:00-02:00",
     features: ["Plage", "Vue mer", "Terrasse", "WiFi", "Climatisation", "DJ"]
   },
@@ -362,6 +371,8 @@ export const establishments = [
     phone: "+34 952 77 48 12",
     whatsapp: "+34 952 77 48 12",
     website: "https://sushizenmarbella.com",
+    price_level: 3,
+    tags: ["japonais", "sushi", "intime"],
     rating: 4.8,
     price_range: "€€€€",
     specialties: ["Sushi", "Sashimi", "Sake", "Ramen", "Tempura", "Miso", "Edamame", "Uni"],
@@ -405,7 +416,7 @@ export const establishments = [
     ],
     ambiance: "Rooftop, Panoramique, Moderne",
     capacity: 120,
-    sponsored: true,
+    sponsored: false,
     opening_hours: "18:00-02:00",
     features: ["Rooftop", "Vue panoramique", "DJ", "WiFi", "Climatisation", "Terrasse"]
   },
@@ -437,6 +448,73 @@ export const establishments = [
     sponsored: false,
     opening_hours: "08:00-18:00",
     features: ["WiFi", "Climatisation", "Terrasse", "Petit-déjeuner"]
+  },
+  // Établissements de luxe supplémentaires intégrés
+  {
+    id: 16,
+    name: "The Marbella Club Hotel",
+    type: "Hôtel",
+    category: "Luxe",
+    description: "Hôtel de luxe légendaire avec spa et plage privée",
+    image_url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=400&fit=crop&q=80",
+    address: "Bulevar Príncipe Alfonso de Hohenlohe, s/n, 29602 Marbella",
+    phone: "+34 952 82 22 11",
+    whatsapp: "+34 952 82 22 11",
+    website: "https://marbellaclub.com",
+    rating: 4.9,
+    price_range: "€€€€€",
+    price_level: 5,
+    tags: ["luxe", "premium", "vip", "spa", "plage privée"],
+    zone: "Golden Mile",
+    sponsored: false,
+    specialties: ["Spa de luxe", "Plage privée", "Restaurant gastronomique", "Suite présidentielle"],
+    opening_hours: "24/7",
+    features: ["Spa", "Plage privée", "Restaurant", "Bar", "Piscine", "WiFi", "Parking"]
+  },
+  {
+    id: 17,
+    name: "Puente Romano Beach Resort",
+    type: "Resort",
+    category: "Luxe",
+    description: "Resort de luxe avec villas privées et restaurants étoilés",
+    image_url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=400&fit=crop&q=80",
+    address: "Bulevar Príncipe Alfonso de Hohenlohe, 29602 Marbella",
+    phone: "+34 952 82 09 00",
+    whatsapp: "+34 952 82 09 00",
+    website: "https://puenteromano.com",
+    rating: 4.8,
+    price_range: "€€€€€",
+    price_level: 5,
+    tags: ["luxe", "premium", "vip", "villas", "restaurants étoilés"],
+    zone: "Golden Mile",
+    sponsored: false,
+    specialties: ["Villas privées", "Restaurants étoilés", "Spa Six Senses", "Beach Club"],
+    opening_hours: "24/7",
+    features: ["Villas", "Spa", "Beach Club", "Restaurants", "Tennis", "WiFi", "Parking"]
+  },
+  {
+    id: 18,
+    name: "Cipriani Marbella",
+    type: "Restaurant",
+    category: "Italien",
+    description: "Restaurant italien de luxe avec terrasse sur la mer",
+    image_url: "https://images.unsplash.com/photo-1414235077-531286732f1a?w=800&h=400&fit=crop&q=80",
+    address: "Bulevar Príncipe Alfonso de Hohenlohe, 29602 Marbella",
+    phone: "+34 952 77 50 00",
+    whatsapp: "+34 952 77 50 00",
+    website: "https://cipriani.com",
+    rating: 4.7,
+    price_range: "€€€€",
+    price_level: 4,
+    tags: ["luxe", "premium", "italien", "vue mer"],
+    zone: "Puerto Banús",
+    sponsored: true,
+    specialties: ["Pasta fraîche", "Risotto aux truffes", "Viande Wagyu", "Vins rares"],
+    dishes: ["Tagliolini al Tartufo (€45)", "Risotto alla Milanese (€38)", "Wagyu Beef (€65)", "Tiramisu (€18)"],
+    ambiance: "Élégant, Luxueux, Vue mer",
+    capacity: 80,
+    opening_hours: "19:00-23:30",
+    features: ["Vue mer", "Terrasse", "WiFi", "Climatisation", "Parking valet"]
   }
 ]
 
@@ -457,7 +535,9 @@ export const events = [
     age_restriction: "18+",
     includes: ["Cocktail de bienvenue", "DJ set", "Vue coucher de soleil"],
     dj: "DJ Carlos Mendoza",
-    music_style: "Deep House, Progressive"
+    music_style: "Deep House, Progressive",
+    image_url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=600&fit=crop&q=80",
+    tags: ["luxe", "sunset", "dj"]
   },
   {
     id: 2,
@@ -474,7 +554,9 @@ export const events = [
     age_restriction: "18+",
     includes: ["Cocktails", "DJ set", "Plage", "Sunset"],
     dj: "DJ Maria Santos",
-    music_style: "House, Tech House"
+    music_style: "House, Tech House",
+    image_url: "https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?w=800&h=600&fit=crop&q=80",
+    tags: ["beach", "party", "dj"]
   },
   {
     id: 3,
@@ -491,6 +573,8 @@ export const events = [
     age_restriction: "21+",
     includes: ["Vue panoramique", "DJ set", "Cocktails premium"],
     dj: "DJ Alex Thompson",
+    image_url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&h=600&fit=crop&q=80",
+    tags: ["luxe", "rooftop", "vip"],
     music_style: "Electronic, Ambient"
   },
   {
@@ -559,7 +643,10 @@ export const events = [
     age_restriction: "18+",
     includes: ["DJ set", "Cocktails", "Ambiance festive"],
     dj: "DJ Sarah Chen",
-    music_style: "Tech House, Progressive"
+    music_style: "Tech House, Progressive",
+    image_url: "https://images.unsplash.com/photo-1571266028243-d220c6adb06c?w=800&h=600&fit=crop&q=80",
+    tags: ["techno", "house", "party"],
+    sponsored: false
   },
   {
     id: 8,
@@ -576,7 +663,9 @@ export const events = [
     age_restriction: "18+",
     includes: ["Vue coucher de soleil", "DJ set", "Dîner romantique"],
     dj: "DJ Elena Rodriguez",
-    music_style: "Chillout, Ambient, Lounge"
+    music_style: "Chillout, Ambient, Lounge",
+    image_url: "https://images.unsplash.com/photo-1514306191717-452ec28c7814?w=800&h=600&fit=crop&q=80",
+    tags: ["romantic", "sunset", "chill"]
   },
   {
     id: 9,
@@ -593,7 +682,9 @@ export const events = [
     age_restriction: "18+",
     includes: ["DJ set", "Cocktails", "Danse", "Ambiance latino"],
     dj: "DJ Carlos Mendez",
-    music_style: "Reggaeton, Latin Trap, Urban"
+    music_style: "Reggaeton, Latin Trap, Urban",
+    image_url: "https://images.unsplash.com/photo-1516450360452-9312f5e86fc7?w=800&h=600&fit=crop&q=80",
+    tags: ["latino", "party", "dance"]
   },
   {
     id: 10,
@@ -610,7 +701,10 @@ export const events = [
     age_restriction: "21+",
     includes: ["Vue panoramique", "DJ set", "Cocktails premium"],
     dj: "DJ Thomas Anderson",
-    music_style: "Progressive House, Trance"
+    music_style: "Progressive House, Trance",
+    image_url: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?w=800&h=600&fit=crop&q=80",
+    tags: ["nightlife", "rooftop", "house"],
+    sponsored: false
   },
   {
     id: 11,
@@ -627,7 +721,9 @@ export const events = [
     age_restriction: "18+",
     includes: ["Piscine", "DJ set", "Cocktails", "Ambiance afro"],
     dj: "DJ Kwame Asante",
-    music_style: "Afro House, Amapiano, Tribal"
+    music_style: "Afro House, Amapiano, Tribal",
+    image_url: "https://images.unsplash.com/photo-1574391884720-bbc3740c59d1?w=800&h=600&fit=crop&q=80",
+    tags: ["afro", "pool", "party"]
   },
   {
     id: 12,
@@ -644,7 +740,9 @@ export const events = [
     age_restriction: "18+",
     includes: ["Saké dégustation", "Sushi", "DJ set", "Ambiance zen"],
     dj: "DJ Yuki Tanaka",
-    music_style: "Chillout, Ambient, Downtempo"
+    music_style: "Chillout, Ambient, Downtempo",
+    image_url: "https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=800&h=600&fit=crop&q=80",
+    tags: ["chill", "japanese", "zen"]
   },
   {
     id: 13,
@@ -1390,7 +1488,7 @@ export const evgServices = {
       price_level: 5,
       tags: ["luxe", "premium", "vip", "soirée", "exclusif"],
       zone: "Puerto Banús",
-      sponsored: true,
+      sponsored: false,
       specialties: ["Accès VIP", "Bouteilles de luxe", "DJ exclusif", "Transport privé"]
     },
     {
@@ -1407,7 +1505,7 @@ export const evgServices = {
       price_level: 4,
       tags: ["luxe", "premium", "vins", "dégustation", "privé"],
       zone: "Golden Mile",
-      sponsored: true,
+      sponsored: false,
       specialties: ["Vins millésimés", "Sommelier privé", "Fromages d'exception", "Caviar"]
     }
   ]

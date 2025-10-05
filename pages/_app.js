@@ -185,7 +185,7 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider>
         <Component {...pageProps} user={user} setUser={setUser} />
         {/* <CookieBanner /> */}
-        {/* <TipsPopup /> */}
+        <TipsPopup />
         
         {/* Bouton chat flottant simple - Mobile uniquement */}
         <SimpleFloatingChatButton />

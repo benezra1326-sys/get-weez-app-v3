@@ -2,7 +2,8 @@ import React, { useState } from 'react'
 import { LayoutGrid, RectangleVertical, Search, MapPin, Star, DollarSign, ChevronDown, SlidersHorizontal, Calendar } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import { useRouter } from 'next/router'
-import { luxuryEstablishments, luxuryServices, luxuryEvents } from '../../data/marbella-data'
+import { establishments as allEstablishments, events as allEvents } from '../../data/marbella-data'
+import { services as allServices } from '../../data/services-data'
 
 /**
  * Suggestions améliorées pour mobile - Version finale optimisée
@@ -22,6 +23,8 @@ export default function MobileSuggestionsEnhanced({
   const [selectedStyle, setSelectedStyle] = useState(null)
   const [showSortMenu, setShowSortMenu] = useState(false)
   const [showStyleMenu, setShowStyleMenu] = useState(false)
+  const [displayLimit, setDisplayLimit] = useState(10) // Afficher 10 items (5 lignes en 2 colonnes) par défaut
+  const [isShowingAll, setIsShowingAll] = useState(false)
 
   // Styles/ambiances
   const styles = [
@@ -35,16 +38,101 @@ export default function MobileSuggestionsEnhanced({
 
   const sortOptions = [
     { key: 'relevance', label: 'Pertinence', icon: '🎯' },
+    { key: 'distance', label: 'Proximité', icon: '📍' },
     { key: 'rating', label: 'Note', icon: '⭐' },
     { key: 'price_asc', label: 'Prix croissant', icon: '💰' },
     { key: 'price_desc', label: 'Prix décroissant', icon: '💎' },
   ]
+  
+  // État de géolocalisation
+  const [userLocation, setUserLocation] = React.useState(null)
+  const [locationPermission, setLocationPermission] = React.useState('pending')
+  
+  // Demander la géolocalisation au montage
+  React.useEffect(() => {
+    if (sortBy === 'distance' && !userLocation) {
+      requestUserLocation()
+    }
+  }, [sortBy])
 
-  // Fonction pour obtenir le badge d'un item
+  // Réinitialiser l'affichage quand on change de filtre
+  React.useEffect(() => {
+    setIsShowingAll(false)
+  }, [activeTab, searchQuery, selectedStyle, sortBy])
+  
+  const requestUserLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          })
+          setLocationPermission('granted')
+        },
+        (error) => {
+          console.error('Erreur de géolocalisation:', error)
+          setLocationPermission('denied')
+        }
+      )
+    } else {
+      setLocationPermission('unsupported')
+    }
+  }
+  
+  // Calculer la distance entre deux points (formule de Haversine)
+  const calculateDistance = (lat1, lon1, lat2, lon2) => {
+    const R = 6371 // Rayon de la Terre en km
+    const dLat = (lat2 - lat1) * Math.PI / 180
+    const dLon = (lon2 - lon1) * Math.PI / 180
+    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+              Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+              Math.sin(dLon/2) * Math.sin(dLon/2)
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a))
+    return R * c // Distance en km
+  }
+
+  // Fonction pour obtenir le badge d'un item - Varie selon le type et catégorie
   const getItemBadge = (item) => {
-    if (item.sponsored) return { text: 'VIP', color: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }
-    if (item.tags?.includes('luxe')) return { text: 'LUXE', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
-    if (item.price_level >= 4) return { text: 'PREMIUM', color: 'linear-gradient(135deg, #8b5cf6, #7c3aed)' }
+    // Pour les établissements
+    if (item.type === 'establishment') {
+      // VIP en priorité pour les sponsorisés seulement
+      if (item.sponsored) return { text: 'VIP', color: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }
+      // Ensuite les autres badges
+      if (item.tags?.includes('luxe') || item.price_level >= 4) return { text: 'LUXE', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
+      if (item.tags?.includes('romantic')) return { text: 'ROMANTIQUE', color: 'linear-gradient(135deg, #f43f5e, #e11d48)' }
+      if (item.rating >= 4.7) return { text: 'TOP NOTÉ', color: 'linear-gradient(135deg, #f59e0b, #d97706)' }
+      if (item.category === 'Japonais') return { text: 'SUSHI', color: 'linear-gradient(135deg, #ef4444, #dc2626)' }
+      if (item.category === 'Italien') return { text: 'ITALIEN', color: 'linear-gradient(135deg, #22c55e, #16a34a)' }
+      if (item.category === 'Méditerranéen') return { text: 'MED', color: 'linear-gradient(135deg, #06b6d4, #0891b2)' }
+      return null
+    }
+    
+    // Pour les événements
+    if (item.type === 'event') {
+      // VIP en priorité pour les sponsorisés
+      if (item.sponsored) return { text: 'VIP', color: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }
+      // Ensuite les autres badges
+      if (item.tags?.includes('luxe')) return { text: 'EXCLUSIF', color: 'linear-gradient(135deg, #ec4899, #f43f5e)' }
+      if (item.tags?.includes('romantic')) return { text: 'ROMANTIQUE', color: 'linear-gradient(135deg, #f43f5e, #e11d48)' }
+      if (item.price >= 60) return { text: 'PREMIUM', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
+      if (item.tags?.includes('latino')) return { text: 'LATINO', color: 'linear-gradient(135deg, #ef4444, #dc2626)' }
+      if (item.tags?.includes('chill')) return { text: 'CHILL', color: 'linear-gradient(135deg, #10b981, #059669)' }
+      return { text: 'NOUVEAU', color: 'linear-gradient(135deg, #3b82f6, #2563eb)' }
+    }
+    
+    // Pour les services
+    if (item.type === 'service') {
+      // VIP en priorité pour les sponsorisés
+      if (item.sponsored) return { text: 'VIP', color: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }
+      // Ensuite les autres badges
+      if (item.tags?.includes('luxe')) return { text: 'LUXE', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
+      if (item.category === 'transport') return { text: 'TRANSPORT', color: 'linear-gradient(135deg, #3b82f6, #2563eb)' }
+      if (item.category === 'bien_etre') return { text: 'WELLNESS', color: 'linear-gradient(135deg, #10b981, #059669)' }
+      if (item.category === 'gastronomie') return { text: 'FOOD', color: 'linear-gradient(135deg, #ef4444, #dc2626)' }
+      return { text: 'SERVICE', color: 'linear-gradient(135deg, #6b7280, #4b5563)' }
+    }
+    
     return null
   }
 
@@ -53,31 +141,43 @@ export default function MobileSuggestionsEnhanced({
     
     switch(activeTab) {
       case 'all': 
+        // Afficher TOUS les éléments comme sur desktop
         data = [
-          ...establishments.slice(0, 3).map(e => ({...e, type: 'establishment'})),
-          ...services.slice(0, 2).map(s => ({...s, type: 'service'})),
-          ...events.slice(0, 2).map(ev => ({...ev, type: 'event'}))
+          // Tous les établissements (prioriser les sponsorisés)
+          ...allEstablishments
+            .sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
+            .map(e => ({...e, type: 'establishment'})),
+          // Tous les services
+          ...allServices.map(s => ({...s, type: 'service'})),
+          // Tous les événements
+          ...allEvents.map(ev => ({...ev, type: 'event'}))
         ]
         break
       case 'establishments':
-        data = establishments.map(e => ({...e, type: 'establishment'}))
+        // Tous les établissements
+        data = allEstablishments
+          .sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
+          .map(e => ({...e, type: 'establishment'}))
         break
       case 'services':
-        data = services.map(s => ({...s, type: 'service'}))
+        // Tous les services
+        data = allServices.map(s => ({...s, type: 'service'}))
         break
       case 'events':
-        data = events.map(ev => ({...ev, type: 'event'}))
+        // Tous les événements
+        data = allEvents.map(ev => ({...ev, type: 'event'}))
         break
       case 'luxe':
         data = [
-          ...luxuryEstablishments.map(e => ({...e, type: 'establishment'})),
-          ...luxuryServices.map(s => ({...s, type: 'service'})),
-          ...luxuryEvents.map(ev => ({...ev, type: 'event'})),
-          ...establishments.filter(e => e.tags?.includes('luxe') || e.price_level >= 4).map(e => ({...e, type: 'establishment'}))
+          ...allEstablishments.filter(e => e.tags?.includes('luxe') || e.price_level >= 4).map(e => ({...e, type: 'establishment'})),
+          ...allServices.filter(s => s.tags?.includes('luxe') || s.price_level >= 4).map(s => ({...s, type: 'service'})),
+          ...allEvents.filter(ev => ev.tags?.includes('luxe') || ev.price >= 100).map(ev => ({...ev, type: 'event'}))
         ]
         break
       default:
-        data = establishments.map(e => ({...e, type: 'establishment'}))
+        data = allEstablishments
+          .sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
+          .map(e => ({...e, type: 'establishment'}))
     }
 
     // Filtrer par recherche
@@ -111,6 +211,21 @@ export default function MobileSuggestionsEnhanced({
       data.sort((a, b) => (a.price_level || 0) - (b.price_level || 0))
     } else if (sortBy === 'price_desc') {
       data.sort((a, b) => (b.price_level || 0) - (a.price_level || 0))
+    } else if (sortBy === 'distance' && userLocation) {
+      // Trier par distance si la géolocalisation est disponible
+      data = data.map(item => {
+        if (item.coordinates) {
+          const distance = calculateDistance(
+            userLocation.lat, 
+            userLocation.lng,
+            item.coordinates.lat,
+            item.coordinates.lng
+          )
+          return { ...item, distance }
+        }
+        return { ...item, distance: 999 } // Mettre les items sans coordonnées à la fin
+      })
+      data.sort((a, b) => (a.distance || 999) - (b.distance || 999))
     }
 
     // Sponsorisés en premier
@@ -137,7 +252,19 @@ export default function MobileSuggestionsEnhanced({
     })
   }
 
-  const data = getData()
+  const allData = getData()
+  const data = isShowingAll ? allData : allData.slice(0, displayLimit)
+  const hasMore = allData.length > displayLimit && !isShowingAll
+
+  const handleShowMore = () => {
+    setIsShowingAll(true)
+  }
+
+  const handleShowLess = () => {
+    setIsShowingAll(false)
+    // Scroll vers le haut des suggestions
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   return (
     <div className="w-full pb-6" style={{ maxWidth: '100vw', overflow: 'hidden' }}>
@@ -201,14 +328,24 @@ export default function MobileSuggestionsEnhanced({
                     setSortBy(option.key)
                     setShowSortMenu(false)
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-medium transition-colors"
+                  className="w-full flex items-center justify-start gap-2 px-3 py-2.5 text-xs font-medium text-left transition-colors"
                   style={{
                     background: sortBy === option.key ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
                     color: isDarkMode ? '#fff' : '#1f2937'
                   }}
+                  onMouseEnter={(e) => {
+                    if (sortBy !== option.key) {
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (sortBy !== option.key) {
+                      e.currentTarget.style.background = 'transparent'
+                    }
+                  }}
                 >
-                  <span>{option.icon}</span>
-                  <span>{option.label}</span>
+                  <span className="flex-shrink-0">{option.icon}</span>
+                  <span className="flex-1 text-left">{option.label}</span>
                 </button>
               ))}
             </div>
@@ -251,14 +388,24 @@ export default function MobileSuggestionsEnhanced({
                   setSelectedStyle(null)
                   setShowStyleMenu(false)
                 }}
-                className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-medium"
+                className="w-full flex items-center justify-start gap-2 px-3 py-2.5 text-xs font-medium text-left"
                 style={{
                   background: !selectedStyle ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
                   color: isDarkMode ? '#fff' : '#1f2937'
                 }}
+                onMouseEnter={(e) => {
+                  if (selectedStyle) {
+                    e.currentTarget.style.background = isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (selectedStyle) {
+                    e.currentTarget.style.background = 'transparent'
+                  }
+                }}
               >
-                <span>✨</span>
-                <span>Tous les styles</span>
+                <span className="flex-shrink-0">✨</span>
+                <span className="flex-1 text-left">Tous les styles</span>
               </button>
               {styles.map(style => (
                 <button
@@ -267,14 +414,24 @@ export default function MobileSuggestionsEnhanced({
                     setSelectedStyle(style.key)
                     setShowStyleMenu(false)
                   }}
-                  className="w-full flex items-center gap-2 px-3 py-2.5 text-xs font-medium transition-colors"
+                  className="w-full flex items-center justify-start gap-2 px-3 py-2.5 text-xs font-medium text-left transition-colors"
                   style={{
                     background: selectedStyle === style.key ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
                     color: isDarkMode ? '#fff' : '#1f2937'
                   }}
+                  onMouseEnter={(e) => {
+                    if (selectedStyle !== style.key) {
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (selectedStyle !== style.key) {
+                      e.currentTarget.style.background = 'transparent'
+                    }
+                  }}
                 >
-                  <span>{style.emoji}</span>
-                  <span>{style.label}</span>
+                  <span className="flex-shrink-0">{style.emoji}</span>
+                  <span className="flex-1 text-left">{style.label}</span>
                 </button>
               ))}
             </div>
@@ -449,17 +606,29 @@ export default function MobileSuggestionsEnhanced({
                     {item.description}
                   </p>
 
-                  {/* Quartier */}
-                  {item.zone && (
-                    <div className="flex items-center gap-1">
-                      <MapPin size={12} className="text-white/90 drop-shadow-md" />
-                      <span className="text-xs text-white/90 drop-shadow-md" style={{
-                        textShadow: '0 1px 3px rgba(0, 0, 0, 0.6)'
+                  {/* Quartier et Distance */}
+                  <div className="flex items-center gap-2 flex-wrap">
+                    {item.zone && (
+                      <div className="flex items-center gap-1">
+                        <MapPin size={12} className="text-white/90 drop-shadow-md" />
+                        <span className="text-xs text-white/90 drop-shadow-md" style={{
+                          textShadow: '0 1px 3px rgba(0, 0, 0, 0.6)'
+                        }}>
+                          {item.zone}
+                        </span>
+                      </div>
+                    )}
+                    {sortBy === 'distance' && item.distance && item.distance < 999 && (
+                      <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md" style={{
+                        background: 'rgba(59, 130, 246, 0.8)',
+                        backdropFilter: 'blur(8px)'
                       }}>
-                        {item.zone}
-                      </span>
-                    </div>
-                  )}
+                        <span className="text-[10px] font-bold text-white">
+                          📍 {item.distance.toFixed(1)} km
+                        </span>
+                      </div>
+                    )}
+                  </div>
 
                   {/* Note et Prix */}
                   <div className="flex items-center justify-between">
@@ -504,8 +673,42 @@ export default function MobileSuggestionsEnhanced({
         })}
       </div>
 
+      {/* Bouton Afficher plus / Afficher moins */}
+      {hasMore && (
+        <div className="px-4 mt-6 mb-4">
+          <button
+            onClick={handleShowMore}
+            className="w-full py-4 rounded-2xl text-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95"
+            style={{
+              background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+              color: 'white',
+              boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)',
+              border: '2px solid rgba(255, 255, 255, 0.2)'
+            }}
+          >
+            ✨ Afficher plus
+          </button>
+        </div>
+      )}
+
+      {isShowingAll && allData.length > displayLimit && (
+        <div className="px-4 mt-4 mb-4">
+          <button
+            onClick={handleShowLess}
+            className="w-full py-3 rounded-2xl text-sm font-semibold transition-all duration-300 hover:scale-105 active:scale-95"
+            style={{
+              background: isDarkMode ? 'rgba(55, 65, 81, 0.6)' : 'rgba(243, 244, 246, 0.8)',
+              color: isDarkMode ? 'white' : '#374151',
+              border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`
+            }}
+          >
+            ⬆️ Afficher moins
+          </button>
+        </div>
+      )}
+
       {/* Message si aucun résultat */}
-      {data.length === 0 && (
+      {allData.length === 0 && (
         <div className="text-center py-12 px-4">
           <p style={{ color: isDarkMode ? '#9ca3af' : '#6b7280' }} className="text-sm">
             Aucun résultat trouvé

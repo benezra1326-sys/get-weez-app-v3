@@ -7,15 +7,24 @@ import { useTheme } from '../../contexts/ThemeContextSimple'
  * Bouton flottant discret pour accéder au chat depuis n'importe quelle page
  * Apparaît dès qu'on sort de l'espace chat, même sur l'accueil après scroll
  */
-const ChatFloatingButton = () => {
+const ChatFloatingButton = ({ onOpenChat }) => {
   const router = useRouter()
   const { isDarkMode } = useTheme()
   const [isVisible, setIsVisible] = useState(false)
   const [isExpanded, setIsExpanded] = useState(false)
   const [hasAnimated, setHasAnimated] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
+    // Détecter si on est en mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024)
+    }
+    
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+
     // Gérer le scroll pour afficher le bouton après avoir scrollé
     const handleScroll = () => {
       const scrollPosition = window.scrollY
@@ -34,6 +43,7 @@ const ChatFloatingButton = () => {
     handleScroll()
 
     return () => {
+      window.removeEventListener('resize', checkMobile)
       window.removeEventListener('scroll', handleScroll)
     }
   }, [])
@@ -52,13 +62,21 @@ const ChatFloatingButton = () => {
   }, [router.pathname, hasScrolled, hasAnimated])
 
   const handleClick = () => {
-    // Si on est déjà sur la page d'accueil, scroller vers le chat
-    if (router.pathname === '/') {
+    // Si on est sur mobile et sur la page d'accueil, ouvrir directement le chat
+    if (isMobile && router.pathname === '/') {
+      // Appeler la fonction pour ouvrir le chat mobile
+      if (onOpenChat) {
+        onOpenChat()
+      } else {
+        // Fallback : émettre un événement personnalisé
+        window.dispatchEvent(new CustomEvent('openMobileChat'))
+      }
+    } else if (router.pathname === '/') {
+      // Sur desktop, scroller vers le chat
       const chatElement = document.querySelector('main')
       if (chatElement) {
         chatElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
       }
-      // Aussi scroller vers le haut pour voir le chat
       window.scrollTo({ top: 0, behavior: 'smooth' })
     } else {
       // Sinon rediriger vers l'accueil
@@ -241,7 +259,7 @@ const ChatFloatingButton = () => {
                   textShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
                 }}
               >
-                {router.pathname === '/' ? 'Retour au chat' : 'Ouvrir le chat'}
+                {router.pathname === '/' ? 'Ouvrir le chat' : 'Accéder au chat'}
               </span>
             )}
           </div>

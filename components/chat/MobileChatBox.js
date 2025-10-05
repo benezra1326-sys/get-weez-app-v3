@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { X, Send, MapPin, Loader2, History } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import MessageBubble from './MessageBubble'
@@ -28,6 +29,35 @@ export default function MobileChatBox({
   useEffect(() => {
     console.log('📨 MobileChatBox - Messages reçus:', messages.length, messages)
   }, [messages])
+
+  // Gérer l'ouverture/fermeture du chat - Cacher le header et footer du site
+  useEffect(() => {
+    if (isOpen) {
+      // Ajouter une classe au body pour cacher le header/footer
+      document.body.classList.add('mobile-chat-open')
+      // Bloquer le scroll du body
+      document.body.style.overflow = 'hidden'
+      document.body.style.position = 'fixed'
+      document.body.style.width = '100%'
+      document.body.style.height = '100%'
+    } else {
+      // Retirer la classe et débloquer le scroll
+      document.body.classList.remove('mobile-chat-open')
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.height = ''
+    }
+    
+    // Cleanup au démontage
+    return () => {
+      document.body.classList.remove('mobile-chat-open')
+      document.body.style.overflow = ''
+      document.body.style.position = ''
+      document.body.style.width = ''
+      document.body.style.height = ''
+    }
+  }, [isOpen])
 
   // Détecter si l'utilisateur a scrollé vers le haut
   const handleScroll = () => {
@@ -98,7 +128,8 @@ export default function MobileChatBox({
 
   if (!isOpen) return null
 
-  return (
+  // Rendre via Portal pour éviter d'être masqué par le CSS parent
+  return typeof window !== 'undefined' ? createPortal(
     <>
       <style jsx>{`
         @keyframes slide-up {
@@ -126,7 +157,7 @@ export default function MobileChatBox({
 
       {/* Chat Box - Page dédiée plein écran */}
       <div 
-        className="chat-box-container fixed inset-0 z-[101]"
+        className="chat-box-container"
         style={{
           background: isDarkMode 
             ? 'linear-gradient(135deg, rgba(10, 10, 15, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
@@ -135,19 +166,29 @@ export default function MobileChatBox({
           display: 'flex',
           flexDirection: 'column',
           height: '100vh',
-          maxHeight: '100vh',
+          height: '100dvh',
+          width: '100vw',
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          zIndex: 101,
           overflow: 'hidden'
         }}
       >
-        {/* Header avec bouton historique, fermer et géolocalisation */}
+        {/* Header FIXE en haut */}
         <div 
           className="flex items-center justify-between p-4 border-b"
           style={{
             borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)',
             background: isDarkMode 
-              ? 'rgba(31, 41, 55, 0.8)'
-              : 'rgba(255, 255, 255, 0.95)',
-            backdropFilter: 'blur(10px)'
+              ? 'rgba(31, 41, 55, 0.98)'
+              : 'rgba(255, 255, 255, 0.98)',
+            backdropFilter: 'blur(10px)',
+            flexShrink: 0,
+            minHeight: '60px',
+            maxHeight: '60px'
           }}
         >
           {/* Bouton Historique */}
@@ -166,10 +207,14 @@ export default function MobileChatBox({
 
           <div className="flex-1 flex flex-col items-center justify-center">
             <h3 
-              className={`font-black text-xl ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+              className="font-black text-xl"
               style={{
                 fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
-                letterSpacing: '-0.02em'
+                letterSpacing: '-0.02em',
+                background: 'linear-gradient(135deg, #8B5CF6 0%, #6366f1 50%, #3b82f6 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
               }}
             >
               💬 Chat Gliitz
@@ -217,7 +262,7 @@ export default function MobileChatBox({
           </div>
         </div>
 
-        {/* Messages - Zone scrollable */}
+        {/* Messages - Zone scrollable au milieu */}
         <div 
           ref={messagesContainerRef}
           onScroll={handleScroll}
@@ -226,9 +271,11 @@ export default function MobileChatBox({
             overflowY: 'auto',
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
-            flex: '1 1 0',
+            flex: '1 1 auto',
             minHeight: 0,
-            maxHeight: '100%'
+            height: 'calc(100vh - 180px)',
+            height: 'calc(100dvh - 180px)',
+            touchAction: 'pan-y'
           }}
         >
           {messages.length === 0 ? (
@@ -275,70 +322,91 @@ export default function MobileChatBox({
         {showScrollButton && (
           <button
             onClick={scrollToBottom}
-            className="absolute bottom-32 right-4 p-3 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
+            className="absolute right-4 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
             style={{
-              background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.9), rgba(99, 102, 241, 0.9))',
-              backdropFilter: 'blur(10px)'
+              background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.95), rgba(99, 102, 241, 0.95))',
+              backdropFilter: 'blur(10px)',
+              bottom: 'calc(130px + env(safe-area-inset-bottom, 20px))',
+              boxShadow: '0 4px 20px rgba(168, 85, 247, 0.5)'
             }}
           >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
               <path d="M12 5v14M19 12l-7 7-7-7"/>
             </svg>
           </button>
         )}
 
-        {/* Input Zone - En bas du conteneur, toujours visible */}
+        {/* Input Zone FIXE en bas - Plus haute */}
         <div 
-          className="p-4 border-t"
+          className="p-5 border-t"
           style={{
             borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)',
             background: isDarkMode 
               ? 'rgba(31, 41, 55, 0.98)'
               : 'rgba(255, 255, 255, 0.98)',
             backdropFilter: 'blur(20px)',
+            boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)',
+            paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
             flexShrink: 0,
-            width: '100%',
-            boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)'
+            minHeight: '110px'
           }}
         >
-          <div className="flex items-end gap-2">
+          <div className="flex items-center gap-3">
             <div className="flex-1">
               <textarea
                 ref={textareaRef}
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
-                onFocus={() => {
-                  // Ne rien faire, laisser le comportement natif
+                onFocus={(e) => {
+                  // S'assurer que l'input reste visible
+                  setTimeout(() => {
+                    if (e.target) {
+                      e.target.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+                    }
+                  }, 300)
                 }}
                 placeholder="Écrivez votre message..."
-                className="w-full px-4 py-3 rounded-2xl resize-none focus:outline-none chat-input"
+                className="w-full px-5 py-4 rounded-2xl resize-none focus:outline-none chat-input"
                 style={{
                   background: isDarkMode 
                     ? 'rgba(55, 65, 81, 0.8)' 
                     : 'rgba(243, 244, 246, 0.8)',
                   color: isDarkMode ? '#fff' : '#1f2937',
                   border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'}`,
-                  maxHeight: '60px',
-                  minHeight: '48px'
+                  maxHeight: '80px',
+                  minHeight: '60px',
+                  height: '60px',
+                  fontSize: '16px',
+                  lineHeight: '1.5'
                 }}
-                rows={1}
+                rows={2}
               />
             </div>
             
             <button
               onClick={handleSend}
               disabled={!input.trim() || isLoading}
-              className="p-3 rounded-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 flex-shrink-0"
+              className="rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 flex-shrink-0"
               style={{
                 background: 'linear-gradient(135deg, #a855f7, #6366f1)',
-                boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)'
+                boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)',
+                width: '60px',
+                height: '60px',
+                minWidth: '60px',
+                minHeight: '60px',
+                maxWidth: '60px',
+                maxHeight: '60px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: 0
               }}
             >
               {isLoading ? (
-                <Loader2 size={20} className="animate-spin text-white" />
+                <Loader2 size={24} className="animate-spin text-white" />
               ) : (
-                <Send size={20} className="text-white" />
+                <Send size={24} className="text-white" />
               )}
             </button>
           </div>
@@ -354,7 +422,8 @@ export default function MobileChatBox({
           )}
         </div>
       </div>
-    </>
-  )
+    </>,
+    document.body
+  ) : null
 }
 
