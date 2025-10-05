@@ -79,25 +79,28 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
 
   const profileItems = [
     {
-      title: "Mon Profil",
+      title: "🙋 Mon Profil",
       icon: User,
       href: "/account#profile",
-      description: "Informations personnelles"
+      description: "Informations personnelles",
+      color: "text-blue-500"
     },
     {
-      title: "Notifications",
+      title: "🔔 Notifications",
       icon: Bell,
       href: "/account#notifications",
-      description: "Gérer vos alertes"
+      description: "Gérer vos alertes",
+      color: "text-green-500"
     },
     {
-      title: "Favoris",
+      title: "❤️ Favoris",
       icon: Heart,
       href: "/account#favorites",
-      description: "Vos endroits préférés"
+      description: "Vos endroits préférés",
+      color: "text-red-500"
     },
     {
-      title: "Historique Chat",
+      title: "💬 Historique Chat",
       icon: Users,
       href: "/account#chat-history",
       description: "Vos conversations"
