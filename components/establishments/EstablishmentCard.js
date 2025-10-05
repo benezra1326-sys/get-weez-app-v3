@@ -115,29 +115,17 @@ export default function EstablishmentCard({ establishment, user, onReserve, onSe
             </div>
           
           <div className="banner-buttons">
-                <button 
+            <button 
               onClick={(e) => {
                 e.stopPropagation()
                 const message = `Je souhaite réserver une table chez ${establishment.name}`
-                if (onSendMessage) {
-                  onSendMessage(message)
-                  window.scrollTo({ top: 0, behavior: 'smooth' })
-                } else {
-                  window.location.href = `/?message=${encodeURIComponent(message)}`
-                }
+                window.location.href = `/?message=${encodeURIComponent(message)}`
               }}
-              className="banner-button secondary"
-              onClick={handleInfo}
-            >
-              Plus d'infos
-            </button>
-            <button 
               className="banner-button primary"
-              onClick={() => handleReserve(establishment)}
             >
               Réserver
             </button>
-        </div>
+          </div>
         </div>
       </div>
     </div>

@@ -39,7 +39,7 @@ export default function EventCard({ event }) {
   return (
     <div 
       className="card-premium overflow-hidden animate-fade-in animate-hover-lift group transition-all duration-300 md:hover:scale-105 md:hover:shadow-2xl md:hover:rotate-1"
-      onClick={handleCardClick}
+      onClick={() => window.location.href = `/event/${event.id}`}
       style={{ 
         backgroundColor: 'var(--color-bg-secondary)',
         border: '1px solid var(--color-border)',

@@ -25,7 +25,7 @@ export default function ServiceCard({ service, user, onReserve, onRequest, onSen
   return (
     <div 
       className="uniform-banner"
-      onClick={handleCardClick}
+      onClick={() => window.location.href = `/service/${service.id}`}
       style={{ cursor: 'pointer' }}
     >
       {/* Image de fond */}
@@ -66,15 +66,13 @@ export default function ServiceCard({ service, user, onReserve, onRequest, onSen
           </div>
           
           <div className="banner-buttons">
-                <button 
-                  className="banner-button secondary"
-                  onClick={handleInfo}
-                >
-                  Plus d'infos
-                </button>
             <button 
+              onClick={(e) => {
+                e.stopPropagation()
+                const message = `Je souhaite réserver ${service.name}`
+                window.location.href = `/?message=${encodeURIComponent(message)}`
+              }}
               className="banner-button primary"
-              onClick={() => handleReserve(service)}
             >
               Réserver
             </button>
