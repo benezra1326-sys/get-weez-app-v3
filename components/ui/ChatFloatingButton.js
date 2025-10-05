@@ -150,12 +150,13 @@ const ChatFloatingButton = () => {
         className={`chat-floating-button ${hasAnimated ? 'animated' : ''}`}
         style={{
           position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          zIndex: 99999,
+          bottom: '20px',
+          right: '20px',
+          zIndex: 999999,
           pointerEvents: 'auto',
           willChange: 'transform',
-          transform: 'translateZ(0)'
+          transform: 'translateZ(0)',
+          isolation: 'isolate'
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
