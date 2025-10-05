@@ -181,37 +181,48 @@ html, body {
 /* Fix mobile layout issues */
 @media (max-width: 1023px) {
   html, body {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
     overflow-y: auto !important;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
     height: auto !important;
     min-height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
   
   #__next {
-    width: 100%;
-    max-width: 100%;
-    overflow-x: hidden;
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
     overflow-y: auto !important;
     height: auto !important;
     min-height: 100vh;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
   
   /* Force full width on mobile */
   .min-h-screen {
     width: 100% !important;
-    max-width: 100% !important;
+    max-width: 100vw !important;
     height: auto !important;
     min-height: 100vh !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
   }
   
-  /* Remove any potential margins/padding causing black bars */
+  /* Remove any potential margins/padding causing horizontal scroll */
   * {
     margin-left: 0 !important;
     margin-right: 0 !important;
+    box-sizing: border-box !important;
+    max-width: 100vw !important;
   }
   
   /* Correction spéciale pour mobile chat container */
@@ -220,6 +231,10 @@ html, body {
     height: auto !important;
     overflow: visible !important;
     min-height: auto !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
   /* Forcer le scroll sur tous les conteneurs mobiles */
@@ -227,13 +242,29 @@ html, body {
     height: auto !important;
     min-height: 100vh !important;
     overflow-y: auto !important;
+    overflow-x: hidden !important;
     -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
   /* S'assurer que les sections sont scrollables */
   section, div {
     overflow: visible !important;
     height: auto !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+  
+  /* Empêcher le scroll horizontal sur tous les éléments */
+  .grid, .flex, .container, .wrapper {
+    width: 100% !important;
+    max-width: 100vw !important;
+    overflow-x: hidden !important;
+    box-sizing: border-box !important;
   }
 }
 
@@ -1319,6 +1350,7 @@ body {
   line-height: 0;
   font-size: 0;
   margin-bottom: 16px;
+  background: transparent !important; /* Supprimer tout background par défaut */
 }
 
 .uniform-banner:hover {

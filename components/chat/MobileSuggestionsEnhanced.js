@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { Grid3x3, LayoutGrid, RectangleVertical, MapPin, Calendar, Utensils } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import { useRouter } from 'next/router'
+import { luxuryEstablishments, luxuryServices, luxuryEvents } from '../../data/marbella-data'
 
 /**
  * Suggestions améliorées pour mobile avec vrais établissements, services et événements
@@ -19,31 +20,50 @@ export default function MobileSuggestionsEnhanced({
   const [activeTab, setActiveTab] = useState('all') // 'all', 'establishments', 'services', 'events', 'luxe'
 
   const getGridCols = () => {
-    return columns === 1 ? 'grid-cols-1' : 'grid-cols-2'
+    // Responsive grid comme sur desktop
+    if (columns === 1) return 'grid-cols-1'
+    if (columns === 2) return 'grid-cols-2'
+    return 'grid-cols-2' // Par défaut 2 colonnes
   }
 
   // Sélectionner les données à afficher selon l'onglet actif
   const getData = () => {
     switch(activeTab) {
       case 'all': 
-        // Mélanger tous les types
+        // Mélanger tous les types - même logique que desktop
         const all = [
-          ...establishments.slice(0, 2).map(e => ({...e, type: 'establishment'})),
+          ...establishments.slice(0, 3).map(e => ({...e, type: 'establishment'})),
           ...services.slice(0, 2).map(s => ({...s, type: 'service'})),
           ...events.slice(0, 2).map(ev => ({...ev, type: 'event'}))
         ]
-        return all.slice(0, 6)
-      case 'establishments': return establishments.slice(0, 6).map(e => ({...e, type: 'establishment'}))
-      case 'services': return services.slice(0, 6).map(s => ({...s, type: 'service'}))
-      case 'events': return events.slice(0, 6).map(ev => ({...ev, type: 'event'}))
+        return all.slice(0, 8) // Plus d'éléments comme sur desktop
+      case 'establishments': return establishments.slice(0, 8).map(e => ({...e, type: 'establishment'}))
+      case 'services': return services.slice(0, 8).map(s => ({...s, type: 'service'}))
+      case 'events': return events.slice(0, 8).map(ev => ({...ev, type: 'event'}))
       case 'luxe':
-        // Filtrer les établissements/services luxe
+        // Utiliser les données de luxe dédiées + filtrer les existantes
         const luxeItems = [
-          ...establishments.filter(e => e.tags?.includes('luxe') || e.price_level >= 3).slice(0, 3).map(e => ({...e, type: 'establishment'})),
-          ...services.filter(s => s.tags?.includes('luxe') || s.price_level >= 3).slice(0, 3).map(s => ({...s, type: 'service'}))
+          ...luxuryEstablishments.map(e => ({...e, type: 'establishment'})),
+          ...luxuryServices.map(s => ({...s, type: 'service'})),
+          ...luxuryEvents.map(ev => ({...ev, type: 'event'})),
+          // Ajouter aussi les éléments luxe des données principales
+          ...establishments.filter(e => 
+            e.tags?.includes('luxe') || 
+            e.price_level >= 4 || 
+            e.name?.toLowerCase().includes('luxury') ||
+            e.name?.toLowerCase().includes('premium') ||
+            e.name?.toLowerCase().includes('vip')
+          ).slice(0, 2).map(e => ({...e, type: 'establishment'})),
+          ...services.filter(s => 
+            s.tags?.includes('luxe') || 
+            s.price_level >= 4 ||
+            s.name?.toLowerCase().includes('luxury') ||
+            s.name?.toLowerCase().includes('premium') ||
+            s.name?.toLowerCase().includes('vip')
+          ).slice(0, 2).map(s => ({...s, type: 'service'}))
         ]
-        return luxeItems.slice(0, 6)
-      default: return establishments.slice(0, 6).map(e => ({...e, type: 'establishment'}))
+        return luxeItems.slice(0, 8)
+      default: return establishments.slice(0, 8).map(e => ({...e, type: 'establishment'}))
     }
   }
 

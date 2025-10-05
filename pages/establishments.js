@@ -5,6 +5,7 @@ import MobileMenu from '../components/layout/MobileMenu'
 import EstablishmentList from '../components/establishments/EstablishmentList'
 import RestaurantStyleFilter from '../components/establishments/RestaurantStyleFilter'
 import CategoryFilter from '../components/establishments/CategoryFilter'
+import MobileFilters from '../components/mobile/MobileFilters'
 import { EstablishmentSearchBar } from '../components/ui/SearchBar'
 import { useToast } from '../components/ui/Toast'
 import ChatFloatingButton from '../components/ui/ChatFloatingButton'
@@ -79,6 +80,13 @@ export default function Establishments({ user, setUser }) {
   const handleStyleChange = (styleKey) => {
     setSelectedStyle(styleKey)
     filterEstablishments(searchQuery, styleKey)
+  }
+
+  const handleClearFilters = () => {
+    setSearchQuery('')
+    setSelectedStyle(null)
+    setSelectedCategory(null)
+    setFilteredEstablishments(establishments)
   }
 
   const filterEstablishments = (query, style) => {
@@ -250,8 +258,20 @@ export default function Establishments({ user, setUser }) {
               </div>
             </div>
 
-          {/* Section des filtres - Améliorée */}
-          <div className="mb-6 relative z-50">
+          {/* Filtres mobiles */}
+          <MobileFilters
+            categories={establishmentStats?.categories || {}}
+            selectedCategory={selectedCategory}
+            onCategoryChange={setSelectedCategory}
+            styles={restaurantStyles}
+            selectedStyle={selectedStyle}
+            onStyleChange={handleStyleChange}
+            onClearFilters={handleClearFilters}
+            showFilters={true}
+          />
+
+          {/* Section des filtres desktop - Cachée sur mobile */}
+          <div className="mb-6 relative z-50 hidden md:block">
             <div 
               className="relative overflow-hidden rounded-2xl p-6 border transition-all duration-300 hover:shadow-2xl"
               style={{

@@ -1055,6 +1055,26 @@ body.keyboard-open .mobile-messages-container {
   body.light {
     background: #ffffff !important;
   }
+  
+  /* Supprimer les backgrounds gris des bannières */
+  .uniform-banner,
+  .establishment-card,
+  .service-card,
+  .event-card {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+  
+  /* S'assurer que les images couvrent bien la bannière */
+  .uniform-banner .banner-image {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    z-index: 1 !important;
+  }
 
   .uniform-banner .banner-content {
     padding: 20px !important;

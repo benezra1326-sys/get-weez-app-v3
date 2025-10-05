@@ -21,6 +21,10 @@ export const establishments = [
     },
     rating: 4.8,
     price_range: "€€€€",
+    price_level: 4,
+    tags: ["luxe", "premium", "japonais", "vue mer"],
+    zone: "Puerto Banús",
+    sponsored: true,
     specialties: ["Sushi", "Sashimi", "Tempura", "Wagyu", "Miso Soup", "Edamame", "Toro", "Uni", "Truffle", "Foie Gras"],
     dishes: [
       "Sushi Omakase (€120)",
@@ -1273,5 +1277,138 @@ export const evgServices = {
       whatsapp: "+34 952 77 48 00",
       website: "https://getweez.com/evg"
     }
-  }
+  },
+
+  // Établissements de luxe supplémentaires
+  luxuryEstablishments: [
+    {
+      id: "luxury-1",
+      name: "The Marbella Club Hotel",
+      type: "Hôtel",
+      category: "Luxe",
+      description: "Hôtel de luxe légendaire avec spa et plage privée",
+      image_url: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&h=400&fit=crop&q=80",
+      address: "Bulevar Príncipe Alfonso de Hohenlohe, s/n, 29602 Marbella",
+      rating: 4.9,
+      price_level: 5,
+      tags: ["luxe", "premium", "vip", "spa", "plage privée"],
+      zone: "Golden Mile",
+      sponsored: true,
+      specialties: ["Spa de luxe", "Plage privée", "Restaurant gastronomique", "Suite présidentielle"]
+    },
+    {
+      id: "luxury-2",
+      name: "Puente Romano Beach Resort",
+      type: "Resort",
+      category: "Luxe",
+      description: "Resort de luxe avec villas privées et restaurants étoilés",
+      image_url: "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800&h=400&fit=crop&q=80",
+      address: "Bulevar Príncipe Alfonso de Hohenlohe, 29602 Marbella",
+      rating: 4.8,
+      price_level: 5,
+      tags: ["luxe", "premium", "vip", "villas", "restaurants étoilés"],
+      zone: "Golden Mile",
+      sponsored: true,
+      specialties: ["Villas privées", "Restaurants étoilés", "Spa Six Senses", "Beach Club"]
+    },
+    {
+      id: "luxury-3",
+      name: "Cipriani Marbella",
+      type: "Restaurant",
+      category: "Italien",
+      description: "Restaurant italien de luxe avec terrasse sur la mer",
+      image_url: "https://images.unsplash.com/photo-1414235077-531286732f1a?w=800&h=400&fit=crop&q=80",
+      address: "Bulevar Príncipe Alfonso de Hohenlohe, 29602 Marbella",
+      rating: 4.7,
+      price_level: 4,
+      tags: ["luxe", "premium", "italien", "vue mer"],
+      zone: "Puerto Banús",
+      sponsored: true,
+      specialties: ["Pasta fraîche", "Risotto aux truffes", "Viande Wagyu", "Vins rares"]
+    }
+  ],
+
+  // Services de luxe supplémentaires
+  luxuryServices: [
+    {
+      id: "luxury-service-1",
+      name: "Yacht Charter Premium",
+      type: "Service",
+      category: "Transport",
+      description: "Location de yachts de luxe avec équipage complet",
+      image_url: "https://images.unsplash.com/photo-1540962351504-03099e0a754b?w=800&h=400&fit=crop&q=80",
+      rating: 4.9,
+      price_level: 5,
+      tags: ["luxe", "premium", "vip", "yacht", "équipage"],
+      zone: "Puerto Banús",
+      sponsored: true,
+      specialties: ["Yachts 20-50m", "Équipage professionnel", "Cuisine à bord", "Activités nautiques"]
+    },
+    {
+      id: "luxury-service-2",
+      name: "Spa Privé VIP",
+      type: "Service",
+      category: "Wellness",
+      description: "Spa privé avec thérapeutes personnels",
+      image_url: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&h=400&fit=crop&q=80",
+      rating: 4.8,
+      price_level: 4,
+      tags: ["luxe", "premium", "spa", "privé", "vip"],
+      zone: "Golden Mile",
+      sponsored: true,
+      specialties: ["Massages privés", "Soins visage", "Thérapies alternatives", "Wellness coaching"]
+    },
+    {
+      id: "luxury-service-3",
+      name: "Concierge VIP",
+      type: "Service",
+      category: "Concierge",
+      description: "Service de concierge personnel 24/7",
+      image_url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=400&fit=crop&q=80",
+      rating: 4.9,
+      price_level: 5,
+      tags: ["luxe", "premium", "vip", "concierge", "24/7"],
+      zone: "Toute Marbella",
+      sponsored: true,
+      specialties: ["Réservations exclusives", "Transport privé", "Événements privés", "Achats personnalisés"]
+    }
+  ],
+
+  // Événements de luxe
+  luxuryEvents: [
+    {
+      id: "luxury-event-1",
+      name: "Soirée VIP Puerto Banús",
+      type: "VIP",
+      category: "Soirée",
+      description: "Soirée exclusive dans les clubs les plus sélects de Puerto Banús",
+      image_url: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=800&h=400&fit=crop&q=80",
+      date: "2024-10-15",
+      time: "22:00",
+      location: "Puerto Banús",
+      rating: 4.8,
+      price_level: 5,
+      tags: ["luxe", "premium", "vip", "soirée", "exclusif"],
+      zone: "Puerto Banús",
+      sponsored: true,
+      specialties: ["Accès VIP", "Bouteilles de luxe", "DJ exclusif", "Transport privé"]
+    },
+    {
+      id: "luxury-event-2",
+      name: "Dégustation Vins Rares",
+      type: "VIP",
+      category: "Dégustation",
+      description: "Dégustation de vins rares avec sommelier privé",
+      image_url: "https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=800&h=400&fit=crop&q=80",
+      date: "2024-10-20",
+      time: "19:00",
+      location: "Bodega Privée",
+      rating: 4.9,
+      price_level: 4,
+      tags: ["luxe", "premium", "vins", "dégustation", "privé"],
+      zone: "Golden Mile",
+      sponsored: true,
+      specialties: ["Vins millésimés", "Sommelier privé", "Fromages d'exception", "Caviar"]
+    }
+  ]
 }
