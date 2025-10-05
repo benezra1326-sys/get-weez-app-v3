@@ -134,7 +134,9 @@ export default function MobileChatBox({
           backdropFilter: 'blur(20px)',
           display: 'flex',
           flexDirection: 'column',
-          height: '100vh'
+          height: '100vh',
+          maxHeight: '100vh',
+          overflow: 'hidden'
         }}
       >
         {/* Header avec bouton historique, fermer et géolocalisation */}
@@ -225,7 +227,8 @@ export default function MobileChatBox({
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
             flex: '1 1 0',
-            minHeight: 0
+            minHeight: 0,
+            maxHeight: '100%'
           }}
         >
           {messages.length === 0 ? (
