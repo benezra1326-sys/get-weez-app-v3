@@ -224,8 +224,8 @@ export default function MobileChatBox({
             overflowY: 'auto',
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
-            paddingBottom: '120px', // Plus d'espace pour la barre de saisie
-            flex: '1 1 auto'
+            flex: '1 1 0',
+            minHeight: 0
           }}
         >
           {messages.length === 0 ? (
@@ -284,7 +284,7 @@ export default function MobileChatBox({
           </button>
         )}
 
-        {/* Input Zone - En bas du conteneur */}
+        {/* Input Zone - En bas du conteneur, toujours visible */}
         <div 
           className="p-4 border-t"
           style={{
@@ -294,7 +294,8 @@ export default function MobileChatBox({
               : 'rgba(255, 255, 255, 0.98)',
             backdropFilter: 'blur(20px)',
             flexShrink: 0,
-            width: '100%'
+            width: '100%',
+            boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)'
           }}
         >
           <div className="flex items-end gap-2">
