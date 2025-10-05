@@ -144,19 +144,25 @@ const ChatFloatingButton = () => {
         .pulse-ring {
           animation: pulse-ring 2s ease-in-out infinite;
         }
+
+        /* Z-index très élevé UNIQUEMENT sur mobile */
+        @media (max-width: 1023px) {
+          .chat-floating-button {
+            z-index: 999999 !important;
+          }
+        }
       `}</style>
 
       <div
         className={`chat-floating-button ${hasAnimated ? 'animated' : ''}`}
         style={{
           position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 999999,
+          bottom: '24px',
+          right: '24px',
+          zIndex: 99999,
           pointerEvents: 'auto',
           willChange: 'transform',
-          transform: 'translateZ(0)',
-          isolation: 'isolate'
+          transform: 'translateZ(0)'
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
