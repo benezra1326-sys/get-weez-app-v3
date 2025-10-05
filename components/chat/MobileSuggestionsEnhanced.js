@@ -162,9 +162,9 @@ export default function MobileSuggestionsEnhanced({
       </div>
 
       {/* Options de tri et style - Dropdowns */}
-      <div className="px-4 mb-3 flex gap-2">
+      <div className="px-4 mb-3 flex gap-2" style={{ position: 'relative', zIndex: 100 }}>
         {/* Dropdown Tri */}
-        <div className="relative flex-1">
+        <div className="relative flex-1" style={{ zIndex: showSortMenu ? 9999 : 1 }}>
           <button
             onClick={() => {
               setShowSortMenu(!showSortMenu)
@@ -185,11 +185,13 @@ export default function MobileSuggestionsEnhanced({
           </button>
           
           {showSortMenu && (
-            <div className="absolute top-full left-0 right-0 mt-1 rounded-xl shadow-2xl z-50 overflow-hidden"
+            <div className="absolute top-full left-0 right-0 mt-1 rounded-xl overflow-hidden"
               style={{
                 background: isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)',
                 border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)'}`,
-                backdropFilter: 'blur(20px)'
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+                zIndex: 99999
               }}
             >
               {sortOptions.map(option => (
@@ -214,7 +216,7 @@ export default function MobileSuggestionsEnhanced({
         </div>
 
         {/* Dropdown Style */}
-        <div className="relative flex-1">
+        <div className="relative flex-1" style={{ zIndex: showStyleMenu ? 9999 : 1 }}>
           <button
             onClick={() => {
               setShowStyleMenu(!showStyleMenu)
@@ -235,11 +237,13 @@ export default function MobileSuggestionsEnhanced({
           </button>
           
           {showStyleMenu && (
-            <div className="absolute top-full left-0 right-0 mt-1 rounded-xl shadow-2xl z-50 overflow-hidden"
+            <div className="absolute top-full left-0 right-0 mt-1 rounded-xl overflow-hidden"
               style={{
                 background: isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)',
                 border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)'}`,
-                backdropFilter: 'blur(20px)'
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
+                zIndex: 99999
               }}
             >
               <button
@@ -365,7 +369,7 @@ export default function MobileSuggestionsEnhanced({
         </button>
       </div>
 
-      {/* Grille de bannières - CONTENU RÉORGANISÉ */}
+      {/* Grille de bannières - IMAGE PLEIN ÉCRAN */}
       <div className={`grid ${columns === 1 ? 'grid-cols-1' : 'grid-cols-2'} gap-3 px-4`}>
         {data.map((item) => {
           const badge = getItemBadge(item)
@@ -376,94 +380,109 @@ export default function MobileSuggestionsEnhanced({
               className="group relative overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 rounded-2xl"
               style={{
                 height: columns === 1 ? '280px' : '260px',
-                background: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(255, 255, 255, 0.95)',
                 border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`,
                 boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
               }}
             >
-              {/* Image en haut */}
-              <div className="relative w-full h-32 overflow-hidden">
-                <img 
-                  src={item.image_url || `https://images.unsplash.com/photo-1414235077-531286732f1a?w=600&h=400&fit=crop&q=80`}
-                  alt={item.name}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/50" />
-                
-                {/* Badge en haut à droite */}
-                {badge && (
-                  <div className="absolute top-2 right-2 px-2 py-1 rounded-lg text-xs font-bold shadow-lg"
-                    style={{
-                      background: badge.color,
-                      color: badge.text === 'VIP' ? '#000' : '#fff'
-                    }}
-                  >
-                    {badge.text}
-                  </div>
-                )}
-              </div>
+              {/* Image en arrière-plan - TOUTE LA BANNIÈRE */}
+              <img 
+                src={item.image_url || `https://images.unsplash.com/photo-1414235077-531286732f1a?w=600&h=400&fit=crop&q=80`}
+                alt={item.name}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              
+              {/* Overlay gradient pour lisibilité */}
+              <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/80" />
+              
+              {/* Badge en haut à droite */}
+              {badge && (
+                <div className="absolute top-3 right-3 px-2.5 py-1 rounded-lg text-xs font-bold shadow-lg z-10"
+                  style={{
+                    background: badge.color,
+                    color: badge.text === 'VIP' ? '#000' : '#fff'
+                  }}
+                >
+                  {badge.text}
+                </div>
+              )}
 
-              {/* Contenu en bas */}
-              <div className="p-3 flex flex-col justify-between" style={{ height: 'calc(100% - 128px)' }}>
-                {/* Titre */}
-                <h3 className="font-bold text-left mb-1" style={{
-                  fontSize: columns === 1 ? '16px' : '14px',
-                  color: isDarkMode ? '#fff' : '#1f2937',
-                  lineHeight: '1.2'
-                }}>
-                  {item.name}
-                </h3>
+              {/* Contenu par-dessus l'image */}
+              <div className="absolute inset-0 p-3 flex flex-col justify-between z-10">
+                {/* Espace vide en haut pour le badge */}
+                <div></div>
 
-                {/* Description */}
-                <p className="text-left text-xs mb-2" style={{
-                  color: isDarkMode ? '#d1d5db' : '#6b7280',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                  lineHeight: '1.4'
-                }}>
-                  {item.description}
-                </p>
+                {/* Contenu en bas */}
+                <div className="flex flex-col gap-2">
+                  {/* Titre */}
+                  <h3 className="font-bold text-left text-white drop-shadow-lg" style={{
+                    fontSize: columns === 1 ? '17px' : '15px',
+                    lineHeight: '1.2',
+                    textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)'
+                  }}>
+                    {item.name}
+                  </h3>
 
-                {/* Quartier */}
-                {item.zone && (
-                  <div className="flex items-center gap-1 mb-2">
-                    <MapPin size={12} style={{ color: isDarkMode ? '#9ca3af' : '#6b7280' }} />
-                    <span className="text-xs" style={{ color: isDarkMode ? '#9ca3af' : '#6b7280' }}>
-                      {item.zone}
-                    </span>
-                  </div>
-                )}
+                  {/* Description */}
+                  <p className="text-left text-xs text-white/95 drop-shadow-md" style={{
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    lineHeight: '1.4',
+                    textShadow: '0 1px 4px rgba(0, 0, 0, 0.6)'
+                  }}>
+                    {item.description}
+                  </p>
 
-                {/* Note et Prix */}
-                <div className="flex items-center justify-between mb-2">
-                  {item.rating && (
+                  {/* Quartier */}
+                  {item.zone && (
                     <div className="flex items-center gap-1">
-                      <Star size={14} className="text-yellow-400" fill="currentColor" />
-                      <span className="text-sm font-bold" style={{ color: isDarkMode ? '#fff' : '#1f2937' }}>
-                        {item.rating}
+                      <MapPin size={12} className="text-white/90 drop-shadow-md" />
+                      <span className="text-xs text-white/90 drop-shadow-md" style={{
+                        textShadow: '0 1px 3px rgba(0, 0, 0, 0.6)'
+                      }}>
+                        {item.zone}
                       </span>
                     </div>
                   )}
-                  {item.price_level && (
-                    <span className="text-sm font-bold text-green-500">
-                      {'€'.repeat(item.price_level)}
-                    </span>
-                  )}
-                </div>
 
-                {/* Bouton Réserver */}
-                <button
-                  onClick={(e) => handleReserve(e, item)}
-                  className="w-full py-2 rounded-lg text-xs font-bold text-white transition-all hover:scale-105"
-                  style={{
-                    background: 'linear-gradient(135deg, #10b981, #059669)',
-                    boxShadow: '0 2px 8px rgba(16, 185, 129, 0.3)'
-                  }}
-                >
-                  📅 Réserver
-                </button>
+                  {/* Note et Prix */}
+                  <div className="flex items-center justify-between">
+                    {item.rating && (
+                      <div className="flex items-center gap-1 px-2 py-1 rounded-lg" style={{
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        backdropFilter: 'blur(8px)'
+                      }}>
+                        <Star size={13} className="text-yellow-400" fill="currentColor" />
+                        <span className="text-sm font-bold text-white">
+                          {item.rating}
+                        </span>
+                      </div>
+                    )}
+                    {item.price_level && (
+                      <span className="text-sm font-bold text-green-400 px-2 py-1 rounded-lg" style={{
+                        background: 'rgba(0, 0, 0, 0.4)',
+                        backdropFilter: 'blur(8px)',
+                        textShadow: '0 1px 3px rgba(0, 0, 0, 0.6)'
+                      }}>
+                        {'€'.repeat(item.price_level)}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Bouton Réserver */}
+                  <button
+                    onClick={(e) => handleReserve(e, item)}
+                    className="w-full py-2.5 rounded-xl text-xs font-bold text-white transition-all hover:scale-105 active:scale-95"
+                    style={{
+                      background: 'linear-gradient(135deg, #10b981, #059669)',
+                      boxShadow: '0 4px 12px rgba(16, 185, 129, 0.5)',
+                      backdropFilter: 'blur(10px)'
+                    }}
+                  >
+                    📅 Réserver
+                  </button>
+                </div>
               </div>
             </button>
           )
