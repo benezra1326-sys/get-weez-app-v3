@@ -59,6 +59,24 @@ export default function MobileSuggestionsEnhanced({
           ...events.slice(0, 2).map(ev => ({...ev, type: 'event'}))
         ].slice(0, 8)
         break
+      case 'establishments':
+        // Afficher TOUS les établissements, sponsorisés en premier
+        data = establishments
+          .map(e => ({...e, type: 'establishment'}))
+          .sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
+        break
+      case 'services':
+        // Afficher TOUS les services, sponsorisés en premier
+        data = services
+          .map(s => ({...s, type: 'service'}))
+          .sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
+        break
+      case 'events':
+        // Afficher TOUS les événements, sponsorisés en premier
+        data = events
+          .map(ev => ({...ev, type: 'event'}))
+          .sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
+        break
       case 'luxe':
         data = [
           ...luxuryEstablishments.map(e => ({...e, type: 'establishment'})),
@@ -66,8 +84,8 @@ export default function MobileSuggestionsEnhanced({
           ...luxuryEvents.map(ev => ({...ev, type: 'event'})),
           ...establishments.filter(e => 
             e.tags?.includes('luxe') || e.price_level >= 4
-          ).slice(0, 2).map(e => ({...e, type: 'establishment'}))
-        ].slice(0, 8)
+          ).map(e => ({...e, type: 'establishment'}))
+        ].sort((a, b) => (b.sponsored ? 1 : 0) - (a.sponsored ? 1 : 0))
         break
       default:
         data = establishments.slice(0, 8).map(e => ({...e, type: 'establishment'}))
@@ -203,33 +221,36 @@ export default function MobileSuggestionsEnhanced({
         </button>
 
         <button
-          onClick={() => router.push('/establishments')}
-          className="px-2 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
+          onClick={() => setActiveTab('establishments')}
+          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'establishments' ? 'scale-105' : ''}`}
           style={{
-            background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            color: isDarkMode ? '#d1d5db' : '#4b5563'
+            background: activeTab === 'establishments' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            color: activeTab === 'establishments' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
+            boxShadow: activeTab === 'establishments' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
           🏨 Établis.
         </button>
 
         <button
-          onClick={() => router.push('/services')}
-          className="px-2 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
+          onClick={() => setActiveTab('services')}
+          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'services' ? 'scale-105' : ''}`}
           style={{
-            background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            color: isDarkMode ? '#d1d5db' : '#4b5563'
+            background: activeTab === 'services' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            color: activeTab === 'services' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
+            boxShadow: activeTab === 'services' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
           🛍️ Services
         </button>
 
         <button
-          onClick={() => router.push('/events')}
-          className="px-2 py-2 rounded-lg text-xs font-bold transition-all hover:scale-105 active:scale-95"
+          onClick={() => setActiveTab('events')}
+          className={`px-2 py-2 rounded-lg text-xs font-bold transition-all duration-300 ${activeTab === 'events' ? 'scale-105' : ''}`}
           style={{
-            background: isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            color: isDarkMode ? '#d1d5db' : '#4b5563'
+            background: activeTab === 'events' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            color: activeTab === 'events' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
+            boxShadow: activeTab === 'events' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
         >
           🎉 Événem.

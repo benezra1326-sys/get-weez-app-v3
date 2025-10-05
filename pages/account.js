@@ -44,7 +44,7 @@ function AccountContent({ user, setUser }) {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen" style={{ backgroundColor: isDarkMode ? '#0a0a0f' : '#f9fafb' }}>
         <HeaderGliitz 
           user={user} 
           setUser={setUser}
@@ -63,7 +63,7 @@ function AccountContent({ user, setUser }) {
               <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-3">
                 Mon Compte
               </h1>
-              <p className="text-gray-600 text-lg">
+              <p className="text-lg" style={{ color: isDarkMode ? '#9CA3AF' : '#6B7280' }}>
                 Profil et préférences
               </p>
             </div>
@@ -74,12 +74,15 @@ function AccountContent({ user, setUser }) {
               <div className="absolute -top-20" id="scroll-anchor"></div>
               
               {/* Section 1: Mon Profil */}
-              <section id="profile" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="profile" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <User className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Mon Profil</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Mon Profil</h2>
                 </div>
                 <AccountInfo 
                   user={user} 
@@ -89,78 +92,99 @@ function AccountContent({ user, setUser }) {
               </section>
 
               {/* Section 2: Notifications */}
-              <section id="notifications" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="notifications" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Bell className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Notifications</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Notifications</h2>
                 </div>
                 <SimpleNotificationSettings />
               </section>
 
               {/* Section 3: Favoris */}
-              <section id="favorites" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="favorites" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Heart className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Favoris</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Favoris</h2>
                 </div>
                 <Favorites user={user} />
               </section>
 
               {/* Section 4: Historique Chat */}
-              <section id="chat-history" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="chat-history" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Users className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Historique Chat</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Historique Chat</h2>
                 </div>
                 <ChatHistory user={user} />
               </section>
 
               {/* Section 5: Langue */}
-              <section id="language" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="language" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Settings className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Langue</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Langue</h2>
                 </div>
                 <LanguageSettings />
               </section>
 
               {/* Section 6: Paramètres */}
-              <section id="settings" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="settings" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Settings className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Paramètres</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Paramètres</h2>
                 </div>
                 <SimpleSettings />
               </section>
 
               {/* Section 7: Promotions */}
-              <section id="promotions" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="promotions" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Gift className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Promotions</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Promotions</h2>
                 </div>
                 <Promotions user={user} />
               </section>
 
               {/* Section 8: Parrainage */}
-              <section id="referral" className="bg-white rounded-2xl p-6 shadow-lg border border-gray-200">
+              <section id="referral" className="rounded-2xl p-6 shadow-lg border" style={{
+                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
+              }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
                     <Users className="w-5 h-5 text-purple-600" />
                   </div>
-                  <h2 className="text-xl font-bold text-gray-900">Parrainage</h2>
+                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Parrainage</h2>
                 </div>
                 <Referral user={user} />
               </section>
