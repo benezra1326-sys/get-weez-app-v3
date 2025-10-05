@@ -150,9 +150,13 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           onClick={toggleMobileMenu}
           className="lg:hidden p-2 rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
           style={{
-            background: 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.8))',
+            background: isDarkMode 
+              ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.6), rgba(75, 85, 99, 0.8))'
+              : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.8))',
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(209, 213, 219, 0.3)',
+            border: isDarkMode 
+              ? '1px solid rgba(75, 85, 99, 0.5)'
+              : '1px solid rgba(209, 213, 219, 0.3)',
             borderRadius: '8px',
             boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
             minWidth: '36px',
@@ -160,7 +164,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
             flexShrink: 0
           }}
         >
-          <Menu size={18} className="text-gray-700" />
+          <Menu size={18} className={isDarkMode ? 'text-white' : 'text-gray-700'} />
         </button>
         
         {/* Logo Gliitz - Compact */}

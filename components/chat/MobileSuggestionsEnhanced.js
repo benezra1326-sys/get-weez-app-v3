@@ -374,20 +374,20 @@ export default function MobileSuggestionsEnhanced({
         {data.map((item) => {
           const badge = getItemBadge(item)
           return (
-            <button
-              key={item.id}
-              onClick={() => handleCardClick(item)}
+          <button
+            key={item.id}
+            onClick={() => handleCardClick(item)}
               className="group relative overflow-hidden transition-all duration-300 hover:scale-105 active:scale-95 rounded-2xl"
-              style={{
+            style={{
                 height: columns === 1 ? '280px' : '260px',
                 border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`,
                 boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-              }}
-            >
+            }}
+          >
               {/* Image en arrière-plan - TOUTE LA BANNIÈRE */}
-              <img 
-                src={item.image_url || `https://images.unsplash.com/photo-1414235077-531286732f1a?w=600&h=400&fit=crop&q=80`}
-                alt={item.name}
+            <img 
+              src={item.image_url || `https://images.unsplash.com/photo-1414235077-531286732f1a?w=600&h=400&fit=crop&q=80`}
+              alt={item.name}
                 className="absolute inset-0 w-full h-full object-cover"
               />
               
@@ -415,13 +415,13 @@ export default function MobileSuggestionsEnhanced({
                 <div className="flex flex-col gap-2">
                   {/* Titre */}
                   <h3 className="font-bold text-left text-white drop-shadow-lg" style={{
-                    fontSize: columns === 1 ? '17px' : '15px',
+                  fontSize: columns === 1 ? '17px' : '15px',
                     lineHeight: '1.2',
                     textShadow: '0 2px 8px rgba(0, 0, 0, 0.6)'
-                  }}>
-                    {item.name}
-                  </h3>
-
+                }}>
+                  {item.name}
+                </h3>
+                
                   {/* Description */}
                   <p className="text-left text-xs text-white/95 drop-shadow-md" style={{
                     display: '-webkit-box',
@@ -469,7 +469,7 @@ export default function MobileSuggestionsEnhanced({
                       </span>
                     )}
                   </div>
-
+                  
                   {/* Bouton Réserver */}
                   <button
                     onClick={(e) => handleReserve(e, item)}
@@ -482,9 +482,9 @@ export default function MobileSuggestionsEnhanced({
                   >
                     📅 Réserver
                   </button>
-                </div>
               </div>
-            </button>
+            </div>
+          </button>
           )
         })}
       </div>

@@ -148,8 +148,33 @@ function MyApp({ Component, pageProps }) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-        <div className="text-white text-lg">Chargement...</div>
+      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="mb-8 text-6xl font-black animate-bounce"
+            style={{
+              fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
+              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+              letterSpacing: '-0.02em'
+            }}
+          >
+            Gliitz
+          </div>
+          <div className="text-white text-xl font-semibold mb-4"
+            style={{
+              fontFamily: '"Proxima Soft Black", Montserrat, sans-serif'
+            }}
+          >
+            Chargement...
+          </div>
+          <div className="flex justify-center gap-2">
+            <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0s' }}></div>
+            <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
+            <div className="w-3 h-3 bg-cyan-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
+          </div>
+        </div>
       </div>
     )
   }
