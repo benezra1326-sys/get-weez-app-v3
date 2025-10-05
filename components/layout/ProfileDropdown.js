@@ -169,7 +169,15 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             justifyContent: 'center'
           }}
         >
-          <span className="relative z-10" style={{ lineHeight: '1', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>D</span>
+          <span className="relative z-10" style={{ 
+            lineHeight: '28px', 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            width: '100%',
+            height: '100%',
+            textAlign: 'center'
+          }}>D</span>
           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -skew-x-12 group-hover:animate-shimmer"></div>
         </div>
         

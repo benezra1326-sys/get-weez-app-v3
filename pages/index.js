@@ -570,7 +570,7 @@ const Home = memo(({ user, setUser }) => {
           {/* Copyright */}
                     <div className="text-center md:text-right">
                       <p className={`text-sm mb-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                        © 2024 Get Weez. Tous droits réservés.
+                        © 2025 Gliitz. Tous droits réservés.
                       </p>
                       <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                         Fait avec ❤️ à Marbella

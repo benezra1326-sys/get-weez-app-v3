@@ -39,8 +39,8 @@ const ChatFloatingButton = () => {
   }, [])
 
   useEffect(() => {
-    // Toujours afficher le bouton sur toutes les pages SAUF sur la page d'accueil avant le scroll
-    const shouldShow = router.pathname !== '/' || hasScrolled
+    // Afficher TOUJOURS sur toutes les pages, même sur l'accueil (avec ou sans scroll)
+    const shouldShow = true
     setIsVisible(shouldShow)
     
     // Animation d'entrée après 1 seconde
