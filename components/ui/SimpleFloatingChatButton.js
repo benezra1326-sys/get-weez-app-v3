@@ -59,7 +59,7 @@ export default function SimpleFloatingChatButton() {
       </svg>
     `
     
-    // Styles inline ULTRA FORTS - Bouton VRAIMENT flottant
+    // Styles inline ULTRA FORTS - Bouton VRAIMENT flottant - VERSION RENFORCÉE
     button.style.cssText = `
       all: unset !important;
       box-sizing: border-box !important;
@@ -105,6 +105,10 @@ export default function SimpleFloatingChatButton() {
       mask: none !important;
       filter: none !important;
       backdrop-filter: none !important;
+      position: fixed !important;
+      bottom: 24px !important;
+      right: 24px !important;
+      z-index: 2147483647 !important;
     `
     
     // Click handler - Ouvrir le chat sur mobile
