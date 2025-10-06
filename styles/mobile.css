@@ -67,12 +67,12 @@
    OPTIMISATIONS DE PERFORMANCE MOBILE
    ======================================== */
 
-/* Popup de chat flottant - toujours visible */
+/* Popup de chat flottant - toujours visible - Z-INDEX ULTRA ÉLEVÉ */
 .chat-floating-button {
   position: fixed !important;
   bottom: 24px !important;
   right: 24px !important;
-  z-index: 99999 !important;
+  z-index: 2147483647 !important;
   pointer-events: auto !important;
   transform: translateZ(0) !important;
   -webkit-transform: translateZ(0) !important;
@@ -84,7 +84,7 @@
     position: fixed !important;
     bottom: 20px !important;
     right: 20px !important;
-    z-index: 99999 !important;
+    z-index: 2147483647 !important;
   }
 }
 
