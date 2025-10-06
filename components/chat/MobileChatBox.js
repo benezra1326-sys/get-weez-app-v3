@@ -273,14 +273,9 @@ export default function MobileChatBox({
             overscrollBehavior: 'contain',
             flex: '1 1 auto',
             minHeight: 0,
-            height: 'calc(100vh - 180px)',
-            height: 'calc(100dvh - 180px)',
             touchAction: 'pan-y',
             position: 'relative',
-            zIndex: 5,
-            // Empêcher les conflits de scroll
-            transform: 'translateZ(0)',
-            willChange: 'scroll-position'
+            zIndex: 5
           }}
         >
           {messages.length === 0 ? (
@@ -343,7 +338,7 @@ export default function MobileChatBox({
 
         {/* Input Zone FIXE en bas - Plus haute */}
         <div 
-          className="p-5 border-t"
+          className="border-t"
           style={{
             borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)',
             background: isDarkMode 
@@ -352,9 +347,13 @@ export default function MobileChatBox({
             backdropFilter: 'blur(20px)',
             boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)',
             paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
+            paddingTop: '20px',
+            paddingLeft: '20px',
+            paddingRight: '20px',
             flexShrink: 0,
             minHeight: '110px',
-            position: 'relative',
+            position: 'sticky',
+            bottom: 0,
             zIndex: 10
           }}
         >
@@ -366,15 +365,13 @@ export default function MobileChatBox({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={(e) => {
-                  // Empêcher le scroll automatique qui cause des problèmes
+                  // Empêcher tout comportement de scroll automatique
                   e.preventDefault()
-                  // S'assurer que l'input reste visible sans scroll forcé
+                  // Garder l'input stable
+                  e.target.blur()
                   setTimeout(() => {
-                    if (e.target) {
-                      // Ne pas forcer le scroll, juste s'assurer que l'input est accessible
-                      e.target.style.transform = 'translateZ(0)'
-                    }
-                  }, 100)
+                    e.target.focus()
+                  }, 10)
                 }}
                 placeholder="Écrivez votre message..."
                 className="w-full px-5 py-4 rounded-2xl resize-none focus:outline-none chat-input"
@@ -388,7 +385,11 @@ export default function MobileChatBox({
                   minHeight: '60px',
                   height: '60px',
                   fontSize: '16px',
-                  lineHeight: '1.5'
+                  lineHeight: '1.5',
+                  // Empêcher le zoom sur iOS
+                  transform: 'translateZ(0)',
+                  WebkitAppearance: 'none',
+                  WebkitTapHighlightColor: 'transparent'
                 }}
                 rows={2}
               />
