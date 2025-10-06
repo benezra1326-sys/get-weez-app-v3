@@ -42,32 +42,19 @@ export default function MobileChatBox({
     }
   }, [])
 
-  // Gérer l'ouverture/fermeture du chat - Cacher le header et footer du site
+  // Gérer l'ouverture/fermeture du chat - SEULEMENT avec des classes CSS
   useEffect(() => {
     if (isOpen) {
       // Ajouter une classe au body pour cacher le header/footer
       document.body.classList.add('mobile-chat-open')
-      // Bloquer le scroll du body
-      document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.height = '100%'
     } else {
-      // Retirer la classe et débloquer le scroll
+      // Retirer la classe
       document.body.classList.remove('mobile-chat-open')
-      document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.height = ''
     }
     
     // Cleanup au démontage
     return () => {
       document.body.classList.remove('mobile-chat-open')
-      document.body.style.overflow = ''
-      document.body.style.position = ''
-      document.body.style.width = ''
-      document.body.style.height = ''
     }
   }, [isOpen])
 

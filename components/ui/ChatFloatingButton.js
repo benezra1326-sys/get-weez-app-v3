@@ -163,10 +163,17 @@ const ChatFloatingButton = ({ onOpenChat }) => {
           animation: pulse-ring 2s ease-in-out infinite;
         }
 
-        /* Z-index très élevé UNIQUEMENT sur mobile */
+        /* Z-index ULTRA élevé pour être au-dessus de tout */
+        .chat-floating-button {
+          z-index: 2147483647 !important;
+        }
+        
         @media (max-width: 1023px) {
           .chat-floating-button {
-            z-index: 999999 !important;
+            z-index: 2147483647 !important;
+            position: fixed !important;
+            bottom: 24px !important;
+            right: 24px !important;
           }
         }
       `}</style>
@@ -177,11 +184,16 @@ const ChatFloatingButton = ({ onOpenChat }) => {
           position: 'fixed',
           bottom: '24px',
           right: '24px',
-          zIndex: 999999,
+          zIndex: 2147483647,
           pointerEvents: 'auto',
           willChange: 'transform',
           transform: 'translateZ(0)',
-          isolation: 'isolate'
+          isolation: 'isolate',
+          width: '64px',
+          height: '64px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
