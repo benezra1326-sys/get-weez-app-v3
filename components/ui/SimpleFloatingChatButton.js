@@ -158,8 +158,20 @@ export default function SimpleFloatingChatButton() {
       button.style.transform = 'translateZ(0) scale(1)'
     }
     
-    // Ajouter au body de manière FORCÉE et persistante
-    document.body.appendChild(button)
+    // Ajouter au body de manière FORCÉE et persistante - VERSION CORRIGÉE
+    // S'assurer que le bouton est ajouté au bon endroit dans le DOM
+    if (document.body) {
+      document.body.appendChild(button)
+    } else {
+      // Attendre que le body soit disponible
+      const bodyObserver = new MutationObserver(() => {
+        if (document.body) {
+          document.body.appendChild(button)
+          bodyObserver.disconnect()
+        }
+      })
+      bodyObserver.observe(document.documentElement, { childList: true })
+    }
     
     // Forcer la visibilité après ajout
     setTimeout(() => {
@@ -203,7 +215,7 @@ export default function SimpleFloatingChatButton() {
       subtree: true
     })
     
-    // Vérification périodique pour s'assurer que le bouton reste visible
+    // Vérification périodique pour s'assurer que le bouton reste visible - VERSION RENFORCÉE
     const keepVisibleInterval = setInterval(() => {
       if (button && button.parentNode) {
         const chatOpen = document.querySelector('.chat-box-container[style*="display: flex"]') ||
@@ -211,17 +223,75 @@ export default function SimpleFloatingChatButton() {
         
         if (!chatOpen) {
           const rect = button.getBoundingClientRect()
-          if (rect.width === 0 || rect.height === 0) {
-            console.log('🔧 Bouton invisible détecté, réparation...')
-            button.style.display = 'flex !important'
-            button.style.visibility = 'visible !important'
-            button.style.opacity = '1 !important'
-            button.style.position = 'fixed !important'
-            button.style.zIndex = '2147483647 !important'
+          const styles = window.getComputedStyle(button)
+          
+          // Vérifier si le bouton est visible et bien positionné
+          if (rect.width === 0 || rect.height === 0 || 
+              styles.position !== 'fixed' || 
+              styles.bottom !== '24px' || 
+              styles.right !== '24px' ||
+              styles.zIndex !== '2147483647') {
+            
+            console.log('🔧 Bouton mal positionné détecté, réparation...', {
+              width: rect.width,
+              height: rect.height,
+              position: styles.position,
+              bottom: styles.bottom,
+              right: styles.right,
+              zIndex: styles.zIndex
+            })
+            
+            // Réappliquer TOUS les styles
+            button.style.cssText = `
+              all: unset !important;
+              box-sizing: border-box !important;
+              position: fixed !important;
+              bottom: 24px !important;
+              right: 24px !important;
+              width: 64px !important;
+              height: 64px !important;
+              min-width: 64px !important;
+              min-height: 64px !important;
+              max-width: 64px !important;
+              max-height: 64px !important;
+              border-radius: 50% !important;
+              background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+              border: 3px solid rgba(255, 255, 255, 0.3) !important;
+              box-shadow: 0 12px 40px rgba(168, 85, 247, 0.6) !important;
+              cursor: pointer !important;
+              display: flex !important;
+              align-items: center !important;
+              justify-content: center !important;
+              text-align: center !important;
+              vertical-align: middle !important;
+              z-index: 2147483647 !important;
+              opacity: 1 !important;
+              visibility: visible !important;
+              transition: all 0.3s ease !important;
+              padding: 0 !important;
+              margin: 0 !important;
+              transform: translate3d(0, 0, 1000px) scale(1) !important;
+              will-change: transform !important;
+              pointer-events: auto !important;
+              isolation: isolate !important;
+              -webkit-tap-highlight-color: transparent !important;
+              user-select: none !important;
+              top: auto !important;
+              left: auto !important;
+              contain: layout style paint !important;
+              float: none !important;
+              clear: none !important;
+              overflow: visible !important;
+              clip: auto !important;
+              clip-path: none !important;
+              mask: none !important;
+              filter: none !important;
+              backdrop-filter: none !important;
+            `
           }
         }
       }
-    }, 2000)
+    }, 1000) // Vérification plus fréquente
     
     // Vérifier après un délai que le bouton est bien visible
     setTimeout(() => {
