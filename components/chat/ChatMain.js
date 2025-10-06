@@ -415,7 +415,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
 
       {/* Modal Historique Mobile */}
       {showMobileHistory && (
-        <div className="fixed inset-0 z-[102] flex flex-col"
+        <div className="fixed inset-0 z-[103] flex flex-col"
           style={{
             background: isDarkMode 
               ? 'linear-gradient(135deg, rgba(10, 10, 15, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
@@ -424,7 +424,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
             display: 'flex',
             visibility: 'visible',
             opacity: 1,
-            zIndex: 102
+            zIndex: 103
           }}
         >
           {/* Header */}

@@ -59,9 +59,9 @@ export default function SimpleFloatingChatButton() {
       </svg>
     `
     
-    // Styles inline ULTRA FORTS - Bouton TOUJOURS visible et FIXE
-    // Utiliser les valeurs maximales pour être sûr que le bouton est au-dessus de tout
+    // Styles inline ULTRA FORTS - Bouton VRAIMENT flottant
     button.style.cssText = `
+      all: unset !important;
       box-sizing: border-box !important;
       position: fixed !important;
       bottom: 24px !important;
@@ -95,6 +95,14 @@ export default function SimpleFloatingChatButton() {
       top: auto !important;
       left: auto !important;
       contain: layout style paint !important;
+      float: none !important;
+      clear: none !important;
+      overflow: visible !important;
+      clip: auto !important;
+      clip-path: none !important;
+      mask: none !important;
+      filter: none !important;
+      backdrop-filter: none !important;
     `
     
     // Click handler - Ouvrir le chat sur mobile
@@ -164,8 +172,18 @@ export default function SimpleFloatingChatButton() {
     const observer = new MutationObserver(() => {
       if (document.body.classList.contains('mobile-chat-open')) {
         button.style.display = 'none'
+        button.style.visibility = 'hidden'
       } else {
         button.style.display = 'flex'
+        button.style.visibility = 'visible'
+        // Forcer la visibilité même en cas d'erreur
+        setTimeout(() => {
+          if (button && button.parentNode) {
+            button.style.display = 'flex !important'
+            button.style.visibility = 'visible !important'
+            button.style.opacity = '1 !important'
+          }
+        }, 100)
       }
     })
     
@@ -173,6 +191,21 @@ export default function SimpleFloatingChatButton() {
       attributes: true,
       attributeFilter: ['class']
     })
+    
+    // Vérification périodique pour s'assurer que le bouton reste visible
+    const keepVisibleInterval = setInterval(() => {
+      if (button && button.parentNode && !document.body.classList.contains('mobile-chat-open')) {
+        const rect = button.getBoundingClientRect()
+        if (rect.width === 0 || rect.height === 0) {
+          console.log('🔧 Bouton invisible détecté, réparation...')
+          button.style.display = 'flex !important'
+          button.style.visibility = 'visible !important'
+          button.style.opacity = '1 !important'
+          button.style.position = 'fixed !important'
+          button.style.zIndex = '2147483647 !important'
+        }
+      }
+    }, 2000)
     
     // Vérifier après un délai que le bouton est bien visible
     setTimeout(() => {
@@ -195,8 +228,13 @@ export default function SimpleFloatingChatButton() {
       }
     }, 500)
     
-    // Cleanup : déconnecter l'observer
-    return () => observer.disconnect()
+    // Cleanup : déconnecter l'observer et l'intervalle
+    return () => {
+      observer.disconnect()
+      if (keepVisibleInterval) {
+        clearInterval(keepVisibleInterval)
+      }
+    }
   }, []) // Dépendances vides pour ne créer qu'une seule fois
   
   console.log('🔄 SimpleFloatingChatButton rendering')
