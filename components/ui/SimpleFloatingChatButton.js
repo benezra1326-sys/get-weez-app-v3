@@ -45,12 +45,12 @@ export default function SimpleFloatingChatButton() {
     
     console.log('✅ Mobile détecté - Création du bouton...')
 
-    // Créer le bouton avec JavaScript pur - Icône Sparkles comme la bannière
+    // Créer le bouton avec JavaScript pur - Icône Sparkles centrée
     button = document.createElement('button')
     button.id = 'gliitz-floating-chat-btn'
     button.setAttribute('aria-label', 'Ouvrir le chat Gliitz')
     button.innerHTML = `
-      <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display: block; margin: auto;">
         <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
         <path d="M5 3v4"/>
         <path d="M19 17v4"/>
@@ -80,6 +80,8 @@ export default function SimpleFloatingChatButton() {
       display: flex !important;
       align-items: center !important;
       justify-content: center !important;
+      text-align: center !important;
+      vertical-align: middle !important;
       z-index: 2147483647 !important;
       opacity: 1 !important;
       visibility: visible !important;
@@ -168,22 +170,20 @@ export default function SimpleFloatingChatButton() {
     console.log('📍 Display:', window.getComputedStyle(button).display)
     console.log('📍 Visibility:', window.getComputedStyle(button).visibility)
     
-    // Observer si le body a la classe mobile-chat-open pour cacher le bouton
+    // Observer pour gérer la visibilité du bouton - Logique simplifiée
     const observer = new MutationObserver(() => {
-      if (document.body.classList.contains('mobile-chat-open')) {
+      // Par défaut, garder le bouton visible
+      button.style.display = 'flex !important'
+      button.style.visibility = 'visible !important'
+      button.style.opacity = '1 !important'
+      
+      // Ne le cacher que si le chat mobile est vraiment ouvert
+      const chatOpen = document.querySelector('.chat-box-container[style*="display: flex"]') ||
+                      document.querySelector('[data-chat-open="true"]')
+      
+      if (chatOpen) {
         button.style.display = 'none'
         button.style.visibility = 'hidden'
-      } else {
-        button.style.display = 'flex'
-        button.style.visibility = 'visible'
-        // Forcer la visibilité même en cas d'erreur
-        setTimeout(() => {
-          if (button && button.parentNode) {
-            button.style.display = 'flex !important'
-            button.style.visibility = 'visible !important'
-            button.style.opacity = '1 !important'
-          }
-        }, 100)
       }
     })
     
@@ -192,17 +192,29 @@ export default function SimpleFloatingChatButton() {
       attributeFilter: ['class']
     })
     
+    // Observer aussi les changements de style sur les éléments de chat
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['style', 'data-chat-open'],
+      subtree: true
+    })
+    
     // Vérification périodique pour s'assurer que le bouton reste visible
     const keepVisibleInterval = setInterval(() => {
-      if (button && button.parentNode && !document.body.classList.contains('mobile-chat-open')) {
-        const rect = button.getBoundingClientRect()
-        if (rect.width === 0 || rect.height === 0) {
-          console.log('🔧 Bouton invisible détecté, réparation...')
-          button.style.display = 'flex !important'
-          button.style.visibility = 'visible !important'
-          button.style.opacity = '1 !important'
-          button.style.position = 'fixed !important'
-          button.style.zIndex = '2147483647 !important'
+      if (button && button.parentNode) {
+        const chatOpen = document.querySelector('.chat-box-container[style*="display: flex"]') ||
+                        document.querySelector('[data-chat-open="true"]')
+        
+        if (!chatOpen) {
+          const rect = button.getBoundingClientRect()
+          if (rect.width === 0 || rect.height === 0) {
+            console.log('🔧 Bouton invisible détecté, réparation...')
+            button.style.display = 'flex !important'
+            button.style.visibility = 'visible !important'
+            button.style.opacity = '1 !important'
+            button.style.position = 'fixed !important'
+            button.style.zIndex = '2147483647 !important'
+          }
         }
       }
     }, 2000)
