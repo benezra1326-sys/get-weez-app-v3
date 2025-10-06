@@ -49,16 +49,28 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
 
   // Écouter l'événement personnalisé pour ouvrir le chat depuis le bouton flottant
   useEffect(() => {
-    const handleOpenChat = () => {
+    const handleOpenChat = (event) => {
       setShowMobileChatBox(true)
       if (!currentConversationId && !isCreating) {
         createConversation()
+      }
+      
+      // Si un message est fourni dans l'événement, l'envoyer automatiquement
+      if (event.detail && event.detail.message) {
+        const reservationMessage = event.detail.message
+        // Attendre un peu que le chat soit ouvert et la conversation créée
+        setTimeout(async () => {
+          // Utiliser processMessage directement avec la conversation courante
+          if (currentConversationId) {
+            await processMessage(reservationMessage, currentConversationId)
+          }
+        }, 1500)
       }
     }
 
     window.addEventListener('openMobileChat', handleOpenChat)
     return () => window.removeEventListener('openMobileChat', handleOpenChat)
-  }, [currentConversationId, isCreating, createConversation])
+  }, [currentConversationId, isCreating, createConversation, processMessage])
 
   // Détection mobile/desktop
   useEffect(() => {
