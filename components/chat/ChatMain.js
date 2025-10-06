@@ -407,7 +407,11 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
             background: isDarkMode 
               ? 'linear-gradient(135deg, rgba(10, 10, 15, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
               : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
-            backdropFilter: 'blur(20px)'
+            backdropFilter: 'blur(20px)',
+            display: 'flex',
+            visibility: 'visible',
+            opacity: 1,
+            zIndex: 102
           }}
         >
           {/* Header */}

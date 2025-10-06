@@ -2,11 +2,15 @@ import { MapPin } from 'lucide-react'
 
 export default function MessageBubble({ message }) {
   const isUser = message.role === 'user'
-  // Détecte si c'est le message de bienvenue
+  // Détecte si c'est le message de bienvenue - Amélioration de la détection
   const isWelcome = message.id?.startsWith('welcome-') || 
                     message.content?.includes('Bienvenue sur Gliitz') ||
-                    message.content?.includes('Bienvenue') ||
-                    message.content?.includes('concierge IA')
+                    message.content?.includes('Bienvenue dans l\'univers Gliitz') ||
+                    message.content?.includes('Bonjour ! Je suis votre assistant Gliitz') ||
+                    message.content?.includes('Salut ! Votre concierge Gliitz est là') ||
+                    message.content?.includes('concierge IA') ||
+                    message.content?.includes('concierge personnel') ||
+                    (message.role === 'assistant' && message.content?.includes('Gliitz'))
   
   return (
     <div className={`mb-6 flex ${isUser ? 'justify-end' : 'justify-start'}`}>

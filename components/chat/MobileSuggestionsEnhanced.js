@@ -246,10 +246,20 @@ export default function MobileSuggestionsEnhanced({
   const handleReserve = (e, item) => {
     e.stopPropagation()
     const message = `Je souhaite réserver ${item.name}`
-    router.push({
-      pathname: '/',
-      query: { message }
-    })
+    
+    // Ouvrir directement le chat mobile avec le message de réservation
+    if (typeof window !== 'undefined') {
+      // Émettre un événement pour ouvrir le chat mobile
+      window.dispatchEvent(new CustomEvent('openMobileChat', { 
+        detail: { message } 
+      }))
+    } else {
+      // Fallback: redirection vers l'accueil
+      router.push({
+        pathname: '/',
+        query: { message }
+      })
+    }
   }
 
   const allData = getData()
@@ -516,6 +526,7 @@ export default function MobileSuggestionsEnhanced({
           </div>
         </button>
       </div>
+
 
       {/* Toggle colonnes - CENTRÉ */}
       <div className="flex justify-center gap-2 mb-4 px-4">

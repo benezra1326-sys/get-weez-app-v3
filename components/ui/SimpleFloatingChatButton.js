@@ -64,7 +64,7 @@ export default function SimpleFloatingChatButton() {
     button.style.cssText = `
       box-sizing: border-box !important;
       position: fixed !important;
-      bottom: 80px !important;
+      bottom: 24px !important;
       right: 24px !important;
       width: 64px !important;
       height: 64px !important;

@@ -1,4 +1,4 @@
-import { memo } from 'react'
+import { memo, useRef, useEffect } from 'react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 const BrandCarousel = memo(() => {
@@ -28,10 +28,15 @@ const BrandCarousel = memo(() => {
         }
         
         .animate-scroll {
-          animation: scroll 40s linear infinite;
+          animation: scroll 30s linear infinite;
+          will-change: transform;
         }
         
         .animate-scroll:hover {
+          animation-play-state: paused;
+        }
+        
+        .animate-scroll:active {
           animation-play-state: paused;
         }
       `}</style>
@@ -101,8 +106,6 @@ const BrandCarousel = memo(() => {
 })
 
 BrandCarousel.displayName = 'BrandCarousel'
-
-export default BrandCarousel
 
 // Composant Destinations
 export const DestinationsSection = memo(() => {
@@ -200,71 +203,64 @@ export const DestinationsSection = memo(() => {
           </p>
         </div>
 
-        {/* Mobile : Carousel défilant / Desktop : Grille fixe */}
-        <div className="lg:hidden relative overflow-hidden px-4">
-          <div className="flex gap-4 animate-scroll" style={{ animation: 'scroll 30s linear infinite' }}>
-            {[...destinations, ...destinations].map((dest, idx) => (
+        {/* Mobile : Grille de toutes les destinations en petit */}
+        <div className="lg:hidden px-4">
+          <div className="grid grid-cols-2 gap-3">
+            {destinations.map((dest, idx) => (
               <div
-                key={`${dest.id}-${idx}`}
-                className={`flex-shrink-0 relative rounded-3xl overflow-hidden group cursor-pointer transition-all duration-700 ${
+                key={dest.id}
+                className={`relative rounded-2xl overflow-hidden group cursor-pointer transition-all duration-700 ${
                   dest.status === 'coming-soon' ? 'grayscale-[60%] hover:grayscale-0' : ''
                 }`}
                 style={{
-                  width: 'calc(100vw - 64px)',
-                  maxWidth: '360px',
-                  minHeight: '380px',
-                  height: 'auto',
+                  height: '200px',
                   boxShadow: dest.status === 'active' 
-                    ? '0 12px 48px rgba(168, 85, 247, 0.5), 0 0 80px rgba(168, 85, 247, 0.2)'
-                    : '0 8px 24px rgba(0, 0, 0, 0.3)'
+                    ? '0 8px 32px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.2)'
+                    : '0 4px 16px rgba(0, 0, 0, 0.2)'
                 }}
               >
-                {/* Contenu identique */}
+                {/* Image de fond */}
                 <div 
                   className="absolute inset-0 group-hover:scale-110 transition-all duration-700"
                   style={{
                     backgroundImage: `url(${dest.image})`,
                     backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
+                    backgroundPosition: 'center'
                   }}
                 />
                 <div className={`absolute inset-0 bg-gradient-to-t from-black/90 via-black/${dest.status === 'coming-soon' ? '70' : '40'} to-transparent`} />
                 
+                {/* Badge status */}
                 {dest.status === 'active' && (
-                  <div className="absolute top-4 right-4">
-                    <div className="px-3 py-1 rounded-full text-xs font-bold text-white animate-pulse"
+                  <div className="absolute top-2 right-2">
+                    <div className="px-2 py-1 rounded-full text-xs font-bold text-white animate-pulse"
                       style={{
                         background: 'linear-gradient(135deg, #10b981, #059669)',
-                        boxShadow: '0 0 20px rgba(16, 185, 129, 0.6)'
+                        boxShadow: '0 0 15px rgba(16, 185, 129, 0.6)'
                       }}
                     >
-                      ✨ ACTIF
+                      ✨
                     </div>
                   </div>
                 )}
                 
-                <div className="absolute inset-0 flex flex-col items-center justify-between p-6">
-                  <div className="flex-1 flex flex-col items-center justify-center">
-                    <div className="mb-4">
-                      <div className={`w-16 h-16 flex items-center justify-center ${dest.status === 'active' ? 'animate-bounce' : ''}`}
-                        style={{ background: 'transparent', animationDuration: '2s' }}
-                      >
-                        <span className="text-5xl" style={{
-                          filter: dest.status === 'active' 
-                            ? 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.6))'
-                            : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))'
-                        }}>
-                          {dest.status === 'active' ? '✨' : '🌍'}
-                        </span>
-                      </div>
+                {/* Contenu adapté pour mobile */}
+                <div className="absolute inset-0 flex flex-col items-center justify-between p-3">
+                  {/* Icône et titre */}
+                  <div className="flex flex-col items-center justify-center flex-1">
+                    <div className="mb-2">
+                      <span className="text-2xl" style={{
+                        filter: dest.status === 'active' 
+                          ? 'drop-shadow(0 0 15px rgba(168, 85, 247, 0.8))'
+                          : 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))'
+                      }}>
+                        {dest.status === 'active' ? '✨' : '🌍'}
+                      </span>
                     </div>
                     
-                    <h3 className={`text-2xl md:text-3xl font-black text-white mb-3 tracking-wider text-center ${dest.status === 'active' ? 'animate-pulse' : ''}`}
+                    <h3 className={`text-lg font-black text-white mb-1 tracking-wider text-center ${dest.status === 'active' ? 'animate-pulse' : ''}`}
                       style={{
-                        textShadow: dest.status === 'active' 
-                          ? '0 0 40px rgba(168, 85, 247, 1), 0 0 80px rgba(168, 85, 247, 0.6), 0 4px 12px rgba(0, 0, 0, 0.9)'
-                          : '0 4px 16px rgba(0, 0, 0, 0.9)',
+                        textShadow: '0 2px 8px rgba(0, 0, 0, 0.9)',
                         fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
                         animationDuration: '3s'
                       }}
@@ -272,49 +268,30 @@ export const DestinationsSection = memo(() => {
                       {dest.name}
                     </h3>
                     
-                    <p className={`text-sm font-semibold ${dest.status === 'active' ? 'text-purple-200' : 'text-gray-300'}`}>
+                    <p className={`text-xs font-semibold ${dest.status === 'active' ? 'text-purple-200' : 'text-gray-300'} text-center`}>
                       {dest.tagline}
                     </p>
                   </div>
                   
+                  {/* Badge status en bas */}
                   <div className="w-full flex justify-center">
                     {dest.status === 'coming-soon' ? (
-                      <div className="px-4 py-2 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
-                        <p className="text-xs font-bold text-gray-300">🔜 Bientôt disponible</p>
+                      <div className="px-2 py-1 rounded-full bg-black/60 backdrop-blur-md border border-white/20">
+                        <p className="text-xs font-bold text-gray-300">🔜 Bientôt</p>
                       </div>
                     ) : (
-                      <div className="px-4 py-2 rounded-full animate-pulse" style={{
+                      <div className="px-2 py-1 rounded-full animate-pulse" style={{
                         background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(99, 102, 241, 0.4))',
                         backdropFilter: 'blur(10px)',
                         border: '1px solid rgba(255, 255, 255, 0.3)',
-                        boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
+                        boxShadow: '0 0 15px rgba(168, 85, 247, 0.5)',
                         animationDuration: '2s'
                       }}>
-                        <p className="text-xs font-bold text-white">✅ Disponible maintenant</p>
+                        <p className="text-xs font-bold text-white">✅ Actif</p>
                       </div>
                     )}
                   </div>
                 </div>
-                
-                {dest.status === 'active' && (
-                  <>
-                    <div className="absolute inset-0 opacity-40 pointer-events-none"
-                      style={{
-                        background: `linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.4) 50%, transparent 100%)`,
-                        animation: 'shimmer 3s ease-in-out infinite'
-                      }}
-                    />
-                    <div className="absolute top-8 left-8">
-                      <div className="w-4 h-4 text-yellow-300 animate-pulse" style={{ animationDuration: '2s' }}>✨</div>
-                    </div>
-                    <div className="absolute top-12 right-12">
-                      <div className="w-5 h-5 text-yellow-400 animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '0.5s' }}>✨</div>
-                    </div>
-                    <div className="absolute bottom-8 left-12">
-                      <div className="w-4 h-4 text-yellow-200 animate-pulse" style={{ animationDuration: '3s', animationDelay: '1s' }}>✨</div>
-                    </div>
-                  </>
-                )}
               </div>
             ))}
           </div>
@@ -573,61 +550,77 @@ export const PressSection = memo(() => {
           </p>
         </div>
 
-        {/* Grille de logos médias - Mobile : Carousel / Desktop : Grille */}
-        <div className="lg:hidden relative overflow-hidden mb-16 px-4">
-          <div className="flex gap-4" style={{ animation: 'scroll 40s linear infinite' }}>
-            {[...pressLogos, ...pressLogos].map((press, idx) => (
+        {/* Grille de logos médias - Mobile : Grille compacte / Desktop : Grille */}
+        <div className="lg:hidden mb-16 px-4">
+          <div className="grid grid-cols-2 gap-3">
+            {pressLogos.map((press, idx) => (
               <div
-                key={`${press.name}-${idx}`}
-                className="flex-shrink-0 group relative"
+                key={press.name}
+                className="group relative"
                 style={{ 
-                  width: 'calc(100vw - 64px)',
-                  maxWidth: '360px',
-                  minHeight: '360px',
-                  height: '360px'
+                  height: '180px'
                 }}
               >
                 <div 
-                  className="relative p-6 rounded-3xl overflow-hidden transition-all duration-500 cursor-pointer flex flex-col justify-between"
+                  className="relative p-4 rounded-2xl overflow-hidden transition-all duration-500 cursor-pointer flex flex-col justify-between h-full"
                   style={{
                     background: isDarkMode
                       ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9))'
                       : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95))',
                     backdropFilter: 'blur(20px)',
-                    minHeight: '360px',
-                    height: '360px',
                     border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
                     boxShadow: isDarkMode
-                      ? '0 12px 40px rgba(0, 0, 0, 0.4)'
-                      : '0 12px 40px rgba(139, 92, 246, 0.15)'
+                      ? '0 8px 24px rgba(0, 0, 0, 0.3)'
+                      : '0 8px 24px rgba(139, 92, 246, 0.1)'
                   }}
                 >
-                  <div className="flex items-center justify-center mb-6">
-                    <div className={`w-20 h-20 rounded-2xl flex items-center justify-center bg-gradient-to-br ${press.color} shadow-2xl`}>
-                      <span className="text-4xl">{press.logo}</span>
+                  {/* Logo et nom */}
+                  <div className="flex flex-col items-center mb-3">
+                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center bg-gradient-to-br ${press.color} shadow-xl mb-2`}>
+                      <span className="text-xl">{press.logo}</span>
                     </div>
+                    
+                    <h3 className={`text-sm font-black text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+                      style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif', letterSpacing: '0.05em' }}
+                    >
+                      {press.name}
+                    </h3>
                   </div>
                   
-                  <h3 className={`text-2xl font-black text-center mb-3 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
-                    style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif', letterSpacing: '0.1em' }}
-                  >
-                    {press.name}
-                  </h3>
-                  
-                  <div className="relative mb-4">
-                    <p className={`text-sm italic text-center leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
-                      style={{ paddingLeft: '1rem', paddingRight: '1rem' }}
+                  {/* Citation compacte */}
+                  <div className="flex-1 flex items-center justify-center mb-2">
+                    <p className={`text-xs italic text-center leading-tight ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                      style={{ 
+                        display: '-webkit-box',
+                        WebkitLineClamp: 3,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden'
+                      }}
                     >
                       {press.quote}
                     </p>
                   </div>
                   
+                  {/* Date */}
                   <div className="text-center">
-                    <span className={`text-xs font-semibold px-3 py-1 rounded-full ${
+                    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
                       isDarkMode ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
                     }`}>
                       {press.date}
                     </span>
+                  </div>
+                  
+                  {/* Badge "Featured" */}
+                  <div className="absolute top-2 right-2">
+                    <div 
+                      className="px-1.5 py-1 rounded-full text-xs font-bold text-white"
+                      style={{
+                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                        boxShadow: '0 0 10px rgba(168, 85, 247, 0.4)'
+                      }}
+                    >
+                      ⭐
+                    </div>
                   </div>
                 </div>
               </div>
@@ -784,3 +777,5 @@ export const PressSection = memo(() => {
 })
 
 PressSection.displayName = 'PressSection'
+
+export default BrandCarousel

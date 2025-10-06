@@ -275,7 +275,12 @@ export default function MobileChatBox({
             minHeight: 0,
             height: 'calc(100vh - 180px)',
             height: 'calc(100dvh - 180px)',
-            touchAction: 'pan-y'
+            touchAction: 'pan-y',
+            position: 'relative',
+            zIndex: 5,
+            // Empêcher les conflits de scroll
+            transform: 'translateZ(0)',
+            willChange: 'scroll-position'
           }}
         >
           {messages.length === 0 ? (
@@ -348,7 +353,9 @@ export default function MobileChatBox({
             boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)',
             paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
             flexShrink: 0,
-            minHeight: '110px'
+            minHeight: '110px',
+            position: 'relative',
+            zIndex: 10
           }}
         >
           <div className="flex items-center gap-3">
@@ -359,12 +366,15 @@ export default function MobileChatBox({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={(e) => {
-                  // S'assurer que l'input reste visible
+                  // Empêcher le scroll automatique qui cause des problèmes
+                  e.preventDefault()
+                  // S'assurer que l'input reste visible sans scroll forcé
                   setTimeout(() => {
                     if (e.target) {
-                      e.target.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
+                      // Ne pas forcer le scroll, juste s'assurer que l'input est accessible
+                      e.target.style.transform = 'translateZ(0)'
                     }
-                  }, 300)
+                  }, 100)
                 }}
                 placeholder="Écrivez votre message..."
                 className="w-full px-5 py-4 rounded-2xl resize-none focus:outline-none chat-input"
