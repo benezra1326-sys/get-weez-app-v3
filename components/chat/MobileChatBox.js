@@ -30,6 +30,18 @@ export default function MobileChatBox({
     console.log('📨 MobileChatBox - Messages reçus:', messages.length, messages)
   }, [messages])
 
+  // Détection iOS et application de styles spécifiques
+  useEffect(() => {
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    if (isIOS) {
+      document.body.classList.add('ios-device')
+    }
+    
+    return () => {
+      document.body.classList.remove('ios-device')
+    }
+  }, [])
+
   // Gérer l'ouverture/fermeture du chat - Cacher le header et footer du site
   useEffect(() => {
     if (isOpen) {
@@ -161,6 +173,107 @@ export default function MobileChatBox({
           outline: none !important;
           border-color: ${isDarkMode ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.4)'} !important;
         }
+
+        /* Styles spécifiques pour iOS - Empêcher le scroll et la bande grise */
+        @supports (-webkit-touch-callout: none) {
+          .chat-box-container {
+            -webkit-overflow-scrolling: touch !important;
+            overflow: hidden !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 0 !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+          }
+          
+          .chat-box-container .messages-container {
+            -webkit-overflow-scrolling: touch !important;
+            overscroll-behavior: contain !important;
+            position: absolute !important;
+            top: 60px !important;
+            left: 0 !important;
+            right: 0 !important;
+            bottom: 130px !important;
+            height: calc(100vh - 190px) !important;
+            overflow-y: auto !important;
+          }
+          
+          /* Empêcher la bande grise sur iPhone */
+          .chat-box-container .input-zone {
+            position: absolute !important;
+            bottom: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            width: 100% !important;
+            padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+            background: ${isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)'} !important;
+            backdrop-filter: blur(20px) !important;
+            border-top: 1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'} !important;
+            min-height: auto !important;
+          }
+        }
+
+        /* Styles supplémentaires pour les appareils iOS détectés */
+        body.ios-device .chat-box-container {
+          display: block !important;
+          position: fixed !important;
+          top: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 0 !important;
+          height: 100vh !important;
+          overflow: hidden !important;
+        }
+
+        body.ios-device .chat-box-container .messages-container {
+          position: absolute !important;
+          top: 60px !important;
+          left: 0 !important;
+          right: 0 !important;
+          bottom: 130px !important;
+          height: calc(100vh - 190px) !important;
+          overflow-y: auto !important;
+          -webkit-overflow-scrolling: touch !important;
+        }
+
+        body.ios-device .chat-box-container .input-zone {
+          position: absolute !important;
+          bottom: 0 !important;
+          left: 0 !important;
+          right: 0 !important;
+          width: 100% !important;
+          padding-bottom: env(safe-area-inset-bottom, 20px) !important;
+          background: ${isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)'} !important;
+          backdrop-filter: blur(20px) !important;
+          border-top: 1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'} !important;
+          min-height: auto !important;
+        }
+        
+        /* Correction spécifique pour empêcher le soulèvement de l'input */
+        @supports (-webkit-touch-callout: none) {
+          .chat-box-container .input-zone textarea {
+            -webkit-user-select: text !important;
+            -webkit-touch-callout: default !important;
+            -webkit-appearance: none !important;
+            border-radius: 16px !important;
+            transform: translateZ(0) !important;
+          }
+          
+          /* Empêcher le zoom automatique sur focus */
+          .chat-box-container .input-zone textarea {
+            font-size: 16px !important;
+          }
+          
+          /* Empêcher le déplacement de la viewport */
+          .chat-box-container {
+            position: fixed !important;
+            height: 100vh !important;
+            height: 100dvh !important;
+            overflow: hidden !important;
+          }
+        }
       `}</style>
 
       {/* Overlay */}
@@ -281,16 +394,17 @@ export default function MobileChatBox({
         <div 
           ref={messagesContainerRef}
           onScroll={handleScroll}
-          className="flex-1 overflow-y-auto p-4"
+          className="overflow-y-auto p-4 messages-container"
           style={{
             overflowY: 'auto',
             WebkitOverflowScrolling: 'touch',
             overscrollBehavior: 'contain',
-            flex: '1 1 auto',
             minHeight: 0,
             touchAction: 'pan-y',
             position: 'relative',
-            zIndex: 5
+            zIndex: 5,
+            flex: '1 1 auto',
+            paddingBottom: '130px'
           }}
         >
           {messages.length === 0 ? (
@@ -341,7 +455,7 @@ export default function MobileChatBox({
             style={{
               background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.95), rgba(99, 102, 241, 0.95))',
               backdropFilter: 'blur(10px)',
-              bottom: 'calc(130px + env(safe-area-inset-bottom, 20px))',
+              bottom: '130px',
               boxShadow: '0 4px 20px rgba(168, 85, 247, 0.5)'
             }}
           >
@@ -353,7 +467,7 @@ export default function MobileChatBox({
 
         {/* Input Zone FIXE en bas */}
         <div 
-          className="border-t"
+          className="border-t input-zone"
           style={{
             borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)',
             background: isDarkMode 
@@ -364,12 +478,15 @@ export default function MobileChatBox({
             paddingTop: '20px',
             paddingLeft: '20px',
             paddingRight: '20px',
-            paddingBottom: '20px',
-            flexShrink: 0,
-            minHeight: '110px',
-            position: 'sticky',
+            paddingBottom: 'env(safe-area-inset-bottom, 20px)',
+            position: 'fixed',
             bottom: 0,
-            zIndex: 10
+            left: 0,
+            right: 0,
+            width: '100%',
+            zIndex: 10,
+            flexShrink: 0,
+            minHeight: 'auto'
           }}
         >
           <div className="flex items-center gap-3">
@@ -394,10 +511,14 @@ export default function MobileChatBox({
                   maxHeight: '80px',
                   minHeight: '60px',
                   height: '60px',
-                  fontSize: '16px',
+                  fontSize: '16px', // Important: 16px pour éviter le zoom sur iOS
                   lineHeight: '1.5',
                   borderRadius: '16px',
-                  outline: 'none'
+                  outline: 'none',
+                  WebkitAppearance: 'none',
+                  WebkitUserSelect: 'text',
+                  WebkitTouchCallout: 'default',
+                  transform: 'translateZ(0)'
                 }}
                 rows={2}
               />
