@@ -146,6 +146,21 @@ export default function MobileChatBox({
         .chat-box-container {
           animation: slide-up 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
+        /* Styles spécifiques pour éviter les conflits CSS */
+        .chat-box-container .chat-input {
+          font-size: 16px !important;
+          line-height: 1.5 !important;
+          border-radius: 16px !important;
+          outline: none !important;
+          -webkit-appearance: none !important;
+          -webkit-tap-highlight-color: transparent !important;
+        }
+
+        .chat-box-container .chat-input:focus {
+          outline: none !important;
+          border-color: ${isDarkMode ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.4)'} !important;
+        }
       `}</style>
 
       {/* Overlay */}
@@ -336,7 +351,7 @@ export default function MobileChatBox({
           </button>
         )}
 
-        {/* Input Zone FIXE en bas - Plus haute */}
+        {/* Input Zone FIXE en bas */}
         <div 
           className="border-t"
           style={{
@@ -346,10 +361,10 @@ export default function MobileChatBox({
               : 'rgba(255, 255, 255, 0.98)',
             backdropFilter: 'blur(20px)',
             boxShadow: '0 -4px 12px rgba(0, 0, 0, 0.1)',
-            paddingBottom: 'max(20px, env(safe-area-inset-bottom, 20px))',
             paddingTop: '20px',
             paddingLeft: '20px',
             paddingRight: '20px',
+            paddingBottom: '20px',
             flexShrink: 0,
             minHeight: '110px',
             position: 'sticky',
@@ -365,13 +380,8 @@ export default function MobileChatBox({
                 onChange={(e) => setInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 onFocus={(e) => {
-                  // Empêcher tout comportement de scroll automatique
-                  e.preventDefault()
-                  // Garder l'input stable
-                  e.target.blur()
-                  setTimeout(() => {
-                    e.target.focus()
-                  }, 10)
+                  // Laisser le clavier s'afficher naturellement
+                  // Pas d'interférence avec le comportement par défaut
                 }}
                 placeholder="Écrivez votre message..."
                 className="w-full px-5 py-4 rounded-2xl resize-none focus:outline-none chat-input"
@@ -386,10 +396,8 @@ export default function MobileChatBox({
                   height: '60px',
                   fontSize: '16px',
                   lineHeight: '1.5',
-                  // Empêcher le zoom sur iOS
-                  transform: 'translateZ(0)',
-                  WebkitAppearance: 'none',
-                  WebkitTapHighlightColor: 'transparent'
+                  borderRadius: '16px',
+                  outline: 'none'
                 }}
                 rows={2}
               />
