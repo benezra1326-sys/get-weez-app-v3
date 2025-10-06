@@ -3,12 +3,11 @@ import '../styles/globals.css'
 import '../styles/fonts.css'
 import '../styles/animations.css'
 import '../styles/mobile-chat.css'
-import '../styles/mobile-chat-button-fix.css'
 import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
-import SimpleFloatingChatButton from '../components/ui/SimpleFloatingChatButton'
+import FixedChatButton from '../components/ui/FixedChatButton'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
@@ -188,8 +187,8 @@ function MyApp({ Component, pageProps }) {
         {/* <CookieBanner /> */}
         <TipsPopup />
         
-        {/* Bouton chat flottant simple - Mobile uniquement */}
-        <SimpleFloatingChatButton />
+        {/* Bouton chat flottant fixe - Mobile uniquement */}
+        <FixedChatButton />
       </ThemeProvider>
     </MobileTouchEnhancer>
   )
