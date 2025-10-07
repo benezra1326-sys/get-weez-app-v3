@@ -1,0 +1,555 @@
+/**
+ * 🎨 GLIITZ REFINED - Design Sobre, Élégant, Luxueux & Raffiné
+ * Inspiré du luxe méditerranéen et de la haute couture
+ */
+
+/* ============================================
+   ✨ RAFFINEMENT TYPOGRAPHIQUE
+   ============================================ */
+   
+.gliitz-title-hero {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #FFFFFF;
+  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+}
+
+.gliitz-title-section {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 1.5rem;
+}
+
+.gliitz-subtitle {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 300;
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.6;
+  letter-spacing: 0.01em;
+}
+
+.gliitz-body {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   💎 EFFETS GLASS RAFFINÉS
+   ============================================ */
+
+.glass-refined {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-refined-strong {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px) saturate(200%);
+  -webkit-backdrop-filter: blur(24px) saturate(200%);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   🔘 BOUTONS RAFFINÉS
+   ============================================ */
+
+.btn-gliitz-primary {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  padding: 14px 32px;
+  border-radius: 12px;
+  border: none;
+  background: linear-gradient(135deg, #EFEFEF, #C8C8C8);
+  color: #0B0B0C;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 16px rgba(0, 0, 0, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-gliitz-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  transition: left 0.6s ease;
+}
+
+.btn-gliitz-primary:hover {
+  background: linear-gradient(135deg, #FFFFFF, #D8D8D8);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.btn-gliitz-primary:hover::before {
+  left: 100%;
+}
+
+.btn-gliitz-primary:active {
+  transform: translateY(0);
+  transition: transform 0.1s ease;
+}
+
+.btn-gliitz-secondary {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+  padding: 14px 32px;
+  border-radius: 12px;
+  background: transparent;
+  border: 1.5px solid rgba(192, 192, 192, 0.4);
+  color: #C0C0C0;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-gliitz-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.6);
+  color: #FFFFFF;
+  box-shadow: 0 0 16px rgba(192, 192, 192, 0.3);
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   📦 CARTES RAFFINÉES
+   ============================================ */
+
+.card-gliitz {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 
+    0 4px 24px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.card-gliitz:hover {
+  transform: translateY(-6px);
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(192, 192, 192, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* ============================================
+   🎯 INPUTS RAFFINÉS
+   ============================================ */
+
+.input-gliitz {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 1rem;
+  padding: 14px 20px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #FFFFFF;
+  transition: all 0.3s ease;
+}
+
+.input-gliitz::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+  font-weight: 300;
+}
+
+.input-gliitz:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(192, 192, 192, 0.4);
+  box-shadow: 
+    0 0 0 3px rgba(192, 192, 192, 0.1),
+    0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   ✨ ANIMATIONS SUBTILES
+   ============================================ */
+
+@keyframes float-gentle {
+  0%, 100% { 
+    transform: translateY(0px); 
+  }
+  50% { 
+    transform: translateY(-8px); 
+  }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { 
+    box-shadow: 0 0 10px rgba(192, 192, 192, 0.2);
+  }
+  50% { 
+    box-shadow: 0 0 20px rgba(192, 192, 192, 0.4);
+  }
+}
+
+@keyframes shimmer-refined {
+  0% { 
+    transform: translateX(-100%); 
+  }
+  100% { 
+    transform: translateX(200%); 
+  }
+}
+
+.animate-float-gentle {
+  animation: float-gentle 6s ease-in-out infinite;
+}
+
+.animate-glow-pulse {
+  animation: glow-pulse 3s ease-in-out infinite;
+}
+
+/* ============================================
+   🌟 NAVBAR RAFFINÉE
+   ============================================ */
+
+.navbar-gliitz {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+}
+
+.nav-link-gliitz {
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: #C0C0C0;
+  text-decoration: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-link-gliitz::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 1px;
+  background: #C0C0C0;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link-gliitz:hover {
+  color: #FFFFFF;
+}
+
+.nav-link-gliitz:hover::after {
+  width: 60%;
+}
+
+.nav-link-gliitz.active {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ============================================
+   💬 CHAT BUBBLE RAFFINÉ
+   ============================================ */
+
+.bubble-gliitz-refined {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px 18px 18px 4px;
+  padding: 14px 18px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #FFFFFF;
+  max-width: 75%;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.bubble-user-refined {
+  background: linear-gradient(135deg, #EFEFEF, #C8C8C8);
+  border-radius: 18px 18px 4px 18px;
+  padding: 14px 18px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 400;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: #0B0B0C;
+  max-width: 75%;
+  margin-left: auto;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ============================================
+   🏷️ BADGES RAFFINÉS
+   ============================================ */
+
+.badge-gliitz {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  letter-spacing: 0.03em;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(8px);
+  color: #FFFFFF;
+}
+
+.badge-gliitz-premium {
+  background: linear-gradient(135deg, #EFEFEF, #C8C8C8);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #0B0B0C;
+  box-shadow: 0 0 12px rgba(192, 192, 192, 0.3);
+}
+
+/* ============================================
+   📐 SPACING SYSTEM RAFFINÉ
+   ============================================ */
+
+.section-refined {
+  padding: 6rem 1rem;
+}
+
+@media (min-width: 768px) {
+  .section-refined {
+    padding: 8rem 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-refined {
+    padding: 10rem 4rem;
+  }
+}
+
+.container-refined {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ============================================
+   🎨 EFFETS DE HOVER RAFFINÉS
+   ============================================ */
+
+.hover-refined {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-refined:hover {
+  transform: translateY(-4px);
+}
+
+.hover-glow-refined {
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-glow-refined:hover {
+  box-shadow: 0 0 24px rgba(192, 192, 192, 0.3);
+  filter: brightness(1.05);
+}
+
+/* ============================================
+   🔲 DIVIDERS RAFFINÉS
+   ============================================ */
+
+.divider-gliitz {
+  height: 1px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(192, 192, 192, 0.3) 50%, 
+    transparent 100%
+  );
+  margin: 4rem 0;
+}
+
+/* ============================================
+   ⚡ LOADING STATES RAFFINÉS
+   ============================================ */
+
+.skeleton-gliitz {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.12) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer-refined 2s ease-in-out infinite;
+  border-radius: 12px;
+}
+
+/* ============================================
+   🎯 FOCUS STATES ACCESSIBLES
+   ============================================ */
+
+.focus-refined:focus {
+  outline: none;
+  box-shadow: 
+    0 0 0 3px rgba(192, 192, 192, 0.15),
+    0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.focus-refined:focus-visible {
+  outline: 2px solid rgba(192, 192, 192, 0.4);
+  outline-offset: 3px;
+}
+
+/* ============================================
+   🌊 SMOOTH SCROLL
+   ============================================ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================
+   💫 HOVER EFFECTS PREMIUM
+   ============================================ */
+
+.hover-lift-refined {
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift-refined:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+/* ============================================
+   🎪 IMAGES RAFFINÉES
+   ============================================ */
+
+.img-gliitz {
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.15),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+.img-gliitz-frame {
+  padding: 4px;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15), 
+    rgba(192, 192, 192, 0.1)
+  );
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+}
+
+/* ============================================
+   📝 TEXTE ÉLÉGANT
+   ============================================ */
+
+.text-elegant {
+  color: rgba(255, 255, 255, 0.9);
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.text-elegant-dark {
+  color: rgba(11, 11, 12, 0.9);
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+/* ============================================
+   🌟 ACCENTS SUBTILS
+   ============================================ */
+
+.accent-gliitz {
+  position: relative;
+}
+
+.accent-gliitz::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, #E5E5E5, #C0C0C0);
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(192, 192, 192, 0.3);
+}
+
+/* ============================================
+   💎 SECTIONS PREMIUM
+   ============================================ */
+
+.section-premium {
+  position: relative;
+  overflow: hidden;
+}
+
+.section-premium::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: 
+    radial-gradient(circle at 20% 30%, rgba(192, 192, 192, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(192, 192, 192, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+

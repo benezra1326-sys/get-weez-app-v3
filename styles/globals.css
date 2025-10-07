@@ -1,5 +1,6 @@
 /* Import Gliitz Theme - PRIORITY */
 @import './gliitz-theme.css';
+@import './gliitz-refined.css';
 
 /* Import des polices originales (à conserver pour compatibilité) */
 @import url('https://fonts.cdnfonts.com/css/blanka');

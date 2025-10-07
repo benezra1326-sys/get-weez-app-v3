@@ -134,8 +134,8 @@ const Home = memo(({ user, setUser }) => {
           </div>
 
           {/* Contenu Hero */}
-          <div className="relative z-20 container mx-auto px-4 py-24 lg:py-32">
-            <div className="max-w-4xl mx-auto text-center">
+          <div className="relative z-20 container-refined py-32 lg:py-40">
+            <div className="max-w-5xl mx-auto text-center">
               {/* Badge "IA Powered" */}
               <div 
                 className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full"
@@ -160,12 +160,10 @@ const Home = memo(({ user, setUser }) => {
 
               {/* Titre principal */}
               <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
+                className="gliitz-title-hero mb-8"
                 style={{ 
-                  fontFamily: 'Playfair Display, serif',
-                  fontWeight: 600,
-                  color: '#FFFFFF',
-                  lineHeight: 1.2
+                  maxWidth: '900px',
+                  margin: '0 auto 2rem auto'
                 }}
               >
                 Votre assistant personnel intelligent,
@@ -175,11 +173,12 @@ const Home = memo(({ user, setUser }) => {
 
               {/* Sous-titre */}
               <p 
-                className="text-lg md:text-xl lg:text-2xl mb-10 leading-relaxed"
+                className="gliitz-subtitle mb-12"
                 style={{ 
-                  fontFamily: 'Poppins, sans-serif',
-                  fontWeight: 400,
+                  maxWidth: '700px',
+                  margin: '0 auto 3rem auto',
                   color: '#E0E0E0',
+                  fontWeight: 300
                 }}
               >
                 Gliitz, la conciergerie IA qui répond à tous vos besoins,
@@ -190,32 +189,11 @@ const Home = memo(({ user, setUser }) => {
               {/* CTA Button */}
               <button
                 onClick={handleOpenChat}
-                className="inline-flex items-center gap-3 px-8 py-4 text-lg"
-                style={{
-                  background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
-                  color: '#0B0B0C',
-                  borderRadius: '12px',
-                  fontFamily: 'Poppins, sans-serif',
-                  fontWeight: 500,
-                  border: 'none',
-                  cursor: 'pointer',
-                  transition: 'all 0.3s ease',
-                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #FFFFFF, #D0D0D0)'
-                  e.currentTarget.style.boxShadow = '0 0 15px rgba(192,192,192,0.5)'
-                  e.currentTarget.style.transform = 'scale(1.02)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #E0E0E0, #C0C0C0)'
-                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)'
-                  e.currentTarget.style.transform = 'scale(1)'
-                }}
+                className="btn-gliitz-primary inline-flex items-center gap-3"
               >
-                <MessageCircle size={24} />
+                <MessageCircle size={22} strokeWidth={1.5} />
                 <span>Lancer le chat</span>
-                <ArrowRight size={20} />
+                <ArrowRight size={18} strokeWidth={1.5} />
               </button>
 
               {/* Stats rapides */}
