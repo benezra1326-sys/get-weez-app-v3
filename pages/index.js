@@ -545,31 +545,50 @@ const Home = memo(({ user, setUser }) => {
             {/* Titre principal */}
             <div className="text-center mb-16">
               <div 
-                className="inline-flex items-center gap-3 mb-6 px-6 py-3 rounded-full"
+                className="inline-flex items-center gap-3 mb-6 px-8 py-4 rounded-full animate-fade-in"
                 style={{
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.25)',
-                  backdropFilter: 'blur(12px)'
+                  background: 'linear-gradient(135deg, rgba(255,255,255,0.15), rgba(192,192,192,0.2))',
+                  border: '2px solid rgba(255,255,255,0.3)',
+                  backdropFilter: 'blur(16px)',
+                  boxShadow: '0 8px 32px rgba(192,192,192,0.3)',
+                  animation: 'float 3s ease-in-out infinite, sparkle-glow 2s ease-in-out infinite'
                 }}
               >
-                <Sparkles size={24} style={{ color: '#C0C0C0' }} className="animate-pulse" />
+                <Sparkles size={28} style={{ color: '#FFD700' }} className="animate-pulse" />
                 <span 
+                  className="text-lg md:text-xl font-bold"
                   style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    fontWeight: 500,
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    fontFamily: 'Playfair Display, serif',
+                    fontWeight: 600,
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                    letterSpacing: '0.02em'
                   }}
                 >
-                  Pourquoi Gliitz ?
+                  ✨ Pourquoi Gliitz ?
                 </span>
+                <Sparkles size={28} style={{ color: '#FFD700' }} className="animate-pulse" />
               </div>
 
+              <style jsx>{`
+                @keyframes sparkle-glow {
+                  0%, 100% {
+                    box-shadow: 0 8px 32px rgba(192,192,192,0.3);
+                  }
+                  50% {
+                    box-shadow: 0 8px 48px rgba(255,215,0,0.4), 0 0 60px rgba(192,192,192,0.5);
+                  }
+                }
+              `}</style>
+
               <h2 
-                className="text-4xl md:text-5xl font-bold mb-6"
+                className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 animate-fade-in"
                 style={{ 
                   fontFamily: 'Playfair Display, serif',
-                  fontWeight: 600,
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  fontWeight: 700,
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  textShadow: isDarkMode 
+                    ? '0 0 30px rgba(192,192,192,0.3)' 
+                    : '0 4px 20px rgba(0,0,0,0.1)'
                 }}
               >
                 L'avenir de la conciergerie de luxe
@@ -732,14 +751,14 @@ const Home = memo(({ user, setUser }) => {
           borderTop: `1px solid ${isDarkMode ? 'rgba(192,192,192,0.1)' : 'rgba(192,192,192,0.2)'}`
         }}
       >
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="text-center mb-12">
             <h2 
               className="text-5xl font-bold mb-4"
               style={{ 
                 fontFamily: 'Playfair Display, serif',
                 fontWeight: 700,
-                color: '#C0C0C0'
+                color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
               }}
             >
               Gliitz
@@ -749,7 +768,7 @@ const Home = memo(({ user, setUser }) => {
               style={{ 
                 fontFamily: 'Poppins, sans-serif',
                 fontWeight: 400,
-                color: '#E0E0E0'
+                color: isDarkMode ? '#E0E0E0' : '#666666'
               }}
             >
               Powered by AI ✨
@@ -763,7 +782,7 @@ const Home = memo(({ user, setUser }) => {
                 style={{ 
                   fontFamily: 'Playfair Display, serif',
                   fontWeight: 600,
-                  color: '#C0C0C0' 
+                  color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
                 }}
               >
                 Contact
@@ -772,7 +791,7 @@ const Home = memo(({ user, setUser }) => {
                 className="text-sm" 
                 style={{ 
                   fontFamily: 'Poppins, sans-serif',
-                  color: '#E0E0E0' 
+                  color: isDarkMode ? '#E0E0E0' : '#666666'
                 }}
               >
                 hello@gliitz.com<br />
@@ -785,7 +804,7 @@ const Home = memo(({ user, setUser }) => {
                 style={{ 
                   fontFamily: 'Playfair Display, serif',
                   fontWeight: 600,
-                  color: '#C0C0C0' 
+                  color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
                 }}
               >
                 Services
@@ -794,7 +813,7 @@ const Home = memo(({ user, setUser }) => {
                 className="text-sm" 
                 style={{ 
                   fontFamily: 'Poppins, sans-serif',
-                  color: '#E0E0E0' 
+                  color: isDarkMode ? '#E0E0E0' : '#666666'
                 }}
               >
                 IA Concierge<br />
@@ -808,7 +827,7 @@ const Home = memo(({ user, setUser }) => {
                 style={{ 
                   fontFamily: 'Playfair Display, serif',
                   fontWeight: 600,
-                  color: '#C0C0C0' 
+                  color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
                 }}
               >
                 Localisation
@@ -817,7 +836,7 @@ const Home = memo(({ user, setUser }) => {
                 className="text-sm" 
                 style={{ 
                   fontFamily: 'Poppins, sans-serif',
-                  color: '#E0E0E0' 
+                  color: isDarkMode ? '#E0E0E0' : '#666666'
                 }}
               >
                 Marbella, Espagne<br />
@@ -829,14 +848,14 @@ const Home = memo(({ user, setUser }) => {
           <div 
             className="text-center pt-8"
             style={{ 
-              borderTop: '1px solid rgba(192,192,192,0.2)'
+              borderTop: `1px solid ${isDarkMode ? 'rgba(192,192,192,0.2)' : 'rgba(0,0,0,0.1)'}`
             }}
           >
             <p 
-              className="text-sm" 
+              className="text-sm font-medium" 
               style={{ 
                 fontFamily: 'Poppins, sans-serif',
-                color: '#E0E0E0' 
+                color: isDarkMode ? '#E0E0E0' : '#0B0B0C'
               }}
             >
               © 2025 Gliitz. Tous droits réservés.
@@ -844,30 +863,6 @@ const Home = memo(({ user, setUser }) => {
           </div>
         </div>
       </footer>
-
-      {/* Bouton Chat Flottant - UNIQUE */}
-      <button
-        onClick={handleOpenChat}
-        className="fixed bottom-6 right-6 z-[9999] w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
-        style={{ 
-          fontSize: '24px',
-          background: '#C0C0C0',
-          color: '#0B0B0C',
-          border: 'none',
-          boxShadow: '0 0 20px rgba(192,192,192,0.6)',
-          cursor: 'pointer'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.transform = 'scale(1.1)'
-          e.currentTarget.style.boxShadow = '0 0 30px rgba(192,192,192,0.8)'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.transform = 'scale(1)'
-          e.currentTarget.style.boxShadow = '0 0 20px rgba(192,192,192,0.6)'
-        }}
-      >
-        💬
-      </button>
     </div>
   )
 })

@@ -411,6 +411,16 @@ body {
   will-change: auto;
 }
 
+/* Prévenir l'overflow horizontal sur mobile */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+body {
+  position: relative;
+}
+
 /* === BOUTON CHAT FLOTTANT - STYLES FORCÉS === */
 #gliitz-floating-chat-btn,
 .floating-chat-button {
