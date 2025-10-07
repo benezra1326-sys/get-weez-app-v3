@@ -20,7 +20,7 @@ const BrandCarousel = memo(() => {
   ]
 
   return (
-    <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+    <div className="w-full py-8 lg:py-16" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
       <style jsx>{`
         @keyframes scroll {
           0% { transform: translateX(0); }
@@ -41,7 +41,7 @@ const BrandCarousel = memo(() => {
         }
       `}</style>
       
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
+      <div className="w-full px-0">
         {/* En-tête */}
         <div className="text-center mb-8 lg:mb-12">
           <h2 
@@ -87,8 +87,8 @@ const BrandCarousel = memo(() => {
           ))}
         </div>
         
-        {/* Carrousel animé pour desktop */}
-        <div className="hidden lg:block relative overflow-hidden">
+        {/* Carrousel animé pour desktop - PLEINE LARGEUR */}
+        <div className="hidden lg:block relative overflow-hidden w-full">
           <div className="flex gap-6 lg:gap-12 animate-scroll">
             {[...brands, ...brands, ...brands].map((brand, index) => (
               <div

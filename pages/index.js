@@ -6,6 +6,8 @@ import MobileMenu from '../components/layout/MobileMenu'
 import Newsletter from '../components/ui/Newsletter'
 import BrandCarousel, { DestinationsSection, PressSection } from '../components/ui/BrandCarousel'
 import { useTheme } from '../contexts/ThemeContextSimple'
+import { establishments as staticEstablishments } from '../data/marbella-data'
+import { services as staticServices } from '../data/services-data'
 import { 
   MessageCircle, 
   MapPin, 
@@ -24,7 +26,22 @@ const Home = memo(({ user, setUser }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
+  const [establishments, setEstablishments] = useState([])
+  const [events, setEvents] = useState([])
+  const [services, setServices] = useState([])
   const { isDarkMode, toggleTheme, isLoaded } = useTheme()
+
+  // Charger les données réelles
+  useEffect(() => {
+    setEstablishments(staticEstablishments?.slice(0, 3) || [])
+    setServices(staticServices?.slice(0, 3) || [])
+    // Pour les événements, on utilisera des données de demo car pas de fichier events-data
+    setEvents([
+      { id: 1, name: 'Sunset Beach Party', image: 'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=800', date: '25 Jan', time: '20:00', rating: 4.9 },
+      { id: 2, name: 'Yacht VIP Night', image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?q=80&w=800', date: '28 Jan', time: '21:00', rating: 4.8 },
+      { id: 3, name: 'Rooftop DJ Session', image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=800', date: '30 Jan', time: '22:00', rating: 4.7 },
+    ])
+  }, [])
 
   // Images ULTRA-LUXE services de conciergerie Marbella
   const luxuryImages = [
