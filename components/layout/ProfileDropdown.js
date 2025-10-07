@@ -271,35 +271,56 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           }}
         />
         
-        {/* Dropdown AU-DESSUS de l'overlay */}
+        {/* Dropdown AU-DESSUS de l'overlay - DESIGN GLIITZ */}
         <div 
-          className="mobile-profile-dropdown rounded-2xl shadow-xl overflow-y-auto" 
+          className="mobile-profile-dropdown rounded-2xl shadow-2xl overflow-y-auto" 
           style={{ 
             position: 'fixed',
             right: '20px',
             top: '80px',
             zIndex: 99999, 
             maxHeight: '80vh',
-            width: '320px',
+            width: '340px',
             maxWidth: 'calc(100vw - 40px)',
             background: isDarkMode 
-              ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
-              : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
-            backdropFilter: 'blur(20px)',
-            border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'}`
+              ? 'rgba(26, 26, 28, 0.98)'
+              : 'rgba(255, 255, 255, 0.98)',
+            backdropFilter: 'blur(24px)',
+            border: `2px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.3)'}`,
+            boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
           }}
         >
-          {/* Header du menu */}
-          <div className="p-4 bg-gradient-to-r from-purple-600 to-blue-600 text-white">
+          {/* Header du menu - DESIGN GLIITZ */}
+          <div className="p-6" style={{
+            background: isDarkMode 
+              ? 'linear-gradient(135deg, #2A2A2C, #1A1A1C)'
+              : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
+            borderBottom: `1px solid ${isDarkMode ? 'rgba(192,192,192,0.1)' : 'rgba(0,0,0,0.1)'}`
+          }}>
             <div className="flex items-center space-x-3">
-              <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
-                <User className="w-5 h-5" />
+              <div 
+                className="w-12 h-12 rounded-xl flex items-center justify-center"
+                style={{
+                  background: isDarkMode ? '#C0C0C0' : '#0B0B0C'
+                }}
+              >
+                <User className="w-6 h-6" style={{ color: isDarkMode ? '#0B0B0C' : '#FFFFFF' }} />
               </div>
               <div>
-                <h3 className="font-semibold">Mon Espace Gliitz</h3>
-                <p className="text-sm text-white/80">{user?.first_name || 'Utilisateur'}</p>
+                <h3 
+                  className="font-bold text-base"
+                  style={{
+                    fontFamily: 'Playfair Display, serif',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                >
+                  Mon Espace Gliitz
+                </h3>
+                <p className="text-sm" style={{ color: isDarkMode ? '#C0C0C0' : '#666666' }}>
+                  {user?.first_name || 'Utilisateur'}
+                </p>
               </div>
-              <Sparkles className="w-4 h-4 animate-sparkle" />
+              <Sparkles className="w-5 h-5" style={{ color: isDarkMode ? '#FFD700' : '#C0C0C0' }} />
             </div>
           </div>
 
@@ -328,8 +349,14 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                     e.currentTarget.style.backgroundColor = 'transparent'
                   }}
                 >
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
-                    <item.icon className="w-5 h-5 text-gray-600" />
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                    style={{
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
+                      boxShadow: '0 2px 8px rgba(192,192,192,0.3)'
+                    }}
+                  >
+                    <item.icon className="w-5 h-5" style={{ color: '#0B0B0C' }} />
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
                     <div className={`text-sm font-medium leading-tight mb-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.title}</div>
@@ -365,8 +392,14 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                     e.currentTarget.style.backgroundColor = 'transparent'
                   }}
                 >
-                  <div className="w-10 h-10 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
-                    <item.icon className="w-5 h-5 text-gray-600" />
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200"
+                    style={{
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
+                      boxShadow: '0 2px 8px rgba(192,192,192,0.3)'
+                    }}
+                  >
+                    <item.icon className="w-5 h-5" style={{ color: '#0B0B0C' }} />
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
                     <div className={`text-sm font-medium leading-tight mb-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.title}</div>
@@ -377,20 +410,21 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             </div>
           </div>
 
-          {/* Footer avec sparkles */}
+          {/* Footer Gliitz */}
           <div 
-            className="p-3 border-t"
+            className="p-4 border-t"
             style={{
-              background: isDarkMode 
-                ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.2) 100%)'
-                : 'linear-gradient(135deg, rgba(243, 232, 255, 0.8) 0%, rgba(219, 234, 254, 0.8) 100%)',
-              borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(229, 231, 235, 0.5)'
+              background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
+              borderColor: isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(192, 192, 192, 0.2)'
             }}
           >
-            <div className={`text-xs text-center flex items-center justify-center ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-              <Sparkles className="w-3 h-3 mr-1 animate-sparkle" />
-              Gliitz - Votre concierge magique
-              <Sparkles className="w-3 h-3 ml-1 animate-sparkle-delayed" />
+            <div className="text-xs text-center flex items-center justify-center" style={{
+              color: isDarkMode ? '#C0C0C0' : '#666666',
+              fontFamily: 'Poppins, sans-serif'
+            }}>
+              <Sparkles className="w-3 h-3 mr-1" style={{ color: '#C0C0C0' }} />
+              Gliitz - Conciergerie de luxe
+              <Sparkles className="w-3 h-3 ml-1" style={{ color: '#C0C0C0' }} />
             </div>
           </div>
         </div>
