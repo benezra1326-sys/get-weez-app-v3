@@ -699,6 +699,11 @@ const Home = memo(({ user, setUser }) => {
           <DestinationsSection />
         </section>
 
+        {/* 5.5️⃣ ON PARLE DE NOUS - PRESSE */}
+        <section>
+          <PressSection />
+        </section>
+
         {/* 6️⃣ NEWSLETTER */}
         <section 
           className="section-light py-20"
