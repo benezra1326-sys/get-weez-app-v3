@@ -123,7 +123,7 @@ export default function Services({ user, setUser }) {
       <style jsx global>{`
         /* Forcer le mode sombre sur toute la page */
         body {
-          background-color: ${isDarkModeSafe ? '#0a0a0f' : '#f9fafb'} !important;
+          background-color: ${isDarkModeSafe ? '#0B0B0C' : '#F8F8F8'} !important;
         }
       `}</style>
       <style jsx global>{`
@@ -153,7 +153,7 @@ export default function Services({ user, setUser }) {
       <div 
         className="min-h-screen"
         style={{
-          backgroundColor: isDarkModeSafe ? '#0a0a0f' : '#f9fafb',
+          backgroundColor: isDarkModeSafe ? '#0B0B0C' : '#F8F8F8',
           overflow: 'visible',
           position: 'relative'
         }}

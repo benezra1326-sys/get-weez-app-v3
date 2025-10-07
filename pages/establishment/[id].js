@@ -38,7 +38,7 @@ export default function EstablishmentDetail({ user, setUser }) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#000000' : '#FFFFFF' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mx-auto mb-4"></div>
           <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
         </div>
       </div>
@@ -256,7 +256,7 @@ export default function EstablishmentDetail({ user, setUser }) {
                     const message = `Je souhaite réserver une table chez ${establishment.name}`
                     window.location.href = `/?message=${encodeURIComponent(message)}`
                   }}
-                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-gray-600 to-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-gray-700 hover:to-gray-700 transition-all duration-300 transform hover:scale-105"
                 >
                   Réserver une table
                 </button>

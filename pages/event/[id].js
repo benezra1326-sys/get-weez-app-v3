@@ -59,7 +59,7 @@ export default function EventDetail({ user, setUser }) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{ backgroundColor: isDarkMode ? '#000000' : '#FFFFFF' }}>
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-600 mx-auto mb-4"></div>
           <p className={isDarkMode ? 'text-gray-300' : 'text-gray-600'}>Chargement...</p>
         </div>
       </div>
@@ -252,7 +252,7 @@ export default function EventDetail({ user, setUser }) {
                       message: `Je souhaite réserver pour l'événement ${event.name}. Pouvez-vous m'aider ?`
                     }
                   })}
-                  className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-gray-600 to-gray-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-gray-700 hover:to-gray-700 transition-all duration-300 transform hover:scale-105"
                   style={{
                     boxShadow: '0 4px 20px rgba(192, 192, 192, 0.4)'
                   }}
@@ -268,8 +268,8 @@ export default function EventDetail({ user, setUser }) {
                   })}
                   className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
                     isDarkMode 
-                      ? 'border border-purple-500 text-gray-400 hover:bg-gray-500/10'
-                      : 'border border-purple-600 text-gray-600 hover:bg-gray-50'
+                      ? 'border border-gray-500 text-gray-400 hover:bg-gray-500/10'
+                      : 'border border-gray-600 text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   Plus d'informations

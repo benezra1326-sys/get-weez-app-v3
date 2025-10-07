@@ -506,7 +506,7 @@ export default function Events({ user, setUser }) {
         <style jsx global>{`
           /* Forcer le mode sombre sur toute la page */
           body {
-            background-color: ${isDarkMode ? '#0a0a0f' : '#f9fafb'} !important;
+            background-color: ${isDarkMode ? '#0B0B0C' : '#F8F8F8'} !important;
           }
         `}</style>
         <style jsx global>{`
@@ -536,7 +536,7 @@ export default function Events({ user, setUser }) {
       <div 
         className="min-h-screen"
         style={{
-          backgroundColor: isDarkMode ? '#0a0a0f' : '#f9fafb',
+          backgroundColor: isDarkMode ? '#0B0B0C' : '#F8F8F8',
           overflow: 'visible',
           position: 'relative'
         }}
@@ -633,7 +633,7 @@ export default function Events({ user, setUser }) {
             {/* Contenu selon le mode d'affichage */}
             {isLoading ? (
               <div className="flex items-center justify-center h-64">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-500"></div>
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-500"></div>
               </div>
             ) : (
               <>
