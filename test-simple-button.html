@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Bouton Chat Simple</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background: #f0f0f0;
+            min-height: 100vh;
+        }
+        
+        .test-button {
+            position: fixed !important;
+            bottom: 20px !important;
+            right: 20px !important;
+            z-index: 2147483647 !important;
+            width: 56px !important;
+            height: 56px !important;
+            border-radius: 50% !important;
+            background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+            border: none !important;
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+            cursor: pointer !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 20px !important;
+            color: white !important;
+            transition: all 0.3s ease !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+            pointer-events: auto !important;
+        }
+        
+        .test-button:hover {
+            transform: scale(1.05) !important;
+            box-shadow: 0 12px 35px rgba(168, 85, 247, 0.8) !important;
+        }
+        
+        .content {
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .status {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="status" id="status">Test Bouton Chat</div>
+    
+    <div class="content">
+        <h1>Test du Bouton Chat</h1>
+        <p>Ce bouton devrait être visible en bas à droite de l'écran.</p>
+        <p>Si vous le voyez, le problème vient du composant React.</p>
+        <p>Si vous ne le voyez pas, le problème vient du CSS.</p>
+        
+        <h2>Instructions :</h2>
+        <ul>
+            <li>Le bouton doit être fixe en bas à droite</li>
+            <li>Il doit avoir un fond violet dégradé</li>
+            <li>Il doit afficher l'emoji 💬</li>
+            <li>Il doit être cliquable</li>
+        </ul>
+    </div>
+    
+    <button class="test-button" id="test-chat-btn" onclick="testClick()">
+        💬
+    </button>
+    
+    <script>
+        function testClick() {
+            alert('Bouton cliqué ! Le CSS fonctionne.');
+        }
+        
+        // Vérifier si le bouton est visible
+        setTimeout(() => {
+            const button = document.getElementById('test-chat-btn');
+            const rect = button.getBoundingClientRect();
+            console.log('Bouton position:', rect);
+            console.log('Bouton visible:', rect.width > 0 && rect.height > 0);
+            
+            document.getElementById('status').innerHTML = 
+                `Bouton: ${rect.width}x${rect.height}px à (${rect.right}, ${rect.bottom})`;
+        }, 1000);
+    </script>
+</body>
+</html>
+

@@ -13,7 +13,7 @@ export function ThemeProvider({ children }) {
   }
 
   const [isDarkMode, setIsDarkMode] = useState(getInitialTheme)
-  const [isLoaded, setIsLoaded] = useState(false)
+  const [isLoaded, setIsLoaded] = useState(true)
 
   // Charger le thème depuis localStorage au montage
   useEffect(() => {

@@ -7,7 +7,9 @@ import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
-import SimpleFloatingChatButton from '../components/ui/SimpleFloatingChatButton'
+import FloatingChatButton from '../components/ui/FloatingChatButton'
+import UltraSimpleButton from '../components/ui/UltraSimpleButton'
+import TestButton from '../components/ui/TestButton'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
@@ -33,6 +35,7 @@ function MyApp({ Component, pageProps }) {
         // Vérifier que les variables d'environnement sont définies
         if (!supabaseUrl || !supabaseKey) {
           console.warn('Variables d\'environnement Supabase manquantes - mode démo')
+          setLoading(false)
           return
         }
         
@@ -90,6 +93,12 @@ function MyApp({ Component, pageProps }) {
 
     checkSession()
 
+    // Timeout de sécurité pour s'assurer que le chargement se termine
+    const timeout = setTimeout(() => {
+      console.log('Timeout de sécurité - fin du chargement')
+      setLoading(false)
+    }, 2000) // Timeout de 2 secondes
+
     // Écouter les changements d'authentification SEULEMENT si Supabase est configuré
     if (supabaseUrl && supabaseKey) {
       const supabase = createClient(supabaseUrl, supabaseKey)
@@ -143,54 +152,68 @@ function MyApp({ Component, pageProps }) {
 
       return () => {
         subscription?.unsubscribe()
+        clearTimeout(timeout)
       }
+    }
+
+    return () => {
+      clearTimeout(timeout)
     }
   }, [])
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 flex items-center justify-center">
-        <div className="text-center">
-          <div className="mb-8 text-6xl font-black animate-bounce"
-            style={{
-              fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
-              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6, #06B6D4)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-              letterSpacing: '-0.02em'
-            }}
-          >
-            Gliitz
-          </div>
-          <div className="text-white text-xl font-semibold mb-4"
-            style={{
-              fontFamily: '"Proxima Soft Black", Montserrat, sans-serif'
-            }}
-          >
-            Chargement...
-          </div>
-          <div className="flex justify-center gap-2">
-            <div className="w-3 h-3 bg-purple-500 rounded-full animate-pulse" style={{ animationDelay: '0s' }}></div>
-            <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse" style={{ animationDelay: '0.2s' }}></div>
-            <div className="w-3 h-3 bg-cyan-500 rounded-full animate-pulse" style={{ animationDelay: '0.4s' }}></div>
-          </div>
-        </div>
-      </div>
-    )
-  }
+  // Écran de chargement supprimé pour permettre l'affichage immédiat
+
+  // Écran de chargement supprimé pour permettre l'affichage immédiat
 
   return (
-    <MobileTouchEnhancer enableHaptics={true}>
-      <ThemeProvider>
-        <Component {...pageProps} user={user} setUser={setUser} />
-        {/* <CookieBanner /> */}
-        <TipsPopup />
-        
-        {/* Bouton chat flottant simple - Mobile uniquement */}
-        <SimpleFloatingChatButton />
-      </ThemeProvider>
-    </MobileTouchEnhancer>
+    <>
+      <MobileTouchEnhancer enableHaptics={true}>
+        <ThemeProvider>
+          <Component {...pageProps} user={user} setUser={setUser} />
+          {/* <CookieBanner /> */}
+          <TipsPopup />
+        </ThemeProvider>
+      </MobileTouchEnhancer>
+      
+      {/* FORCER le bouton directement dans le HTML - SEUL BOUTON */}
+      <div
+        id="chat-button-fixed"
+        style={{
+          position: 'fixed',
+          bottom: '20px',
+          right: '20px',
+          zIndex: 2147483647,
+          width: '56px',
+          height: '56px',
+          borderRadius: '50%',
+          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '20px',
+          color: 'white',
+          cursor: 'pointer',
+          boxShadow: '0 8px 25px rgba(168, 85, 247, 0.6)',
+          border: 'none',
+          top: 'auto',
+          left: 'auto',
+          margin: '0',
+          padding: '0',
+          transform: 'translateZ(0)',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
+          opacity: 1,
+          visibility: 'visible',
+          pointerEvents: 'auto'
+        }}
+        onClick={() => {
+          console.log('🖱️ Bouton HTML cliqué !')
+          alert('Bouton chat HTML cliqué !')
+        }}
+      >
+        💬
+      </div>
+    </>
   )
 }
 

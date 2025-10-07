@@ -107,3 +107,5 @@ button.style.cssText = `
 3. ✅ Barre de saisie fixe en bas du chat
 4. ✅ Bouton chat fixe en bas à droite
 5. ✅ Mêmes données affichées sur mobile et desktop
+
+

@@ -286,8 +286,8 @@ const Home = memo(({ user, setUser }) => {
         <main 
           style={{ 
             flex: 1, 
-            overflowY: 'auto',
-            overflowX: 'hidden',
+            overflowY: 'visible',
+            overflowX: 'visible',
             WebkitOverflowScrolling: 'touch',
             backgroundColor: isDarkMode ? '#000000' : '#FFFFFF', 
             width: '100vw', 

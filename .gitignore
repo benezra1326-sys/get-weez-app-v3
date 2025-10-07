@@ -86,3 +86,7 @@ jspm_packages/
 .vscode-test
 .vercel
 .env*.local
+
+# Playwright MCP output
+playwright-output/
+.cursor/

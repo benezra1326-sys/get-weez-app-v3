@@ -47,11 +47,26 @@ export default function MobileChatBox({
     if (isOpen) {
       // Ajouter une classe au body pour cacher le header/footer
       document.body.classList.add('mobile-chat-open')
-      // Bloquer le scroll du body
-      document.body.style.overflow = 'hidden'
-      document.body.style.position = 'fixed'
-      document.body.style.width = '100%'
-      document.body.style.height = '100%'
+      
+      // Pour iPhone : bloquer le scroll du body COMPLÈTEMENT
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent)
+      if (isIOS) {
+        document.body.style.overflow = 'hidden'
+        document.body.style.position = 'fixed'
+        document.body.style.width = '100%'
+        document.body.style.height = '100%'
+        document.body.style.top = '0'
+        document.body.style.left = '0'
+        document.body.style.touchAction = 'none'
+        
+        // Empêcher le zoom et les gestes sur iPhone
+        document.documentElement.classList.add('mobile-chat-open')
+        document.documentElement.style.overflow = 'hidden'
+        document.documentElement.style.position = 'fixed'
+        document.documentElement.style.height = '100%'
+        document.documentElement.style.width = '100%'
+        document.documentElement.style.touchAction = 'none'
+      }
     } else {
       // Retirer la classe et débloquer le scroll
       document.body.classList.remove('mobile-chat-open')
@@ -59,6 +74,17 @@ export default function MobileChatBox({
       document.body.style.position = ''
       document.body.style.width = ''
       document.body.style.height = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.touchAction = ''
+      
+      // Restaurer le documentElement
+      document.documentElement.classList.remove('mobile-chat-open')
+      document.documentElement.style.overflow = ''
+      document.documentElement.style.position = ''
+      document.documentElement.style.height = ''
+      document.documentElement.style.width = ''
+      document.documentElement.style.touchAction = ''
     }
     
     // Cleanup au démontage
@@ -68,6 +94,16 @@ export default function MobileChatBox({
       document.body.style.position = ''
       document.body.style.width = ''
       document.body.style.height = ''
+      document.body.style.top = ''
+      document.body.style.left = ''
+      document.body.style.touchAction = ''
+      
+      document.documentElement.classList.remove('mobile-chat-open')
+      document.documentElement.style.overflow = ''
+      document.documentElement.style.position = ''
+      document.documentElement.style.height = ''
+      document.documentElement.style.width = ''
+      document.documentElement.style.touchAction = ''
     }
   }, [isOpen])
 
@@ -75,8 +111,9 @@ export default function MobileChatBox({
   const handleScroll = () => {
     if (messagesContainerRef.current) {
       const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current
-      const isAtBottom = scrollHeight - scrollTop - clientHeight < 100
+      const isAtBottom = scrollHeight - scrollTop - clientHeight < 30
       setShowScrollButton(!isAtBottom)
+      console.log('📊 Scroll détecté:', { scrollTop, scrollHeight, clientHeight, isAtBottom })
     }
   }
 
@@ -87,6 +124,7 @@ export default function MobileChatBox({
     if (messagesEndRef.current) {
       messagesEndRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' })
       setShowScrollButton(false)
+      console.log('⬇️ Scroll vers le bas effectué')
     }
   }
 
@@ -186,23 +224,44 @@ export default function MobileChatBox({
             bottom: 0 !important;
             height: 100vh !important;
             height: 100dvh !important;
+            height: -webkit-fill-available !important;
+            display: flex !important;
+            flex-direction: column !important;
+            touch-action: pan-y !important;
+          }
+          
+          .chat-box-container .chat-header {
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
+            right: 0 !important;
+            height: 60px !important;
+            z-index: 1000 !important;
+            background: ${isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)'} !important;
+            backdrop-filter: blur(20px) !important;
+            border-bottom: 1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'} !important;
           }
           
           .chat-box-container .messages-container {
             -webkit-overflow-scrolling: touch !important;
             overscroll-behavior: contain !important;
+            overscroll-behavior-y: contain !important;
             position: absolute !important;
             top: 60px !important;
             left: 0 !important;
             right: 0 !important;
             bottom: 130px !important;
             height: calc(100vh - 190px) !important;
+            height: calc(100dvh - 190px) !important;
+            height: calc(-webkit-fill-available - 190px) !important;
             overflow-y: auto !important;
+            overflow-x: hidden !important;
+            touch-action: pan-y !important;
           }
           
-          /* Empêcher la bande grise sur iPhone */
+          /* Empêcher la bande grise sur iPhone - Version corrigée */
           .chat-box-container .input-zone {
-            position: absolute !important;
+            position: fixed !important;
             bottom: 0 !important;
             left: 0 !important;
             right: 0 !important;
@@ -212,6 +271,11 @@ export default function MobileChatBox({
             backdrop-filter: blur(20px) !important;
             border-top: 1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(229, 231, 235, 0.8)'} !important;
             min-height: auto !important;
+            z-index: 1000 !important;
+            /* Supprimer toute bande grise */
+            margin: 0 !important;
+            border-bottom: none !important;
+            box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.1) !important;
           }
         }
 
@@ -484,9 +548,14 @@ export default function MobileChatBox({
             left: 0,
             right: 0,
             width: '100%',
-            zIndex: 10,
+            zIndex: 1000,
             flexShrink: 0,
-            minHeight: 'auto'
+            minHeight: 'auto',
+            margin: 0,
+            borderBottom: 'none',
+            /* Supprimer toute bande grise sur iPhone */
+            WebkitTransform: 'translateZ(0)',
+            transform: 'translateZ(0)'
           }}
         >
           <div className="flex items-center gap-3">

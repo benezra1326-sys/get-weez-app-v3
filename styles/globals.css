@@ -375,6 +375,56 @@ body {
   will-change: auto;
 }
 
+/* === BOUTON CHAT FLOTTANT - STYLES FORCÉS === */
+#gliitz-floating-chat-btn,
+.floating-chat-button {
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 999999 !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  width: 60px !important;
+  height: 60px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+  border: none !important;
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 24px !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Mobile spécifique - plus petit et bien positionné */
+@media (max-width: 767px) {
+  #gliitz-floating-chat-btn,
+  .floating-chat-button {
+    bottom: 16px !important;
+    right: 16px !important;
+    width: 56px !important;
+    height: 56px !important;
+    font-size: 20px !important;
+    position: fixed !important;
+  }
+}
+
+/* Desktop spécifique */
+@media (min-width: 768px) {
+  #gliitz-floating-chat-btn,
+  .floating-chat-button {
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 60px !important;
+    height: 60px !important;
+    font-size: 24px !important;
+  }
+}
+
 .animate-spin,
 .animate-pulse,
 .animate-bounce {
@@ -1493,6 +1543,85 @@ body.dark .filters-section,
 .establishments-list {
   position: relative;
   z-index: 1;
+}
+
+/* CORRECTION CRITIQUE : Footer ne doit PAS bloquer le bouton flottant */
+footer {
+  z-index: 1 !important;
+  position: relative !important;
+}
+
+/* FORCER le bouton flottant au-dessus de TOUT - VRAIMENT FIXE - CORRECTION COMPLÈTE */
+#gliitz-floating-chat-btn,
+.floating-chat-button {
+  z-index: 2147483647 !important;
+  position: fixed !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  pointer-events: auto !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  display: flex !important;
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+  backface-visibility: hidden !important;
+  /* FORCER la visibilité même avec mobile-chat-open */
+  top: auto !important;
+  left: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+}
+
+/* S'assurer qu'aucun parent n'affecte le positionnement - CORRECTION COMPLÈTE */
+#gliitz-floating-chat-btn {
+  position: fixed !important;
+  top: auto !important;
+  left: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  bottom: 20px !important;
+  right: 20px !important;
+  z-index: 2147483647 !important;
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  width: 56px !important;
+  height: 56px !important;
+  border-radius: 50% !important;
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+  cursor: pointer !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 20px !important;
+  color: white !important;
+  transition: all 0.3s ease !important;
+  transform: translateZ(0) !important;
+  will-change: transform !important;
+  backface-visibility: hidden !important;
+}
+
+/* Mobile - position fixe garantie */
+@media (max-width: 767px) {
+  #gliitz-floating-chat-btn,
+  .floating-chat-button {
+    bottom: 16px !important;
+    right: 16px !important;
+    position: fixed !important;
+    transform: translateZ(0) !important;
+  }
 }
 
 /* Mobile optimizations pour les filtres */
