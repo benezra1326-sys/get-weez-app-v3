@@ -1523,7 +1523,7 @@ body {
 }
 
 .uniform-banner .banner-button.primary:hover {
-  background: linear-gradient(135deg, #2563EB, #1D4ED8);
+  background: linear-gradient(135deg, #FFFFFF, #D0D0D0);
   box-shadow: 0 6px 16px rgba(192, 192, 192, 0.6);
   transform: scale(1.05);
 }
@@ -1715,8 +1715,8 @@ footer {
 }
 
 .btn-outline:hover {
-  background: var(--color-primary);
-  color: white;
+  background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
+  color: #0B0B0C;
   transform: translateY(-1px);
   box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3);
 }
