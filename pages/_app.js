@@ -7,7 +7,7 @@ import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
-import FloatingChatButton from '../components/ui/FloatingChatButton'
+import FloatingChatButtonSimple from '../components/ui/FloatingChatButtonSimple'
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
@@ -169,7 +169,7 @@ function MyApp({ Component, pageProps }) {
         <MobileTouchEnhancer enableHaptics={true}>
           <Component {...pageProps} user={user} setUser={setUser} />
           <TipsPopup />
-          <FloatingChatButton />
+          <FloatingChatButtonSimple />
         </MobileTouchEnhancer>
       </ThemeProvider>
     </>

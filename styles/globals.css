@@ -412,13 +412,25 @@ body {
 }
 
 /* Prévenir l'overflow horizontal sur mobile */
-html, body {
+html {
   overflow-x: hidden;
   max-width: 100vw;
+  width: 100%;
 }
 
 body {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
   position: relative;
+  margin: 0;
+  padding: 0;
+}
+
+#__next {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
 }
 
 /* === BOUTON CHAT FLOTTANT - STYLES FORCÉS === */
