@@ -21,10 +21,18 @@ export default function Chat({ user, setUser }) {
     if (!input.trim() || isLoading) return
 
     const userMessage = { role: 'user', content: input, timestamp: new Date() }
+    const messageContent = input.trim()
     
+    // Mettre à jour le titre de la conversation avec la première question
     setConversations(prev => prev.map(conv => 
       conv.id === currentConvId 
-        ? { ...conv, messages: [...conv.messages, userMessage] }
+        ? { 
+            ...conv, 
+            title: conv.messages.length === 0 
+              ? messageContent.substring(0, 50) + (messageContent.length > 50 ? '...' : '')
+              : conv.title,
+            messages: [...conv.messages, userMessage] 
+          }
         : conv
     ))
     
@@ -34,7 +42,7 @@ export default function Chat({ user, setUser }) {
     setTimeout(() => {
       const aiMessage = { 
         role: 'assistant', 
-        content: `Je peux vous aider avec "${userMessage.content}". En tant que conciergerie de luxe Gliitz, je suis à votre service !`,
+        content: `Je peux vous aider avec "${messageContent}". En tant que conciergerie de luxe Gliitz, je suis à votre service !`,
         timestamp: new Date() 
       }
       

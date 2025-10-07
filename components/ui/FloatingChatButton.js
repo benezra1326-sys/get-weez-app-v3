@@ -7,8 +7,8 @@ const FloatingChatButton = () => {
   const router = useRouter()
   const { isDarkMode } = useTheme()
 
-  // Ne pas afficher sur la page chat
-  if (router.pathname === '/chat') {
+  // Ne JAMAIS afficher sur la page chat
+  if (router.pathname === '/chat' || router.asPath === '/chat' || router.route === '/chat') {
     return null
   }
 
