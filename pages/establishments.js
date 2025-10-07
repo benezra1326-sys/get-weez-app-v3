@@ -155,7 +155,7 @@ export default function Establishments({ user, setUser }) {
       <style jsx global>{`
         /* Forcer le mode sombre sur toute la page */
         body {
-          background-color: ${isDarkModeSafe ? '#0a0a0f' : '#f9fafb'} !important;
+          background-color: ${isDarkModeSafe ? 'var(--gliitz-black)' : 'var(--gliitz-gray-light)'} !important;
         }
       `}</style>
       <style jsx global>{`
@@ -185,9 +185,10 @@ export default function Establishments({ user, setUser }) {
       <div 
         className="min-h-screen"
         style={{
-          backgroundColor: isDarkModeSafe ? '#0a0a0f' : '#f9fafb',
+          backgroundColor: isDarkModeSafe ? 'var(--gliitz-black)' : 'var(--gliitz-gray-light)',
           overflow: 'visible',
-          position: 'relative'
+          position: 'relative',
+          fontFamily: 'var(--font-family-primary)'
         }}
       >
         {/* Header */}
@@ -211,12 +212,12 @@ export default function Establishments({ user, setUser }) {
           {/* Bannière avec titre et recherche - Améliorée avec sparkles */}
           <div className="mb-6" style={{ position: 'relative', zIndex: 1 }}>
             <div 
-              className="relative overflow-hidden rounded-2xl p-6 text-center group"
+              className="relative overflow-hidden rounded-2xl p-6 text-center group card-silver"
                 style={{
-                  background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                  background: 'var(--gradient-silver)',
                   backgroundSize: '400% 400%',
                 animation: 'gradientShift 8s ease infinite',
-                  boxShadow: '0 12px 48px rgba(168, 85, 247, 0.4)'
+                  boxShadow: 'var(--shadow-glow-strong)'
                 }}
               >
                 {/* Effet de brillance animé */}
@@ -244,10 +245,23 @@ export default function Establishments({ user, setUser }) {
                 
                 <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent"></div>
               <div className="relative z-10">
-                <h1 className="text-3xl font-bold text-white mb-3 drop-shadow-lg transition-transform duration-300 group-hover:scale-105">
+                <h1 
+                  className="text-3xl font-bold mb-3 drop-shadow-lg transition-transform duration-300 group-hover:scale-105"
+                  style={{ 
+                    fontFamily: 'var(--font-family-display)',
+                    color: 'var(--gliitz-black)'
+                  }}
+                >
                     🍽️ Établissements
                   </h1>
-                <p className="text-white/90 text-lg mb-4 drop-shadow-md">
+                <p 
+                  className="text-lg mb-4 drop-shadow-md"
+                  style={{ 
+                    fontFamily: 'var(--font-family-primary)',
+                    color: 'var(--gliitz-black)',
+                    opacity: 0.9
+                  }}
+                >
                     Découvrez les meilleurs endroits de Marbella
                   </p>
                   
@@ -264,16 +278,11 @@ export default function Establishments({ user, setUser }) {
           {/* Section des filtres - Visible sur tous les écrans */}
           <div className="mb-6 relative" style={{ zIndex: 100000, overflow: 'visible' }}>
             <div 
-              className="relative rounded-2xl p-6 border transition-all duration-300 hover:shadow-2xl"
+              className="relative glass rounded-2xl p-6 border transition-all duration-300 hover-glow"
               style={{
-                background: isDarkModeSafe 
-                  ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.98) 100%)'
-                  : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.98) 100%)',
-                backdropFilter: 'blur(20px)',
-                borderColor: isDarkModeSafe ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)',
-                boxShadow: isDarkModeSafe 
-                  ? '0 8px 32px rgba(0, 0, 0, 0.5)' 
-                  : '0 8px 32px rgba(168, 85, 247, 0.15)',
+                backdropFilter: 'var(--glass-backdrop)',
+                borderColor: isDarkModeSafe ? 'var(--glass-border-dark)' : 'var(--glass-border)',
+                boxShadow: 'var(--shadow-medium)',
                 overflow: 'visible'
               }}
             >
@@ -281,14 +290,18 @@ export default function Establishments({ user, setUser }) {
               <div 
                 className="absolute inset-0 opacity-5 pointer-events-none"
                 style={{
-                  backgroundImage: 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 1px, transparent 1px)',
+                  backgroundImage: 'radial-gradient(circle, rgba(192, 192, 192, 0.4) 1px, transparent 1px)',
                   backgroundSize: '20px 20px'
                 }}
               />
               
-              <h2 className="text-xl font-bold mb-4 flex items-center relative z-10" style={{
-                color: isDarkModeSafe ? '#ffffff' : '#1f2937'
-              }}>
+              <h2 
+                className="text-xl font-bold mb-4 flex items-center relative z-10" 
+                style={{
+                  fontFamily: 'var(--font-family-display)',
+                  color: isDarkModeSafe ? 'var(--gliitz-silver)' : 'var(--gliitz-black)'
+                }}
+              >
                 <span className="mr-2">🎨</span>
                 Filtres par Style
               </h2>
