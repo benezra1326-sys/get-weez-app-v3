@@ -1,24 +1,47 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { Mic, Send, Loader, Sparkles, Plus, Menu, X, Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock } from 'lucide-react'
+import { Mic, Send, Loader, Sparkles, X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContextSimple'
+import V3Sidebar from '../components/layout/V3Sidebar'
+import { elevenLabs } from '../lib/elevenlabs'
 
 const Home = ({ user, setUser }) => {
   const router = useRouter()
-  const { isDarkMode, toggleTheme } = useTheme()
+  const { isDarkMode } = useTheme()
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [searchQuery, setSearchQuery] = useState('')
+  const [isRecording, setIsRecording] = useState(false)
+  const [currentConversationId, setCurrentConversationId] = useState(null)
+  const recognitionRef = useRef(null)
   const [conversations] = useState([
-    { id: 1, title: 'Restaurants à Marbella', date: 'Aujourd\'hui' },
-    { id: 2, title: 'Événements ce weekend', date: 'Hier' },
-    { id: 3, title: 'Services VIP', date: 'Il y a 2 jours' }
+    { id: 1, title: 'Réservation tables d\'exception', date: 'Aujourd\'hui', preview: 'Je cherche un restaurant...' },
+    { id: 2, title: 'Organisation événement VIP', date: 'Hier', preview: 'Événements privés exclusifs...' },
+    { id: 3, title: 'Services de conciergerie', date: 'Il y a 2 jours', preview: 'Services premium...' }
   ])
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+
+  const handleNewChat = () => {
+    setMessages([])
+    setInput('')
+    setCurrentConversationId(null)
+  }
+
+  // Save conversation after first message
+  useEffect(() => {
+    if (messages.length > 0 && !currentConversationId) {
+      // Create conversation title from first user message
+      const firstUserMessage = messages.find(m => m.role === 'user')
+      if (firstUserMessage) {
+        const title = firstUserMessage.content.slice(0, 50) + (firstUserMessage.content.length > 50 ? '...' : '')
+        setCurrentConversationId(Date.now())
+        // TODO: Save to Supabase
+        console.log('Conversation created:', title)
+      }
+    }
+  }, [messages, currentConversationId])
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -45,21 +68,70 @@ const Home = ({ user, setUser }) => {
     setIsLoading(true)
 
     try {
-      // Simulated response for now
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Call OpenAI API
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          messages: [...messages, userMessage].map(m => ({
+            role: m.role,
+            content: m.content
+          }))
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error('API Error')
+      }
+
+      const data = await response.json()
       
       const assistantMessage = {
         id: Date.now() + 1,
         role: 'assistant',
-        content: "Je suis Gliitz, votre assistant IA de luxe. Comment puis-je sublimer votre expérience à Marbella aujourd'hui ?",
+        content: data.message || "Je suis Gliitz, votre assistant IA de luxe. Comment puis-je sublimer votre expérience à Marbella aujourd'hui ?",
         timestamp: new Date()
       }
 
       setMessages(prev => [...prev, assistantMessage])
+      
+      // Play response with ElevenLabs if available
+      if (data.message) {
+        elevenLabs.playAudio(data.message).catch(err => console.log('Audio playback not available:', err))
+      }
     } catch (error) {
       console.error('Error sending message:', error)
+      const errorMessage = {
+        id: Date.now() + 1,
+        role: 'assistant',
+        content: "Je suis Gliitz, votre concierge de luxe. Comment puis-je vous aider aujourd'hui ?",
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, errorMessage])
     } finally {
       setIsLoading(false)
+    }
+  }
+
+  const toggleVoiceRecording = () => {
+    if (isRecording) {
+      // Stop recording
+      if (recognitionRef.current) {
+        recognitionRef.current.stop()
+      }
+      setIsRecording(false)
+    } else {
+      // Start recording
+      setIsRecording(true)
+      recognitionRef.current = elevenLabs.startSpeechRecognition(
+        (transcript) => {
+          setInput(transcript)
+          setIsRecording(false)
+        },
+        () => {
+          setIsRecording(false)
+        }
+      )
     }
   }
 
@@ -72,23 +144,10 @@ const Home = ({ user, setUser }) => {
 
   return (
     <div className="min-h-screen flex" style={{
-      background: isDarkMode 
-        ? 'linear-gradient(180deg, #0B0B0C 0%, #1a1a1a 100%)'
-        : 'linear-gradient(180deg, rgba(240,240,240,0.7) 0%, rgba(255,255,255,0.9) 100%)'
+      background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }}>
-      {/* Mobile Toggle Button */}
-      <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl text-white hover:bg-white/10 transition-all"
-        style={{
-          background: 'rgba(11, 11, 12, 0.4)',
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255,255,255,0.2)',
-          boxShadow: '0 4px 15px rgba(192,192,192,0.3)'
-        }}
-      >
-        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      {/* Sidebar Component */}
+      <V3Sidebar conversations={conversations} onNewChat={handleNewChat} />
 
       {/* Close/Reset Chat Button */}
       {messages.length > 0 && (
@@ -120,255 +179,105 @@ const Home = ({ user, setUser }) => {
         </button>
       )}
 
-      {/* Sidebar */}
-      <div 
-        className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 overflow-y-auto ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
-        }`}
-        style={{
-          width: '280px',
-          background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
-          borderRight: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`
-        }}
-      >
-        <div className="flex flex-col h-full">
-          {/* Header avec Logo et Toggle Theme */}
-          <div className="p-5 border-b" style={{ 
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' 
-          }}>
-            <div className="flex items-center justify-between mb-6">
-              <h1 className="text-2xl font-bold" style={{
-                fontFamily: 'Playfair Display, serif',
-                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-              }}>
-                Gliitz
-              </h1>
-              
-              {/* Toggle Theme Button */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg transition-all"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                }}
-                title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
-              >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
-            </div>
-
-            {/* Search Bar */}
-            <div className="relative mb-3">
-              <Search 
-                size={18} 
-                className="absolute left-3 top-1/2 transform -translate-y-1/2" 
-                style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
-              />
-              <input
-                type="text"
-                placeholder="Rechercher"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl outline-none transition-all"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
-                  border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  fontFamily: 'Poppins, sans-serif'
-                }}
-              />
-            </div>
-
-            {/* Nouveau Chat Button */}
-            <button
-              onClick={() => {
-                setMessages([])
-                setInput('')
-                setSidebarOpen(false)
-              }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all"
-              style={{
-                background: 'linear-gradient(135deg, #C0C0C0, #A0A0A0)',
-                color: '#FFFFFF',
-                boxShadow: '0 2px 10px rgba(192, 192, 192, 0.3)'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'scale(1.02)'
-                e.currentTarget.style.boxShadow = '0 4px 15px rgba(192, 192, 192, 0.5)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'scale(1)'
-                e.currentTarget.style.boxShadow = '0 2px 10px rgba(192, 192, 192, 0.3)'
-              }}
-            >
-              <Plus size={20} />
-              <span>Nouveau chat</span>
-            </button>
-          </div>
-
-          {/* Navigation Links */}
-          <div className="px-3 py-4 border-b" style={{ 
-            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' 
-          }}>
-            {[
-              { label: 'Établissements', icon: Building, route: '/establishments' },
-              { label: 'Services', icon: Briefcase, route: '/services' },
-              { label: 'Événements', icon: Calendar, route: '/events' },
-              { label: 'Partenaires', icon: Users, route: '/partenaires' },
-              { label: 'Presse', icon: FileText, route: '/presse' },
-              { label: 'Newsletter', icon: Mail, route: '/newsletter' }
-            ].map((item, index) => {
-              const Icon = item.icon
-              return (
-                <button
-                  key={index}
-                  onClick={() => {
-                    router.push(item.route)
-                    setSidebarOpen(false)
-                  }}
-                  className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all mb-1"
-                  style={{
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                    fontFamily: 'Poppins, sans-serif'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
-                    e.currentTarget.style.color = isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent'
-                    e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'
-                  }}
-                >
-                  <Icon size={18} />
-                  <span className="text-sm font-medium">{item.label}</span>
-                </button>
-              )
-            })}
-          </div>
-
-          {/* Conversation History */}
-          <div className="flex-1 overflow-y-auto px-3 py-4">
-            <div className="flex items-center gap-2 px-4 mb-3" style={{ 
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' 
-            }}>
-              <Clock size={14} />
-              <span className="text-xs font-semibold uppercase tracking-wider">Historique</span>
-            </div>
-            
-            {conversations.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm" style={{ 
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' 
-              }}>
-                Aucune conversation
-              </p>
-            ) : (
-              <div className="space-y-1">
-                {conversations.map((conv) => (
-                  <button
-                    key={conv.id}
-                    onClick={() => {
-                      // Load conversation
-                      setSidebarOpen(false)
-                    }}
-                    className="w-full text-left px-4 py-3 rounded-xl transition-all"
-                    style={{
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                      fontFamily: 'Poppins, sans-serif'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent'
-                    }}
-                  >
-                    <p className="text-sm font-medium truncate mb-1">{conv.title}</p>
-                    <p className="text-xs" style={{ 
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)' 
-                    }}>
-                      {conv.date}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
-
-      {/* Spacer for sidebar on desktop */}
-      <div className="hidden md:block" style={{ width: '280px' }} />
-
       {/* Main Chat Area */}
-      <main className="flex-1 flex flex-col h-screen">
+      <main className="flex-1 flex flex-col h-screen overflow-hidden" style={{
+        background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+      }}>
         {/* Welcome Message (shown when no messages) */}
         {messages.length === 0 && (
-          <div className="flex-1 flex items-center justify-center p-8">
-            <div className="text-center max-w-2xl">
+          <div className="flex-1 flex items-center justify-center p-4 md:p-6">
+            <div className="text-center max-w-3xl w-full">
               <div 
-                className="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-6 animate-pulse"
+                className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
                 style={{
-                  background: 'linear-gradient(135deg, #C0C0C0 0%, #E8E8E8 100%)',
-                  boxShadow: '0 8px 30px rgba(192,192,192,0.5)'
+                  background: isDarkMode 
+                    ? 'linear-gradient(135deg, #D4AF37 0%, #F4E5A1 100%)'
+                    : 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)',
+                  boxShadow: isDarkMode 
+                    ? '0 10px 35px rgba(212, 175, 55, 0.4)'
+                    : '0 10px 35px rgba(0, 0, 0, 0.2)'
                 }}
               >
-                <Sparkles size={36} className="text-white" />
+                <Sparkles size={36} style={{ color: '#FFFFFF' }} />
               </div>
 
               <h1 
-                className="text-5xl font-bold mb-4"
-                style={{
+                className="text-3xl md:text-4xl font-bold mb-3"
+                style={{ 
                   fontFamily: 'Playfair Display, serif',
-                  background: 'linear-gradient(135deg, #C0C0C0 0%, #808080 100%)',
+                  background: isDarkMode
+                    ? 'linear-gradient(135deg, #D4AF37 0%, #F4E5A1 100%)'
+                    : 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)',
                   WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent'
+                  WebkitTextFillColor: 'transparent',
+                  letterSpacing: '-0.02em',
+                  lineHeight: '1.2'
                 }}
               >
                 Bonjour, je suis Gliitz
               </h1>
-              
+
               <p 
-                className="text-xl mb-8"
-                style={{
+                className="text-base md:text-lg mb-6 leading-relaxed"
+                style={{ 
                   fontFamily: 'Poppins, sans-serif',
-                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(11, 11, 12, 0.7)'
+                  color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : '#555555',
+                  fontWeight: 300,
+                  letterSpacing: '0.01em'
                 }}
               >
-                Votre assistant IA personnel pour découvrir le luxe à Marbella
+                Dites-moi ce qui vous ferait plaisir...<br />
+                <span style={{ 
+                  color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : '#888888', 
+                  fontSize: '0.9em',
+                  fontStyle: 'italic'
+                }}>
+                  Une envie ? Il vous suffit de me la dire
+                </span>
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-4">
                 {[
-                  'Trouver les meilleurs restaurants',
-                  'Découvrir des événements exclusifs',
-                  'Réserver des services premium',
-                  'Obtenir des recommandations personnalisées'
+                  { text: 'Tables d\'exception à Marbella', icon: '🍽️' },
+                  { text: 'Événements privés exclusifs', icon: '🎭' },
+                  { text: 'Services de conciergerie VIP', icon: '💎' },
+                  { text: 'Expériences sur-mesure', icon: '✨' }
                 ].map((suggestion, index) => (
                   <button
                     key={index}
-                    onClick={() => setInput(suggestion)}
-                    className="p-4 rounded-2xl text-left transition-all hover:scale-105"
+                    onClick={() => setInput(suggestion.text)}
+                    className="group relative p-4 rounded-2xl text-left transition-all duration-300"
                     style={{
-                      background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)',
-                      border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.3)'}`,
-                      backdropFilter: 'blur(10px)'
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : '#FAFAFA',
+                      border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid #E8E8E8',
+                      boxShadow: isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.04)'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)'
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(212, 175, 55, 0.08)' : '#FFFFFF'
+                      e.currentTarget.style.borderColor = isDarkMode ? 'rgba(212, 175, 55, 0.4)' : '#D4AF37'
+                      e.currentTarget.style.boxShadow = isDarkMode ? '0 6px 20px rgba(212, 175, 55, 0.2)' : '0 6px 20px rgba(212, 175, 55, 0.15)'
+                      e.currentTarget.style.transform = 'translateY(-2px)'
                     }}
                     onMouseLeave={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)'
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.03)' : '#FAFAFA'
+                      e.currentTarget.style.borderColor = isDarkMode ? 'rgba(212, 175, 55, 0.2)' : '#E8E8E8'
+                      e.currentTarget.style.boxShadow = isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.04)'
+                      e.currentTarget.style.transform = 'translateY(0)'
                     }}
                   >
-                    <span style={{ 
-                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C', 
-                      fontWeight: 500,
-                      fontFamily: 'Poppins, sans-serif'
-                    }}>
-                      {suggestion}
-                    </span>
+                    <div className="flex items-start gap-2">
+                      <span className="text-lg">{suggestion.icon}</span>
+                      <span style={{ 
+                        color: isDarkMode ? '#FFFFFF' : '#2c2c2c', 
+                        fontWeight: 400,
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '13px',
+                        letterSpacing: '0.01em',
+                        lineHeight: '1.4'
+                      }}>
+                        {suggestion.text}
+                      </span>
+                    </div>
                   </button>
                 ))}
               </div>
@@ -378,7 +287,7 @@ const Home = ({ user, setUser }) => {
 
         {/* Messages List */}
         {messages.length > 0 && (
-          <div className="flex-1 overflow-y-auto px-4 py-8 md:px-8 lg:px-12">
+          <div className="flex-1 px-4 py-8 md:px-8 lg:px-12" style={{ overflowY: 'auto' }}>
             <div className="max-w-4xl mx-auto space-y-6">
               {messages.map((message) => (
                 <div
@@ -392,17 +301,19 @@ const Home = ({ user, setUser }) => {
                   style={
                     message.role === 'user'
                       ? {
-                          background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.85)',
+                          background: isDarkMode ? 'rgba(212, 175, 55, 0.15)' : 'rgba(26, 26, 26, 0.05)',
                           color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                          boxShadow: isDarkMode ? '0 2px 10px rgba(0, 0, 0, 0.3)' : '0 2px 10px rgba(0, 0, 0, 0.15)',
-                          border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(192, 192, 192, 0.2)'}`
+                          boxShadow: isDarkMode ? '0 2px 10px rgba(212, 175, 55, 0.2)' : '0 2px 10px rgba(0, 0, 0, 0.08)',
+                          border: `1px solid ${isDarkMode ? 'rgba(212, 175, 55, 0.3)' : 'rgba(0, 0, 0, 0.1)'}`
                         }
                       : {
-                          background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.1))',
+                          background: isDarkMode 
+                            ? 'linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8))'
+                            : 'linear-gradient(135deg, rgba(250, 250, 250, 0.95), rgba(245, 245, 245, 0.95))',
                           backdropFilter: 'blur(15px)',
-                          border: '1px solid rgba(192, 192, 192, 0.3)',
-                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                          boxShadow: '0 4px 20px rgba(192, 192, 192, 0.2)'
+                          border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid rgba(0, 0, 0, 0.08)',
+                          color: isDarkMode ? '#FFFFFF' : '#2c2c2c',
+                          boxShadow: isDarkMode ? '0 4px 20px rgba(212, 175, 55, 0.15)' : '0 4px 20px rgba(0, 0, 0, 0.06)'
                         }
                   }
                   >
@@ -427,13 +338,15 @@ const Home = ({ user, setUser }) => {
                   <div
                     className="px-6 py-4 rounded-2xl rounded-bl-sm flex items-center gap-3"
                     style={{
-                      background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.1))',
+                      background: isDarkMode 
+                        ? 'linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8))'
+                        : 'linear-gradient(135deg, rgba(250, 250, 250, 0.95), rgba(245, 245, 245, 0.95))',
                       backdropFilter: 'blur(15px)',
-                      border: '1px solid rgba(192, 192, 192, 0.3)',
-                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                      border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid rgba(0, 0, 0, 0.08)',
+                      color: isDarkMode ? '#FFFFFF' : '#2c2c2c'
                     }}
                   >
-                    <Loader className="animate-spin" size={20} style={{ color: '#C0C0C0' }} />
+                    <Loader className="animate-spin" size={20} style={{ color: '#D4AF37' }} />
                     <span style={{ fontFamily: 'Poppins, sans-serif' }}>Gliitz réfléchit...</span>
                   </div>
                 </div>
@@ -447,8 +360,8 @@ const Home = ({ user, setUser }) => {
         {/* Input Bar - Fixed at bottom */}
         <div 
           className="p-4 md:p-6 border-t"
-          style={{
-            background: isDarkMode ? 'rgba(11, 11, 12, 0.8)' : 'rgba(255, 255, 255, 0.6)',
+          style={{ 
+            background: isDarkMode ? '#000000' : 'rgba(255, 255, 255, 0.6)',
             backdropFilter: 'blur(20px)',
             borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
@@ -456,25 +369,34 @@ const Home = ({ user, setUser }) => {
           <div className="max-w-4xl mx-auto">
             <div
               className="flex items-end gap-3 p-2 rounded-2xl"
-              style={{
-                background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)',
-                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.3)'}`,
-                boxShadow: '0 4px 20px rgba(192, 192, 192, 0.2)'
+        style={{ 
+                background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(192, 192, 192, 0.3)'}`,
+                boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.5)' : '0 4px 20px rgba(192, 192, 192, 0.2)'
               }}
             >
               {/* Voice Button */}
               <button
-                className="p-3 rounded-xl transition-all"
+                onClick={toggleVoiceRecording}
+                className={`p-3 rounded-xl transition-all ${isRecording ? 'animate-pulse' : ''}`}
                 style={{
-                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666'
+                  color: isRecording 
+                    ? '#ef4444' 
+                    : (isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666'),
+                  background: isRecording ? 'rgba(239, 68, 68, 0.1)' : 'transparent'
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                  if (!isRecording) {
+                    e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                  }
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'transparent'
+                  if (!isRecording) {
+                    e.currentTarget.style.background = 'transparent'
+                  }
                 }}
                 disabled={isLoading}
+                title={isRecording ? 'Arrêter l\'enregistrement' : 'Commande vocale'}
               >
                 <Mic size={22} />
               </button>
@@ -487,7 +409,7 @@ const Home = ({ user, setUser }) => {
                 onKeyPress={handleKeyPress}
                 placeholder="Demandez-moi n'importe quoi..."
                 className="flex-1 bg-transparent outline-none resize-none px-2 py-3 max-h-32"
-                style={{
+                style={{ 
                   fontFamily: 'Poppins, sans-serif',
                   color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                 }}
@@ -507,8 +429,8 @@ const Home = ({ user, setUser }) => {
                 style={
                   input.trim() && !isLoading
                     ? {
-                        background: 'linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%)',
-                        boxShadow: '0 4px 15px rgba(192, 192, 192, 0.4)'
+                        background: 'linear-gradient(135deg, #D4AF37 0%, #B8941E 100%)',
+                        boxShadow: '0 4px 15px rgba(212, 175, 55, 0.4)'
                       }
                     : {}
                 }
@@ -517,8 +439,8 @@ const Home = ({ user, setUser }) => {
               </button>
           </div>
 
-            <p className="text-center text-xs mt-3 opacity-50" style={{ 
-              color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+            <p className="text-center text-xs mt-3" style={{ 
+              color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)',
               fontFamily: 'Poppins, sans-serif'
             }}>
               Gliitz peut faire des erreurs. Vérifiez les informations importantes.

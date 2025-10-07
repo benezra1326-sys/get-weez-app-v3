@@ -3,70 +3,26 @@ import { createContext, useContext, useState, useEffect } from 'react'
 export const ThemeContext = createContext()
 
 export function ThemeProvider({ children }) {
-  // Charger le thème depuis localStorage AVANT le premier render
-  const getInitialTheme = () => {
+  const [isDarkMode, setIsDarkMode] = useState(false) // Toujours commencer en mode clair
+  const [isLoaded, setIsLoaded] = useState(false)
+
+  // Charger le thème depuis localStorage au montage (une seule fois)
+  useEffect(() => {
     if (typeof window !== 'undefined' && window.localStorage) {
       const savedTheme = localStorage.getItem('gliitz-theme')
-      return savedTheme === 'dark'
-    }
-    return false // Par défaut mode clair Gliitz
-  }
-
-  const [isDarkMode, setIsDarkMode] = useState(getInitialTheme)
-  const [isLoaded, setIsLoaded] = useState(true)
-
-  // Charger le thème depuis localStorage au montage
-  useEffect(() => {
-    try {
-      // Vérifier si localStorage est disponible (côté client)
-      if (typeof window !== 'undefined' && window.localStorage) {
-        const savedTheme = localStorage.getItem('gliitz-theme')
-        const shouldBeDark = savedTheme === 'dark'
-        
-        setIsDarkMode(shouldBeDark)
-        
-        // Appliquer data-theme et classes pour le thème Gliitz
-        if (shouldBeDark) {
-          document.documentElement.setAttribute('data-theme', 'dark')
-          document.body.classList.add('dark')
-          document.body.classList.remove('light')
-          document.body.style.backgroundColor = '#0B0B0C' // Noir Gliitz
-        } else {
-          document.documentElement.setAttribute('data-theme', 'light')
-          document.body.classList.add('light')
-          document.body.classList.remove('dark')
-          document.body.style.backgroundColor = '#F8F8F8' // Gris clair Gliitz
-        }
+      if (savedTheme === 'dark') {
+        setIsDarkMode(true)
       }
-    } catch (error) {
-      console.warn('Erreur lors du chargement du thème Gliitz:', error)
     }
     setIsLoaded(true)
   }, [])
 
-  // Sauvegarder le thème dans localStorage et appliquer data-theme
+  // Sauvegarder et appliquer le thème quand il change
   useEffect(() => {
-    if (isLoaded) {
-      try {
-        if (typeof window !== 'undefined' && window.localStorage) {
-          localStorage.setItem('gliitz-theme', isDarkMode ? 'dark' : 'light')
-          
-          // Appliquer data-theme sur <html> et classes sur body
-          if (isDarkMode) {
-            document.documentElement.setAttribute('data-theme', 'dark')
-            document.body.classList.add('dark')
-            document.body.classList.remove('light')
-            document.body.style.backgroundColor = '#0B0B0C' // Noir Gliitz
-          } else {
-            document.documentElement.setAttribute('data-theme', 'light')
-            document.body.classList.add('light')
-            document.body.classList.remove('dark')
-            document.body.style.backgroundColor = '#F8F8F8' // Gris clair Gliitz
-          }
-        }
-      } catch (error) {
-        console.warn('Erreur lors de la sauvegarde du thème Gliitz:', error)
-      }
+    if (isLoaded && typeof window !== 'undefined') {
+      localStorage.setItem('gliitz-theme', isDarkMode ? 'dark' : 'light')
+      document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')
+      document.body.style.backgroundColor = isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }
   }, [isDarkMode, isLoaded])
 

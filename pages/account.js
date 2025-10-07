@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { User, Mail, Phone, MapPin, Calendar, Shield, CreditCard, Bell } from 'lucide-react'
+import V3Sidebar from '../components/layout/V3Sidebar'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { supabase } from '../lib/supabase'
 
@@ -33,7 +34,12 @@ export default function Account({ user, setUser }) {
   }
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 md:p-8">
+    <div className="min-h-screen flex" style={{
+      background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+    }}>
+      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      
+      <div className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -258,6 +264,7 @@ export default function Account({ user, setUser }) {
             )
           })}
         </div>
+      </div>
       </div>
     </div>
   )

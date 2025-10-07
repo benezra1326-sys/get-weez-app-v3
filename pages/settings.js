@@ -1,15 +1,23 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { Settings as SettingsIcon, Moon, Sun, Globe, Bell, Shield, Volume2 } from 'lucide-react'
+import V3Sidebar from '../components/layout/V3Sidebar'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
 export default function Settings({ user }) {
+  const router = useRouter()
   const { isDarkMode, toggleTheme } = useTheme()
   const [notifications, setNotifications] = useState(true)
   const [sound, setSound] = useState(true)
   const [language, setLanguage] = useState('fr')
 
   return (
-    <div className="flex-1 overflow-y-auto p-4 md:p-8">
+    <div className="min-h-screen flex" style={{
+      background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+    }}>
+      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      
+      <div className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -316,6 +324,7 @@ export default function Settings({ user }) {
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
   )

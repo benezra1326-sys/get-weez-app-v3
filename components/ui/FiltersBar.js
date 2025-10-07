@@ -15,12 +15,18 @@ const FiltersBar = ({ onFilterChange }) => {
   return (
     <div className="w-full mb-8">
       <div 
-        className="glass-refined p-6 rounded-2xl flex flex-wrap gap-4 justify-center items-center"
+        className="p-6 rounded-2xl flex flex-wrap gap-4 justify-center items-center"
         style={{
-          background: 'rgba(255,255,255,0.1)',
-          border: '1px solid rgba(255,255,255,0.2)',
+          background: isDarkMode 
+            ? 'rgba(255, 255, 255, 0.03)' 
+            : 'rgba(255, 255, 255, 0.6)',
+          border: isDarkMode 
+            ? '1px solid rgba(212, 175, 55, 0.2)' 
+            : '1px solid rgba(0, 0, 0, 0.1)',
           backdropFilter: 'blur(14px)',
-          boxShadow: '0 8px 32px rgba(192,192,192,0.15)'
+          boxShadow: isDarkMode 
+            ? '0 8px 32px rgba(0, 0, 0, 0.3)' 
+            : '0 8px 32px rgba(0, 0, 0, 0.08)'
         }}
       >
         {filters.map((filter, idx) => {
@@ -28,10 +34,14 @@ const FiltersBar = ({ onFilterChange }) => {
           return (
             <button
               key={idx}
-              className="btn-gliitz-secondary px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105"
+              className="px-4 py-2 text-sm flex items-center gap-2 transition-all duration-300 hover:scale-105"
               style={{
-                background: 'rgba(255,255,255,0.15)',
-                border: '1px solid rgba(255,255,255,0.3)',
+                background: isDarkMode 
+                  ? 'rgba(212, 175, 55, 0.1)' 
+                  : 'rgba(0, 0, 0, 0.03)',
+                border: isDarkMode 
+                  ? '1px solid rgba(212, 175, 55, 0.3)' 
+                  : '1px solid rgba(0, 0, 0, 0.1)',
                 borderRadius: '12px',
                 color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
                 fontFamily: 'Poppins, sans-serif',

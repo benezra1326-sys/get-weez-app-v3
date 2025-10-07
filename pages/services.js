@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Briefcase, ArrowRight, Sparkles } from 'lucide-react'
+import V3Sidebar from '../components/layout/V3Sidebar'
 import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import { services as staticServices } from '../data/services-data'
@@ -29,7 +30,12 @@ export default function Services({ user, setUser }) {
   if (isLoading) return <GliitzLoader />
 
   return (
-    <div className="flex-1 overflow-y-auto">
+    <div className="min-h-screen flex" style={{
+      background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+    }}>
+      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      
+      <div className="flex-1 overflow-y-auto">
       {/* HERO BANNER */}
       <section 
         className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
@@ -209,6 +215,7 @@ export default function Services({ user, setUser }) {
           ))}
         </div>
       </section>
+      </div>
     </div>
   )
 }
