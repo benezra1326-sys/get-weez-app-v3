@@ -168,8 +168,8 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider>
         <MobileTouchEnhancer enableHaptics={true}>
           <Component {...pageProps} user={user} setUser={setUser} />
-          <TipsPopup />
           <FloatingChatButtonSimple />
+          <TipsPopup />
         </MobileTouchEnhancer>
       </ThemeProvider>
     </>

@@ -39,9 +39,12 @@ const FloatingChatButtonSimple = () => {
           alignItems: 'center',
           justifyContent: 'center',
           cursor: 'pointer',
-          zIndex: 999999,
+          zIndex: 2147483647,
           transition: 'all 0.3s ease',
-          animation: 'floatAnimation 3s ease-in-out infinite'
+          animation: 'floatAnimation 3s ease-in-out infinite',
+          pointerEvents: 'auto',
+          visibility: 'visible',
+          opacity: 1
         }}
         onMouseEnter={(e) => {
           e.currentTarget.style.transform = 'scale(1.1)'
