@@ -10,14 +10,46 @@ import { useTheme } from '../contexts/ThemeContextSimple'
 export default function Services({ user, setUser }) {
   const router = useRouter()
   const [services, setServices] = useState([])
+  const [displayedServices, setDisplayedServices] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [currentSort, setCurrentSort] = useState('rating')
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
     setServices(staticServices)
+    setDisplayedServices(staticServices)
     setIsLoading(false)
   }, [])
+
+  const handleFilterChange = (filter) => {
+    setCurrentSort(filter.value)
+    let sorted = [...services]
+    
+    switch(filter.value) {
+      case 'rating':
+        sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        break
+      case 'price-asc':
+        sorted.sort((a, b) => {
+          const priceA = parseInt(a.price_range?.replace(/[^0-9]/g, '') || '0')
+          const priceB = parseInt(b.price_range?.replace(/[^0-9]/g, '') || '0')
+          return priceA - priceB
+        })
+        break
+      case 'price-desc':
+        sorted.sort((a, b) => {
+          const priceA = parseInt(a.price_range?.replace(/[^0-9]/g, '') || '0')
+          const priceB = parseInt(b.price_range?.replace(/[^0-9]/g, '') || '0')
+          return priceB - priceA
+        })
+        break
+      default:
+        break
+    }
+    
+    setDisplayedServices(sorted)
+  }
 
   const handleRequest = (service) => {
     router.push(`/?msg=${encodeURIComponent(`Je souhaite demander le service ${service.name}`)}`)
@@ -75,7 +107,7 @@ export default function Services({ user, setUser }) {
 
       {/* FILTRES */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20">
-        <FiltersBar />
+        <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
       </div>
 
       {/* GRILLE DE SERVICES */}
@@ -85,12 +117,12 @@ export default function Services({ user, setUser }) {
             fontFamily: 'Poppins, sans-serif',
             color: isDarkMode ? '#E0E0E0' : '#666666'
           }}>
-            {services.length} services disponibles
+            {displayedServices.length} services disponibles
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {services.map((service) => (
+          {displayedServices.map((service) => (
             <div
               key={service.id}
               className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"

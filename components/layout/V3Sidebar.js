@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Clock, Menu, X, User } from 'lucide-react'
+import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onToggle }) {
@@ -18,7 +18,8 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
     { label: 'Services', icon: Briefcase, route: '/services' },
     { label: 'Événements', icon: Calendar, route: '/events' },
     { label: 'Partenaires', icon: Users, route: '/partenaires' },
-    { label: 'Presse', icon: FileText, route: '/presse' }
+    { label: 'Presse', icon: FileText, route: '/presse' },
+    { label: 'Newsletter', icon: Mail, route: '/newsletter' }
   ]
 
   const handleNavigation = (route) => {

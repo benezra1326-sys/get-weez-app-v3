@@ -10,14 +10,38 @@ import { useTheme } from '../contexts/ThemeContextSimple'
 export default function Establishments({ user, setUser }) {
   const router = useRouter()
   const [establishments, setEstablishments] = useState([])
+  const [displayedEstablishments, setDisplayedEstablishments] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [currentSort, setCurrentSort] = useState('rating')
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
     setEstablishments(staticEstablishments)
+    setDisplayedEstablishments(staticEstablishments)
     setIsLoading(false)
   }, [])
+
+  const handleFilterChange = (filter) => {
+    setCurrentSort(filter.value)
+    let sorted = [...establishments]
+    
+    switch(filter.value) {
+      case 'rating':
+        sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        break
+      case 'price-asc':
+        sorted.sort((a, b) => (a.price_level || 0) - (b.price_level || 0))
+        break
+      case 'price-desc':
+        sorted.sort((a, b) => (b.price_level || 0) - (a.price_level || 0))
+        break
+      default:
+        break
+    }
+    
+    setDisplayedEstablishments(sorted)
+  }
 
   const handleReserve = (establishment) => {
     router.push(`/?msg=${encodeURIComponent(`Je souhaite réserver une table chez ${establishment.name}`)}`)
@@ -75,7 +99,7 @@ export default function Establishments({ user, setUser }) {
 
       {/* FILTRES */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20">
-        <FiltersBar />
+        <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
       </div>
 
       {/* GRILLE D'ÉTABLISSEMENTS */}
@@ -85,12 +109,12 @@ export default function Establishments({ user, setUser }) {
             fontFamily: 'Poppins, sans-serif',
             color: isDarkMode ? '#E0E0E0' : '#666666'
           }}>
-            {establishments.length} établissements trouvés
+            {displayedEstablishments.length} établissements trouvés
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {establishments.map((establishment) => (
+          {displayedEstablishments.map((establishment) => (
             <div
               key={establishment.id}
               className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"

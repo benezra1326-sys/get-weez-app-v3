@@ -9,8 +9,10 @@ import { useTheme } from '../contexts/ThemeContextSimple'
 export default function Events({ user, setUser }) {
   const router = useRouter()
   const [events, setEvents] = useState([])
+  const [displayedEvents, setDisplayedEvents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [currentSort, setCurrentSort] = useState('rating')
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
@@ -78,8 +80,30 @@ export default function Events({ user, setUser }) {
       }
     ]
     setEvents(fallbackEvents)
+    setDisplayedEvents(fallbackEvents)
     setIsLoading(false)
   }, [])
+
+  const handleFilterChange = (filter) => {
+    setCurrentSort(filter.value)
+    let sorted = [...events]
+    
+    switch(filter.value) {
+      case 'rating':
+        sorted.sort((a, b) => new Date(b.date) - new Date(a.date))
+        break
+      case 'price-asc':
+        sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
+        break
+      case 'price-desc':
+        sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
+        break
+      default:
+        break
+    }
+    
+    setDisplayedEvents(sorted)
+  }
 
   const handleReserve = (event) => {
     router.push(`/?msg=${encodeURIComponent(`Je souhaite réserver pour l'événement ${event.name} le ${new Date(event.date).toLocaleDateString('fr-FR')}`)}`)
@@ -154,7 +178,7 @@ export default function Events({ user, setUser }) {
 
       {/* FILTRES */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20">
-        <FiltersBar />
+        <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
       </div>
 
       {/* GRILLE D'ÉVÉNEMENTS */}
@@ -164,12 +188,12 @@ export default function Events({ user, setUser }) {
             fontFamily: 'Poppins, sans-serif',
             color: isDarkMode ? '#E0E0E0' : '#666666'
           }}>
-            {events.length} événements à venir
+            {displayedEvents.length} événements à venir
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {events.map((event) => (
+          {displayedEvents.map((event) => (
             <div
               key={event.id}
               className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"
