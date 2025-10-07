@@ -111,41 +111,48 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         }
         
         .menu-link:hover {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6) !important;
-          color: white !important;
-          border-radius: 8px;
+          background: var(--gradient-silver) !important;
+          color: var(--gliitz-black) !important;
+          border-radius: var(--radius-md);
           padding: 8px 16px;
           transform: scale(1.05);
           transition: all 0.3s ease;
-          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3) !important;
+          box-shadow: var(--shadow-glow) !important;
         }
         
         /* Mode sombre par défaut */
         body.dark .menu-link.active,
         .menu-link.active {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6) !important;
-          color: white !important;
-          border-radius: 8px;
+          background: var(--gradient-silver) !important;
+          color: var(--gliitz-black) !important;
+          border-radius: var(--radius-md);
           padding: 8px 16px;
-          box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4) !important;
+          box-shadow: var(--shadow-glow-strong) !important;
+          font-weight: 600;
         }
         
-        /* Mode clair - PRIORITÉ ABSOLUE */
+        body.dark .menu-link:hover {
+          background: var(--gradient-silver) !important;
+          color: var(--gliitz-black) !important;
+        }
+        
+        /* Mode clair */
         body.light .menu-link:hover {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6) !important;
-          color: white !important;
+          background: var(--gradient-silver) !important;
+          color: var(--gliitz-black) !important;
         }
         
         body.light .menu-link.active {
-          background: linear-gradient(135deg, #F59E0B, #FCD34D) !important;
-          color: #1F2937 !important;
-          border-radius: 8px;
+          background: var(--gradient-silver) !important;
+          color: var(--gliitz-black) !important;
+          border-radius: var(--radius-md);
           padding: 8px 16px;
-          box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4) !important;
+          box-shadow: var(--shadow-glow-strong) !important;
+          font-weight: 600;
         }
         
         body.light .menu-link.active span {
-          color: #1F2937 !important;
+          color: var(--gliitz-black) !important;
         }
         
         .menu-link span {
@@ -154,14 +161,22 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         }
       `}</style>
     <header 
-        className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-2 lg:px-6 py-2 lg:py-4 w-full"
+        className="flex items-center justify-between sticky top-0 z-50 glass border-b px-2 lg:px-6 py-2 lg:py-4 w-full"
       style={{
           minHeight: '4rem',
-        boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)',
-        backgroundColor: isDarkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-        borderColor: isDarkMode ? 'rgba(45, 45, 45, 0.2)' : 'rgba(139, 92, 246, 0.2)',
+        boxShadow: isDarkMode 
+          ? '0 4px 20px rgba(192, 192, 192, 0.1)' 
+          : '0 4px 20px rgba(192, 192, 192, 0.2)',
+        backgroundColor: isDarkMode 
+          ? 'rgba(11, 11, 12, 0.85)' 
+          : 'rgba(255, 255, 255, 0.85)',
+        backdropFilter: 'blur(20px)',
+        borderColor: isDarkMode 
+          ? 'rgba(192, 192, 192, 0.1)' 
+          : 'rgba(192, 192, 192, 0.2)',
         maxWidth: '100vw',
-        overflow: 'visible' // Important pour que le dropdown profil soit visible !
+        overflow: 'visible',
+        fontFamily: 'var(--font-family-primary)'
       }}
     >
       {/* Logo et menu mobile */}
@@ -169,38 +184,36 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         {/* Menu mobile */}
         <button 
           onClick={toggleMobileMenu}
-          className="lg:hidden p-2 rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
+          className="lg:hidden p-2 glass halo rounded-lg transition-all duration-300 hover:scale-110 active:scale-95"
           style={{
-            background: isDarkMode 
-              ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.6), rgba(75, 85, 99, 0.8))'
-              : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.8))',
-            backdropFilter: 'blur(10px)',
-            border: isDarkMode 
-              ? '1px solid rgba(75, 85, 99, 0.5)'
-              : '1px solid rgba(209, 213, 219, 0.3)',
-            borderRadius: '8px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+            background: 'var(--glass-bg)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid var(--glass-border)',
+            borderRadius: 'var(--radius-md)',
+            boxShadow: 'var(--shadow-soft)',
             minWidth: '36px',
             minHeight: '36px',
-            flexShrink: 0
+            flexShrink: 0,
+            color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-black)'
           }}
         >
-          <Menu size={18} className={isDarkMode ? 'text-white' : 'text-gray-700'} />
+          <Menu size={18} />
         </button>
         
         {/* Logo Gliitz - Compact */}
         <Link href="/" className="flex items-center group" style={{ flexShrink: 0 }}>
           <div 
-            className="px-2 py-1.5 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 group-hover:scale-105"
+            className="px-2 py-1.5 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 group-hover:scale-105 metallic shadow-glow"
             style={{
-              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-              borderRadius: '8px',
-              boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)',
+              background: 'var(--gradient-silver)',
+              borderRadius: 'var(--radius-md)',
+              boxShadow: 'var(--shadow-glow)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               minWidth: 'auto',
-              maxWidth: 'fit-content'
+              maxWidth: 'fit-content',
+              border: '1px solid var(--gliitz-silver-light)'
             }}
           >
             <GliitzLogo size="text-xl lg:text-5xl" />
@@ -284,10 +297,12 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         {/* Bouton de thème */}
         <button 
           onClick={toggleTheme}
-          className="p-2 rounded-xl transition-all duration-300 hover:bg-gray-800/50"
+          className="p-2 glass halo rounded-xl transition-all duration-300 hover:scale-110"
           style={{ 
-            color: 'var(--color-text-secondary)',
-            borderRadius: 'var(--radius-lg)'
+            color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-black)',
+            borderRadius: 'var(--radius-md)',
+            border: '1px solid var(--glass-border)',
+            boxShadow: 'var(--shadow-soft)'
           }}
           title={isDarkMode ? "Mode clair" : "Mode sombre"}
         >
