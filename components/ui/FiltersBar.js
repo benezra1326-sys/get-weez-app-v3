@@ -6,10 +6,9 @@ const FiltersBar = ({ onFilterChange }) => {
   const { isDarkMode } = useTheme()
 
   const filters = [
-    { name: 'Géolocalisation', icon: MapPin },
-    { name: 'Prix', icon: DollarSign },
-    { name: 'Note', icon: Star },
-    { name: 'Recommandés par Gliitz', icon: Sparkles }
+    { name: 'Géolocalisation', icon: MapPin, value: 'location' },
+    { name: 'Prix', icon: DollarSign, value: 'price' },
+    { name: 'Note', icon: Star, value: 'rating' }
   ]
 
   return (

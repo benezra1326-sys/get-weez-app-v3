@@ -10,6 +10,7 @@ export default function Events({ user, setUser }) {
   const router = useRouter()
   const [events, setEvents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
@@ -81,12 +82,7 @@ export default function Events({ user, setUser }) {
   }, [])
 
   const handleReserve = (event) => {
-    router.push({
-      pathname: '/',
-      query: { 
-        message: `Je souhaite réserver pour l'événement ${event.name} le ${new Date(event.date).toLocaleDateString('fr-FR')}`
-      }
-    })
+    router.push(`/?msg=${encodeURIComponent(`Je souhaite réserver pour l'événement ${event.name} le ${new Date(event.date).toLocaleDateString('fr-FR')}`)}`)
   }
 
   const formatDate = (dateString) => {
@@ -112,7 +108,12 @@ export default function Events({ user, setUser }) {
     <div className="min-h-screen flex" style={{
       background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }}>
-      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      <V3Sidebar 
+        conversations={[]} 
+        onNewChat={() => router.push('/')}
+        isOpen={sidebarOpen}
+        onToggle={setSidebarOpen}
+      />
       
       <div className="flex-1 overflow-y-auto">
       {/* HERO BANNER */}

@@ -53,6 +53,16 @@ const Home = ({ user, setUser }) => {
     inputRef.current?.focus()
   }, [])
 
+  // Check for message in URL
+  useEffect(() => {
+    const { msg } = router.query
+    if (msg && typeof msg === 'string') {
+      setInput(msg)
+      // Clean URL
+      router.replace('/', undefined, { shallow: true })
+    }
+  }, [router.query])
+
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return
 
@@ -253,9 +263,9 @@ const Home = ({ user, setUser }) => {
                       boxShadow: isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.04)'
                     }}
                     onMouseEnter={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(212, 175, 55, 0.08)' : '#FFFFFF'
-                      e.currentTarget.style.borderColor = isDarkMode ? 'rgba(212, 175, 55, 0.4)' : '#D4AF37'
-                      e.currentTarget.style.boxShadow = isDarkMode ? '0 6px 20px rgba(212, 175, 55, 0.2)' : '0 6px 20px rgba(212, 175, 55, 0.15)'
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : '#FFFFFF'
+                      e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#E0E0E0'
+                      e.currentTarget.style.boxShadow = isDarkMode ? '0 8px 25px rgba(255, 255, 255, 0.1)' : '0 8px 25px rgba(0, 0, 0, 0.12)'
                       e.currentTarget.style.transform = 'translateY(-2px)'
                     }}
                     onMouseLeave={(e) => {
@@ -424,15 +434,19 @@ const Home = ({ user, setUser }) => {
                 className={`p-3 rounded-xl transition-all ${
                   input.trim() && !isLoading
                     ? 'text-white'
-                    : 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                    : 'text-gray-400 cursor-not-allowed'
                 }`}
                 style={
                   input.trim() && !isLoading
                     ? {
-                        background: 'linear-gradient(135deg, #D4AF37 0%, #B8941E 100%)',
-                        boxShadow: '0 4px 15px rgba(212, 175, 55, 0.4)'
+                        background: isDarkMode 
+                          ? 'linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%)'
+                          : 'linear-gradient(135deg, #0B0B0C 0%, #1a1a1a 100%)',
+                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)'
                       }
-                    : {}
+                    : {
+                        background: 'rgba(128, 128, 128, 0.2)'
+                      }
                 }
               >
                 {isLoading ? <Loader className="animate-spin" size={22} /> : <Send size={22} />}

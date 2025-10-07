@@ -9,6 +9,7 @@ export default function Account({ user, setUser }) {
   const router = useRouter()
   const { isDarkMode } = useTheme()
   const [isEditing, setIsEditing] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const [formData, setFormData] = useState({
     first_name: user?.first_name || '',
     last_name: user?.last_name || '',
@@ -37,7 +38,12 @@ export default function Account({ user, setUser }) {
     <div className="min-h-screen flex" style={{
       background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }}>
-      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      <V3Sidebar 
+        conversations={[]} 
+        onNewChat={() => router.push('/')}
+        isOpen={sidebarOpen}
+        onToggle={setSidebarOpen}
+      />
       
       <div className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="max-w-4xl mx-auto">

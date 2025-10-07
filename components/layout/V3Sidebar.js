@@ -1,39 +1,42 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X } from 'lucide-react'
+import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Clock, Menu, X, User } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
-export default function V3Sidebar({ conversations = [], onNewChat }) {
+export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onToggle }) {
   const router = useRouter()
   const { isDarkMode, toggleTheme } = useTheme()
   const [searchQuery, setSearchQuery] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  
+  // Use external state if provided, otherwise use internal
+  const open = isOpen !== undefined ? isOpen : sidebarOpen
+  const toggle = onToggle !== undefined ? onToggle : setSidebarOpen
 
   const navItems = [
     { label: 'Établissements', icon: Building, route: '/establishments' },
     { label: 'Services', icon: Briefcase, route: '/services' },
     { label: 'Événements', icon: Calendar, route: '/events' },
     { label: 'Partenaires', icon: Users, route: '/partenaires' },
-    { label: 'Presse', icon: FileText, route: '/presse' },
-    { label: 'Newsletter', icon: Mail, route: '/newsletter' }
+    { label: 'Presse', icon: FileText, route: '/presse' }
   ]
 
   const handleNavigation = (route) => {
     router.push(route)
-    setSidebarOpen(false) // Fermer la sidebar après navigation (mobile ET desktop)
+    toggle(false) // Fermer la sidebar après navigation
   }
 
   const handleLogoClick = () => {
     if (onNewChat) onNewChat()
     router.push('/')
-    setSidebarOpen(false)
+    toggle(false)
   }
 
   return (
     <>
-      {/* Mobile Toggle Button */}
+      {/* Toggle Button (mobile uniquement) */}
       <button
-        onClick={() => setSidebarOpen(!sidebarOpen)}
+        onClick={() => toggle(!open)}
         className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl transition-all"
         style={{
           background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
@@ -42,21 +45,21 @@ export default function V3Sidebar({ conversations = [], onNewChat }) {
           color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
         }}
       >
-        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
+        {open ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* Overlay for mobile */}
-      {sidebarOpen && (
+      {/* Overlay (mobile uniquement) */}
+      {open && (
         <div
           className="md:hidden fixed inset-0 bg-black/40 z-30 backdrop-blur-sm"
-          onClick={() => setSidebarOpen(false)}
+          onClick={() => toggle(false)}
         />
       )}
 
       {/* Sidebar */}
       <div 
         className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 ${
-          sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
+          open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
         style={{
           width: '280px',
@@ -183,7 +186,7 @@ export default function V3Sidebar({ conversations = [], onNewChat }) {
                   <button
                     key={conv.id}
                     onClick={() => {
-                      setSidebarOpen(false)
+                      toggle(false)
                     }}
                     className="w-full text-left px-4 py-2.5 rounded-xl transition-all"
                     style={{
@@ -212,6 +215,33 @@ export default function V3Sidebar({ conversations = [], onNewChat }) {
                 ))}
               </div>
             )}
+          </div>
+
+          {/* Profile Button at Bottom */}
+          <div className="p-4 border-t" style={{ 
+            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' 
+          }}>
+            <button
+              onClick={() => {
+                router.push('/account')
+                toggle(false)
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all"
+              style={{
+                background: isDarkMode ? 'rgba(212, 175, 55, 0.1)' : 'rgba(0, 0, 0, 0.03)',
+                color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                fontFamily: 'Poppins, sans-serif'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(212, 175, 55, 0.2)' : 'rgba(0, 0, 0, 0.05)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(212, 175, 55, 0.1)' : 'rgba(0, 0, 0, 0.03)'
+              }}
+            >
+              <User size={20} />
+              <span className="font-medium">Mon profil</span>
+            </button>
           </div>
         </div>
       </div>

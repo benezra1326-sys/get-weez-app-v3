@@ -10,12 +10,18 @@ export default function Settings({ user }) {
   const [notifications, setNotifications] = useState(true)
   const [sound, setSound] = useState(true)
   const [language, setLanguage] = useState('fr')
+  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
     <div className="min-h-screen flex" style={{
       background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }}>
-      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      <V3Sidebar 
+        conversations={[]} 
+        onNewChat={() => router.push('/')}
+        isOpen={sidebarOpen}
+        onToggle={setSidebarOpen}
+      />
       
       <div className="flex-1 overflow-y-auto p-4 md:p-8">
       <div className="max-w-4xl mx-auto">

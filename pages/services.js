@@ -11,6 +11,7 @@ export default function Services({ user, setUser }) {
   const router = useRouter()
   const [services, setServices] = useState([])
   const [isLoading, setIsLoading] = useState(true)
+  const [sidebarOpen, setSidebarOpen] = useState(false)
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
@@ -19,12 +20,7 @@ export default function Services({ user, setUser }) {
   }, [])
 
   const handleRequest = (service) => {
-    router.push({
-      pathname: '/',
-      query: { 
-        message: `Je souhaite demander le service ${service.name}`
-      }
-    })
+    router.push(`/?msg=${encodeURIComponent(`Je souhaite demander le service ${service.name}`)}`)
   }
 
   if (isLoading) return <GliitzLoader />
@@ -33,7 +29,12 @@ export default function Services({ user, setUser }) {
     <div className="min-h-screen flex" style={{
       background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }}>
-      <V3Sidebar conversations={[]} onNewChat={() => router.push('/')} />
+      <V3Sidebar 
+        conversations={[]} 
+        onNewChat={() => router.push('/')}
+        isOpen={sidebarOpen}
+        onToggle={setSidebarOpen}
+      />
       
       <div className="flex-1 overflow-y-auto">
       {/* HERO BANNER */}
