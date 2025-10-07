@@ -75,33 +75,51 @@ export default function Chat({ user, setUser }) {
         fontFamily: 'Poppins, sans-serif'
       }}
     >
-      <HeaderGliitz user={user} setUser={setUser} toggleMobileMenu={() => {}} isMobileMenuOpen={false} />
-      
-      {/* Bouton fermer le chat - retour accueil */}
-      <button
-        onClick={() => router.push('/')}
-        className="fixed top-24 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
+      {/* Header spécifique Chat avec bouton fermer */}
+      <div 
+        className="flex items-center justify-between px-6 py-4 border-b"
         style={{
-          background: 'rgba(255,255,255,0.1)',
-          border: '1px solid rgba(255,255,255,0.25)',
-          backdropFilter: 'blur(12px)',
-          color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
-          cursor: 'pointer'
+          background: isDarkMode ? 'rgba(26,26,28,0.95)' : 'rgba(255,255,255,0.95)',
+          backdropFilter: 'blur(16px)',
+          borderColor: isDarkMode ? 'rgba(192,192,192,0.1)' : 'rgba(192,192,192,0.2)',
+          height: '72px'
         }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.background = 'rgba(192,192,192,0.2)'
-          e.currentTarget.style.transform = 'scale(1.1)'
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
-          e.currentTarget.style.transform = 'scale(1)'
-        }}
-        title="Fermer le chat"
       >
-        <X size={20} />
-      </button>
+        <h1 
+          className="text-2xl font-bold"
+          style={{
+            fontFamily: 'Playfair Display, serif',
+            fontWeight: 700,
+            color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+          }}
+        >
+          💬 Chat Gliitz
+        </h1>
+        
+        <button
+          onClick={() => router.push('/')}
+          className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300"
+          style={{
+            background: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.25)',
+            color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+            cursor: 'pointer'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(192,192,192,0.3)'
+            e.currentTarget.style.transform = 'rotate(90deg)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
+            e.currentTarget.style.transform = 'rotate(0deg)'
+          }}
+          title="Fermer le chat"
+        >
+          <X size={20} />
+        </button>
+      </div>
 
-      <div className="flex flex-1 overflow-hidden">
+      <div className="flex flex-1 overflow-hidden" style={{ height: 'calc(100vh - 72px)' }}>
         {/* SIDEBAR - Historique conversations (style ChatGPT) */}
         <div 
           className={`${showSidebar ? 'w-64' : 'w-0'} transition-all duration-300 overflow-hidden`}
@@ -275,16 +293,16 @@ export default function Chat({ user, setUser }) {
             )}
           </div>
 
-          {/* Input zone */}
+          {/* Input zone - PLEINE LARGEUR */}
           <div 
-            className="p-4"
+            className="p-6"
             style={{
               background: isDarkMode ? 'rgba(26,26,28,0.95)' : 'rgba(255,255,255,0.95)',
               borderTop: `1px solid ${isDarkMode ? 'rgba(192,192,192,0.1)' : 'rgba(192,192,192,0.2)'}`,
               backdropFilter: 'blur(12px)'
             }}
           >
-            <div className="max-w-4xl mx-auto flex gap-3">
+            <div className="w-full flex gap-3">
               <input
                 type="text"
                 value={input}
