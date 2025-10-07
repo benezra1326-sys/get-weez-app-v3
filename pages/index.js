@@ -238,18 +238,18 @@ const Home = memo(({ user, setUser }) => {
               </button>
 
               {/* Stats rapides */}
-              <div className="grid grid-cols-3 gap-6 mt-16 max-w-2xl mx-auto">
+              <div className="grid grid-cols-3 gap-3 md:gap-6 mt-12 md:mt-16 max-w-2xl mx-auto px-2">
                 {[
-                  { label: 'Réponses instantanées', labelShort: 'Réponses', icon: '⚡', value: '24/7' },
-                  { label: 'Recommandations premium', labelShort: 'Reco', icon: '🎯', value: '1000+' },
-                  { label: 'Clients satisfaits', labelShort: 'Satisfaits', icon: '⭐', value: '98%' }
+                  { label: 'Réponses instantanées', labelShort: 'Instant', icon: '⚡', value: '24/7' },
+                  { label: 'Recommandations', labelShort: 'Reco', icon: '🎯', value: '1000+' },
+                  { label: 'Utilisateurs satisfaits', labelShort: 'Clients', icon: '⭐', value: '98%' }
                 ].map((stat, idx) => (
                   <div 
                     key={idx} 
-                    className="p-4 text-center"
+                    className="p-3 md:p-4 text-center"
                     style={{
                       background: 'rgba(255,255,255,0.1)',
-                      borderRadius: '20px',
+                      borderRadius: '16px',
                       border: '1px solid rgba(255,255,255,0.25)',
                       backdropFilter: 'blur(12px)',
                       transition: 'all 0.3s ease',
@@ -264,9 +264,9 @@ const Home = memo(({ user, setUser }) => {
                       e.currentTarget.style.boxShadow = 'none'
                     }}
                   >
-                    <div className="text-3xl mb-2">{stat.icon}</div>
+                    <div className="text-2xl md:text-3xl mb-1 md:mb-2">{stat.icon}</div>
                     <div 
-                      className="text-2xl font-bold mb-1"
+                      className="text-xl md:text-2xl font-bold mb-1"
                       style={{ 
                         fontFamily: 'Playfair Display, serif',
                         fontWeight: 600,
@@ -276,14 +276,15 @@ const Home = memo(({ user, setUser }) => {
                       {stat.value}
                     </div>
                     <div 
-                      className="text-sm"
+                      className="text-[10px] md:text-sm leading-tight px-1"
                       style={{ 
                         fontFamily: 'Poppins, sans-serif',
                         fontWeight: 400,
                         color: '#E0E0E0'
                       }}
                     >
-                      {stat.label}
+                      <span className="md:hidden">{stat.labelShort}</span>
+                      <span className="hidden md:inline">{stat.label}</span>
                     </div>
                   </div>
                 ))}

@@ -19,12 +19,20 @@ const FloatingChatButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-2xl"
+      id="gliitz-floating-chat-btn"
+      className="fixed bottom-6 right-6 w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-2xl"
       style={{
         background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
         boxShadow: '0 8px 32px rgba(192, 192, 192, 0.4), 0 0 20px rgba(192, 192, 192, 0.3)',
         border: '2px solid rgba(255, 255, 255, 0.5)',
-        animation: 'float 3s ease-in-out infinite'
+        animation: 'float 3s ease-in-out infinite',
+        zIndex: 9999,
+        position: 'fixed',
+        cursor: 'pointer',
+        display: 'flex',
+        visibility: 'visible',
+        opacity: 1,
+        pointerEvents: 'auto'
       }}
       aria-label="Ouvrir le chat Gliitz"
     >
