@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import HeaderGliitz from '../components/layout/HeaderGliitz'
 import { useTheme } from '../contexts/ThemeContextSimple'
-import { Send, Loader2, MessageCircle, Plus, Trash2, ChevronLeft } from 'lucide-react'
+import { Send, Loader2, MessageCircle, Plus, Trash2, ChevronLeft, X } from 'lucide-react'
 
 export default function Chat({ user, setUser }) {
   const router = useRouter()
@@ -76,6 +76,30 @@ export default function Chat({ user, setUser }) {
       }}
     >
       <HeaderGliitz user={user} setUser={setUser} toggleMobileMenu={() => {}} isMobileMenuOpen={false} />
+      
+      {/* Bouton fermer le chat - retour accueil */}
+      <button
+        onClick={() => router.push('/')}
+        className="fixed top-24 right-6 z-50 w-12 h-12 rounded-full flex items-center justify-center transition-all duration-300"
+        style={{
+          background: 'rgba(255,255,255,0.1)',
+          border: '1px solid rgba(255,255,255,0.25)',
+          backdropFilter: 'blur(12px)',
+          color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+          cursor: 'pointer'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.background = 'rgba(192,192,192,0.2)'
+          e.currentTarget.style.transform = 'scale(1.1)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.background = 'rgba(255,255,255,0.1)'
+          e.currentTarget.style.transform = 'scale(1)'
+        }}
+        title="Fermer le chat"
+      >
+        <X size={20} />
+      </button>
 
       <div className="flex flex-1 overflow-hidden">
         {/* SIDEBAR - Historique conversations (style ChatGPT) */}
