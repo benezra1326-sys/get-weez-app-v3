@@ -728,8 +728,9 @@ const Home = memo(({ user, setUser }) => {
       <footer 
         className="relative overflow-hidden"
         style={{ 
-          background: 'var(--gliitz-black)',
-          color: 'var(--gliitz-silver)',
+          background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
+          color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+          borderTop: `1px solid ${isDarkMode ? 'rgba(192,192,192,0.1)' : 'rgba(192,192,192,0.2)'}`
         }}
       >
         <div className="container mx-auto px-4 py-16">

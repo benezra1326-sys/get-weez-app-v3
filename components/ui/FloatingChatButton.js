@@ -19,7 +19,7 @@ const FloatingChatButton = () => {
   return (
     <button
       onClick={handleClick}
-      className="fixed bottom-6 right-6 z-50 w-14 h-14 md:w-16 md:h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-2xl"
+      className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 shadow-2xl"
       style={{
         background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
         boxShadow: '0 8px 32px rgba(192, 192, 192, 0.4), 0 0 20px rgba(192, 192, 192, 0.3)',
