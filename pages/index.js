@@ -1,14 +1,22 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
-import { FiMic, FiSend, FiLoader, FiSparkles, FiPlus, FiMenu, FiX } from 'react-icons/fi'
+import { Mic, Send, Loader, Sparkles, Plus, Menu, X, Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock } from 'lucide-react'
+import { useTheme } from '../contexts/ThemeContextSimple'
 
 const Home = ({ user, setUser }) => {
   const router = useRouter()
+  const { isDarkMode, toggleTheme } = useTheme()
   const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [searchQuery, setSearchQuery] = useState('')
+  const [conversations] = useState([
+    { id: 1, title: 'Restaurants à Marbella', date: 'Aujourd\'hui' },
+    { id: 2, title: 'Événements ce weekend', date: 'Hier' },
+    { id: 3, title: 'Services VIP', date: 'Il y a 2 jours' }
+  ])
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -64,7 +72,9 @@ const Home = ({ user, setUser }) => {
 
   return (
     <div className="min-h-screen flex" style={{
-      background: 'linear-gradient(180deg, rgba(240,240,240,0.7) 0%, rgba(255,255,255,0.9) 100%)'
+      background: isDarkMode 
+        ? 'linear-gradient(180deg, #0B0B0C 0%, #1a1a1a 100%)'
+        : 'linear-gradient(180deg, rgba(240,240,240,0.7) 0%, rgba(255,255,255,0.9) 100%)'
     }}>
       {/* Mobile Toggle Button */}
       <button
@@ -77,46 +87,214 @@ const Home = ({ user, setUser }) => {
           boxShadow: '0 4px 15px rgba(192,192,192,0.3)'
         }}
       >
-        {sidebarOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+        {sidebarOpen ? <X size={24} /> : <Menu size={24} />}
       </button>
 
-      {/* Sidebar (hidden for now - just a placeholder) */}
+      {/* Close/Reset Chat Button */}
+      {messages.length > 0 && (
+        <button
+          onClick={() => {
+            if (window.confirm('Voulez-vous réinitialiser la conversation ?')) {
+              setMessages([])
+              setInput('')
+            }
+          }}
+          className="fixed top-4 right-4 z-50 p-3 rounded-xl transition-all group"
+          style={{
+            background: 'rgba(255, 255, 255, 0.8)',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(192,192,192,0.3)',
+            boxShadow: '0 4px 15px rgba(192,192,192,0.2)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.9)'
+            e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(192,192,192,0.2)'
+          }}
+          title="Fermer la conversation"
+        >
+          <X size={24} className="text-gray-700 group-hover:text-white transition-colors" />
+        </button>
+      )}
+
+      {/* Sidebar */}
       <div 
-        className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 overflow-y-auto ${
           sidebarOpen ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
         style={{
           width: '280px',
-          background: 'rgba(11, 11, 12, 0.85)',
-          backdropFilter: 'blur(20px)',
-          borderRight: '1px solid rgba(255, 255, 255, 0.1)'
+          background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
+          borderRight: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`
         }}
       >
-        <div className="p-5">
-          <h1 className="text-3xl font-bold mb-6" style={{
-            fontFamily: 'Playfair Display, serif',
-            background: 'linear-gradient(135deg, #C0C0C0 0%, #FFFFFF 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent'
+        <div className="flex flex-col h-full">
+          {/* Header avec Logo et Toggle Theme */}
+          <div className="p-5 border-b" style={{ 
+            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' 
           }}>
-            Gliitz
-          </h1>
-          
-          <button
-            onClick={() => {
-              setMessages([])
-              setSidebarOpen(false)
-            }}
-            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all"
-            style={{
-              background: 'rgba(192, 192, 192, 0.15)',
-              border: '1px solid rgba(192, 192, 192, 0.3)',
-              color: '#C0C0C0'
-            }}
-          >
-            <FiPlus size={20} />
-            <span>Nouveau chat</span>
-          </button>
+            <div className="flex items-center justify-between mb-6">
+              <h1 className="text-2xl font-bold" style={{
+                fontFamily: 'Playfair Display, serif',
+                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+              }}>
+                Gliitz
+              </h1>
+              
+              {/* Toggle Theme Button */}
+              <button
+                onClick={toggleTheme}
+                className="p-2 rounded-lg transition-all"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                }}
+                title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+              >
+                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+              </button>
+            </div>
+
+            {/* Search Bar */}
+            <div className="relative mb-3">
+              <Search 
+                size={18} 
+                className="absolute left-3 top-1/2 transform -translate-y-1/2" 
+                style={{ color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' }}
+              />
+              <input
+                type="text"
+                placeholder="Rechercher"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-10 pr-4 py-2.5 rounded-xl outline-none transition-all"
+                style={{
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)',
+                  border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  fontFamily: 'Poppins, sans-serif'
+                }}
+              />
+            </div>
+
+            {/* Nouveau Chat Button */}
+            <button
+              onClick={() => {
+                setMessages([])
+                setInput('')
+                setSidebarOpen(false)
+              }}
+              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl font-semibold transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #C0C0C0, #A0A0A0)',
+                color: '#FFFFFF',
+                boxShadow: '0 2px 10px rgba(192, 192, 192, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.02)'
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(192, 192, 192, 0.5)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)'
+                e.currentTarget.style.boxShadow = '0 2px 10px rgba(192, 192, 192, 0.3)'
+              }}
+            >
+              <Plus size={20} />
+              <span>Nouveau chat</span>
+            </button>
+          </div>
+
+          {/* Navigation Links */}
+          <div className="px-3 py-4 border-b" style={{ 
+            borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' 
+          }}>
+            {[
+              { label: 'Établissements', icon: Building, route: '/establishments' },
+              { label: 'Services', icon: Briefcase, route: '/services' },
+              { label: 'Événements', icon: Calendar, route: '/events' },
+              { label: 'Partenaires', icon: Users, route: '/partenaires' },
+              { label: 'Presse', icon: FileText, route: '/presse' },
+              { label: 'Newsletter', icon: Mail, route: '/newsletter' }
+            ].map((item, index) => {
+              const Icon = item.icon
+              return (
+                <button
+                  key={index}
+                  onClick={() => {
+                    router.push(item.route)
+                    setSidebarOpen(false)
+                  }}
+                  className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all mb-1"
+                  style={{
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
+                    fontFamily: 'Poppins, sans-serif'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                    e.currentTarget.style.color = isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'transparent'
+                    e.currentTarget.style.color = isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'
+                  }}
+                >
+                  <Icon size={18} />
+                  <span className="text-sm font-medium">{item.label}</span>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Conversation History */}
+          <div className="flex-1 overflow-y-auto px-3 py-4">
+            <div className="flex items-center gap-2 px-4 mb-3" style={{ 
+              color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' 
+            }}>
+              <Clock size={14} />
+              <span className="text-xs font-semibold uppercase tracking-wider">Historique</span>
+            </div>
+            
+            {conversations.length === 0 ? (
+              <p className="px-4 py-6 text-center text-sm" style={{ 
+                color: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' 
+              }}>
+                Aucune conversation
+              </p>
+            ) : (
+              <div className="space-y-1">
+                {conversations.map((conv) => (
+                  <button
+                    key={conv.id}
+                    onClick={() => {
+                      // Load conversation
+                      setSidebarOpen(false)
+                    }}
+                    className="w-full text-left px-4 py-3 rounded-xl transition-all"
+                    style={{
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
+                      fontFamily: 'Poppins, sans-serif'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = 'transparent'
+                    }}
+                  >
+                    <p className="text-sm font-medium truncate mb-1">{conv.title}</p>
+                    <p className="text-xs" style={{ 
+                      color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)' 
+                    }}>
+                      {conv.date}
+                    </p>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -136,9 +314,9 @@ const Home = ({ user, setUser }) => {
                   boxShadow: '0 8px 30px rgba(192,192,192,0.5)'
                 }}
               >
-                <FiSparkles size={36} className="text-white" />
+                <Sparkles size={36} className="text-white" />
               </div>
-              
+
               <h1 
                 className="text-5xl font-bold mb-4"
                 style={{
@@ -155,7 +333,7 @@ const Home = ({ user, setUser }) => {
                 className="text-xl mb-8"
                 style={{
                   fontFamily: 'Poppins, sans-serif',
-                  color: 'rgba(11, 11, 12, 0.7)'
+                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(11, 11, 12, 0.7)'
                 }}
               >
                 Votre assistant IA personnel pour découvrir le luxe à Marbella
@@ -173,12 +351,22 @@ const Home = ({ user, setUser }) => {
                     onClick={() => setInput(suggestion)}
                     className="p-4 rounded-2xl text-left transition-all hover:scale-105"
                     style={{
-                      background: 'rgba(255, 255, 255, 0.6)',
-                      border: '1px solid rgba(192, 192, 192, 0.3)',
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)',
+                      border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.3)'}`,
                       backdropFilter: 'blur(10px)'
                     }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.8)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.6)'
+                    }}
                   >
-                    <span style={{ color: '#0B0B0C', fontWeight: 500 }}>
+                    <span style={{ 
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C', 
+                      fontWeight: 500,
+                      fontFamily: 'Poppins, sans-serif'
+                    }}>
                       {suggestion}
                     </span>
                   </button>
@@ -201,22 +389,22 @@ const Home = ({ user, setUser }) => {
                     className={`max-w-[80%] md:max-w-[70%] px-6 py-4 rounded-2xl ${
                       message.role === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'
                     }`}
-                    style={
-                      message.role === 'user'
-                        ? {
-                            background: 'rgba(255, 255, 255, 0.85)',
-                            color: '#0B0B0C',
-                            boxShadow: '0 2px 10px rgba(0, 0, 0, 0.15)',
-                            border: '1px solid rgba(192, 192, 192, 0.2)'
-                          }
-                        : {
-                            background: 'rgba(11, 11, 12, 0.8)',
-                            backdropFilter: 'blur(15px)',
-                            border: '1px solid rgba(255, 255, 255, 0.15)',
-                            color: '#FFFFFF',
-                            boxShadow: '0 4px 20px rgba(192, 192, 192, 0.2)'
-                          }
-                    }
+                  style={
+                    message.role === 'user'
+                      ? {
+                          background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(255, 255, 255, 0.85)',
+                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                          boxShadow: isDarkMode ? '0 2px 10px rgba(0, 0, 0, 0.3)' : '0 2px 10px rgba(0, 0, 0, 0.15)',
+                          border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(192, 192, 192, 0.2)'}`
+                        }
+                      : {
+                          background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.1))',
+                          backdropFilter: 'blur(15px)',
+                          border: '1px solid rgba(192, 192, 192, 0.3)',
+                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                          boxShadow: '0 4px 20px rgba(192, 192, 192, 0.2)'
+                        }
+                  }
                   >
                     <p 
                       className="whitespace-pre-wrap leading-relaxed"
@@ -231,22 +419,22 @@ const Home = ({ user, setUser }) => {
                       })}
                     </p>
                   </div>
-                </div>
-              ))}
+                  </div>
+                ))}
 
               {isLoading && (
                 <div className="flex justify-start">
                   <div
                     className="px-6 py-4 rounded-2xl rounded-bl-sm flex items-center gap-3"
                     style={{
-                      background: 'rgba(11, 11, 12, 0.8)',
+                      background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.1))',
                       backdropFilter: 'blur(15px)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
-                      color: '#FFFFFF'
+                      border: '1px solid rgba(192, 192, 192, 0.3)',
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                     }}
                   >
-                    <FiLoader className="animate-spin" size={20} />
-                    <span>Gliitz réfléchit...</span>
+                    <Loader className="animate-spin" size={20} style={{ color: '#C0C0C0' }} />
+                    <span style={{ fontFamily: 'Poppins, sans-serif' }}>Gliitz réfléchit...</span>
                   </div>
                 </div>
               )}
@@ -260,26 +448,35 @@ const Home = ({ user, setUser }) => {
         <div 
           className="p-4 md:p-6 border-t"
           style={{
-            background: 'rgba(255, 255, 255, 0.6)',
+            background: isDarkMode ? 'rgba(11, 11, 12, 0.8)' : 'rgba(255, 255, 255, 0.6)',
             backdropFilter: 'blur(20px)',
-            borderTop: '1px solid rgba(192, 192, 192, 0.2)'
+            borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
         >
           <div className="max-w-4xl mx-auto">
             <div
               className="flex items-end gap-3 p-2 rounded-2xl"
               style={{
-                background: 'rgba(255, 255, 255, 0.9)',
-                border: '1px solid rgba(192, 192, 192, 0.3)',
+                background: isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(255, 255, 255, 0.9)',
+                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.3)'}`,
                 boxShadow: '0 4px 20px rgba(192, 192, 192, 0.2)'
               }}
             >
               {/* Voice Button */}
               <button
-                className="p-3 rounded-xl hover:bg-black/5 text-gray-600 transition-all"
+                className="p-3 rounded-xl transition-all"
+                style={{
+                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent'
+                }}
                 disabled={isLoading}
               >
-                <FiMic size={22} />
+                <Mic size={22} />
               </button>
 
               {/* Text Input */}
@@ -292,7 +489,7 @@ const Home = ({ user, setUser }) => {
                 className="flex-1 bg-transparent outline-none resize-none px-2 py-3 max-h-32"
                 style={{
                   fontFamily: 'Poppins, sans-serif',
-                  color: '#0B0B0C'
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                 }}
                 rows={1}
                 disabled={isLoading}
@@ -316,11 +513,14 @@ const Home = ({ user, setUser }) => {
                     : {}
                 }
               >
-                {isLoading ? <FiLoader className="animate-spin" size={22} /> : <FiSend size={22} />}
+                {isLoading ? <Loader className="animate-spin" size={22} /> : <Send size={22} />}
               </button>
-            </div>
+          </div>
 
-            <p className="text-center text-xs mt-3 opacity-50" style={{ color: '#0B0B0C' }}>
+            <p className="text-center text-xs mt-3 opacity-50" style={{ 
+              color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+              fontFamily: 'Poppins, sans-serif'
+            }}>
               Gliitz peut faire des erreurs. Vérifiez les informations importantes.
             </p>
           </div>
