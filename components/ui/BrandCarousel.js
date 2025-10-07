@@ -20,7 +20,7 @@ const BrandCarousel = memo(() => {
   ]
 
   return (
-    <div className="w-full py-8 lg:py-16" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+    <div className="w-full py-12 lg:py-16" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
       <style jsx>{`
         @keyframes scroll {
           0% { transform: translateX(0); }
@@ -71,15 +71,16 @@ const BrandCarousel = memo(() => {
           {brands.map((brand, index) => (
             <div
               key={`${brand.name}-${index}`}
-              className="flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+              className="flex flex-col items-center justify-center p-4 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
               style={{
                 background: 'rgba(255,255,255,0.1)',
                 border: '1px solid rgba(255,255,255,0.25)',
                 backdropFilter: 'blur(12px)',
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                minHeight: '100px'
               }}
             >
-              <span className="text-3xl mb-1">{brand.logo}</span>
+              <span className="text-3xl mb-2">{brand.logo}</span>
               <span className={`text-xs font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 {brand.name}
               </span>
@@ -93,17 +94,18 @@ const BrandCarousel = memo(() => {
             {[...brands, ...brands, ...brands].map((brand, index) => (
               <div
                 key={`${brand.name}-${index}`}
-                className="flex-shrink-0 flex flex-col items-center justify-center p-4 lg:p-6 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
+                className="flex-shrink-0 flex flex-col items-center justify-center p-6 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
                 style={{
-                  minWidth: '140px',
+                  minWidth: '160px',
+                  minHeight: '140px',
                   background: 'rgba(255,255,255,0.1)',
                   border: '1px solid rgba(255,255,255,0.25)',
                   backdropFilter: 'blur(12px)',
                   boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}
               >
-                <span className="text-4xl lg:text-5xl mb-2">{brand.logo}</span>
-                <span className={`text-xs lg:text-sm font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+                <span className="text-5xl mb-3">{brand.logo}</span>
+                <span className={`text-sm font-semibold text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                   {brand.name}
                 </span>
               </div>

@@ -507,7 +507,7 @@ const Home = memo(({ user, setUser }) => {
 
         {/* 3️⃣ PARTENAIRES */}
         <section 
-          className="py-16"
+          className="py-8"
           style={{
             background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
           }}
