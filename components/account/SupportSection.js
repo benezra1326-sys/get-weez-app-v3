@@ -33,7 +33,7 @@ export default function SupportSection({ user }) {
       case 'open':
         return <AlertCircle size={16} className="text-yellow-500" />
       case 'in_progress':
-        return <Clock size={16} className="text-blue-500" />
+        return <Clock size={16} className="text-gray-500" />
       case 'resolved':
         return <CheckCircle size={16} className="text-green-500" />
       default:
@@ -71,7 +71,7 @@ export default function SupportSection({ user }) {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex items-center mb-6">
-        <HelpCircle size={24} className="mr-3 text-purple-500" />
+        <HelpCircle size={24} className="mr-3 text-gray-500" />
         <h2 className={`text-2xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
           Support & Assistance
         </h2>
@@ -276,7 +276,7 @@ export default function SupportSection({ user }) {
         </h3>
         <div className="space-y-3">
           <div className="flex items-center space-x-3">
-            <Phone size={20} className="text-purple-500" />
+            <Phone size={20} className="text-gray-500" />
             <div>
               <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 Téléphone
@@ -287,7 +287,7 @@ export default function SupportSection({ user }) {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <Mail size={20} className="text-purple-500" />
+            <Mail size={20} className="text-gray-500" />
             <div>
               <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 Email
@@ -298,7 +298,7 @@ export default function SupportSection({ user }) {
             </div>
           </div>
           <div className="flex items-center space-x-3">
-            <MessageCircle size={20} className="text-purple-500" />
+            <MessageCircle size={20} className="text-gray-500" />
             <div>
               <p className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                 Chat en direct

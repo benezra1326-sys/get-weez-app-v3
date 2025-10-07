@@ -75,7 +75,7 @@ export const MobileChatEnhanced = memo(({
         
         .mobile-chat-input:focus-within {
           transform: translateY(-2px);
-          box-shadow: 0 12px 40px rgba(139, 92, 246, 0.2);
+          box-shadow: 0 12px 40px rgba(192, 192, 192, 0.2);
         }
         
         .mobile-chat-input textarea {
@@ -136,18 +136,18 @@ export const MobileChatEnhanced = memo(({
           display: inline-block;
           padding: 6px 12px;
           margin: 2px;
-          background: rgba(139, 92, 246, 0.1);
+          background: rgba(192, 192, 192, 0.1);
           color: #C0C0C0;
           border-radius: 20px;
           font-size: 14px;
           cursor: pointer;
           transition: all 0.2s ease;
-          border: 1px solid rgba(139, 92, 246, 0.2);
+          border: 1px solid rgba(192, 192, 192, 0.2);
         }
         
         .suggestion-chip:active {
           transform: scale(0.95);
-          background: rgba(139, 92, 246, 0.2);
+          background: rgba(192, 192, 192, 0.2);
         }
         
         .mobile-voice-button {
@@ -314,7 +314,7 @@ export const MobileChatEnhanced = memo(({
             {/* Bouton suggestions */}
             <button
               onClick={() => setShowSuggestions(!showSuggestions)}
-              className="p-2 text-gray-500 hover:text-purple-600 transition-colors"
+              className="p-2 text-gray-500 hover:text-gray-600 transition-colors"
             >
               <ChevronDown 
                 size={16} 

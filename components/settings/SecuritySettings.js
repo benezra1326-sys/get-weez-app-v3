@@ -82,7 +82,7 @@ export default function SecuritySettings({ user }) {
         >
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
-              <Smartphone size={20} className="text-blue-500" />
+              <Smartphone size={20} className="text-gray-500" />
               <div>
                 <div 
                   className="font-semibold text-sm"
@@ -102,7 +102,7 @@ export default function SecuritySettings({ user }) {
               onClick={toggleTwoFactor}
               className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
                 twoFactorEnabled 
-                  ? 'bg-blue-600' 
+                  ? 'bg-gray-600' 
                   : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
               }`}
             >
@@ -156,7 +156,7 @@ export default function SecuritySettings({ user }) {
           }}
         >
           <div className="flex items-center space-x-3">
-            <Smartphone size={20} className="text-purple-500" />
+            <Smartphone size={20} className="text-gray-500" />
             <div className="text-left">
               <div 
                 className="font-semibold text-sm"

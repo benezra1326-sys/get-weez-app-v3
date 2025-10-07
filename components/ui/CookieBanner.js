@@ -37,7 +37,7 @@ export default function CookieBanner() {
           ? 'linear-gradient(135deg, rgba(17, 24, 39, 0.98) 0%, rgba(31, 41, 55, 0.95) 100%)'
           : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
         backdropFilter: 'blur(20px) saturate(150%)',
-        borderTop: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+        borderTop: `2px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
         boxShadow: '0 -10px 30px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.1)'
       }}
     >
@@ -49,12 +49,12 @@ export default function CookieBanner() {
               className="p-3 rounded-2xl flex-shrink-0"
               style={{
                 background: isDarkMode 
-                  ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)'
-                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
-                border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+                  ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.2) 100%)'
+                  : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%)',
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
               }}
             >
-              <Cookie size={24} className="text-purple-500" />
+              <Cookie size={24} className="text-gray-500" />
             </div>
             
             <div className="flex-1">
@@ -69,7 +69,7 @@ export default function CookieBanner() {
                 <a 
                   href="/aide" 
                   className={`text-xs underline hover:no-underline transition-all duration-200 ${
-                    isDarkMode ? 'text-purple-400 hover:text-purple-300' : 'text-purple-600 hover:text-purple-700'
+                    isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-700'
                   }`}
                 >
                   En savoir plus sur notre politique de confidentialité
@@ -100,7 +100,7 @@ export default function CookieBanner() {
               className="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 text-white"
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
+                boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)',
               }}
             >
               <Check size={16} className="inline mr-2" />

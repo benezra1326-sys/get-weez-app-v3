@@ -50,7 +50,7 @@ const ChatInterfaceNew = ({ user, initialMessage, establishmentName }) => {
         
         <button 
           onClick={handleCreateConversation}
-          className="w-full mb-4 bg-blue-500 text-white p-3 rounded hover:bg-blue-600"
+          className="w-full mb-4 bg-gray-500 text-white p-3 rounded hover:bg-gray-600"
         >
           + Nouvelle conversation
         </button>
@@ -88,7 +88,7 @@ const ChatInterfaceNew = ({ user, initialMessage, establishmentName }) => {
               <p className="text-xl mb-8">Votre assistant IA pour Marbella</p>
               <button 
                 onClick={handleCreateConversation}
-                className="bg-purple-500 text-white px-8 py-4 rounded-xl text-lg hover:bg-purple-600"
+                className="bg-gray-500 text-white px-8 py-4 rounded-xl text-lg hover:bg-gray-600"
               >
                 Commencer une conversation
               </button>
@@ -113,7 +113,7 @@ const ChatInterfaceNew = ({ user, initialMessage, establishmentName }) => {
                 <div key={msg.id} className={`mb-4 ${msg.role === 'user' ? 'text-right' : 'text-left'}`}>
                   <div className={`inline-block p-3 rounded-lg max-w-xs ${
                     msg.role === 'user' 
-                      ? 'bg-blue-500 text-white' 
+                      ? 'bg-gray-500 text-white' 
                       : 'bg-gray-200 text-gray-800'
                   }`}>
                     {msg.content}
@@ -130,7 +130,7 @@ const ChatInterfaceNew = ({ user, initialMessage, establishmentName }) => {
                   placeholder="Tapez votre message..."
                   className="flex-1 p-3 border rounded-l"
                 />
-                <button className="bg-blue-500 text-white px-6 py-3 rounded-r hover:bg-blue-600">
+                <button className="bg-gray-500 text-white px-6 py-3 rounded-r hover:bg-gray-600">
                   Envoyer
                 </button>
               </div>

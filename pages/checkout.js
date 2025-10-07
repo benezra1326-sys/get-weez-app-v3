@@ -140,7 +140,7 @@ export default function Checkout() {
           <h1 className="text-2xl font-bold mb-4">Plan non trouvé</h1>
           <button 
             onClick={() => router.push('/subscriptions')}
-            className="bg-purple-600 text-white px-6 py-3 rounded-lg hover:bg-purple-700"
+            className="bg-gray-600 text-white px-6 py-3 rounded-lg hover:bg-gray-700"
           >
             Retour aux abonnements
           </button>
@@ -202,7 +202,7 @@ export default function Checkout() {
                     isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
                   }`}>
                     <div className="flex items-center mb-6">
-                      <User size={24} className="mr-3 text-purple-600" />
+                      <User size={24} className="mr-3 text-gray-600" />
                       <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         {user ? 'Vérifiez vos informations' : 'Créer votre compte'}
                       </h2>
@@ -332,7 +332,7 @@ export default function Checkout() {
                     isDarkMode ? 'bg-gray-800 border border-gray-700' : 'bg-white border border-gray-200'
                   }`}>
                     <div className="flex items-center mb-6">
-                      <CreditCard size={24} className="mr-3 text-purple-600" />
+                      <CreditCard size={24} className="mr-3 text-gray-600" />
                       <h2 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         Informations de paiement
                       </h2>

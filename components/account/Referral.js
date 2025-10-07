@@ -82,7 +82,7 @@ export default function Referral({ user }) {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Users size={24} className="text-white" />
@@ -109,12 +109,12 @@ export default function Referral({ user }) {
           className="p-4 rounded-xl text-center"
           style={{
             background: isDarkMode 
-              ? 'rgba(59, 130, 246, 0.1)'
-              : 'rgba(59, 130, 246, 0.05)',
-            border: `1px solid ${isDarkMode ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+              ? 'rgba(192, 192, 192, 0.1)'
+              : 'rgba(192, 192, 192, 0.05)',
+            border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
         >
-          <UserPlus size={20} className="text-blue-500 mx-auto mb-2" />
+          <UserPlus size={20} className="text-gray-500 mx-auto mb-2" />
           <div 
             className="text-lg font-bold"
             style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}
@@ -157,9 +157,9 @@ export default function Referral({ user }) {
           className="p-4 rounded-xl text-center"
           style={{
             background: isDarkMode 
-              ? 'rgba(245, 158, 11, 0.1)'
-              : 'rgba(245, 158, 11, 0.05)',
-            border: `1px solid ${isDarkMode ? 'rgba(245, 158, 11, 0.3)' : 'rgba(245, 158, 11, 0.2)'}`
+              ? 'rgba(192, 192, 192, 0.1)'
+              : 'rgba(192, 192, 192, 0.05)',
+            border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
         >
           <Gift size={20} className="text-yellow-500 mx-auto mb-2" />
@@ -181,12 +181,12 @@ export default function Referral({ user }) {
           className="p-4 rounded-xl text-center"
           style={{
             background: isDarkMode 
-              ? 'rgba(139, 92, 246, 0.1)'
-              : 'rgba(139, 92, 246, 0.05)',
-            border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`
+              ? 'rgba(192, 192, 192, 0.1)'
+              : 'rgba(192, 192, 192, 0.05)',
+            border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
         >
-          <Star size={20} className="text-purple-500 mx-auto mb-2" />
+          <Star size={20} className="text-gray-500 mx-auto mb-2" />
           <div 
             className="text-lg font-bold"
             style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}
@@ -241,7 +241,7 @@ export default function Referral({ user }) {
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 color: 'white',
-                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+                boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
               }}
             >
               {copiedCode ? <Check size={20} /> : <Copy size={20} />}
@@ -255,10 +255,10 @@ export default function Referral({ user }) {
               className="flex-1 flex items-center justify-center space-x-2 p-3 rounded-lg font-semibold transition-all duration-200 hover:scale-105"
               style={{
                 background: isDarkMode 
-                  ? 'rgba(59, 130, 246, 0.2)'
-                  : 'rgba(59, 130, 246, 0.1)',
+                  ? 'rgba(192, 192, 192, 0.2)'
+                  : 'rgba(192, 192, 192, 0.1)',
                 color: '#C0C0C0',
-                border: '1px solid rgba(59, 130, 246, 0.3)'
+                border: '1px solid rgba(192, 192, 192, 0.3)'
               }}
             >
               {copiedLink ? <Check size={18} /> : <Copy size={18} />}

@@ -71,7 +71,7 @@ const Home = memo(({ user, setUser }) => {
   }
 
   const handleOpenChat = () => {
-    setIsChatOpen(true)
+    router.push('/aide')
   }
 
   if (!isLoaded) {
@@ -108,9 +108,10 @@ const Home = memo(({ user, setUser }) => {
       <main className="w-full">
         {/* 1️⃣ HERO BANNER - Chat IA avec carrousel d'images luxe */}
         <section 
-          className="relative w-full overflow-hidden"
+          className="relative w-full overflow-hidden flex items-center justify-center"
           style={{
             minHeight: '100vh',
+            height: '100vh',
             background: '#0B0B0C',
           }}
         >
@@ -163,9 +164,9 @@ const Home = memo(({ user, setUser }) => {
             ))}
           </div>
 
-          {/* Contenu Hero - Centré verticalement */}
-          <div className="relative z-20 h-full flex items-center justify-center px-4">
-            <div className="max-w-5xl mx-auto text-center w-full">
+          {/* Contenu Hero - CENTRÉ VERTICALEMENT ET HORIZONTALEMENT */}
+          <div className="relative z-20 w-full px-4">
+            <div className="max-w-5xl mx-auto text-center">
               {/* Badge "IA Powered" */}
               <div 
                 className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full"

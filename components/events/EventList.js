@@ -28,7 +28,7 @@ export default function EventList({ events, user, onBecomeMember }) {
               </button>
             </Link>
             <Link href="/login">
-              <button className="w-full bg-transparent border-2 border-purple-500 text-purple-400 py-3 px-6 rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300 flex items-center justify-center">
+              <button className="w-full bg-transparent border-2 border-purple-500 text-gray-400 py-3 px-6 rounded-full hover:bg-gray-500 hover:text-white transition-all duration-300 flex items-center justify-center">
                 <User size={16} className="mr-2" />
                 Accès membre
               </button>

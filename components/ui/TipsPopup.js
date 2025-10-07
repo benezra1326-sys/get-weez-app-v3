@@ -98,7 +98,7 @@ export default function TipsPopup() {
             : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
           backdropFilter: 'blur(20px)',
           border: '2px solid rgba(255, 255, 255, 0.3)',
-          boxShadow: '0 12px 32px rgba(59, 130, 246, 0.5)'
+          boxShadow: '0 12px 32px rgba(192, 192, 192, 0.5)'
         }}
       >
         {/* Icône animée avec titre compact */}

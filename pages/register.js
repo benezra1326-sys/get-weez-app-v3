@@ -357,7 +357,7 @@ export default function Register({ user, setUser }) {
               <div className="mt-8 text-center">
                 <p className="text-slate-400">
                   Déjà un compte ?{' '}
-                  <Link href="/login" className="text-blue-400 hover:text-blue-300 font-medium transition-colors duration-200">
+                  <Link href="/login" className="text-gray-400 hover:text-gray-300 font-medium transition-colors duration-200">
                     Se connecter
                   </Link>
                 </p>

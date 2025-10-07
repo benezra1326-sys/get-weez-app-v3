@@ -55,7 +55,7 @@ const ChatHistory = ({ user }) => {
           : 'bg-white border border-gray-200/50 shadow-xl'
       }`}>
         <h2 className={`text-2xl font-bold mb-6 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-          <MessageCircle size={24} className="mr-3 text-purple-500" />
+          <MessageCircle size={24} className="mr-3 text-gray-500" />
           Historique des Conversations
         </h2>
         <div className="flex items-center justify-center py-8">
@@ -73,7 +73,7 @@ const ChatHistory = ({ user }) => {
     }`}>
       <div className="mb-6 text-center">
         <h2 className={`text-2xl font-bold inline-flex items-center justify-center mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-          <MessageCircle size={24} className="mr-3 text-purple-500" />
+          <MessageCircle size={24} className="mr-3 text-gray-500" />
           Historique des Conversations
         </h2>
         
@@ -83,8 +83,8 @@ const ChatHistory = ({ user }) => {
             href="/"
             className={`inline-flex items-center px-4 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
               isDarkMode 
-                ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40' 
-                : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40'
+                ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-gray-500/25 hover:shadow-gray-500/40' 
+                : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg shadow-gray-500/25 hover:shadow-gray-500/40'
             }`}
           >
             <MessageCircle size={18} className="mr-2" />
@@ -186,8 +186,8 @@ const ChatHistory = ({ user }) => {
               href="/"
               className={`inline-flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                 isDarkMode 
-                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40' 
-                  : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg shadow-purple-500/25 hover:shadow-purple-500/40'
+                  ? 'bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white shadow-lg shadow-gray-500/25 hover:shadow-gray-500/40' 
+                  : 'bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white shadow-lg shadow-gray-500/25 hover:shadow-gray-500/40'
               }`}
             >
               <MessageCircle size={18} className="mr-2" />

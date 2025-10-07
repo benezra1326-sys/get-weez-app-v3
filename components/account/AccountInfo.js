@@ -26,7 +26,7 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
           className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)', // Cohérent avec Get Weez
-            boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+            boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)',
           }}
         >
           <span 
@@ -85,7 +85,7 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             color: 'white',
-            boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+            boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)',
             border: '1px solid rgba(255, 255, 255, 0.1)',
           }}
         >

@@ -63,7 +63,7 @@ module.exports = {
         'xl': 'var(--shadow-xl)',
         'glow': 'var(--shadow-glow)',
         'glow-accent': 'var(--shadow-glow-accent)',
-        'luxury': '0 0 30px rgba(139, 92, 246, 0.4), 0 0 60px rgba(245, 158, 11, 0.2)',
+        'luxury': '0 0 30px rgba(192, 192, 192, 0.4), 0 0 60px rgba(192, 192, 192, 0.2)',
       },
       screens: {
         'xs': '475px',

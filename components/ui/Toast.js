@@ -41,9 +41,9 @@ export function Toast({
     },
     info: {
       icon: Info,
-      bgColor: 'bg-blue-500/90',
+      bgColor: 'bg-gray-500/90',
       borderColor: 'border-blue-400',
-      iconColor: 'text-blue-100'
+      iconColor: 'text-gray-100'
     }
   }
 

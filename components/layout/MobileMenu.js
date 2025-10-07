@@ -70,8 +70,8 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
           className="absolute inset-0 transition-all duration-500 ease-out"
           style={{
             background: isDarkMode 
-              ? 'radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 25%, rgba(0, 0, 0, 0.4) 100%)'
-              : 'radial-gradient(circle at 30% 20%, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 25%, rgba(255, 255, 255, 0.3) 100%)',
+              ? 'radial-gradient(circle at 30% 20%, rgba(192, 192, 192, 0.08) 0%, rgba(192, 192, 192, 0.08) 25%, rgba(0, 0, 0, 0.4) 100%)'
+              : 'radial-gradient(circle at 30% 20%, rgba(192, 192, 192, 0.05) 0%, rgba(192, 192, 192, 0.05) 25%, rgba(255, 255, 255, 0.3) 100%)',
             backdropFilter: 'blur(20px) saturate(150%)',
           }}
           onClick={onClose}
@@ -107,12 +107,12 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
               boxShadow: isDarkMode 
                 ? `
                   8px 0 40px rgba(0, 0, 0, 0.5),
-                  0 0 80px rgba(139, 92, 246, 0.08),
+                  0 0 80px rgba(192, 192, 192, 0.08),
                   inset 1px 0 0 rgba(255, 255, 255, 0.05)
                 `
                 : `
                   8px 0 40px rgba(0, 0, 0, 0.12),
-                  0 0 80px rgba(139, 92, 246, 0.05),
+                  0 0 80px rgba(192, 192, 192, 0.05),
                   inset 1px 0 0 rgba(255, 255, 255, 0.6)
                 `,
               transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
@@ -135,8 +135,8 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                 className="absolute top-0 left-0 right-0 h-px"
                 style={{
                   background: isDarkMode 
-                    ? 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent)'
-                    : 'linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.2), transparent)'
+                    ? 'linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.3), transparent)'
+                    : 'linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.2), transparent)'
                 }}
               />
               
@@ -148,7 +148,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                     style={{ 
                       background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                       borderRadius: '10px',
-                      boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)',
+                      boxShadow: '0 2px 8px rgba(192, 192, 192, 0.3)',
                       border: '1px solid rgba(255, 255, 255, 0.2)'
                     }}
                   >
@@ -220,21 +220,21 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                       style={{
                         background: isActive 
                           ? isDarkMode 
-                            ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(59, 130, 246, 0.10) 100%)'
-                            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.05) 100%)'
+                            ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.10) 100%)'
+                            : 'linear-gradient(135deg, rgba(192, 192, 192, 0.08) 0%, rgba(192, 192, 192, 0.05) 100%)'
                           : 'transparent',
                         backdropFilter: isActive ? 'blur(10px)' : 'none',
                         border: `1px solid ${
                           isActive 
-                            ? isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
+                            ? isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'
                             : 'transparent'
                         }`,
                         transform: isActive ? 'translateX(8px)' : 'translateX(0)',
                         zIndex: 100,
                         boxShadow: isActive 
                           ? isDarkMode
-                            ? '0 8px 32px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
-                            : '0 8px 32px rgba(139, 92, 246, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
+                            ? '0 8px 32px rgba(192, 192, 192, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.05)'
+                            : '0 8px 32px rgba(192, 192, 192, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.3)'
                           : 'none',
                       }}
                     >
@@ -245,8 +245,8 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                         }`}
                   style={{
                           background: isDarkMode 
-                            ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.05), rgba(59, 130, 246, 0.05))'
-                            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.03), rgba(59, 130, 246, 0.03))',
+                            ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.05), rgba(192, 192, 192, 0.05))'
+                            : 'linear-gradient(135deg, rgba(192, 192, 192, 0.03), rgba(192, 192, 192, 0.03))',
                         }}
                       />
                       
@@ -258,7 +258,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                           }`}
                   style={{
                             background: isActive 
-                              ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))'
+                              ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.2))'
                               : isDarkMode 
                                 ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.3), rgba(55, 65, 81, 0.3))'
                                 : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.6))',
@@ -292,7 +292,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                           isActive 
                             ? 'translate-x-0 opacity-100' 
                             : '-translate-x-2 opacity-0'
-                        } ${isDarkMode ? 'text-purple-400' : 'text-purple-600'}`}
+                        } ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}
                       />
                     </div>
               </Link>

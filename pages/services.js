@@ -184,7 +184,7 @@ export default function Services({ user, setUser }) {
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 backgroundSize: '400% 400%',
                 animation: 'gradientShift 8s ease infinite',
-                boxShadow: '0 12px 48px rgba(168, 85, 247, 0.4)'
+                boxShadow: '0 12px 48px rgba(192, 192, 192, 0.4)'
               }}
             >
               {/* Effet de brillance animé */}
@@ -238,10 +238,10 @@ export default function Services({ user, setUser }) {
                   ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.95) 0%, rgba(17, 24, 39, 0.98) 100%)'
                   : 'linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.98) 100%)',
                 backdropFilter: 'blur(20px)',
-                borderColor: isDarkModeSafe ? 'rgba(168, 85, 247, 0.3)' : 'rgba(168, 85, 247, 0.2)',
+                borderColor: isDarkModeSafe ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)',
                 boxShadow: isDarkModeSafe 
                   ? '0 8px 32px rgba(0, 0, 0, 0.5)' 
-                  : '0 8px 32px rgba(168, 85, 247, 0.15)',
+                  : '0 8px 32px rgba(192, 192, 192, 0.15)',
                 overflow: 'visible'
               }}
             >
@@ -249,7 +249,7 @@ export default function Services({ user, setUser }) {
               <div 
                 className="absolute inset-0 opacity-5 pointer-events-none"
                 style={{
-                  backgroundImage: 'radial-gradient(circle, rgba(168, 85, 247, 0.4) 1px, transparent 1px)',
+                  backgroundImage: 'radial-gradient(circle, rgba(192, 192, 192, 0.4) 1px, transparent 1px)',
                   backgroundSize: '20px 20px'
                 }}
               />

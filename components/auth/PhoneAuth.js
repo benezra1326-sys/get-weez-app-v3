@@ -63,7 +63,7 @@ export default function PhoneAuth({ onSuccess, onError, onBack }) {
           <div 
             className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
             style={{ 
-              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              backgroundColor: 'rgba(192, 192, 192, 0.2)',
               border: '1px solid var(--color-border)'
             }}
           >
@@ -137,7 +137,7 @@ export default function PhoneAuth({ onSuccess, onError, onBack }) {
           <div 
             className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center"
             style={{ 
-              backgroundColor: 'rgba(59, 130, 246, 0.2)',
+              backgroundColor: 'rgba(192, 192, 192, 0.2)',
               border: '1px solid var(--color-border)'
             }}
           >

@@ -52,7 +52,7 @@ export default function ServiceDetail({ user, setUser }) {
           <h1 className={`text-2xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Service non trouvé</h1>
           <button 
             onClick={() => router.back()}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
           >
             Retour
           </button>
@@ -189,7 +189,7 @@ export default function ServiceDetail({ user, setUser }) {
                   <Mail size={20} className={`mt-1 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`} />
                   <a 
                     href={`mailto:${service.email}`}
-                    className={`${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'}`}
+                    className={`${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-500'}`}
                   >
                     {service.email}
                   </a>
@@ -204,7 +204,7 @@ export default function ServiceDetail({ user, setUser }) {
                     href={service.website}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className={`${isDarkMode ? 'text-blue-400 hover:text-blue-300' : 'text-blue-600 hover:text-blue-500'}`}
+                    className={`${isDarkMode ? 'text-gray-400 hover:text-gray-300' : 'text-gray-600 hover:text-gray-500'}`}
                   >
                     Site web
                   </a>
@@ -216,7 +216,7 @@ export default function ServiceDetail({ user, setUser }) {
                 <button className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
                   Réserver maintenant
                 </button>
-                <button className="w-full border border-purple-600 text-purple-600 py-3 px-6 rounded-lg font-semibold hover:bg-purple-50 transition-all duration-300">
+                <button className="w-full border border-purple-600 text-gray-600 py-3 px-6 rounded-lg font-semibold hover:bg-gray-50 transition-all duration-300">
                   Contacter
                 </button>
               </div>

@@ -66,10 +66,10 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         
         @keyframes pulse-glow {
           0%, 100% {
-            box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 5px rgba(192, 192, 192, 0.3);
           }
           50% {
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
           }
         }
         
@@ -85,7 +85,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+          background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.3), transparent);
           transition: left 0.6s ease;
           z-index: 1;
         }
@@ -95,14 +95,14 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         }
         
         .menu-link:hover {
-          background: rgba(168, 85, 247, 0.1) !important;
+          background: rgba(192, 192, 192, 0.1) !important;
           color: var(--color-text-primary) !important;
           border-radius: 8px;
           padding: 8px 16px;
           transform: translateY(-2px);
           transition: all 0.3s ease;
-          box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15) !important;
-          border: 1px solid rgba(168, 85, 247, 0.3) !important;
+          box-shadow: 0 4px 12px rgba(192, 192, 192, 0.15) !important;
+          border: 1px solid rgba(192, 192, 192, 0.3) !important;
         }
         
         .menu-link.active {
@@ -110,7 +110,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
           color: white !important;
           border-radius: 8px;
           padding: 8px 16px;
-          box-shadow: 0 4px 15px rgba(168, 85, 247, 0.4) !important;
+          box-shadow: 0 4px 15px rgba(192, 192, 192, 0.4) !important;
         }
         
         .menu-link span {
@@ -122,9 +122,9 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-6 lg:px-12 py-4 lg:py-6 w-full"
         style={{
           minHeight: '5rem',
-          boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.1)' : '0 4px 20px rgba(139, 92, 246, 0.1)',
+          boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.1)' : '0 4px 20px rgba(192, 192, 192, 0.1)',
           backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.8)' : 'rgba(255, 255, 255, 0.95)',
-          borderColor: isDarkMode ? '#374151' : 'rgba(139, 92, 246, 0.2)'
+          borderColor: isDarkMode ? '#374151' : 'rgba(192, 192, 192, 0.2)'
         }}
       >
         <div className="flex items-center space-x-4">
@@ -133,20 +133,20 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
             className="lg:hidden p-2 rounded-xl transition-all duration-300 hover:scale-110 active:scale-95"
             style={{ 
               background: isDarkMode 
-                ? 'linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(99, 102, 241, 0.3))'
+                ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.3), rgba(99, 102, 241, 0.3))'
                 : 'linear-gradient(135deg, rgba(243, 244, 246, 0.6), rgba(229, 231, 235, 0.8))',
               backdropFilter: 'blur(10px)',
-              border: `1px solid ${isDarkMode ? 'rgba(168, 85, 247, 0.4)' : 'rgba(209, 213, 219, 0.3)'}`,
+              border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.4)' : 'rgba(209, 213, 219, 0.3)'}`,
               borderRadius: '12px',
               boxShadow: isDarkMode 
-                ? '0 4px 12px rgba(168, 85, 247, 0.3), 0 0 20px rgba(168, 85, 247, 0.2)'
+                ? '0 4px 12px rgba(192, 192, 192, 0.3), 0 0 20px rgba(192, 192, 192, 0.2)'
                 : '0 4px 12px rgba(0, 0, 0, 0.1)',
             }}
           >
             <Menu 
               size={20} 
-              className={isDarkMode ? 'text-purple-400' : 'text-gray-700'}
-              style={{ filter: isDarkMode ? 'drop-shadow(0 0 4px rgba(168, 85, 247, 0.5))' : 'none' }}
+              className={isDarkMode ? 'text-gray-400' : 'text-gray-700'}
+              style={{ filter: isDarkMode ? 'drop-shadow(0 0 4px rgba(192, 192, 192, 0.5))' : 'none' }}
             />
           </button>
           <Link href="/" className="flex items-center group">
@@ -157,7 +157,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
                 padding: '2px 8px',
                 borderRadius: '10px',
                 overflow: 'hidden',
-                boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)'
+                boxShadow: '0 2px 8px rgba(192, 192, 192, 0.3)'
               }}
             >
               <GliitzLogo size="text-lg lg:text-3xl" compact={true} />

@@ -32,7 +32,7 @@ const SendButtonTest = () => {
             borderRadius: '16px',
             padding: '14px 60px 14px 16px',
             background: 'rgba(255, 255, 255, 0.9)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
+            border: '1px solid rgba(192, 192, 192, 0.2)',
             backdropFilter: 'blur(10px)',
             width: '100%',
           }}
@@ -58,7 +58,7 @@ const SendButtonTest = () => {
             opacity: input.trim() ? 1 : 0.5,
             cursor: input.trim() ? 'pointer' : 'not-allowed',
             boxShadow: input.trim() 
-              ? '0 4px 12px rgba(139, 92, 246, 0.4)' 
+              ? '0 4px 12px rgba(192, 192, 192, 0.4)' 
               : 'none',
             zIndex: 100,
             display: 'flex',

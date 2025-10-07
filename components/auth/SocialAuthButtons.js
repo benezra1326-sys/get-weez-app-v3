@@ -21,7 +21,7 @@ const socialProviders = [
     id: 'facebook',
     name: 'Facebook',
     icon: Facebook,
-    color: 'bg-blue-600 hover:bg-blue-700',
+    color: 'bg-gray-600 hover:bg-gray-700',
     textColor: 'text-white'
   },
   {

@@ -67,7 +67,7 @@ export default function SidebarChat({
       >
         <button
           onClick={onNewConversation}
-          className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-102 hover:shadow-md hover:shadow-purple-500/20 group"
+          className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-2 px-3 rounded-lg transition-all duration-300 transform hover:scale-102 hover:shadow-md hover:shadow-gray-500/20 group"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-white/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
           <div className="relative flex items-center justify-center space-x-1.5">
@@ -107,16 +107,16 @@ export default function SidebarChat({
                 style={{
                   background: isActive
                     ? isDarkMode 
-                      ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%)'
-                      : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%)'
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(99, 102, 241, 0.2) 100%)'
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%)'
                     : 'transparent',
                   borderColor: isActive
-                    ? isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
+                    ? isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'
                     : 'transparent',
                   boxShadow: isActive
                     ? isDarkMode 
-                      ? '0 4px 20px rgba(139, 92, 246, 0.1)'
-                      : '0 2px 10px rgba(139, 92, 246, 0.1)'
+                      ? '0 4px 20px rgba(192, 192, 192, 0.1)'
+                      : '0 2px 10px rgba(192, 192, 192, 0.1)'
                     : 'none'
                 }}
                 onMouseEnter={(e) => {
@@ -220,7 +220,7 @@ export default function SidebarChat({
                           e.stopPropagation()
                           handleRename(conversation.id, conversation.name)
                         }}
-                        className="group/btn p-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/40 hover:to-cyan-500/40 text-blue-300 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-blue-500/25 border border-blue-500/20 hover:border-blue-400/40"
+                        className="group/btn p-2 bg-gradient-to-r from-blue-500/20 to-cyan-500/20 hover:from-blue-500/40 hover:to-cyan-500/40 text-gray-300 hover:text-white rounded-lg transition-all duration-300 hover:scale-110 hover:shadow-lg hover:shadow-gray-500/25 border border-blue-500/20 hover:border-blue-400/40"
                         title="Renommer la conversation"
                       >
                         <Edit3 size={11} className="transition-transform duration-300 group-hover/btn:rotate-12" />

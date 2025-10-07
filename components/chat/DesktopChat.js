@@ -363,7 +363,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
     return (
       <div className="desktop-layout">
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-purple-500" />
+          <Loader2 className="h-8 w-8 animate-spin text-gray-500" />
         </div>
       </div>
     )
@@ -384,7 +384,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
               className="p-2 rounded-lg transition-all duration-300 desktop-hover-scale"
               style={{ 
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+                boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
               }}
             >
               <Plus size={16} className="text-white" />
@@ -403,8 +403,8 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
             
             // Couleurs variées pour les vignettes
             const vignetteBgs = [
-              'linear-gradient(135deg, rgba(168, 85, 247, 0.15), rgba(99, 102, 241, 0.1))',
-              'linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(6, 182, 212, 0.1))',
+              'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(99, 102, 241, 0.1))',
+              'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(6, 182, 212, 0.1))',
               'linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(244, 63, 94, 0.1))',
               'linear-gradient(135deg, rgba(34, 197, 94, 0.15), rgba(16, 185, 129, 0.1))',
               'linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(251, 146, 60, 0.1))',
@@ -426,8 +426,8 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                   border: currentConversationId === conversation.id 
                     ? 'none' 
                     : isDarkMode 
-                      ? '1px solid rgba(139, 92, 246, 0.2)' 
-                      : '1px solid rgba(139, 92, 246, 0.15)'
+                      ? '1px solid rgba(192, 192, 192, 0.2)' 
+                      : '1px solid rgba(192, 192, 192, 0.15)'
                 }}
               >
                 <div className="flex items-start justify-between">
@@ -522,7 +522,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
               {/* Effet de palette animé */}
               <div className="absolute inset-0 opacity-20">
                 <div className="absolute top-0 left-0 w-32 h-32 bg-white rounded-full blur-3xl animate-pulse" style={{ animationDuration: '3s' }} />
-                <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-300 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' }} />
+                <div className="absolute bottom-0 right-0 w-40 h-40 bg-gray-300 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s', animationDelay: '1s' }} />
                 <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-indigo-300 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '2s' }} />
               </div>
               
@@ -626,7 +626,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                 >
                   <p className="text-sm whitespace-pre-wrap">{message.content}</p>
                   <p className={`text-xs mt-1 ${
-                    (isUser || isWelcome) ? 'text-purple-100' : isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                    (isUser || isWelcome) ? 'text-gray-100' : isDarkMode ? 'text-gray-400' : 'text-gray-500'
                   }`}>
                     {new Date(message.timestamp).toLocaleTimeString('fr-FR', { 
                       hour: '2-digit', 
@@ -740,7 +740,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
               }`}
               style={suggestionFilter === 'all' ? {
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                boxShadow: '0 2px 8px rgba(168, 85, 247, 0.3)'
+                boxShadow: '0 2px 8px rgba(192, 192, 192, 0.3)'
               } : {}}
             >
               Tous
@@ -995,7 +995,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
               {selectedSuggestion.category && (
                 <div className="mb-4">
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                    isDarkMode ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
+                    isDarkMode ? 'bg-gray-500/20 text-gray-300' : 'bg-gray-100 text-gray-700'
                   }`}>
                     {selectedSuggestion.category}
                   </span>
@@ -1065,7 +1065,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                   className="py-4 rounded-xl text-white font-bold transition-all duration-300 transform hover:scale-105"
                   style={{
                     background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                    boxShadow: '0 8px 32px rgba(168, 85, 247, 0.4)'
+                    boxShadow: '0 8px 32px rgba(192, 192, 192, 0.4)'
                   }}
                 >
                   ✨ Réserver maintenant

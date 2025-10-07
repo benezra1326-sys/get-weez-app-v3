@@ -108,7 +108,7 @@ export default function SimpleFloatingChatButton() {
         borderRadius: '50%',
         background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
         border: 'none',
-        boxShadow: '0 8px 25px rgba(168, 85, 247, 0.6)',
+        boxShadow: '0 8px 25px rgba(192, 192, 192, 0.6)',
         cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',

@@ -53,7 +53,7 @@ const FlexboxChatInput = ({ onSend, isLoading, placeholder }) => {
           borderRadius: '12px',
           padding: '10px 12px',
           background: 'rgba(255, 255, 255, 0.8)',
-          border: '1px solid rgba(139, 92, 246, 0.2)',
+          border: '1px solid rgba(192, 192, 192, 0.2)',
           border: '2px solid blue', // Debug: bordure bleue
         }}
         rows={1}
@@ -77,7 +77,7 @@ const FlexboxChatInput = ({ onSend, isLoading, placeholder }) => {
           opacity: input.trim() && !isLoading ? 1 : 0.5,
           cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
           boxShadow: input.trim() && !isLoading 
-            ? '0 4px 12px rgba(139, 92, 246, 0.4)' 
+            ? '0 4px 12px rgba(192, 192, 192, 0.4)' 
             : 'none',
           display: 'flex',
           alignItems: 'center',

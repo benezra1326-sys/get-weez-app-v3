@@ -43,9 +43,9 @@ const OptimizedLoading = memo(({
     return (
       <div className={`flex items-center justify-center space-x-1 ${className}`}>
         <div className="flex space-x-1">
-          <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-          <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-          <div className="w-2 h-2 bg-purple-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
+          <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
+          <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
+          <div className="w-2 h-2 bg-gray-600 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
         </div>
         {text && (
           <span className={`ml-2 text-gray-600 ${textSizes[size]}`}>
@@ -60,7 +60,7 @@ const OptimizedLoading = memo(({
     return (
       <div className={`flex flex-col items-center justify-center ${className}`}>
         <div 
-          className={`${sizeClasses[size]} bg-purple-600 rounded-full animate-pulse`}
+          className={`${sizeClasses[size]} bg-gray-600 rounded-full animate-pulse`}
           style={{
             animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
           }}

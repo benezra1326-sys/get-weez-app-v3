@@ -27,7 +27,7 @@ export const ServiceSearchBar = ({ onSearch, className = "" }) => {
           }}
           onFocus={(e) => {
             e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'
-            e.target.style.borderColor = 'rgba(139, 92, 246, 0.5)'
+            e.target.style.borderColor = 'rgba(192, 192, 192, 0.5)'
           }}
           onBlur={(e) => {
             e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'
@@ -66,7 +66,7 @@ export const EstablishmentSearchBar = ({ onSearch, className = "" }) => {
           }}
           onFocus={(e) => {
             e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.15)'
-            e.target.style.borderColor = 'rgba(139, 92, 246, 0.5)'
+            e.target.style.borderColor = 'rgba(192, 192, 192, 0.5)'
           }}
           onBlur={(e) => {
             e.target.style.backgroundColor = 'rgba(255, 255, 255, 0.1)'

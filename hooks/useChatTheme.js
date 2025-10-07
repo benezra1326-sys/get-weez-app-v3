@@ -65,10 +65,10 @@ export const useChatTheme = () => {
     primary: {
       background: 'linear-gradient(to right, #C0C0C0, #C0C0C0)',
       color: '#FFFFFF',
-      boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
+      boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)',
       hover: {
         background: 'linear-gradient(to right, #C0C0C0, #A0A0A0)',
-        boxShadow: '0 6px 16px rgba(59, 130, 246, 0.4)'
+        boxShadow: '0 6px 16px rgba(192, 192, 192, 0.4)'
       }
     },
     secondary: {

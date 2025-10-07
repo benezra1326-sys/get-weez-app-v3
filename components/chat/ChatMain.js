@@ -128,7 +128,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
       icon: Hotel,
       color: "from-blue-500 to-indigo-500",
       borderColor: "border-blue-200",
-      bgColor: "bg-blue-50",
+      bgColor: "bg-gray-50",
       image: "🏨",
       suggestion: "Je cherche un hôtel de luxe avec spa à Marbella"
     },
@@ -139,7 +139,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
       icon: Plane,
       color: "from-purple-500 to-pink-500",
       borderColor: "border-purple-200",
-      bgColor: "bg-purple-50",
+      bgColor: "bg-gray-50",
       image: "🚁",
       suggestion: "J'ai besoin d'un service de transport VIP (jet, hélicoptère, yacht)"
     },
@@ -469,7 +469,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
                     background: conv.id === currentConversationId
                       ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                       : isDarkMode ? 'rgba(31, 41, 55, 0.6)' : 'rgba(255, 255, 255, 0.8)',
-                    border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`
+                    border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
                   }}
                 >
                   <h3 className={`font-bold mb-1 ${

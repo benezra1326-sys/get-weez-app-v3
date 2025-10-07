@@ -193,7 +193,7 @@ function MyApp({ Component, pageProps }) {
           fontSize: '20px',
           color: 'white',
           cursor: 'pointer',
-          boxShadow: '0 8px 25px rgba(168, 85, 247, 0.6)',
+          boxShadow: '0 8px 25px rgba(192, 192, 192, 0.6)',
           border: 'none',
           top: 'auto',
           left: 'auto',

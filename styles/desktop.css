@@ -103,14 +103,14 @@
   
   .desktop-conversation-item:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.15);
+    box-shadow: 0 8px 25px rgba(192, 192, 192, 0.15);
     border-color: var(--color-primary);
   }
   
   .desktop-conversation-item.active {
     background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
     color: white !important;
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.3) !important;
+    box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3) !important;
   }
 
   /* FORCER LES CONVERSATIONS ACTIVES */
@@ -161,7 +161,7 @@
   
   .desktop-suggestion-item:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 12px 30px rgba(192, 192, 192, 0.2);
     border-color: var(--color-primary);
   }
   
@@ -172,7 +172,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+    background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.1), transparent);
     transition: left 0.6s ease;
   }
   
@@ -223,7 +223,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.3), transparent);
     transition: left 0.6s ease;
   }
   
@@ -232,17 +232,17 @@
   }
   
   .desktop-nav-link:hover {
-    background: rgba(168, 85, 247, 0.1) !important;
+    background: rgba(192, 192, 192, 0.1) !important;
     color: var(--color-text-primary) !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    box-shadow: 0 4px 12px rgba(192, 192, 192, 0.15);
+    border: 1px solid rgba(192, 192, 192, 0.3);
   }
   
   .desktop-nav-link.active {
     background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
     color: white !important;
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
   }
   
   /* === MESSAGES DESKTOP === */
@@ -282,7 +282,7 @@
   }
   
   .desktop-message.assistant:hover {
-    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 4px 15px rgba(192, 192, 192, 0.1);
   }
   
   /* === INPUT DESKTOP === */
@@ -327,7 +327,7 @@
   .desktop-input-field:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.1);
     background: var(--color-surface-elevated);
   }
   
@@ -339,7 +339,7 @@
     color: white !important;
     cursor: pointer !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
-    box-shadow: 0 4px 15px rgba(168, 85, 247, 0.3) !important;
+    box-shadow: 0 4px 15px rgba(192, 192, 192, 0.3) !important;
     min-width: 48px !important;
     height: 48px !important;
     display: flex !important;
@@ -360,7 +360,7 @@
   
   .desktop-send-button:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+    box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
   }
   
   .desktop-send-button:disabled {

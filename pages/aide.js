@@ -212,15 +212,15 @@ export default function Aide({ user, setUser }) {
             <div className="text-center mb-16 relative">
               {/* Background decoration */}
               <div className="absolute inset-0 -z-10">
-                <div className="absolute top-10 left-1/4 w-32 h-32 bg-purple-500/10 rounded-full blur-xl"></div>
-                <div className="absolute top-20 right-1/4 w-24 h-24 bg-blue-500/10 rounded-full blur-lg"></div>
+                <div className="absolute top-10 left-1/4 w-32 h-32 bg-gray-500/10 rounded-full blur-xl"></div>
+                <div className="absolute top-20 right-1/4 w-24 h-24 bg-gray-500/10 rounded-full blur-lg"></div>
                 <div className="absolute bottom-10 left-1/3 w-20 h-20 bg-pink-500/10 rounded-full blur-lg"></div>
               </div>
               
               <div className="relative">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6" style={{
                   background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
+                  boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)'
                 }}>
                   <Sparkles size={32} className="text-white" />
                 </div>
@@ -246,8 +246,8 @@ export default function Aide({ user, setUser }) {
                       : 'bg-white/80 border border-gray-200/50 shadow-xl backdrop-blur-sm'
                   }`}>
                     <div className="flex items-center justify-center mb-3">
-                      <Clock size={24} className="text-purple-500 mr-2" />
-                      <span className="text-2xl font-bold text-purple-500">24/7</span>
+                      <Clock size={24} className="text-gray-500 mr-2" />
+                      <span className="text-2xl font-bold text-gray-500">24/7</span>
                     </div>
                     <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Support disponible</p>
                   </div>
@@ -258,8 +258,8 @@ export default function Aide({ user, setUser }) {
                       : 'bg-white/80 border border-gray-200/50 shadow-xl backdrop-blur-sm'
                   }`}>
                     <div className="flex items-center justify-center mb-3">
-                      <Users size={24} className="text-blue-500 mr-2" />
-                      <span className="text-2xl font-bold text-blue-500">1000+</span>
+                      <Users size={24} className="text-gray-500 mr-2" />
+                      <span className="text-2xl font-bold text-gray-500">1000+</span>
                     </div>
                     <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Utilisateurs satisfaits</p>
                   </div>
@@ -314,7 +314,7 @@ export default function Aide({ user, setUser }) {
                       : 'bg-white border border-gray-200/50 shadow-xl'
                   }`}>
                     <div className="flex items-center mb-4">
-                      <category.icon size={24} className="mr-3 text-purple-500" />
+                      <category.icon size={24} className="mr-3 text-gray-500" />
                       <h3 className={`text-xl font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         {category.title}
                       </h3>
@@ -375,7 +375,7 @@ export default function Aide({ user, setUser }) {
                       : 'bg-white border border-gray-200/50 shadow-xl'
                   }`}>
                     <div className="flex items-center mb-4">
-                      <FileText size={24} className="mr-3 text-purple-500" />
+                      <FileText size={24} className="mr-3 text-gray-500" />
                       <h3 className={`text-lg font-semibold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         {section.title}
                       </h3>
@@ -408,7 +408,7 @@ export default function Aide({ user, setUser }) {
                         : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
                     }`}
                   >
-                    <div className="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                       <HelpCircle size={24} className="text-white" />
                     </div>
                     <h3 className={`text-lg font-semibold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>FAQ & Centre d'aide</h3>
@@ -438,7 +438,7 @@ export default function Aide({ user, setUser }) {
                         : 'bg-gray-50 hover:bg-gray-100 border border-gray-200'
                     }`}
                   >
-                    <div className="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
+                    <div className="w-12 h-12 bg-gray-500 rounded-lg flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform">
                       <FileText size={24} className="text-white" />
                     </div>
                     <h3 className={`text-lg font-semibold mb-2 text-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Conditions générales</h3>

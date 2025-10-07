@@ -78,7 +78,7 @@ const UltraSimpleInput = ({ onSend, isLoading, placeholder, isDarkMode = false }
           opacity: input.trim() && !isLoading ? 1 : 0.5,
           cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
           boxShadow: input.trim() && !isLoading 
-            ? '0 4px 12px rgba(139, 92, 246, 0.4)' 
+            ? '0 4px 12px rgba(192, 192, 192, 0.4)' 
             : 'none',
           display: 'flex',
           alignItems: 'center',

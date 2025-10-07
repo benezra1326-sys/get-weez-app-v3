@@ -183,11 +183,11 @@ export const MobileNavigation = memo(({
         }
         
         .mobile-nav-item:hover {
-          background: rgba(139, 92, 246, 0.1);
+          background: rgba(192, 192, 192, 0.1);
         }
         
         .mobile-nav-item.active {
-          background: rgba(139, 92, 246, 0.15);
+          background: rgba(192, 192, 192, 0.15);
           border-left: 4px solid #C0C0C0;
         }
         
@@ -216,7 +216,7 @@ export const MobileNavigation = memo(({
         
         .mobile-submenu {
           background: rgba(249, 250, 251, 0.8);
-          border-left: 4px solid rgba(139, 92, 246, 0.3);
+          border-left: 4px solid rgba(192, 192, 192, 0.3);
         }
         
         .mobile-submenu-item {
@@ -228,7 +228,7 @@ export const MobileNavigation = memo(({
         }
         
         .mobile-submenu-item:hover {
-          background: rgba(139, 92, 246, 0.05);
+          background: rgba(192, 192, 192, 0.05);
           color: #C0C0C0;
         }
         
@@ -242,7 +242,7 @@ export const MobileNavigation = memo(({
           display: flex;
           align-items: center;
           padding: 12px;
-          background: rgba(139, 92, 246, 0.1);
+          background: rgba(192, 192, 192, 0.1);
           border-radius: 12px;
           margin-bottom: 16px;
         }
@@ -448,7 +448,7 @@ export const MobileTabNavigation = memo(({
           background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           border-radius: 12px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
+          box-shadow: 0 2px 8px rgba(192, 192, 192, 0.3);
         }
         
         .mobile-tab-item {

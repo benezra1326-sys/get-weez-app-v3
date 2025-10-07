@@ -52,8 +52,8 @@ export const MobileTouchEnhancer = ({ children, enableHaptics = true }) => {
           position: absolute;
           inset: 0;
           background: radial-gradient(circle at var(--touch-x, 50%) var(--touch-y, 50%), 
-                        rgba(139, 92, 246, 0.3) 0%, 
-                        rgba(139, 92, 246, 0.1) 40%, 
+                        rgba(192, 192, 192, 0.3) 0%, 
+                        rgba(192, 192, 192, 0.1) 40%, 
                         transparent 70%);
           opacity: 0;
           pointer-events: none;
@@ -83,7 +83,7 @@ export const MobileTouchEnhancer = ({ children, enableHaptics = true }) => {
           /* Feedback immédiat pour les actions importantes */
           .mobile-primary-action:active {
             transform: scale(0.96) !important;
-            box-shadow: 0 2px 8px rgba(139, 92, 246, 0.4) !important;
+            box-shadow: 0 2px 8px rgba(192, 192, 192, 0.4) !important;
           }
 
           /* Amélioration du scroll */
@@ -109,7 +109,7 @@ export const MobileTouchEnhancer = ({ children, enableHaptics = true }) => {
             top: touchFeedback.y,
             width: '20px',
             height: '20px',
-            background: 'rgba(139, 92, 246, 0.6)',
+            background: 'rgba(192, 192, 192, 0.6)',
             borderRadius: '50%',
             transform: 'translate(-50%, -50%)',
             pointerEvents: 'none',

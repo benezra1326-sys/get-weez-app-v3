@@ -190,7 +190,7 @@ export default function Favorites({ user }) {
                   style={{
                     background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     color: 'white',
-                    boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+                    boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                 >
                   <MessageCircle size={14} />
@@ -200,10 +200,10 @@ export default function Favorites({ user }) {
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105"
                   style={{
                     background: isDarkMode 
-                      ? 'rgba(59, 130, 246, 0.2)'
-                      : 'rgba(59, 130, 246, 0.1)',
+                      ? 'rgba(192, 192, 192, 0.2)'
+                      : 'rgba(192, 192, 192, 0.1)',
                     color: '#C0C0C0',
-                    border: '1px solid rgba(59, 130, 246, 0.3)'
+                    border: '1px solid rgba(192, 192, 192, 0.3)'
                   }}
                 >
                   <Calendar size={14} />
@@ -365,7 +365,7 @@ export default function Favorites({ user }) {
               
               <div className="flex items-center space-x-4 mb-3">
                 <div className="flex items-center space-x-1">
-                  <Clock size={14} className="text-blue-500" />
+                  <Clock size={14} className="text-gray-500" />
                   <span 
                     className="text-sm font-semibold"
                     style={{ color: isDarkMode ? '#F3F4F6' : '#374151' }}
@@ -387,7 +387,7 @@ export default function Favorites({ user }) {
                   style={{
                     background: 'linear-gradient(135deg, #F59E0B, #D97706)',
                     color: 'white',
-                    boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
+                    boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                 >
                   <Calendar size={14} />
@@ -474,11 +474,11 @@ export default function Favorites({ user }) {
                 : isDarkMode ? '#F3F4F6' : '#374151',
               border: `1px solid ${
                 activeTab === tab.id 
-                  ? 'rgba(139, 92, 246, 0.5)' 
+                  ? 'rgba(192, 192, 192, 0.5)' 
                   : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)'
               }`,
               boxShadow: activeTab === tab.id 
-                ? '0 4px 15px rgba(139, 92, 246, 0.3)' 
+                ? '0 4px 15px rgba(192, 192, 192, 0.3)' 
                 : '0 2px 8px rgba(0, 0, 0, 0.1)'
             }}
           >
@@ -489,7 +489,7 @@ export default function Favorites({ user }) {
               style={{
                 background: activeTab === tab.id 
                   ? 'rgba(255, 255, 255, 0.2)' 
-                  : isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.1)',
+                  : isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.1)',
                 color: activeTab === tab.id 
                   ? 'white' 
                   : '#C0C0C0'

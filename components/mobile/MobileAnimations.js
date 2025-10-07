@@ -285,7 +285,7 @@ export const MobileButtonAnimation = memo(({
       case 'secondary':
         return 'bg-gray-100 text-gray-900 border border-gray-300'
       case 'ghost':
-        return 'bg-transparent text-purple-600 border border-purple-200'
+        return 'bg-transparent text-gray-600 border border-purple-200'
       default:
         return 'bg-gray-100 text-gray-900'
     }

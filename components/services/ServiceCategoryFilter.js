@@ -21,26 +21,26 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
             ? 'rgba(31, 41, 55, 0.95) !important'
             : 'rgba(255, 255, 255, 0.95) !important',
           border: '1px solid',
-          borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.8) !important' : 'rgba(139, 92, 246, 0.5)',
+          borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.8) !important' : 'rgba(192, 192, 192, 0.5)',
           color: isDarkMode ? '#FFFFFF !important' : '#1F2937',
           backdropFilter: 'blur(20px)',
           boxShadow: isDarkMode 
             ? '0 4px 20px rgba(0, 0, 0, 0.3)'
-            : '0 4px 20px rgba(139, 92, 246, 0.15)',
+            : '0 4px 20px rgba(192, 192, 192, 0.15)',
         }}
         onMouseEnter={(e) => {
           e.target.style.background = isDarkMode 
             ? 'linear-gradient(135deg, rgba(75, 85, 99, 0.9), rgba(55, 65, 81, 1))'
-            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))'
-          e.target.style.borderColor = isDarkMode ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.5)'
-          e.target.style.boxShadow = '0 8px 25px rgba(139, 92, 246, 0.2)'
+            : 'linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(192, 192, 192, 0.2))'
+          e.target.style.borderColor = isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(192, 192, 192, 0.5)'
+          e.target.style.boxShadow = '0 8px 25px rgba(192, 192, 192, 0.2)'
           e.target.style.transform = 'translateY(-2px)'
         }}
         onMouseLeave={(e) => {
           e.target.style.background = isDarkMode 
             ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.8), rgba(31, 41, 55, 0.9))'
-            : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
-          e.target.style.borderColor = isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(139, 92, 246, 0.3)'
+            : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.1))'
+          e.target.style.borderColor = isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(192, 192, 192, 0.3)'
           e.target.style.boxShadow = 'none'
           e.target.style.transform = 'translateY(0)'
         }}
@@ -71,11 +71,11 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
           className="absolute top-full left-0 right-0 mt-2 backdrop-blur-md border rounded-xl shadow-2xl max-h-80 overflow-y-auto"
           style={{
             backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.98)' : 'rgba(255, 255, 255, 0.98)',
-            borderColor: isDarkMode ? 'rgba(168, 85, 247, 0.5)' : 'rgba(209, 213, 219, 0.8)',
+            borderColor: isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(209, 213, 219, 0.8)',
             zIndex: 99999,
             position: 'absolute',
             boxShadow: isDarkMode 
-              ? '0 25px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(168, 85, 247, 0.3)'
+              ? '0 25px 50px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(192, 192, 192, 0.3)'
               : '0 25px 50px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(255, 255, 255, 0.8)',
             backdropFilter: 'blur(30px) saturate(150%)'
           }}
@@ -91,14 +91,14 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
                 color: !selectedCategory 
                   ? 'white'
                   : isDarkMode ? '#F3F4F6' : '#1F2937',
-                boxShadow: !selectedCategory ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none',
+                boxShadow: !selectedCategory ? '0 4px 15px rgba(192, 192, 192, 0.3)' : 'none',
               }}
               onMouseEnter={(e) => {
                 if (!selectedCategory) return
                 e.target.style.transform = 'translateX(5px)'
                 e.target.style.background = isDarkMode 
-                  ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
-                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
+                  ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.1))'
+                  : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.1))'
               }}
               onMouseLeave={(e) => {
                 if (!selectedCategory) return
@@ -122,14 +122,14 @@ export default function ServiceCategoryFilter({ onCategoryChange, selectedCatego
                   color: selectedCategory === key 
                     ? 'white'
                     : isDarkMode ? '#F3F4F6' : '#1F2937',
-                  boxShadow: selectedCategory === key ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none',
+                  boxShadow: selectedCategory === key ? '0 4px 15px rgba(192, 192, 192, 0.3)' : 'none',
                 }}
                 onMouseEnter={(e) => {
                   if (selectedCategory === key) return
                   e.target.style.transform = 'translateX(5px)'
                   e.target.style.background = isDarkMode 
-                    ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
-                    : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(59, 130, 246, 0.1))'
+                    ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.1))'
+                    : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1), rgba(192, 192, 192, 0.1))'
                 }}
                 onMouseLeave={(e) => {
                   if (selectedCategory === key) return

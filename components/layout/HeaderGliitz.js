@@ -224,7 +224,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
             color: '#C0C0C0'
           }}
         >
-          <span style={isActive('/') ? { color: 'white', fontWeight: '600' } : {}}>
+          <span style={isActive('/') ? { color: '#0B0B0C', fontWeight: '500' } : {}}>
             Accueil
           </span>
         </Link>
@@ -245,7 +245,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
             color: '#C0C0C0'
           }}
         >
-          <span style={isActive('/establishments') ? { color: 'white', fontWeight: '600' } : {}}>
+          <span style={isActive('/establishments') ? { color: '#0B0B0C', fontWeight: '500' } : {}}>
             Établissements
           </span>
         </Link>
@@ -266,7 +266,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
             color: '#C0C0C0'
           }}
         >
-          <span style={isActive('/services') ? { color: 'white', fontWeight: '600' } : {}}>
+          <span style={isActive('/services') ? { color: '#0B0B0C', fontWeight: '500' } : {}}>
             Services
           </span>
         </Link>
@@ -287,7 +287,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
             color: '#C0C0C0'
           }}
         >
-          <span style={isActive('/events') ? { color: 'white', fontWeight: '600' } : {}}>
+          <span style={isActive('/events') ? { color: '#0B0B0C', fontWeight: '500' } : {}}>
             Événements
           </span>
         </Link>

@@ -80,7 +80,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <User className="w-5 h-5 text-purple-600" />
+                    <User className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Mon Profil</h2>
                 </div>
@@ -98,7 +98,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Bell className="w-5 h-5 text-purple-600" />
+                    <Bell className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Notifications</h2>
                 </div>
@@ -112,7 +112,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Heart className="w-5 h-5 text-purple-600" />
+                    <Heart className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Favoris</h2>
                 </div>
@@ -126,7 +126,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Users className="w-5 h-5 text-purple-600" />
+                    <Users className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Historique Chat</h2>
                 </div>
@@ -140,7 +140,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Settings className="w-5 h-5 text-purple-600" />
+                    <Settings className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Langue</h2>
                 </div>
@@ -154,7 +154,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Settings className="w-5 h-5 text-purple-600" />
+                    <Settings className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Paramètres</h2>
                 </div>
@@ -168,7 +168,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Gift className="w-5 h-5 text-purple-600" />
+                    <Gift className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Promotions</h2>
                 </div>
@@ -182,7 +182,7 @@ function AccountContent({ user, setUser }) {
               }}>
                 <div className="flex items-center mb-4">
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <Users className="w-5 h-5 text-purple-600" />
+                    <Users className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Parrainage</h2>
                 </div>

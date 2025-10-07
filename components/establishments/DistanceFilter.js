@@ -100,7 +100,7 @@ export default function DistanceFilter({ onLocationChange, onDistanceChange, use
                 onClick={() => handleDistanceChange(option.value)}
                 className={`flex items-center justify-center space-x-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                   maxDistance === option.value
-                    ? 'bg-blue-500 text-white shadow-lg'
+                    ? 'bg-gray-500 text-white shadow-lg'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:text-gray-800'
                 }`}
               >

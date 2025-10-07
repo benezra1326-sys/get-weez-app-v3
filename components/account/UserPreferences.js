@@ -94,7 +94,7 @@ export default function UserPreferences() {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Settings size={24} className="text-white" />
@@ -122,7 +122,7 @@ export default function UserPreferences() {
             className="text-lg font-semibold mb-3 flex items-center"
             style={{ color: isDarkMode ? '#F3F4F6' : '#374151' }}
           >
-            <Activity size={18} className="mr-2 text-blue-500" />
+            <Activity size={18} className="mr-2 text-gray-500" />
             {t('account.preferences.priority_services')}
           </h3>
           <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
@@ -140,13 +140,13 @@ export default function UserPreferences() {
                       ? 'rgba(55, 65, 81, 0.5)'
                       : 'rgba(255, 255, 255, 0.8)',
                   borderColor: preferences.priorityServices.includes(service.key)
-                    ? 'rgba(139, 92, 246, 0.5)'
+                    ? 'rgba(192, 192, 192, 0.5)'
                     : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)',
                   color: preferences.priorityServices.includes(service.key)
                     ? 'white'
                     : isDarkMode ? '#FFFFFF' : '#1F2937',
                   boxShadow: preferences.priorityServices.includes(service.key)
-                    ? '0 4px 15px rgba(139, 92, 246, 0.3)'
+                    ? '0 4px 15px rgba(192, 192, 192, 0.3)'
                     : '0 2px 8px rgba(0, 0, 0, 0.1)'
                 }}
               >
@@ -222,13 +222,13 @@ export default function UserPreferences() {
                       ? 'rgba(55, 65, 81, 0.5)'
                       : 'rgba(255, 255, 255, 0.8)',
                   borderColor: preferences.schedule === schedule.key
-                    ? 'rgba(245, 158, 11, 0.5)'
+                    ? 'rgba(192, 192, 192, 0.5)'
                     : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)',
                   color: preferences.schedule === schedule.key
                     ? 'white'
                     : isDarkMode ? '#FFFFFF' : '#1F2937',
                   boxShadow: preferences.schedule === schedule.key
-                    ? '0 4px 15px rgba(245, 158, 11, 0.3)'
+                    ? '0 4px 15px rgba(192, 192, 192, 0.3)'
                     : '0 2px 8px rgba(0, 0, 0, 0.1)'
                 }}
               >
@@ -287,7 +287,7 @@ export default function UserPreferences() {
             className="text-lg font-semibold mb-3 flex items-center"
             style={{ color: isDarkMode ? '#F3F4F6' : '#374151' }}
           >
-            <Activity size={18} className="mr-2 text-purple-500" />
+            <Activity size={18} className="mr-2 text-gray-500" />
             {t('account.preferences.activity_level')}
           </h3>
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
@@ -305,13 +305,13 @@ export default function UserPreferences() {
                       ? 'rgba(55, 65, 81, 0.5)'
                       : 'rgba(255, 255, 255, 0.8)',
                   borderColor: preferences.activityLevel === activity.key
-                    ? 'rgba(139, 92, 246, 0.5)'
+                    ? 'rgba(192, 192, 192, 0.5)'
                     : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)',
                   color: preferences.activityLevel === activity.key
                     ? 'white'
                     : isDarkMode ? '#FFFFFF' : '#1F2937',
                   boxShadow: preferences.activityLevel === activity.key
-                    ? '0 4px 15px rgba(139, 92, 246, 0.3)'
+                    ? '0 4px 15px rgba(192, 192, 192, 0.3)'
                     : '0 2px 8px rgba(0, 0, 0, 0.1)'
                 }}
               >

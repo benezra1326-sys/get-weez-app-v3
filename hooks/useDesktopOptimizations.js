@@ -106,7 +106,7 @@ export const useDesktopOptimizations = () => {
     hoverEffects: {
       lift: 'transform: translateY(-2px)',
       scale: 'transform: scale(1.05)',
-      glow: 'box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3)'
+      glow: 'box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3)'
     },
     
     // Transitions fluides

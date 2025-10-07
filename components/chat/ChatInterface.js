@@ -489,7 +489,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
                   {item.includes.map((include, index) => (
                     <div key={index} className="flex items-center space-x-2">
-                      <span className="text-blue-500">•</span>
+                      <span className="text-gray-500">•</span>
                       <span className={`${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{include}</span>
                     </div>
                   ))}
@@ -874,7 +874,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                         key={conversation.id}
                         className={`p-3 rounded-lg cursor-pointer transition-all border hover:scale-105 hover:shadow-lg hover:rotate-1 ${
                           conversation.id === currentConversationId 
-                            ? 'bg-blue-600/30 border-blue-500/50' 
+                            ? 'bg-gray-600/30 border-blue-500/50' 
                             : 'bg-gray-800/50 border-gray-700/50 hover:bg-gray-700/50'
                         }`}
                         style={{
@@ -935,7 +935,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {/* Bouton Nouvelle Conversation - Design Optimisé */}
               <button 
                 onClick={createConversation}
-                className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-purple-500/25 group mb-4"
+                className="w-full relative overflow-hidden bg-gradient-to-r from-purple-600 via-purple-500 to-indigo-600 hover:from-purple-700 hover:via-purple-600 hover:to-indigo-700 text-white font-medium py-4 px-4 rounded-xl transition-all duration-300 transform hover:scale-105 hover:shadow-lg hover:shadow-gray-500/25 group mb-4"
               >
                 <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <div className="relative flex items-center justify-center space-x-3">
@@ -980,7 +980,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                           <h3 className={`font-semibold text-xs lg:text-sm truncate ${conversation.id === currentConversationId ? (isDarkMode ? 'text-white' : 'text-gray-900') : (isDarkMode ? 'text-gray-300' : 'text-gray-600')}`}>
                             {conversation.name}
                           </h3>
-                          <p className={`text-xs ${conversation.id === currentConversationId ? (isDarkMode ? 'text-blue-300' : 'text-blue-600') : (isDarkMode ? 'text-gray-400' : 'text-gray-500')}`}>
+                          <p className={`text-xs ${conversation.id === currentConversationId ? (isDarkMode ? 'text-gray-300' : 'text-gray-600') : (isDarkMode ? 'text-gray-400' : 'text-gray-500')}`}>
                             {conversation.messages?.length || 0} msgs
                           </p>
                         </div>
@@ -1085,15 +1085,15 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
                     backgroundColor: '#C0C0C0',
-                    boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     e.target.style.backgroundColor = '#C0C0C0'
-                    e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
+                    e.target.style.boxShadow = '0 6px 16px rgba(192, 192, 192, 0.4)'
                   }}
                   onMouseLeave={(e) => {
                     e.target.style.backgroundColor = '#C0C0C0'
-                    e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    e.target.style.boxShadow = '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                   title="Nouvelle conversation"
                 >
@@ -1276,7 +1276,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <h3 className="text-lg font-bold mb-2 text-white">
                         Votre IA Concierge
                       </h3>
-                      <p className="text-purple-100 text-sm px-2 leading-relaxed">
+                      <p className="text-gray-100 text-sm px-2 leading-relaxed">
                         Demandez-moi n'importe quoi sur Marbella !
                       </p>
                       <div className="mt-3 flex items-center justify-center space-x-1">
@@ -1299,7 +1299,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <h3 className="text-xl lg:text-3xl font-bold mb-3 lg:mb-4 text-white">
                         Bienvenue sur Get Weez
                       </h3>
-                      <p className="text-purple-100 text-sm lg:text-lg px-2 lg:px-4 leading-relaxed">
+                      <p className="text-gray-100 text-sm lg:text-lg px-2 lg:px-4 leading-relaxed">
                         Votre concierge IA personnel pour Marbella
                       </p>
                       <div className="mt-4 lg:mt-6 flex items-center justify-center space-x-2">
@@ -1349,7 +1349,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
               {/* Suggestions rapides - Version mobile AGRANDIE */}
               <div className="lg:hidden mb-2">
                 <h3 className="text-white font-bold text-base mb-2 flex items-center">
-                  <span className="w-2 h-2 bg-purple-500 rounded-full mr-2"></span>
+                  <span className="w-2 h-2 bg-gray-500 rounded-full mr-2"></span>
                   💡 Que puis-je faire pour vous ?
                 </h3>
                 <div className="grid grid-cols-2 gap-4 mb-6 max-h-[85vh] overflow-y-auto" style={{
@@ -1364,8 +1364,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                         <span className="text-xl">🏖️</span>
                       </div>
                       <div>
-                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h4>
-                        <p className={`text-xs ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin</p>
+                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Beach Party</h4>
+                        <p className={`text-xs ${isDarkMode ? 'text-gray-100' : 'text-gray-700'}`}>21 juin</p>
                       </div>
                     </div>
                     <button
@@ -1382,8 +1382,8 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                         <span className="text-xl">🎷</span>
                       </div>
                       <div>
-                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h4>
-                        <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin</p>
+                        <h4 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Soirée Jazz</h4>
+                        <p className={`text-xs ${isDarkMode ? 'text-gray-100' : 'text-gray-700'}`}>26 juin</p>
                       </div>
                     </div>
                     <button
@@ -1479,7 +1479,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = '#C0C0C0'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(192, 192, 192, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
                     }}
                     onBlur={(e) => {
                       e.target.style.borderColor = '#374151'
@@ -1499,18 +1499,18 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   className="absolute right-3 lg:right-4 top-1/2 transform -translate-y-1/2 p-2 lg:p-3 disabled:cursor-not-allowed text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
                   style={{
                     backgroundColor: !input.trim() || isLoading ? '#374151' : '#C0C0C0',
-                    boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {
                       e.target.style.backgroundColor = '#C0C0C0'
-                      e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
+                      e.target.style.boxShadow = '0 6px 16px rgba(192, 192, 192, 0.4)'
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isLoading && input.trim()) {
                       e.target.style.backgroundColor = '#C0C0C0'
-                      e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
+                      e.target.style.boxShadow = '0 4px 12px rgba(192, 192, 192, 0.3)'
                     }
                   }}
                 >
@@ -1556,7 +1556,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     }}
                     onFocus={(e) => {
                       e.target.style.borderColor = '#C0C0C0'
-                      e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
+                      e.target.style.boxShadow = '0 0 0 3px rgba(192, 192, 192, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
                     }}
                     onBlur={(e) => {
                       e.target.style.borderColor = '#374151'
@@ -1576,18 +1576,18 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     className="px-3 py-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center font-medium text-sm"
                   style={{
                     backgroundColor: !input.trim() || isLoading ? '#6B7280' : '#C0C0C0',
-                    boxShadow: !input.trim() || isLoading ? '0 2px 4px rgba(0, 0, 0, 0.1)' : '0 4px 12px rgba(59, 130, 246, 0.3)'
+                    boxShadow: !input.trim() || isLoading ? '0 2px 4px rgba(0, 0, 0, 0.1)' : '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {
                       e.target.style.backgroundColor = '#C0C0C0'
-                      e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
+                      e.target.style.boxShadow = '0 6px 16px rgba(192, 192, 192, 0.4)'
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isLoading && input.trim()) {
                       e.target.style.backgroundColor = '#C0C0C0'
-                      e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
+                      e.target.style.boxShadow = '0 4px 12px rgba(192, 192, 192, 0.3)'
                     }
                   }}
                 >
@@ -1626,7 +1626,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     style={{
                       backgroundColor: sidebarFilter === 'all' ? '#C0C0C0' : (isDarkMode ? '#374151' : '#F3F4F6'),
                       color: sidebarFilter === 'all' ? '#FFFFFF' : (isDarkMode ? '#FFFFFF' : '#374151'),
-                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : (isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)'),
+                      boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(192, 192, 192, 0.4)' : (isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)'),
                       fontSize: '14px',
                       fontWeight: '600',
                       minHeight: '50px'
@@ -1709,7 +1709,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 <>
                   <div className="lg:block hidden">
                     <h3 className={`font-semibold text-xs mb-2 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                      <span className="w-1.5 h-1.5 bg-blue-500 rounded-full mr-2"></span>
+                      <span className="w-1.5 h-1.5 bg-gray-500 rounded-full mr-2"></span>
                       Aujourd'hui
                     </h3>
                   </div>
@@ -1723,22 +1723,22 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🏖️</span>
                         <div>
-                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-blue-900'}`}>Beach Party</h3>
-                          <p className={`text-xs ${isDarkMode ? 'text-blue-100' : 'text-blue-700'}`}>21 juin</p>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Beach Party</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-gray-100' : 'text-gray-700'}`}>21 juin</p>
                         </div>
                       </div>
-                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-blue-800'}`}>Soirée exclusive</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-gray-800'}`}>Soirée exclusive</div>
                     </div>
                     
                     <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-purple-500 to-pink-500 border-purple-400/30' : 'bg-gradient-to-br from-purple-100 to-pink-100 border-purple-300/50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
                         <span className="text-lg">🎷</span>
                         <div>
-                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Soirée Jazz</h3>
-                          <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>26 juin</p>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Soirée Jazz</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-gray-100' : 'text-gray-700'}`}>26 juin</p>
                         </div>
                       </div>
-                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-purple-800'}`}>Concert jazz</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-gray-800'}`}>Concert jazz</div>
                     </div>
                     
                     <div className={`rounded-lg p-2 border transition-all duration-300 ${isDarkMode ? 'bg-gradient-to-br from-green-500 to-emerald-500 border-green-400/30' : 'bg-gradient-to-br from-green-100 to-emerald-100 border-green-300/50'}`}>
@@ -2305,7 +2305,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                 <>
                   <div className="lg:block hidden">
                     <h3 className={`font-semibold text-lg mb-4 flex items-center ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
-                      <span className="w-3 h-3 bg-purple-500 rounded-full mr-3"></span>
+                      <span className="w-3 h-3 bg-gray-500 rounded-full mr-3"></span>
                       Services
                     </h3>
                   </div>
@@ -2635,11 +2635,11 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                           <span className="text-lg">💎</span>
                         </div>
                         <div>
-                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-purple-900'}`}>Spa Privé</h3>
-                          <p className={`text-xs ${isDarkMode ? 'text-purple-100' : 'text-purple-700'}`}>Thérapie VIP</p>
+                          <h3 className={`font-bold text-sm ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Spa Privé</h3>
+                          <p className={`text-xs ${isDarkMode ? 'text-gray-100' : 'text-gray-700'}`}>Thérapie VIP</p>
                         </div>
                       </div>
-                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-purple-800'}`}>Thérapeute privé</div>
+                      <div className={`text-xs ${isDarkMode ? 'text-white/90' : 'text-gray-800'}`}>Thérapeute privé</div>
                     </div>
                   </div>
                   <div className="uniform-banner">

@@ -82,7 +82,7 @@ const ConfirmModal = ({
       },
       default: {
         icon: <AlertTriangle size={28} className="animate-pulse" />,
-        iconColor: isDarkMode ? 'text-blue-400' : 'text-blue-500',
+        iconColor: isDarkMode ? 'text-gray-400' : 'text-gray-500',
         iconBg: isDarkMode 
           ? 'bg-gradient-to-br from-blue-500/20 to-blue-600/10' 
           : 'bg-gradient-to-br from-blue-50 to-blue-100',
@@ -90,7 +90,7 @@ const ConfirmModal = ({
           ? 'bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800'
           : 'bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700',
         borderColor: isDarkMode ? 'border-blue-500/30' : 'border-blue-200',
-        glowColor: 'shadow-blue-500/20'
+        glowColor: 'shadow-gray-500/20'
       }
     }
     return baseStyles[type] || baseStyles.default

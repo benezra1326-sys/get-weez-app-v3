@@ -50,7 +50,7 @@ export default function PerformanceSettings() {
     {
       title: t('settings.performance.manage_storage'),
       description: 'Voir l\'utilisation du stockage',
-      icon: <HardDrive size={20} className="text-blue-500" />,
+      icon: <HardDrive size={20} className="text-gray-500" />,
       action: () => console.log('Manage storage'),
       loading: false
     },
@@ -81,7 +81,7 @@ export default function PerformanceSettings() {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #F59E0B, #D97706)',
-            boxShadow: '0 4px 15px rgba(245, 158, 11, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Zap size={24} className="text-white" />

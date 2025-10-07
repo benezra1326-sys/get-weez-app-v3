@@ -275,7 +275,7 @@ export const DestinationsSection = memo(() => {
                     <div className="mb-2">
                       <span className="text-2xl" style={{
                         filter: dest.status === 'active' 
-                          ? 'drop-shadow(0 0 15px rgba(168, 85, 247, 0.8))'
+                          ? 'drop-shadow(0 0 15px rgba(192, 192, 192, 0.8))'
                           : 'drop-shadow(0 2px 6px rgba(0, 0, 0, 0.4))'
                       }}>
                         {dest.status === 'active' ? '✨' : '🌍'}
@@ -292,7 +292,7 @@ export const DestinationsSection = memo(() => {
                       {dest.name}
                     </h3>
                     
-                    <p className={`text-xs font-semibold ${dest.status === 'active' ? 'text-purple-200' : 'text-gray-300'} text-center`}>
+                    <p className={`text-xs font-semibold ${dest.status === 'active' ? 'text-gray-200' : 'text-gray-300'} text-center`}>
                       {dest.tagline}
                     </p>
                   </div>
@@ -305,10 +305,10 @@ export const DestinationsSection = memo(() => {
                       </div>
                     ) : (
                       <div className="px-2 py-1 rounded-full animate-pulse" style={{
-                        background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(99, 102, 241, 0.4))',
+                        background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.4), rgba(99, 102, 241, 0.4))',
                         backdropFilter: 'blur(10px)',
                         border: '1px solid rgba(255, 255, 255, 0.3)',
-                        boxShadow: '0 0 15px rgba(168, 85, 247, 0.5)',
+                        boxShadow: '0 0 15px rgba(192, 192, 192, 0.5)',
                         animationDuration: '2s'
                       }}>
                         <p className="text-xs font-bold text-white">✅ Actif</p>
@@ -331,7 +331,7 @@ export const DestinationsSection = memo(() => {
               }`}
               style={{
                 boxShadow: dest.status === 'active' 
-                  ? '0 12px 48px rgba(168, 85, 247, 0.5), 0 0 80px rgba(168, 85, 247, 0.2)'
+                  ? '0 12px 48px rgba(192, 192, 192, 0.5), 0 0 80px rgba(192, 192, 192, 0.2)'
                   : '0 8px 24px rgba(0, 0, 0, 0.3)',
                 animation: `fadeInUp 0.6s ease-out ${idx * 0.1}s backwards`
               }}
@@ -397,7 +397,7 @@ export const DestinationsSection = memo(() => {
                         className="text-5xl"
                         style={{
                           filter: dest.status === 'active' 
-                            ? 'drop-shadow(0 0 20px rgba(168, 85, 247, 0.8)) drop-shadow(0 0 40px rgba(168, 85, 247, 0.6))'
+                            ? 'drop-shadow(0 0 20px rgba(192, 192, 192, 0.8)) drop-shadow(0 0 40px rgba(192, 192, 192, 0.6))'
                             : 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4))'
                         }}
                       >
@@ -412,7 +412,7 @@ export const DestinationsSection = memo(() => {
                     }`}
                     style={{
                       textShadow: dest.status === 'active' 
-                        ? '0 0 40px rgba(168, 85, 247, 1), 0 0 80px rgba(168, 85, 247, 0.6), 0 4px 12px rgba(0, 0, 0, 0.9)'
+                        ? '0 0 40px rgba(192, 192, 192, 1), 0 0 80px rgba(192, 192, 192, 0.6), 0 4px 12px rgba(0, 0, 0, 0.9)'
                         : '0 4px 16px rgba(0, 0, 0, 0.9)',
                       fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
                       animationDuration: '3s'
@@ -422,7 +422,7 @@ export const DestinationsSection = memo(() => {
                   </h3>
                   
                   <p className={`text-sm font-semibold ${
-                    dest.status === 'active' ? 'text-purple-200' : 'text-gray-300'
+                    dest.status === 'active' ? 'text-gray-200' : 'text-gray-300'
                   }`}>
                     {dest.tagline}
                   </p>
@@ -436,10 +436,10 @@ export const DestinationsSection = memo(() => {
                     </div>
                   ) : (
                     <div className="px-4 py-2 rounded-full animate-pulse" style={{
-                      background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.4), rgba(99, 102, 241, 0.4))',
+                      background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.4), rgba(99, 102, 241, 0.4))',
                       backdropFilter: 'blur(10px)',
                       border: '1px solid rgba(255, 255, 255, 0.3)',
-                      boxShadow: '0 0 20px rgba(168, 85, 247, 0.5)',
+                      boxShadow: '0 0 20px rgba(192, 192, 192, 0.5)',
                       animationDuration: '2s'
                     }}>
                       <p className="text-xs font-bold text-white">✅ Disponible maintenant</p>
@@ -454,7 +454,7 @@ export const DestinationsSection = memo(() => {
                   <div 
                     className="absolute inset-0 opacity-40 pointer-events-none"
                     style={{
-                      background: `linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.4) 50%, transparent 100%)`,
+                      background: `linear-gradient(135deg, transparent 0%, rgba(192, 192, 192, 0.4) 50%, transparent 100%)`,
                       animation: 'shimmer 3s ease-in-out infinite'
                     }}
                   />
@@ -539,7 +539,7 @@ export const PressSection = memo(() => {
       <div 
         className="absolute inset-0 opacity-5"
         style={{
-          backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(139, 92, 246, 0.3) 25%, rgba(139, 92, 246, 0.3) 26%, transparent 27%, transparent 74%, rgba(139, 92, 246, 0.3) 75%, rgba(139, 92, 246, 0.3) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(139, 92, 246, 0.3) 25%, rgba(139, 92, 246, 0.3) 26%, transparent 27%, transparent 74%, rgba(139, 92, 246, 0.3) 75%, rgba(139, 92, 246, 0.3) 76%, transparent 77%, transparent)',
+          backgroundImage: 'linear-gradient(0deg, transparent 24%, rgba(192, 192, 192, 0.3) 25%, rgba(192, 192, 192, 0.3) 26%, transparent 27%, transparent 74%, rgba(192, 192, 192, 0.3) 75%, rgba(192, 192, 192, 0.3) 76%, transparent 77%, transparent), linear-gradient(90deg, transparent 24%, rgba(192, 192, 192, 0.3) 25%, rgba(192, 192, 192, 0.3) 26%, transparent 27%, transparent 74%, rgba(192, 192, 192, 0.3) 75%, rgba(192, 192, 192, 0.3) 76%, transparent 77%, transparent)',
           backgroundSize: '50px 50px'
         }}
       />
@@ -553,7 +553,7 @@ export const PressSection = memo(() => {
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 color: 'white',
-                boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)'
+                boxShadow: '0 4px 20px rgba(192, 192, 192, 0.4)'
               }}
             >
               🎯 MÉDIAS & PRESSE
@@ -592,10 +592,10 @@ export const PressSection = memo(() => {
                       ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9))'
                       : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95))',
                     backdropFilter: 'blur(20px)',
-                    border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
+                    border: `2px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.15)'}`,
                     boxShadow: isDarkMode
                       ? '0 8px 24px rgba(0, 0, 0, 0.3)'
-                      : '0 8px 24px rgba(139, 92, 246, 0.1)'
+                      : '0 8px 24px rgba(192, 192, 192, 0.1)'
                   }}
                 >
                   {/* Logo et nom */}
@@ -628,7 +628,7 @@ export const PressSection = memo(() => {
                   {/* Date */}
                   <div className="text-center">
                     <span className={`text-xs font-semibold px-2 py-1 rounded-full ${
-                      isDarkMode ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
+                      isDarkMode ? 'bg-gray-500/20 text-gray-300' : 'bg-gray-100 text-gray-700'
                     }`}>
                       {press.date}
                     </span>
@@ -640,7 +640,7 @@ export const PressSection = memo(() => {
                       className="px-1.5 py-1 rounded-full text-xs font-bold text-white"
                       style={{
                         background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                        boxShadow: '0 0 10px rgba(168, 85, 247, 0.4)'
+                        boxShadow: '0 0 10px rgba(192, 192, 192, 0.4)'
                       }}
                     >
                       ⭐
@@ -669,17 +669,17 @@ export const PressSection = memo(() => {
                     ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8), rgba(17, 24, 39, 0.9))'
                     : 'linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.95))',
                   backdropFilter: 'blur(20px)',
-                  border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
+                  border: `2px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.15)'}`,
                   boxShadow: isDarkMode
                     ? '0 12px 40px rgba(0, 0, 0, 0.4)'
-                    : '0 12px 40px rgba(139, 92, 246, 0.15)'
+                    : '0 12px 40px rgba(192, 192, 192, 0.15)'
                 }}
               >
                 {/* Effet de brillance au hover */}
                 <div 
                   className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500"
                   style={{
-                    background: `linear-gradient(135deg, transparent 0%, rgba(168, 85, 247, 0.1) 50%, transparent 100%)`,
+                    background: `linear-gradient(135deg, transparent 0%, rgba(192, 192, 192, 0.1) 50%, transparent 100%)`,
                     transform: 'translateX(-100%)',
                     animation: 'shimmer 2s ease-in-out infinite'
                   }}
@@ -723,7 +723,7 @@ export const PressSection = memo(() => {
                 <div className="text-center">
                   <span 
                     className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                      isDarkMode ? 'bg-purple-500/20 text-purple-300' : 'bg-purple-100 text-purple-700'
+                      isDarkMode ? 'bg-gray-500/20 text-gray-300' : 'bg-gray-100 text-gray-700'
                     }`}
                   >
                     {press.date}
@@ -736,7 +736,7 @@ export const PressSection = memo(() => {
                     className="px-2 py-1 rounded-full text-[10px] font-bold text-white animate-pulse"
                     style={{
                       background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                      boxShadow: '0 0 15px rgba(168, 85, 247, 0.5)'
+                      boxShadow: '0 0 15px rgba(192, 192, 192, 0.5)'
                     }}
                   >
                     ⭐

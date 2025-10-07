@@ -51,7 +51,7 @@ export default function NotificationSettings() {
     {
       key: 'push',
       title: t('account.notifications.push'),
-      icon: <Smartphone size={20} className="text-blue-500" />,
+      icon: <Smartphone size={20} className="text-gray-500" />,
       description: 'Notifications sur votre appareil'
     },
     {
@@ -63,7 +63,7 @@ export default function NotificationSettings() {
     {
       key: 'sms',
       title: t('account.notifications.sms'),
-      icon: <MessageSquare size={20} className="text-purple-500" />,
+      icon: <MessageSquare size={20} className="text-gray-500" />,
       description: 'Notifications par SMS'
     }
   ]
@@ -200,7 +200,7 @@ export default function NotificationSettings() {
                     onClick={() => updateNotification(type.key, category.key, !notifications[type.key][category.key])}
                     className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
                       notifications[type.key][category.key]
-                        ? 'bg-blue-600' 
+                        ? 'bg-gray-600' 
                         : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
                     }`}
                   >
@@ -222,13 +222,13 @@ export default function NotificationSettings() {
         className="mt-6 p-4 rounded-xl"
         style={{
           background: isDarkMode 
-            ? 'rgba(59, 130, 246, 0.1)'
-            : 'rgba(59, 130, 246, 0.05)',
-          border: `1px solid ${isDarkMode ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+            ? 'rgba(192, 192, 192, 0.1)'
+            : 'rgba(192, 192, 192, 0.05)',
+          border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
         }}
       >
         <div className="flex items-center space-x-2 mb-2">
-          <Bell size={16} className="text-blue-500" />
+          <Bell size={16} className="text-gray-500" />
           <span 
             className="font-semibold text-sm"
             style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}

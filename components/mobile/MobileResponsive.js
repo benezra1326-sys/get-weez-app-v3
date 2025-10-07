@@ -298,7 +298,7 @@ export const MobileSpaceManager = memo(({
         }
         
         .mobile-space-content::-webkit-scrollbar-thumb {
-          background: rgba(139, 92, 246, 0.3);
+          background: rgba(192, 192, 192, 0.3);
           border-radius: 2px;
         }
       `}</style>

@@ -47,7 +47,7 @@ const AbsoluteButtonTest = () => {
                 key={msg.id}
                 className={`p-2 rounded ${
                   msg.role === 'user' 
-                    ? 'bg-blue-500 text-white ml-8' 
+                    ? 'bg-gray-500 text-white ml-8' 
                     : 'bg-gray-200 text-gray-800 mr-8'
                 }`}
               >
@@ -75,7 +75,7 @@ const AbsoluteButtonTest = () => {
                 const input = document.querySelector('textarea')
                 if (input) input.value = 'Test court'
               }}
-              className="w-full px-3 py-2 bg-blue-500 text-white rounded text-sm"
+              className="w-full px-3 py-2 bg-gray-500 text-white rounded text-sm"
             >
               Test court
             </button>

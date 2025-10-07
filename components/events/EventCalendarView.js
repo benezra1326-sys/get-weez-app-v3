@@ -21,13 +21,13 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
           <p className={`mb-6 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Rejoignez Get Weez pour accéder à nos événements exclusifs à Marbella</p>
           <div className="space-y-3 max-w-sm mx-auto">
             <Link href="/register">
-              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center justify-center shadow-lg shadow-purple-500/25">
+              <button className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 px-6 rounded-full hover:from-purple-600 hover:to-pink-600 transition-all duration-300 flex items-center justify-center shadow-lg shadow-gray-500/25">
                 <Crown size={16} className="mr-2" />
                 Devenir membre
               </button>
             </Link>
             <Link href="/login">
-              <button className="w-full bg-transparent border-2 border-purple-500 text-purple-400 py-3 px-6 rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300 flex items-center justify-center">
+              <button className="w-full bg-transparent border-2 border-purple-500 text-gray-400 py-3 px-6 rounded-full hover:bg-gray-500 hover:text-white transition-all duration-300 flex items-center justify-center">
                 <User size={16} className="mr-2" />
                 Accès membre
               </button>
@@ -103,42 +103,42 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
         }
         
         .calendar-day:hover {
-          background: ${isDarkMode ? 'rgba(139, 92, 246, 0.1)' : 'rgba(139, 92, 246, 0.08)'};
+          background: ${isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(192, 192, 192, 0.08)'};
           transform: scale(1.05) translateY(-2px);
           box-shadow: ${isDarkMode 
-            ? '0 8px 25px rgba(139, 92, 246, 0.3)' 
-            : '0 8px 25px rgba(139, 92, 246, 0.15)'};
+            ? '0 8px 25px rgba(192, 192, 192, 0.3)' 
+            : '0 8px 25px rgba(192, 192, 192, 0.15)'};
         }
         
         .calendar-day.has-events {
           background: ${isDarkMode 
-            ? 'rgba(139, 92, 246, 0.2)' 
-            : 'rgba(139, 92, 246, 0.12)'};
+            ? 'rgba(192, 192, 192, 0.2)' 
+            : 'rgba(192, 192, 192, 0.12)'};
           border: 1px solid ${isDarkMode 
-            ? 'rgba(139, 92, 246, 0.5)' 
-            : 'rgba(139, 92, 246, 0.3)'};
+            ? 'rgba(192, 192, 192, 0.5)' 
+            : 'rgba(192, 192, 192, 0.3)'};
           box-shadow: ${isDarkMode 
-            ? '0 4px 15px rgba(139, 92, 246, 0.2)' 
-            : '0 4px 15px rgba(139, 92, 246, 0.1)'};
+            ? '0 4px 15px rgba(192, 192, 192, 0.2)' 
+            : '0 4px 15px rgba(192, 192, 192, 0.1)'};
         }
         
         .calendar-day.selected {
           background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           color: white;
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+          box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
           transform: scale(1.1);
         }
         
         .calendar-day.today {
           background: ${isDarkMode 
-            ? 'rgba(245, 158, 11, 0.2)' 
-            : 'rgba(245, 158, 11, 0.15)'};
+            ? 'rgba(192, 192, 192, 0.2)' 
+            : 'rgba(192, 192, 192, 0.15)'};
           border: 1px solid ${isDarkMode 
-            ? 'rgba(245, 158, 11, 0.5)' 
-            : 'rgba(245, 158, 11, 0.4)'};
+            ? 'rgba(192, 192, 192, 0.5)' 
+            : 'rgba(192, 192, 192, 0.4)'};
           box-shadow: ${isDarkMode 
-            ? '0 4px 15px rgba(245, 158, 11, 0.2)' 
-            : '0 4px 15px rgba(245, 158, 11, 0.1)'};
+            ? '0 4px 15px rgba(192, 192, 192, 0.2)' 
+            : '0 4px 15px rgba(192, 192, 192, 0.1)'};
         }
 
         .calendar-container {
@@ -308,7 +308,7 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
                           <span className="text-lg font-bold mb-1 drop-shadow-lg">{date.getDate()}</span>
                         {hasEvents && (
                             <div className="flex flex-col items-center">
-                              <div className="w-2 h-2 bg-purple-400 rounded-full mb-1 shadow-lg"></div>
+                              <div className="w-2 h-2 bg-gray-400 rounded-full mb-1 shadow-lg"></div>
                               <span className="text-xs font-semibold text-white drop-shadow-lg">
                                 {dayEvents.length}
                               </span>

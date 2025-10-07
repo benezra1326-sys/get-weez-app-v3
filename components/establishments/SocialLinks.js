@@ -15,15 +15,15 @@ export default function SocialLinks({ establishment }) {
       name: 'Facebook',
       url: establishment.social_media?.facebook,
       icon: Facebook,
-      color: 'bg-blue-600',
-      hoverColor: 'hover:bg-blue-700'
+      color: 'bg-gray-600',
+      hoverColor: 'hover:bg-gray-700'
     },
     {
       name: 'Twitter',
       url: establishment.social_media?.twitter,
       icon: Twitter,
-      color: 'bg-blue-400',
-      hoverColor: 'hover:bg-blue-500'
+      color: 'bg-gray-400',
+      hoverColor: 'hover:bg-gray-500'
     },
     {
       name: 'Website',
@@ -54,7 +54,7 @@ export default function SocialLinks({ establishment }) {
   return (
     <div className="space-y-4">
       <div className="flex items-center space-x-2 mb-3">
-        <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+        <div className="w-2 h-2 bg-gray-500 rounded-full"></div>
         <h3 className="font-semibold text-gray-800">Suivez-nous</h3>
       </div>
       

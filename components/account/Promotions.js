@@ -26,7 +26,7 @@ export default function Promotions({ user }) {
       discount: "15%",
       expiresAt: "2024-11-30",
       type: "weekend",
-      icon: <Gift size={24} className="text-purple-500" />
+      icon: <Gift size={24} className="text-gray-500" />
     },
     {
       id: 3,
@@ -36,7 +36,7 @@ export default function Promotions({ user }) {
       discount: "10%",
       expiresAt: "Permanent",
       type: "member",
-      icon: <Percent size={24} className="text-blue-500" />
+      icon: <Percent size={24} className="text-gray-500" />
     }
   ]
 
@@ -81,7 +81,7 @@ export default function Promotions({ user }) {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #F59E0B, #D97706)',
-            boxShadow: '0 4px 15px rgba(245, 158, 11, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Gift size={24} className="text-white" />
@@ -169,7 +169,7 @@ export default function Promotions({ user }) {
                       ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                       : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     color: 'white',
-                    boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+                    boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                   }}
                 >
                   {copiedCode === promo.code ? (

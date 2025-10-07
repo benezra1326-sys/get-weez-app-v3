@@ -87,7 +87,7 @@ export default function PermissionsSettings() {
     {
       key: 'location',
       title: t('settings.permissions.location'),
-      icon: <MapPin size={20} className="text-blue-500" />,
+      icon: <MapPin size={20} className="text-gray-500" />,
       description: 'Pour les recommandations locales'
     },
     {
@@ -99,7 +99,7 @@ export default function PermissionsSettings() {
     {
       key: 'camera',
       title: t('settings.permissions.camera'),
-      icon: <Camera size={20} className="text-purple-500" />,
+      icon: <Camera size={20} className="text-gray-500" />,
       description: 'Pour partager des photos'
     }
   ]

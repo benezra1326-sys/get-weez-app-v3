@@ -84,7 +84,7 @@ const Home = memo(({ user, setUser }) => {
                 ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.98) 0%, rgba(17, 24, 39, 0.95) 100%)'
                 : 'linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)',
               backdropFilter: 'blur(20px) saturate(150%)',
-              border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+              border: `2px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
               boxShadow: '0 25px 50px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.1)'
             }}
           >
@@ -92,10 +92,10 @@ const Home = memo(({ user, setUser }) => {
             <div 
               className="p-4 text-center border-b"
               style={{
-                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(139, 92, 246, 0.2)',
+                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(192, 192, 192, 0.2)',
                 background: isDarkMode 
                   ? 'linear-gradient(135deg, rgba(31, 41, 55, 0.8) 0%, rgba(17, 24, 39, 0.6) 100%)'
-                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.05) 0%, rgba(59, 130, 246, 0.05) 100%)',
+                  : 'linear-gradient(135deg, rgba(192, 192, 192, 0.05) 0%, rgba(192, 192, 192, 0.05) 100%)',
               }}
             >
               <div className="flex justify-center mb-3">
@@ -103,9 +103,9 @@ const Home = memo(({ user, setUser }) => {
                   className="p-3 rounded-2xl"
                   style={{
                     background: isDarkMode 
-                      ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)'
-                      : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
-                    border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.2) 100%)'
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%)',
+                    border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
                   }}
                 >
                   {introSteps[currentStep].icon}
@@ -129,11 +129,11 @@ const Home = memo(({ user, setUser }) => {
                     style={{
                       background: isDarkMode 
                         ? 'linear-gradient(135deg, rgba(55, 65, 81, 0.6) 0%, rgba(31, 41, 55, 0.4) 100%)'
-                        : 'linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(59, 130, 246, 0.08) 100%)',
-                      border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(139, 92, 246, 0.15)'}`,
+                        : 'linear-gradient(135deg, rgba(192, 192, 192, 0.08) 0%, rgba(192, 192, 192, 0.08) 100%)',
+                      border: `1px solid ${isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(192, 192, 192, 0.15)'}`,
                       boxShadow: isDarkMode 
                         ? '0 2px 8px rgba(0, 0, 0, 0.1)'
-                        : '0 2px 8px rgba(139, 92, 246, 0.1)',
+                        : '0 2px 8px rgba(192, 192, 192, 0.1)',
                     }}
                   >
                     <div 
@@ -155,9 +155,9 @@ const Home = memo(({ user, setUser }) => {
                   className="mb-4 p-3 rounded-xl animate-pulse"
                   style={{
                     background: isDarkMode 
-                      ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%)'
-                      : 'linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(251, 191, 36, 0.08) 100%)',
-                    border: `1px solid ${isDarkMode ? 'rgba(245, 158, 11, 0.3)' : 'rgba(245, 158, 11, 0.2)'}`,
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(251, 191, 36, 0.1) 100%)'
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(251, 191, 36, 0.08) 100%)',
+                    border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
                   }}
                 >
                   <p className={`text-sm font-medium ${isDarkMode ? 'text-amber-200' : 'text-amber-800'}`}>
@@ -181,7 +181,7 @@ const Home = memo(({ user, setUser }) => {
                         ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                         : isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(156, 163, 175, 0.6)',
                       boxShadow: index === currentStep 
-                        ? '0 0 8px rgba(139, 92, 246, 0.4)'
+                        ? '0 0 8px rgba(192, 192, 192, 0.4)'
                         : 'none'
                     }}
                   />
@@ -230,7 +230,7 @@ const Home = memo(({ user, setUser }) => {
                   style={{
                     background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     color: 'white',
-                    boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)',
+                    boxShadow: '0 4px 12px rgba(192, 192, 192, 0.4)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
                   }}
                 >
@@ -369,7 +369,7 @@ const Home = memo(({ user, setUser }) => {
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                         borderRadius: '16px',
-                        boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                        boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
@@ -413,7 +413,7 @@ const Home = memo(({ user, setUser }) => {
                   <div className="text-center flex flex-col items-center">
                     <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
                       background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                      boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)'
+                      boxShadow: '0 4px 16px rgba(192, 192, 192, 0.3)'
                     }}>
                       <span className="text-white text-xl">📧</span>
                     </div>
@@ -428,7 +428,7 @@ const Home = memo(({ user, setUser }) => {
                   <div className="text-center flex flex-col items-center">
                     <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
                       background: 'linear-gradient(135deg, #F59E0B, #FCD34D)',
-                      boxShadow: '0 4px 16px rgba(245, 158, 11, 0.3)'
+                      boxShadow: '0 4px 16px rgba(192, 192, 192, 0.3)'
                     }}>
                       <span className="text-white text-xl">⭐</span>
                     </div>
@@ -444,7 +444,7 @@ const Home = memo(({ user, setUser }) => {
                   <div className="text-center flex flex-col items-center">
                     <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
                       background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                      boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
+                      boxShadow: '0 4px 16px rgba(192, 192, 192, 0.3)'
                     }}>
                       <span className="text-white text-xl">📍</span>
                     </div>
@@ -466,19 +466,19 @@ const Home = memo(({ user, setUser }) => {
                     <div className="flex items-center gap-4">
                       <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
                         background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                        boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+                        boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                       }}>
                         <span className="text-white text-sm">📘</span>
                       </a>
                       <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
                         background: 'linear-gradient(135deg, #F59E0B, #FCD34D)',
-                        boxShadow: '0 4px 12px rgba(245, 158, 11, 0.3)'
+                        boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                       }}>
                         <span className="text-white text-sm">📷</span>
                       </a>
                       <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
                         background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                        boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
+                        boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
                       }}>
                         <span className="text-white text-sm">🐦</span>
                       </a>

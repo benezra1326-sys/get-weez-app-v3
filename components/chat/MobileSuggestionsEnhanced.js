@@ -281,7 +281,7 @@ export default function MobileSuggestionsEnhanced({
       {/* Barre de recherche TRÈS visible */}
       <div className="px-4 mb-4 mt-4">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-purple-500" size={20} />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500" size={20} />
           <input
             type="text"
             placeholder="Rechercher établissements, événements, services..."
@@ -290,9 +290,9 @@ export default function MobileSuggestionsEnhanced({
             className="w-full pl-12 pr-4 py-3.5 rounded-2xl text-sm font-medium shadow-lg text-left"
             style={{
               background: isDarkMode ? 'rgba(55, 65, 81, 0.95)' : 'rgba(255, 255, 255, 0.98)',
-              border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)'}`,
+              border: `2px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(192, 192, 192, 0.3)'}`,
               color: isDarkMode ? '#fff' : '#1f2937',
-              boxShadow: '0 4px 20px rgba(139, 92, 246, 0.2)'
+              boxShadow: '0 4px 20px rgba(192, 192, 192, 0.2)'
             }}
           />
         </div>
@@ -310,7 +310,7 @@ export default function MobileSuggestionsEnhanced({
             className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold"
             style={{
               background: isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(243, 244, 246, 0.9)',
-              border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.4)' : 'rgba(139, 92, 246, 0.2)'}`,
+              border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.4)' : 'rgba(192, 192, 192, 0.2)'}`,
               color: isDarkMode ? '#d1d5db' : '#4b5563'
             }}
           >
@@ -325,7 +325,7 @@ export default function MobileSuggestionsEnhanced({
             <div className="absolute top-full left-0 right-0 mt-1 rounded-xl overflow-hidden"
               style={{
                 background: isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)',
-                border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)'}`,
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(192, 192, 192, 0.3)'}`,
                 backdropFilter: 'blur(20px)',
                 boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
                 zIndex: 99999
@@ -340,7 +340,7 @@ export default function MobileSuggestionsEnhanced({
                   }}
                   className="w-full flex items-center justify-start gap-2 px-3 py-2.5 text-xs font-medium text-left transition-colors"
                   style={{
-                    background: sortBy === option.key ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
+                    background: sortBy === option.key ? 'rgba(192, 192, 192, 0.2)' : 'transparent',
                     color: isDarkMode ? '#fff' : '#1f2937'
                   }}
                   onMouseEnter={(e) => {
@@ -372,7 +372,7 @@ export default function MobileSuggestionsEnhanced({
             className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold"
             style={{
               background: selectedStyle ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(243, 244, 246, 0.9)'),
-              border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.4)' : 'rgba(139, 92, 246, 0.2)'}`,
+              border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.4)' : 'rgba(192, 192, 192, 0.2)'}`,
               color: selectedStyle ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563')
             }}
           >
@@ -387,7 +387,7 @@ export default function MobileSuggestionsEnhanced({
             <div className="absolute top-full left-0 right-0 mt-1 rounded-xl overflow-hidden"
               style={{
                 background: isDarkMode ? 'rgba(31, 41, 55, 0.98)' : 'rgba(255, 255, 255, 0.98)',
-                border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)'}`,
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(192, 192, 192, 0.3)'}`,
                 backdropFilter: 'blur(20px)',
                 boxShadow: '0 10px 40px rgba(0, 0, 0, 0.3)',
                 zIndex: 99999
@@ -400,7 +400,7 @@ export default function MobileSuggestionsEnhanced({
                 }}
                 className="w-full flex items-center justify-start gap-2 px-3 py-2.5 text-xs font-medium text-left"
                 style={{
-                  background: !selectedStyle ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
+                  background: !selectedStyle ? 'rgba(192, 192, 192, 0.2)' : 'transparent',
                   color: isDarkMode ? '#fff' : '#1f2937'
                 }}
                 onMouseEnter={(e) => {
@@ -426,7 +426,7 @@ export default function MobileSuggestionsEnhanced({
                   }}
                   className="w-full flex items-center justify-start gap-2 px-3 py-2.5 text-xs font-medium text-left transition-colors"
                   style={{
-                    background: selectedStyle === style.key ? 'rgba(139, 92, 246, 0.2)' : 'transparent',
+                    background: selectedStyle === style.key ? 'rgba(192, 192, 192, 0.2)' : 'transparent',
                     color: isDarkMode ? '#fff' : '#1f2937'
                   }}
                   onMouseEnter={(e) => {
@@ -457,7 +457,7 @@ export default function MobileSuggestionsEnhanced({
           style={{
             background: activeTab === 'all' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'all' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'all' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
+            boxShadow: activeTab === 'all' ? '0 4px 12px rgba(192, 192, 192, 0.5)' : 'none'
           }}
         >
           <div className="flex flex-col items-center gap-0.5">
@@ -472,7 +472,7 @@ export default function MobileSuggestionsEnhanced({
           style={{
             background: activeTab === 'establishments' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'establishments' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'establishments' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
+            boxShadow: activeTab === 'establishments' ? '0 4px 12px rgba(192, 192, 192, 0.5)' : 'none'
           }}
         >
           <div className="flex flex-col items-center gap-0.5">
@@ -487,7 +487,7 @@ export default function MobileSuggestionsEnhanced({
           style={{
             background: activeTab === 'services' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'services' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'services' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
+            boxShadow: activeTab === 'services' ? '0 4px 12px rgba(192, 192, 192, 0.5)' : 'none'
           }}
         >
           <div className="flex flex-col items-center gap-0.5">
@@ -502,7 +502,7 @@ export default function MobileSuggestionsEnhanced({
           style={{
             background: activeTab === 'events' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'events' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
-            boxShadow: activeTab === 'events' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
+            boxShadow: activeTab === 'events' ? '0 4px 12px rgba(192, 192, 192, 0.5)' : 'none'
           }}
         >
           <div className="flex flex-col items-center gap-0.5">
@@ -535,7 +535,7 @@ export default function MobileSuggestionsEnhanced({
           className={`p-2.5 rounded-xl transition-all ${columns === 1 ? 'scale-110' : ''}`}
           style={{
             background: columns === 1 ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
-            boxShadow: columns === 1 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
+            boxShadow: columns === 1 ? '0 4px 12px rgba(192, 192, 192, 0.4)' : 'none'
           }}
         >
           <RectangleVertical size={18} className={columns === 1 ? 'text-white' : (isDarkMode ? 'text-gray-400' : 'text-gray-600')} />
@@ -545,7 +545,7 @@ export default function MobileSuggestionsEnhanced({
           className={`p-2.5 rounded-xl transition-all ${columns === 2 ? 'scale-110' : ''}`}
           style={{
             background: columns === 2 ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
-            boxShadow: columns === 2 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
+            boxShadow: columns === 2 ? '0 4px 12px rgba(192, 192, 192, 0.4)' : 'none'
           }}
         >
           <LayoutGrid size={18} className={columns === 2 ? 'text-white' : (isDarkMode ? 'text-gray-400' : 'text-gray-600')} />
@@ -631,7 +631,7 @@ export default function MobileSuggestionsEnhanced({
                     )}
                     {sortBy === 'distance' && item.distance && item.distance < 999 && (
                       <div className="flex items-center gap-1 px-1.5 py-0.5 rounded-md" style={{
-                        background: 'rgba(59, 130, 246, 0.8)',
+                        background: 'rgba(192, 192, 192, 0.8)',
                         backdropFilter: 'blur(8px)'
                       }}>
                         <span className="text-[10px] font-bold text-white">
@@ -693,7 +693,7 @@ export default function MobileSuggestionsEnhanced({
             style={{
               background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
               color: 'white',
-              boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)',
+              boxShadow: '0 4px 20px rgba(192, 192, 192, 0.4)',
               border: '2px solid rgba(255, 255, 255, 0.2)'
             }}
           >
@@ -710,7 +710,7 @@ export default function MobileSuggestionsEnhanced({
             style={{
               background: isDarkMode ? 'rgba(55, 65, 81, 0.6)' : 'rgba(243, 244, 246, 0.8)',
               color: isDarkMode ? 'white' : '#374151',
-              border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`
+              border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
             }}
           >
             ⬆️ Afficher moins

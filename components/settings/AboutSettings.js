@@ -79,7 +79,7 @@ export default function AboutSettings() {
           <div className="space-y-3">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Code size={16} className="text-blue-500" />
+                <Code size={16} className="text-gray-500" />
                 <span 
                   className="text-sm font-medium"
                   style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}

@@ -190,7 +190,7 @@ const ChatFloatingButton = ({ onOpenChat }) => {
         <div 
           className="absolute inset-0 rounded-full pulse-ring"
           style={{
-            background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.3), rgba(99, 102, 241, 0.3))',
+            background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.3), rgba(99, 102, 241, 0.3))',
             filter: 'blur(8px)',
             transform: 'scale(1.2)'
           }}
@@ -203,10 +203,10 @@ const ChatFloatingButton = ({ onOpenChat }) => {
               <Sparkles size={16} className="text-yellow-400" />
             </div>
             <div className="absolute -top-2 -right-4 sparkle-icon" style={{ animationDelay: '1s' }}>
-              <Sparkles size={14} className="text-purple-400" />
+              <Sparkles size={14} className="text-gray-400" />
             </div>
             <div className="absolute -bottom-4 -right-2 sparkle-icon" style={{ animationDelay: '2s' }}>
-              <Sparkles size={12} className="text-blue-400" />
+              <Sparkles size={12} className="text-gray-400" />
             </div>
           </>
         )}
@@ -222,8 +222,8 @@ const ChatFloatingButton = ({ onOpenChat }) => {
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             border: '2px solid rgba(255, 255, 255, 0.3)',
             boxShadow: isExpanded
-              ? '0 12px 48px rgba(168, 85, 247, 0.6), 0 0 0 0 rgba(168, 85, 247, 0.4)'
-              : '0 8px 32px rgba(168, 85, 247, 0.5)',
+              ? '0 12px 48px rgba(192, 192, 192, 0.6), 0 0 0 0 rgba(192, 192, 192, 0.4)'
+              : '0 8px 32px rgba(192, 192, 192, 0.5)',
             cursor: 'pointer',
             display: 'flex',
             alignItems: 'center',
@@ -295,7 +295,7 @@ const ChatFloatingButton = ({ onOpenChat }) => {
                   : 'rgba(255, 255, 255, 0.95)',
                 color: isDarkMode ? '#fff' : '#1f2937',
                 boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
-                border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
                 backdropFilter: 'blur(10px)'
               }}
             >

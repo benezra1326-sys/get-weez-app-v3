@@ -15,8 +15,8 @@ export default function LoadingSpinner({
   }
 
   const variantClasses = {
-    default: 'text-purple-500',
-    chat: 'text-purple-400',
+    default: 'text-gray-500',
+    chat: 'text-gray-400',
     page: 'text-white',
     muted: 'text-gray-400'
   }

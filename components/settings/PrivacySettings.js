@@ -49,7 +49,7 @@ export default function PrivacySettings() {
     {
       title: t('settings.privacy.terms'),
       description: 'Consulter nos conditions',
-      icon: <FileText size={20} className="text-blue-500" />,
+      icon: <FileText size={20} className="text-gray-500" />,
       url: '/terms'
     },
     {

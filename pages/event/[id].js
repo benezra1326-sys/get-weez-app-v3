@@ -73,7 +73,7 @@ export default function EventDetail({ user, setUser }) {
           <h1 className={`text-2xl font-bold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>Événement non trouvé</h1>
           <button 
             onClick={() => router.back()}
-            className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+            className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition-colors"
           >
             Retour
           </button>
@@ -129,7 +129,7 @@ export default function EventDetail({ user, setUser }) {
               <span className="px-4 py-2 rounded-full text-sm font-bold text-white"
                 style={{
                   background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                  boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)'
+                  boxShadow: '0 4px 20px rgba(192, 192, 192, 0.4)'
                 }}
               >
                 {event.type}
@@ -174,7 +174,7 @@ export default function EventDetail({ user, setUser }) {
                 {/* Date et heure */}
                 <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
                   <div className="flex items-start space-x-3">
-                    <Calendar size={24} className="text-purple-500 mt-1" />
+                    <Calendar size={24} className="text-gray-500 mt-1" />
                     <div>
                       <h3 className={`font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                         Date et heure
@@ -190,7 +190,7 @@ export default function EventDetail({ user, setUser }) {
                 {event.capacity && (
                   <div className={`p-4 rounded-xl ${isDarkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
                     <div className="flex items-start space-x-3">
-                      <Users size={24} className="text-blue-500 mt-1" />
+                      <Users size={24} className="text-gray-500 mt-1" />
                       <div>
                         <h3 className={`font-semibold mb-1 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
                           Capacité
@@ -210,8 +210,8 @@ export default function EventDetail({ user, setUser }) {
           <div className="lg:col-span-1">
             <div className={`p-6 rounded-2xl sticky top-24 ${isDarkMode ? 'bg-gray-900' : 'bg-gray-50'}`}
               style={{
-                border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
-                boxShadow: '0 8px 32px rgba(139, 92, 246, 0.15)'
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
+                boxShadow: '0 8px 32px rgba(192, 192, 192, 0.15)'
               }}
             >
               <h3 className={`text-xl font-semibold mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
@@ -254,7 +254,7 @@ export default function EventDetail({ user, setUser }) {
                   })}
                   className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-3 px-6 rounded-lg font-semibold hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105"
                   style={{
-                    boxShadow: '0 4px 20px rgba(139, 92, 246, 0.4)'
+                    boxShadow: '0 4px 20px rgba(192, 192, 192, 0.4)'
                   }}
                 >
                   Réserver maintenant
@@ -268,8 +268,8 @@ export default function EventDetail({ user, setUser }) {
                   })}
                   className={`w-full py-3 px-6 rounded-lg font-semibold transition-all duration-300 ${
                     isDarkMode 
-                      ? 'border border-purple-500 text-purple-400 hover:bg-purple-500/10'
-                      : 'border border-purple-600 text-purple-600 hover:bg-purple-50'
+                      ? 'border border-purple-500 text-gray-400 hover:bg-gray-500/10'
+                      : 'border border-purple-600 text-gray-600 hover:bg-gray-50'
                   }`}
                 >
                   Plus d'informations

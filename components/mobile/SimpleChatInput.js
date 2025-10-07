@@ -62,7 +62,7 @@ const SimpleChatInput = ({ onSend, isLoading, placeholder, isDarkMode = false })
           background: isDarkMode 
             ? 'rgba(55, 65, 81, 0.6)' 
             : 'rgba(255, 255, 255, 0.8)',
-          border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`,
+          border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`,
           backdropFilter: 'blur(10px)',
           border: 'none',
           outline: 'none',
@@ -89,7 +89,7 @@ const SimpleChatInput = ({ onSend, isLoading, placeholder, isDarkMode = false })
           opacity: input.trim() && !isLoading ? 1 : 0.5,
           cursor: input.trim() && !isLoading ? 'pointer' : 'not-allowed',
           boxShadow: input.trim() && !isLoading 
-            ? '0 4px 12px rgba(139, 92, 246, 0.4)' 
+            ? '0 4px 12px rgba(192, 192, 192, 0.4)' 
             : 'none',
           display: 'flex',
           alignItems: 'center',

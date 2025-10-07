@@ -67,7 +67,7 @@ export default function LanguageSettings() {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-            boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Globe size={24} className="text-white" />
@@ -117,7 +117,7 @@ export default function LanguageSettings() {
             onClick={handleAutoDetectToggle}
             className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ${
               autoDetect 
-                ? 'bg-blue-600' 
+                ? 'bg-gray-600' 
                 : isDarkMode ? 'bg-gray-600' : 'bg-gray-300'
             }`}
           >
@@ -185,7 +185,7 @@ export default function LanguageSettings() {
                   className="w-full flex items-center justify-between p-4 transition-all duration-200 hover:bg-opacity-50"
                   style={{
                     background: currentLanguage === language.code 
-                      ? isDarkMode ? 'rgba(59, 130, 246, 0.2)' : 'rgba(59, 130, 246, 0.1)'
+                      ? isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.1)'
                       : 'transparent'
                   }}
                   onMouseEnter={(e) => {
@@ -211,7 +211,7 @@ export default function LanguageSettings() {
                     </span>
                   </div>
                   {currentLanguage === language.code && (
-                    <Check size={20} className="text-blue-500" />
+                    <Check size={20} className="text-gray-500" />
                   )}
                 </button>
               ))}
@@ -225,13 +225,13 @@ export default function LanguageSettings() {
         className="mt-4 p-3 rounded-lg"
         style={{
           background: isDarkMode 
-            ? 'rgba(59, 130, 246, 0.1)'
-            : 'rgba(59, 130, 246, 0.05)',
-          border: `1px solid ${isDarkMode ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+            ? 'rgba(192, 192, 192, 0.1)'
+            : 'rgba(192, 192, 192, 0.05)',
+          border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
         }}
       >
         <div className="flex items-center space-x-2">
-          <Globe size={16} className="text-blue-500" />
+          <Globe size={16} className="text-gray-500" />
           <span 
             className="text-sm"
             style={{ color: isDarkMode ? '#D1D5DB' : '#4B5563' }}

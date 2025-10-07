@@ -47,7 +47,7 @@ export default function SimpleSettings() {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Settings size={24} className="text-white" />
@@ -81,7 +81,7 @@ export default function SimpleSettings() {
         >
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
-              <Palette size={18} className="text-purple-500" />
+              <Palette size={18} className="text-gray-500" />
               <span 
                 className="font-semibold text-sm"
                 style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}
@@ -161,7 +161,7 @@ export default function SimpleSettings() {
               }}
             >
               <div className="flex items-center space-x-3">
-                <Settings size={18} className="text-blue-500" />
+                <Settings size={18} className="text-gray-500" />
                 <div className="text-left">
                   <div 
                     className="font-semibold text-sm"
@@ -186,13 +186,13 @@ export default function SimpleSettings() {
           className="p-3 rounded-xl text-center"
           style={{
             background: isDarkMode 
-              ? 'rgba(59, 130, 246, 0.1)'
-              : 'rgba(59, 130, 246, 0.05)',
-            border: `1px solid ${isDarkMode ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+              ? 'rgba(192, 192, 192, 0.1)'
+              : 'rgba(192, 192, 192, 0.05)',
+            border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
         >
           <div className="flex items-center justify-center space-x-2">
-            <Info size={14} className="text-blue-500" />
+            <Info size={14} className="text-gray-500" />
             <span 
               className="text-xs font-medium"
               style={{ color: isDarkMode ? '#D1D5DB' : '#4B5563' }}

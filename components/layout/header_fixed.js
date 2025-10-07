@@ -36,7 +36,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
   const getLinkClasses = useCallback((path) => {
     const baseClasses = "relative px-4 py-2 rounded-lg transition-all duration-300 font-medium group"
     if (isActive(path)) {
-      return `${baseClasses} ${isDarkMode ? 'text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 shadow-lg shadow-purple-500/20' : 'text-gray-900 bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-300 shadow-lg shadow-purple-200/20'}`
+      return `${baseClasses} ${isDarkMode ? 'text-white bg-gradient-to-r from-purple-600/20 to-blue-600/20 border border-purple-500/30 shadow-lg shadow-gray-500/20' : 'text-gray-900 bg-gradient-to-r from-purple-100 to-blue-100 border border-purple-300 shadow-lg shadow-gray-200/20'}`
     }
     return `${baseClasses} ${isDarkMode ? 'text-gray-300 hover:text-white hover:bg-gray-800/50 hover:shadow-lg hover:shadow-gray-500/10 hover:scale-105' : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100/50 hover:shadow-lg hover:shadow-gray-200/10 hover:scale-105'}`
   }, [isActive, isDarkMode])
@@ -66,10 +66,10 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         
         @keyframes pulse-glow {
           0%, 100% {
-            box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 0 5px rgba(192, 192, 192, 0.3);
           }
           50% {
-            box-shadow: 0 0 20px rgba(139, 92, 246, 0.6);
+            box-shadow: 0 0 20px rgba(192, 192, 192, 0.6);
           }
         }
         
@@ -85,7 +85,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+          background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.3), transparent);
           transition: left 0.6s ease;
           z-index: 1;
         }
@@ -112,9 +112,9 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         className="flex items-center justify-between sticky top-0 z-50 backdrop-blur-md border-b px-6 lg:px-12 py-4 lg:py-6 w-full"
         style={{
           minHeight: '5rem',
-          boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.1)' : '0 4px 20px rgba(139, 92, 246, 0.1)',
+          boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.1)' : '0 4px 20px rgba(192, 192, 192, 0.1)',
           backgroundColor: isDarkMode ? 'rgba(17, 24, 39, 0.8)' : 'rgba(255, 255, 255, 0.95)',
-          borderColor: isDarkMode ? '#374151' : 'rgba(139, 92, 246, 0.2)'
+          borderColor: isDarkMode ? '#374151' : 'rgba(192, 192, 192, 0.2)'
         }}
       >
         <div className="flex items-center space-x-4">

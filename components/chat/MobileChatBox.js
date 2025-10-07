@@ -209,7 +209,7 @@ export default function MobileChatBox({
 
         .chat-box-container .chat-input:focus {
           outline: none !important;
-          border-color: ${isDarkMode ? 'rgba(139, 92, 246, 0.6)' : 'rgba(139, 92, 246, 0.4)'} !important;
+          border-color: ${isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(192, 192, 192, 0.4)'} !important;
         }
 
         /* Styles spécifiques pour iOS - Empêcher le scroll et la bande grise */
@@ -476,7 +476,7 @@ export default function MobileChatBox({
               <div className="text-center">
                 <div className="w-16 h-16 rounded-full mx-auto mb-4 flex items-center justify-center"
                   style={{
-                    background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.2), rgba(99, 102, 241, 0.2))'
+                    background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.2), rgba(99, 102, 241, 0.2))'
                   }}
                 >
                   <span className="text-3xl">💬</span>
@@ -502,7 +502,7 @@ export default function MobileChatBox({
                   background: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : 'rgba(243, 244, 246, 0.8)'
                 }}
               >
-              <Loader2 size={16} className="animate-spin text-purple-500" />
+              <Loader2 size={16} className="animate-spin text-gray-500" />
               <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                 Gliitz réfléchit...
               </span>
@@ -517,10 +517,10 @@ export default function MobileChatBox({
             onClick={scrollToBottom}
             className="absolute right-4 p-4 rounded-full shadow-lg transition-all duration-300 hover:scale-110 z-10"
             style={{
-              background: 'linear-gradient(135deg, rgba(168, 85, 247, 0.95), rgba(99, 102, 241, 0.95))',
+              background: 'linear-gradient(135deg, rgba(192, 192, 192, 0.95), rgba(99, 102, 241, 0.95))',
               backdropFilter: 'blur(10px)',
               bottom: '130px',
-              boxShadow: '0 4px 20px rgba(168, 85, 247, 0.5)'
+              boxShadow: '0 4px 20px rgba(192, 192, 192, 0.5)'
             }}
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2.5">
@@ -599,7 +599,7 @@ export default function MobileChatBox({
               className="rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 flex-shrink-0"
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)',
+                boxShadow: '0 4px 12px rgba(192, 192, 192, 0.4)',
                 width: '60px',
                 height: '60px',
                 minWidth: '60px',

@@ -43,13 +43,13 @@ export default function AppearanceSettings() {
     {
       key: 'dark',
       title: t('settings.appearance.dark'),
-      icon: <Moon size={20} className="text-blue-500" />,
+      icon: <Moon size={20} className="text-gray-500" />,
       description: 'Thème sombre'
     },
     {
       key: 'auto',
       title: t('settings.appearance.auto'),
-      icon: <Monitor size={20} className="text-purple-500" />,
+      icon: <Monitor size={20} className="text-gray-500" />,
       description: 'Suit les préférences système'
     }
   ]
@@ -73,7 +73,7 @@ export default function AppearanceSettings() {
           className="p-3 rounded-xl mr-4"
           style={{
             background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
+            boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)'
           }}
         >
           <Palette size={24} className="text-white" />
@@ -110,13 +110,13 @@ export default function AppearanceSettings() {
                   ? 'rgba(55, 65, 81, 0.5)'
                   : 'rgba(255, 255, 255, 0.8)',
               borderColor: themeMode === option.key
-                ? 'rgba(139, 92, 246, 0.5)'
+                ? 'rgba(192, 192, 192, 0.5)'
                 : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)',
               color: themeMode === option.key
                 ? 'white'
                 : isDarkMode ? '#FFFFFF' : '#1F2937',
               boxShadow: themeMode === option.key
-                ? '0 4px 15px rgba(139, 92, 246, 0.3)'
+                ? '0 4px 15px rgba(192, 192, 192, 0.3)'
                 : '0 2px 8px rgba(0, 0, 0, 0.1)'
             }}
           >
@@ -145,13 +145,13 @@ export default function AppearanceSettings() {
         className="mt-6 p-4 rounded-xl"
         style={{
           background: isDarkMode 
-            ? 'rgba(59, 130, 246, 0.1)'
-            : 'rgba(59, 130, 246, 0.05)',
-          border: `1px solid ${isDarkMode ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+            ? 'rgba(192, 192, 192, 0.1)'
+            : 'rgba(192, 192, 192, 0.05)',
+          border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
         }}
       >
         <div className="flex items-center space-x-2 mb-2">
-          <Palette size={16} className="text-blue-500" />
+          <Palette size={16} className="text-gray-500" />
           <span 
             className="font-semibold text-sm"
             style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}

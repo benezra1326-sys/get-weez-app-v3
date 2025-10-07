@@ -35,7 +35,7 @@ const SimpleButtonTest = () => {
               borderRadius: '12px',
               padding: '10px 12px',
               background: 'rgba(255, 255, 255, 0.8)',
-              border: '1px solid rgba(139, 92, 246, 0.2)',
+              border: '1px solid rgba(192, 192, 192, 0.2)',
               backdropFilter: 'blur(10px)',
               border: '2px solid blue', // Debug: bordure bleue
             }}
@@ -83,7 +83,7 @@ const SimpleButtonTest = () => {
           <div className="space-y-2">
             <button 
               onClick={() => setInput('Message court')}
-              className="px-3 py-1 bg-blue-500 text-white rounded text-sm"
+              className="px-3 py-1 bg-gray-500 text-white rounded text-sm"
             >
               Message court
             </button>

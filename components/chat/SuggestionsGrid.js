@@ -42,7 +42,7 @@ export default function SuggestionsGrid({ suggestions, onSuggestionClick }) {
             background: columns === 1 
               ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
               : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            boxShadow: columns === 1 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
+            boxShadow: columns === 1 ? '0 4px 12px rgba(192, 192, 192, 0.4)' : 'none'
           }}
           title="1 colonne"
         >
@@ -56,7 +56,7 @@ export default function SuggestionsGrid({ suggestions, onSuggestionClick }) {
             background: columns === 2 
               ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
               : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
-            boxShadow: columns === 2 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
+            boxShadow: columns === 2 ? '0 4px 12px rgba(192, 192, 192, 0.4)' : 'none'
           }}
           title="2 colonnes"
         >

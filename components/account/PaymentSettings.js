@@ -87,7 +87,7 @@ export default function PaymentSettings({ user }) {
           className="text-lg font-semibold mb-4 flex items-center"
           style={{ color: isDarkMode ? '#F3F4F6' : '#374151' }}
         >
-          <CreditCard size={18} className="mr-2 text-blue-500" />
+          <CreditCard size={18} className="mr-2 text-gray-500" />
           Moyens de paiement
         </h3>
         
@@ -105,13 +105,13 @@ export default function PaymentSettings({ user }) {
                     ? 'rgba(55, 65, 81, 0.5)'
                     : 'rgba(255, 255, 255, 0.8)',
                 borderColor: selectedCard === method.id
-                  ? 'rgba(59, 130, 246, 0.5)'
+                  ? 'rgba(192, 192, 192, 0.5)'
                   : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(209, 213, 219, 0.5)',
                 color: selectedCard === method.id
                   ? 'white'
                   : isDarkMode ? '#FFFFFF' : '#1F2937',
                 boxShadow: selectedCard === method.id
-                  ? '0 4px 15px rgba(59, 130, 246, 0.3)'
+                  ? '0 4px 15px rgba(192, 192, 192, 0.3)'
                   : '0 2px 8px rgba(0, 0, 0, 0.1)'
               }}
             >
@@ -237,14 +237,14 @@ export default function PaymentSettings({ user }) {
         className="p-4 rounded-xl border"
         style={{
           background: isDarkMode 
-            ? 'rgba(139, 92, 246, 0.1)'
-            : 'rgba(139, 92, 246, 0.05)',
-          borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'
+            ? 'rgba(192, 192, 192, 0.1)'
+            : 'rgba(192, 192, 192, 0.05)',
+          borderColor: isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'
         }}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
-            <Crown size={20} className="text-purple-500" />
+            <Crown size={20} className="text-gray-500" />
             <div>
               <div 
                 className="font-semibold text-sm"
@@ -265,7 +265,7 @@ export default function PaymentSettings({ user }) {
             style={{
               background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
               color: 'white',
-              boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
+              boxShadow: '0 4px 12px rgba(192, 192, 192, 0.3)'
             }}
           >
             Gérer

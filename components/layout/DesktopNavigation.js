@@ -61,7 +61,7 @@ const DesktopNavigation = memo(({ user, setUser }) => {
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+          background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.3), transparent);
           transition: left 0.6s ease;
         }
         
@@ -73,13 +73,13 @@ const DesktopNavigation = memo(({ user, setUser }) => {
           background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
           color: white;
           transform: translateY(-2px);
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+          box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3);
         }
         
         .desktop-nav-link.active {
           background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
           color: white;
-          box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+          box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
         }
         
         .desktop-nav-link span {
@@ -92,9 +92,9 @@ const DesktopNavigation = memo(({ user, setUser }) => {
         className="desktop-header"
         style={{
           minHeight: '4rem',
-          boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)',
+          boxShadow: '0 4px 20px rgba(192, 192, 192, 0.1)',
           backgroundColor: isDarkMode ? 'rgba(26, 26, 26, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-          borderColor: isDarkMode ? 'rgba(45, 45, 45, 0.2)' : 'rgba(139, 92, 246, 0.2)'
+          borderColor: isDarkMode ? 'rgba(45, 45, 45, 0.2)' : 'rgba(192, 192, 192, 0.2)'
         }}
       >
         {/* Logo et navigation */}
@@ -106,7 +106,7 @@ const DesktopNavigation = memo(({ user, setUser }) => {
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 borderRadius: '16px',
-                boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)',
                 minWidth: '180px',
                 display: 'flex',
                 alignItems: 'center',

@@ -37,21 +37,21 @@ const DesktopLayout = memo(({ children, className = '' }) => {
               <div 
                 className="absolute w-1 h-1 rounded-full"
                 style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(139, 92, 246, 0.8)',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(192, 192, 192, 0.8)',
                   top: '20%',
                   left: '30%',
                   animation: 'sparkle-float 3s ease-in-out infinite',
-                  boxShadow: isDarkMode ? '0 0 6px rgba(255, 255, 255, 0.6)' : '0 0 6px rgba(139, 92, 246, 0.6)'
+                  boxShadow: isDarkMode ? '0 0 6px rgba(255, 255, 255, 0.6)' : '0 0 6px rgba(192, 192, 192, 0.6)'
                 }}
               />
               <div 
                 className="absolute w-1 h-1 rounded-full"
                 style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(59, 130, 246, 0.6)',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(192, 192, 192, 0.6)',
                   top: '60%',
                   right: '25%',
                   animation: 'sparkle-float 3s ease-in-out infinite 1s',
-                  boxShadow: isDarkMode ? '0 0 4px rgba(255, 255, 255, 0.4)' : '0 0 4px rgba(59, 130, 246, 0.4)'
+                  boxShadow: isDarkMode ? '0 0 4px rgba(255, 255, 255, 0.4)' : '0 0 4px rgba(192, 192, 192, 0.4)'
                 }}
               />
               <div 
@@ -67,11 +67,11 @@ const DesktopLayout = memo(({ children, className = '' }) => {
               <div 
                 className="absolute w-0.5 h-0.5 rounded-full"
                 style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(139, 92, 246, 0.5)',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(192, 192, 192, 0.5)',
                   top: '40%',
                   right: '40%',
                   animation: 'sparkle-float 3s ease-in-out infinite 0.5s',
-                  boxShadow: isDarkMode ? '0 0 3px rgba(255, 255, 255, 0.3)' : '0 0 3px rgba(139, 92, 246, 0.3)'
+                  boxShadow: isDarkMode ? '0 0 3px rgba(255, 255, 255, 0.3)' : '0 0 3px rgba(192, 192, 192, 0.3)'
                 }}
               />
             </div>
@@ -83,8 +83,8 @@ const DesktopLayout = memo(({ children, className = '' }) => {
                 borderRadius: '50%',
                 background: isDarkMode 
                   ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%)'
-                  : 'linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(59, 130, 246, 0.1) 100%)',
-                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(139, 92, 246, 0.2)'}`,
+                  : 'linear-gradient(135deg, rgba(192, 192, 192, 0.1) 0%, rgba(192, 192, 192, 0.1) 100%)',
+                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(192, 192, 192, 0.2)'}`,
                 animation: 'gentle-pulse 2s ease-in-out infinite',
                 backdropFilter: 'blur(10px)'
               }}
@@ -95,7 +95,7 @@ const DesktopLayout = memo(({ children, className = '' }) => {
                 style={{
                   background: isDarkMode 
                     ? 'radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%)'
-                    : 'radial-gradient(circle, rgba(139, 92, 246, 0.3) 0%, transparent 70%)',
+                    : 'radial-gradient(circle, rgba(192, 192, 192, 0.3) 0%, transparent 70%)',
                   animation: 'gentle-glow 2s ease-in-out infinite'
                 }}
               />
@@ -118,14 +118,14 @@ const DesktopLayout = memo(({ children, className = '' }) => {
               <div 
                 className="w-1 h-1 rounded-full"
                 style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(139, 92, 246, 0.4)',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(192, 192, 192, 0.4)',
                   animation: 'dot-pulse 1.5s ease-in-out infinite'
                 }}
               />
               <div 
                 className="w-1 h-1 rounded-full"
                 style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(59, 130, 246, 0.4)',
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(192, 192, 192, 0.4)',
                   animation: 'dot-pulse 1.5s ease-in-out infinite 0.3s'
                 }}
               />
@@ -145,11 +145,11 @@ const DesktopLayout = memo(({ children, className = '' }) => {
           @keyframes pulse-modern {
             0%, 100% {
               transform: scale(1);
-              box-shadow: 0 0 40px rgba(139, 92, 246, 0.4), 0 0 80px rgba(59, 130, 246, 0.2);
+              box-shadow: 0 0 40px rgba(192, 192, 192, 0.4), 0 0 80px rgba(192, 192, 192, 0.2);
             }
             50% {
               transform: scale(1.05);
-              box-shadow: 0 0 60px rgba(139, 92, 246, 0.6), 0 0 120px rgba(59, 130, 246, 0.3);
+              box-shadow: 0 0 60px rgba(192, 192, 192, 0.6), 0 0 120px rgba(192, 192, 192, 0.3);
             }
           }
           

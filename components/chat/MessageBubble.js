@@ -33,7 +33,7 @@ export default function MessageBubble({ message }) {
             ? {
                 // Couleur agent - gradient du logo Gliitz pour tous les messages assistant
                 background: 'linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 40%, #3b82f6 100%)',
-                boxShadow: '0 8px 32px rgba(168, 85, 247, 0.4)'
+                boxShadow: '0 8px 32px rgba(192, 192, 192, 0.4)'
               }
             : undefined
         }

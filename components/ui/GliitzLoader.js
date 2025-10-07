@@ -24,10 +24,10 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
 
         @keyframes logo-glow {
           0%, 100% {
-            filter: drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+            filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.6));
           }
           50% {
-            filter: drop-shadow(0 0 40px rgba(168, 85, 247, 0.9)) drop-shadow(0 0 60px rgba(99, 102, 241, 0.6));
+            filter: drop-shadow(0 0 40px rgba(192, 192, 192, 0.9)) drop-shadow(0 0 60px rgba(99, 102, 241, 0.6));
           }
         }
 
@@ -128,7 +128,7 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
               key={i}
               className="absolute w-1 h-1 rounded-full"
               style={{
-                background: isDarkMode ? 'rgba(168, 85, 247, 0.6)' : 'rgba(168, 85, 247, 0.4)',
+                background: isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(192, 192, 192, 0.4)',
                 top: `${Math.random() * 100}%`,
                 left: `${Math.random() * 100}%`,
                 animation: `sparkle-orbit ${3 + Math.random() * 2}s linear infinite`,
@@ -147,8 +147,8 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
               width: '200px',
               height: '200px',
               background: isDarkMode 
-                ? 'radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, transparent 70%)'
-                : 'radial-gradient(circle, rgba(168, 85, 247, 0.1) 0%, transparent 70%)',
+                ? 'radial-gradient(circle, rgba(192, 192, 192, 0.15) 0%, transparent 70%)'
+                : 'radial-gradient(circle, rgba(192, 192, 192, 0.1) 0%, transparent 70%)',
               animation: 'logo-pulse 2s ease-in-out infinite'
             }}
           />
@@ -177,7 +177,7 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
               className="shimmer px-8 py-4 rounded-2xl"
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                boxShadow: '0 8px 32px rgba(168, 85, 247, 0.4), 0 0 80px rgba(168, 85, 247, 0.2)',
+                boxShadow: '0 8px 32px rgba(192, 192, 192, 0.4), 0 0 80px rgba(192, 192, 192, 0.2)',
                 border: '2px solid rgba(255, 255, 255, 0.2)'
               }}
             >
@@ -222,7 +222,7 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
                       : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     animation: 'logo-pulse 1.5s ease-in-out infinite',
                     animationDelay: `${i * 0.2}s`,
-                    boxShadow: '0 0 8px rgba(168, 85, 247, 0.6)'
+                    boxShadow: '0 0 8px rgba(192, 192, 192, 0.6)'
                   }}
                 />
               ))}

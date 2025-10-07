@@ -249,7 +249,7 @@ export default function Services({ user, setUser }) {
                   borderRadius: '12px',
                   padding: '8px 16px',
                   display: 'inline-block',
-                  boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
+                  boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)',
                   marginBottom: '0.5rem'
                 }}
               >

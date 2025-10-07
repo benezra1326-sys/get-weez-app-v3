@@ -33,7 +33,7 @@ const ButtonDebug = () => {
             borderRadius: '16px',
             padding: '14px 60px 14px 16px', // Padding à droite pour le bouton
             background: 'rgba(255, 255, 255, 0.9)',
-            border: '1px solid rgba(139, 92, 246, 0.2)',
+            border: '1px solid rgba(192, 192, 192, 0.2)',
             backdropFilter: 'blur(10px)',
             width: '100%',
             border: '2px solid blue', // Debug: bordure bleue pour voir le textarea

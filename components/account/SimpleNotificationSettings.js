@@ -49,7 +49,7 @@ export default function SimpleNotificationSettings() {
     {
       key: 'push',
       title: 'Notifications Push',
-      icon: <Smartphone size={20} className="text-blue-500" />,
+      icon: <Smartphone size={20} className="text-gray-500" />,
       description: 'Notifications sur votre appareil'
     },
     {
@@ -61,7 +61,7 @@ export default function SimpleNotificationSettings() {
     {
       key: 'sms',
       title: 'Notifications SMS',
-      icon: <MessageSquare size={20} className="text-purple-500" />,
+      icon: <MessageSquare size={20} className="text-gray-500" />,
       description: 'Notifications par SMS'
     }
   ]
@@ -206,7 +206,7 @@ export default function SimpleNotificationSettings() {
                       minHeight: '28px',
                       touchAction: 'manipulation',
                       boxShadow: notifications[type.key][category.key] 
-                        ? '0 2px 8px rgba(59, 130, 246, 0.4)' 
+                        ? '0 2px 8px rgba(192, 192, 192, 0.4)' 
                         : '0 1px 3px rgba(0,0,0,0.1)'
                     }}
                   >
@@ -231,13 +231,13 @@ export default function SimpleNotificationSettings() {
         className="mt-6 p-4 rounded-xl"
         style={{
           background: isDarkMode 
-            ? 'rgba(59, 130, 246, 0.1)'
-            : 'rgba(59, 130, 246, 0.05)',
-          border: `1px solid ${isDarkMode ? 'rgba(59, 130, 246, 0.3)' : 'rgba(59, 130, 246, 0.2)'}`
+            ? 'rgba(192, 192, 192, 0.1)'
+            : 'rgba(192, 192, 192, 0.05)',
+          border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.2)'}`
         }}
       >
         <div className="flex items-center space-x-2 mb-2">
-          <Bell size={16} className="text-blue-500" />
+          <Bell size={16} className="text-gray-500" />
           <span 
             className="font-semibold text-sm"
             style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}

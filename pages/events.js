@@ -565,7 +565,7 @@ export default function Events({ user, setUser }) {
                   background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   backgroundSize: '400% 400%',
                   animation: 'gradientShift 8s ease infinite',
-                  boxShadow: '0 12px 48px rgba(168, 85, 247, 0.4)'
+                  boxShadow: '0 12px 48px rgba(192, 192, 192, 0.4)'
                 }}
               >
                 {/* Effet de brillance animé */}
@@ -616,8 +616,8 @@ export default function Events({ user, setUser }) {
                 className="backdrop-blur-md rounded-2xl p-2 border inline-block"
                 style={{ 
                   backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.95)' : 'rgba(255, 255, 255, 0.95)',
-                  borderColor: isDarkMode ? 'rgba(139, 92, 246, 0.5)' : 'rgba(139, 92, 246, 0.3)',
-                  boxShadow: isDarkMode ? '0 8px 32px rgba(139, 92, 246, 0.3)' : '0 8px 32px rgba(139, 92, 246, 0.1)',
+                  borderColor: isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(192, 192, 192, 0.3)',
+                  boxShadow: isDarkMode ? '0 8px 32px rgba(192, 192, 192, 0.3)' : '0 8px 32px rgba(192, 192, 192, 0.1)',
                   position: 'relative',
                   zIndex: 100000,
                   overflow: 'visible'

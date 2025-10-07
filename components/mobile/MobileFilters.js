@@ -63,13 +63,13 @@ export default function MobileFilters({
             border: '1px solid',
             borderColor: hasActiveFilters 
               ? 'rgba(255, 255, 255, 0.3)' 
-              : (isDarkMode ? 'rgba(75, 85, 99, 0.8)' : 'rgba(139, 92, 246, 0.5)'),
+              : (isDarkMode ? 'rgba(75, 85, 99, 0.8)' : 'rgba(192, 192, 192, 0.5)'),
             backdropFilter: 'blur(20px)',
             boxShadow: hasActiveFilters 
-              ? '0 4px 20px rgba(139, 92, 246, 0.4)'
+              ? '0 4px 20px rgba(192, 192, 192, 0.4)'
               : (isDarkMode 
                 ? '0 4px 20px rgba(0, 0, 0, 0.3)'
-                : '0 4px 20px rgba(139, 92, 246, 0.15)')
+                : '0 4px 20px rgba(192, 192, 192, 0.15)')
           }}
         >
           <Filter size={18} />
@@ -222,7 +222,7 @@ export default function MobileFilters({
                       borderColor: !selectedCategory 
                         ? 'rgba(255, 255, 255, 0.3)' 
                         : (isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'),
-                      boxShadow: !selectedCategory ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none'
+                      boxShadow: !selectedCategory ? '0 4px 15px rgba(192, 192, 192, 0.3)' : 'none'
                     }}
                   >
                     <span className="text-xl mr-3">📂</span>
@@ -252,7 +252,7 @@ export default function MobileFilters({
                         borderColor: selectedCategory === key 
                           ? 'rgba(255, 255, 255, 0.3)' 
                           : (isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'),
-                        boxShadow: selectedCategory === key ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none'
+                        boxShadow: selectedCategory === key ? '0 4px 15px rgba(192, 192, 192, 0.3)' : 'none'
                       }}
                     >
                       <span className="text-xl mr-3">{category.icon}</span>
@@ -293,7 +293,7 @@ export default function MobileFilters({
                       borderColor: !selectedStyle 
                         ? 'rgba(255, 255, 255, 0.3)' 
                         : (isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'),
-                      boxShadow: !selectedStyle ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none'
+                      boxShadow: !selectedStyle ? '0 4px 15px rgba(192, 192, 192, 0.3)' : 'none'
                     }}
                   >
                     <span className="text-xl mr-3">🎨</span>
@@ -323,7 +323,7 @@ export default function MobileFilters({
                         borderColor: selectedStyle === key 
                           ? 'rgba(255, 255, 255, 0.3)' 
                           : (isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(209, 213, 219, 0.5)'),
-                        boxShadow: selectedStyle === key ? '0 4px 15px rgba(139, 92, 246, 0.3)' : 'none'
+                        boxShadow: selectedStyle === key ? '0 4px 15px rgba(192, 192, 192, 0.3)' : 'none'
                       }}
                     >
                       <span className="text-xl mr-3">{style.icon || '🏷️'}</span>

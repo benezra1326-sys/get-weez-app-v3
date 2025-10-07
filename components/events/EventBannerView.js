@@ -24,7 +24,7 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
               </button>
             </Link>
             <Link href="/login">
-              <button className="w-full bg-transparent border-2 border-purple-500 text-purple-400 py-3 px-6 rounded-full hover:bg-purple-500 hover:text-white transition-all duration-300 flex items-center justify-center">
+              <button className="w-full bg-transparent border-2 border-purple-500 text-gray-400 py-3 px-6 rounded-full hover:bg-gray-500 hover:text-white transition-all duration-300 flex items-center justify-center">
                 <User size={16} className="mr-2" />
                 Accès membre
               </button>
@@ -86,7 +86,7 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
             left: -100%;
             width: 100%;
             height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+            background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.1), transparent);
             transition: left 0.6s ease;
             z-index: 10;
             pointer-events: none;
@@ -98,10 +98,10 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
           
           @keyframes card-pulse-glow {
             0%, 100% {
-              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 5px rgba(139, 92, 246, 0.2);
+              box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3), 0 0 5px rgba(192, 192, 192, 0.2);
             }
             50% {
-              box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 0 20px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2);
+              box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4), 0 0 20px rgba(192, 192, 192, 0.4), 0 0 30px rgba(192, 192, 192, 0.2);
             }
           }
           

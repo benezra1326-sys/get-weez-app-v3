@@ -106,7 +106,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
       icon: User,
       href: "/account#profile",
       description: "Informations personnelles",
-      color: "text-blue-500"
+      color: "text-gray-500"
     },
     {
       title: "Notifications",
@@ -192,7 +192,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
         className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift text-white"
         style={{
           background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-          boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)',
+          boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
           flexShrink: 0,
           minWidth: 'fit-content'
@@ -324,7 +324,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                   }}
                 >
                   <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
-                    <item.icon className="w-5 h-5 text-purple-600" />
+                    <item.icon className="w-5 h-5 text-gray-600" />
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
                     <div className={`text-sm font-medium leading-tight mb-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.title}</div>
@@ -361,7 +361,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                   }}
                 >
                   <div className="w-10 h-10 bg-gradient-to-r from-blue-100 to-cyan-100 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-200">
-                    <item.icon className="w-5 h-5 text-blue-600" />
+                    <item.icon className="w-5 h-5 text-gray-600" />
                   </div>
                   <div className="flex-1 flex flex-col justify-center">
                     <div className={`text-sm font-medium leading-tight mb-0.5 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>{item.title}</div>
@@ -377,7 +377,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             className="p-3 border-t"
             style={{
               background: isDarkMode 
-                ? 'linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(59, 130, 246, 0.2) 100%)'
+                ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.2) 100%)'
                 : 'linear-gradient(135deg, rgba(243, 232, 255, 0.8) 0%, rgba(219, 234, 254, 0.8) 100%)',
               borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(229, 231, 235, 0.5)'
             }}

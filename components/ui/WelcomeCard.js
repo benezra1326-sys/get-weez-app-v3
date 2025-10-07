@@ -36,7 +36,7 @@ const WelcomeCard = memo(({
             justifyContent: 'center',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0 8px 32px rgba(168, 85, 247, 0.6), 0 0 80px rgba(168, 85, 247, 0.4), inset 0 0 60px rgba(255, 255, 255, 0.1)',
+            boxShadow: '0 8px 32px rgba(192, 192, 192, 0.6), 0 0 80px rgba(192, 192, 192, 0.4), inset 0 0 60px rgba(255, 255, 255, 0.1)',
             border: '2px solid rgba(255, 255, 255, 0.3)',
             cursor: 'pointer',
             transition: 'all 0.3s ease'
@@ -173,7 +173,7 @@ const WelcomeCard = memo(({
           <h3 className="text-xl lg:text-3xl font-bold mb-3 lg:mb-4 text-white">
             Bienvenue sur Gliitz
           </h3>
-          <p className="text-purple-100 text-sm lg:text-lg px-2 lg:px-4 leading-relaxed">
+          <p className="text-gray-100 text-sm lg:text-lg px-2 lg:px-4 leading-relaxed">
             Votre concierge IA personnel pour Marbella
           </p>
           
