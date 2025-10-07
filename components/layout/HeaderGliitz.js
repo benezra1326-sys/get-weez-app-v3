@@ -57,9 +57,9 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
     }
     
     if (isDarkMode) {
-      return `${baseClasses} text-gray-300 hover:text-white hover:bg-gray-700/50 hover:shadow-lg hover:shadow-purple-500/20 hover:scale-105`
+      return `${baseClasses} hover:scale-105`
     } else {
-      return `${baseClasses} text-gray-700 hover:text-gray-900 hover:bg-gray-100/50 hover:shadow-lg hover:shadow-purple-200/20 hover:scale-105`
+      return `${baseClasses} hover:scale-105`
     }
   }
 
@@ -200,24 +200,9 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           <Menu size={18} />
         </button>
         
-        {/* Logo Gliitz - Compact */}
+        {/* Logo Gliitz - Fond blanc élégant */}
         <Link href="/" className="flex items-center group" style={{ flexShrink: 0 }}>
-          <div 
-            className="px-2 py-1.5 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 group-hover:scale-105"
-            style={{
-              background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
-              borderRadius: '12px',
-              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minWidth: 'auto',
-              maxWidth: 'fit-content',
-              border: 'none'
-            }}
-          >
-            <GliitzLogo size="text-xl lg:text-5xl" />
-          </div>
+          <GliitzLogo forHeader={true} />
         </Link>
       </div>
 

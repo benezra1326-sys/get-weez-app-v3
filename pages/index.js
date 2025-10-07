@@ -26,16 +26,18 @@ const Home = memo(({ user, setUser }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { isDarkMode, toggleTheme, isLoaded } = useTheme()
 
-  // Images services de conciergerie luxe Marbella
+  // Images ULTRA-LUXE services de conciergerie Marbella
   const luxuryImages = [
-    'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2071', // Jet privé sur tarmac
-    'https://images.unsplash.com/photo-1563720360172-67b8f3dce741?q=80&w=2070', // Villa de luxe moderne avec voiture
-    'https://images.unsplash.com/photo-1556910110-a5a63dfd393c?q=80&w=2070', // Chef privé en cuisine
-    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=2070', // Beach club luxe
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070', // Rooftop au bord de l'eau (gardée)
-    'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070', // Soirée avec DJ
-    'https://images.unsplash.com/photo-1549294413-26f195200c16?q=80&w=2070', // Supercar de luxe
-    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?q=80&w=2032', // Yacht de luxe
+    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2400', // Villa luxe piscine infinity
+    'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=2400', // Lamborghini devant villa
+    'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2400', // Jet privé
+    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=2400', // Beach club luxe mer
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2400', // Rooftop au bord de l'eau 
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2400', // Soirée DJ luxe
+    'https://images.unsplash.com/photo-1583094022700-7ff4a6564001?q=80&w=2400', // Hélicoptère luxe
+    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?q=80&w=2400', // Yacht de luxe
+    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2400', // Supercar Ferrari/Porsche
+    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2400', // Restaurant gastronomique luxe
   ]
 
   // Carrousel automatique des images (plus lent pour apprécier le luxe)
@@ -91,11 +93,11 @@ const Home = memo(({ user, setUser }) => {
         <section 
           className="relative w-full overflow-hidden"
           style={{
-            minHeight: '700px',
+            minHeight: '100vh',
             background: '#0B0B0C',
           }}
         >
-          {/* Carrousel d'images de fond avec transition douce */}
+          {/* Carrousel d'images de fond avec fondu doux */}
           {luxuryImages.map((image, index) => (
             <div 
               key={index}
@@ -105,9 +107,7 @@ const Home = memo(({ user, setUser }) => {
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 opacity: index === currentImageIndex ? 1 : 0,
-                transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
-                transform: index === currentImageIndex ? 'scale(1.05)' : 'scale(1)',
-                transitionDuration: '10s'
+                transition: 'opacity 2s ease-in-out',
               }}
             />
           ))}
@@ -146,9 +146,9 @@ const Home = memo(({ user, setUser }) => {
             ))}
           </div>
 
-          {/* Contenu Hero */}
-          <div className="relative z-20 container-refined py-32 lg:py-40">
-            <div className="max-w-5xl mx-auto text-center">
+          {/* Contenu Hero - Centré verticalement */}
+          <div className="relative z-20 h-full flex items-center justify-center px-4">
+            <div className="max-w-5xl mx-auto text-center w-full">
               {/* Badge "IA Powered" */}
               <div 
                 className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full"
