@@ -20,7 +20,7 @@ const BrandCarousel = memo(() => {
   ]
 
   return (
-    <div className="w-full py-12 lg:py-16" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
+    <div className="w-full py-8 lg:py-12" style={{ backgroundColor: isDarkMode ? '#0D0D0D' : '#FFFFFF' }}>
       <style jsx>{`
         @keyframes scroll {
           0% { transform: translateX(0); }
@@ -90,7 +90,7 @@ const BrandCarousel = memo(() => {
         
         {/* Carrousel animé pour desktop - PLEINE LARGEUR */}
         <div className="hidden lg:block relative overflow-hidden w-full">
-          <div className="flex gap-6 lg:gap-12 animate-scroll">
+          <div className="flex gap-4 lg:gap-6 animate-scroll">
             {[...brands, ...brands, ...brands].map((brand, index) => (
               <div
                 key={`${brand.name}-${index}`}

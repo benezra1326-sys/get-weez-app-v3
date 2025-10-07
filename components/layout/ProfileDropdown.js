@@ -246,8 +246,14 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           </div>
         </div>
         
-        {/* Flèche */}
-        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0, color: '#0B0B0C' }} />
+        {/* Flèche - VISIBLE EN MODE SOMBRE */}
+        <ChevronDown 
+          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} 
+          style={{ 
+            flexShrink: 0, 
+            color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
+          }} 
+        />
       </button>
 
       {/* Menu déroulant - Rendu via Portal dans le body */}
