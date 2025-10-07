@@ -246,8 +246,8 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
         </div>
       </div>
 
-      {/* Spacer for sidebar on desktop */}
-      <div className="hidden md:block" style={{ width: '280px' }} />
+      {/* Spacer for sidebar on desktop only */}
+      <div className="hidden md:block flex-shrink-0" style={{ width: '280px' }} />
     </>
   )
 }
