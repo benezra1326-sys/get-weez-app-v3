@@ -240,9 +240,9 @@ const Home = memo(({ user, setUser }) => {
               {/* Stats rapides */}
               <div className="grid grid-cols-3 gap-6 mt-16 max-w-2xl mx-auto">
                 {[
-                  { label: 'Réponses instantanées', icon: '⚡', value: '24/7' },
-                  { label: 'Recommandations', icon: '🎯', value: '1000+' },
-                  { label: 'Utilisateurs satisfaits', icon: '⭐', value: '98%' }
+                  { label: 'Réponses instantanées', labelShort: 'Réponses', icon: '⚡', value: '24/7' },
+                  { label: 'Recommandations premium', labelShort: 'Reco', icon: '🎯', value: '1000+' },
+                  { label: 'Clients satisfaits', labelShort: 'Satisfaits', icon: '⭐', value: '98%' }
                 ].map((stat, idx) => (
                   <div 
                     key={idx} 
