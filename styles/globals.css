@@ -1,3 +1,7 @@
+/* Import Gliitz Theme - PRIORITY */
+@import './gliitz-theme.css';
+
+/* Import des polices originales (à conserver pour compatibilité) */
 @import url('https://fonts.cdnfonts.com/css/blanka');
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700;900&display=swap');
@@ -225,40 +229,48 @@ body {
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
 
 :root {
-  /* 🎨 DESIGN SYSTEM - LUXURY & MODERN */
+  /* 🎨 GLIITZ THEME - Palette Argentée Premium */
   
-  /* === COULEURS PRINCIPALES (MODE SOMBRE PAR DÉFAUT) === */
-  --color-bg-primary: #0A0A0A;        /* Noir profond luxueux */
-  --color-bg-secondary: #141414;       /* Gris très foncé */
-  --color-bg-tertiary: #1A1A1A;       /* Gris foncé */
+  /* === COULEURS PRINCIPALES GLIITZ === */
+  --gliitz-silver: #C0C0C0;           /* Argent principal */
+  --gliitz-white: #FFFFFF;            /* Blanc pur */
+  --gliitz-black: #0B0B0C;            /* Noir profond */
+  --gliitz-gray-light: #F8F8F8;       /* Gris clair fond */
+  --gliitz-silver-light: #E8E8E8;     /* Argent clair */
+  --gliitz-silver-dark: #A0A0A0;      /* Argent foncé */
   
-  /* === COULEURS BRAND === */
-  --color-primary: #8B5CF6;           /* Violet premium */
-  --color-primary-light: #A78BFA;     /* Violet clair */
-  --color-primary-dark: #6D28D9;      /* Violet foncé */
-  --color-primary-darker: #5B21B6;     /* Violet très foncé */
+  /* === COULEURS PRINCIPALES (MODE CLAIR PAR DÉFAUT GLIITZ) === */
+  --color-bg-primary: #F8F8F8;        /* Fond clair argenté */
+  --color-bg-secondary: #FFFFFF;       /* Blanc pur */
+  --color-bg-tertiary: #E8E8E8;       /* Gris très clair */
   
-  /* === COULEURS ACCENT === */
+  /* === COULEURS BRAND (Argenté) === */
+  --color-primary: #C0C0C0;           /* Argent premium */
+  --color-primary-light: #E8E8E8;     /* Argent clair */
+  --color-primary-dark: #A0A0A0;      /* Argent foncé */
+  --color-primary-darker: #808080;     /* Argent très foncé */
+  
+  /* === COULEURS ACCENT (Or pour touches luxe) === */
   --color-accent: #F59E0B;            /* Or luxueux */
   --color-accent-light: #FCD34D;      /* Or clair */
   --color-accent-dark: #D97706;       /* Or foncé */
   
   /* === SURFACES === */
-  --color-surface: #1A1A1A;           /* Surface principale */
-  --color-surface-elevated: #262626;  /* Surface élevée */
-  --color-surface-hover: #2A2A2A;     /* Surface hover */
-  --color-surface-glass: rgba(26, 26, 26, 0.8); /* Glass morphism */
+  --color-surface: #FFFFFF;           /* Surface principale */
+  --color-surface-elevated: #F8F8F8;  /* Surface élevée */
+  --color-surface-hover: #E8E8E8;     /* Surface hover */
+  --color-surface-glass: rgba(255, 255, 255, 0.7); /* Glass morphism */
   
   /* === TEXTE === */
-  --color-text-primary: #FFFFFF;      /* Texte principal */
-  --color-text-secondary: #A1A1AA;    /* Texte secondaire */
-  --color-text-muted: #71717A;         /* Texte atténué */
-  --color-text-disabled: #52525B;      /* Texte désactivé */
+  --color-text-primary: #0B0B0C;      /* Texte principal noir */
+  --color-text-secondary: #666666;    /* Texte secondaire */
+  --color-text-muted: #A0A0A0;        /* Texte atténué */
+  --color-text-disabled: #C0C0C0;     /* Texte désactivé */
   
   /* === BORDURES === */
-  --color-border: #27272A;             /* Bordure principale */
-  --color-border-light: #3F3F46;      /* Bordure claire */
-  --color-border-accent: #8B5CF6;      /* Bordure accent */
+  --color-border: #E8E8E8;            /* Bordure principale */
+  --color-border-light: #F8F8F8;      /* Bordure claire */
+  --color-border-accent: #C0C0C0;     /* Bordure accent argentée */
   
   /* === ÉTATS === */
   --color-success: #10B981;           /* Succès */
@@ -266,9 +278,9 @@ body {
   --color-error: #EF4444;             /* Erreur */
   --color-info: #3B82F6;              /* Information */
   
-  /* === TYPOGRAPHIE === */
-  --font-family-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-family-display: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  /* === TYPOGRAPHIE GLIITZ === */
+  --font-family-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-family-display: 'Playfair Display', Georgia, serif;
   
   /* === ESPACEMENTS === */
   --spacing-xs: 0.25rem;    /* 4px */
@@ -302,29 +314,56 @@ body {
   --breakpoint-2xl: 1536px;
 }
 
-/* === MODE CLAIR === */
-body.light {
-  /* === COULEURS PRINCIPALES (MODE CLAIR) === */
-  --color-bg-primary: #FFFFFF;        /* Blanc pur */
-  --color-bg-secondary: #F8FAFC;      /* Gris très clair */
-  --color-bg-tertiary: #F1F5F9;       /* Gris clair */
+/* === MODE CLAIR GLIITZ (défaut) === */
+body.light,
+[data-theme="light"] {
+  /* === COULEURS PRINCIPALES === */
+  --color-bg-primary: #F8F8F8;        /* Fond clair argenté */
+  --color-bg-secondary: #FFFFFF;      /* Blanc pur */
+  --color-bg-tertiary: #E8E8E8;       /* Gris très clair */
   
-  /* === SURFACES (MODE CLAIR) === */
+  /* === SURFACES === */
   --color-surface: #FFFFFF;           /* Surface principale */
-  --color-surface-elevated: #F8FAFC;  /* Surface élevée */
-  --color-surface-hover: #F1F5F9;     /* Surface hover */
-  --color-surface-glass: rgba(255, 255, 255, 0.8); /* Glass morphism */
+  --color-surface-elevated: #F8F8F8;  /* Surface élevée */
+  --color-surface-hover: #E8E8E8;     /* Surface hover */
+  --color-surface-glass: rgba(255, 255, 255, 0.7); /* Glass morphism */
   
-  /* === TEXTE (MODE CLAIR) === */
-  --color-text-primary: #1F2937;      /* Texte principal */
-  --color-text-secondary: #6B7280;    /* Texte secondaire */
-  --color-text-muted: #9CA3AF;         /* Texte atténué */
-  --color-text-disabled: #D1D5DB;      /* Texte désactivé */
+  /* === TEXTE === */
+  --color-text-primary: #0B0B0C;      /* Texte principal noir */
+  --color-text-secondary: #666666;    /* Texte secondaire */
+  --color-text-muted: #A0A0A0;        /* Texte atténué */
+  --color-text-disabled: #C0C0C0;     /* Texte désactivé */
   
-  /* === BORDURES (MODE CLAIR) === */
-  --color-border: #E5E7EB;             /* Bordure principale */
-  --color-border-light: #F3F4F6;      /* Bordure claire */
-  --color-border-accent: #8B5CF6;      /* Bordure accent */
+  /* === BORDURES === */
+  --color-border: #E8E8E8;            /* Bordure principale */
+  --color-border-light: #F8F8F8;      /* Bordure claire */
+  --color-border-accent: #C0C0C0;     /* Bordure accent argentée */
+}
+
+/* === MODE SOMBRE GLIITZ === */
+body.dark,
+[data-theme="dark"] {
+  /* === COULEURS PRINCIPALES === */
+  --color-bg-primary: #0B0B0C;        /* Noir profond */
+  --color-bg-secondary: #1A1A1C;      /* Gris très foncé */
+  --color-bg-tertiary: #2A2A2C;       /* Gris foncé */
+  
+  /* === SURFACES === */
+  --color-surface: #1A1A1C;           /* Surface principale */
+  --color-surface-elevated: #2A2A2C;  /* Surface élevée */
+  --color-surface-hover: #3A3A3C;     /* Surface hover */
+  --color-surface-glass: rgba(11, 11, 12, 0.7); /* Glass morphism */
+  
+  /* === TEXTE === */
+  --color-text-primary: #C0C0C0;      /* Texte principal argenté */
+  --color-text-secondary: #A0A0A0;    /* Texte secondaire */
+  --color-text-muted: #666666;        /* Texte atténué */
+  --color-text-disabled: #444444;     /* Texte désactivé */
+  
+  /* === BORDURES === */
+  --color-border: #2A2A2C;            /* Bordure principale */
+  --color-border-light: #3A3A3C;      /* Bordure claire */
+  --color-border-accent: #C0C0C0;     /* Bordure accent argentée */
 }
 
 * {
