@@ -35,11 +35,13 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
 
   return (
     <>
-      {/* Toggle Button (mobile uniquement) */}
+      {/* Toggle Button (mobile uniquement) - décalé pour ne pas chevaucher le logo */}
       <button
         onClick={() => toggle(!open)}
-        className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl transition-all"
+        className="md:hidden fixed z-50 p-3 rounded-xl transition-all"
         style={{
+          top: '1rem',
+          right: open ? 'calc(100vw - 280px + 1rem)' : '1rem',
           background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
           backdropFilter: 'blur(10px)',
           border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
