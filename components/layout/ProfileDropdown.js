@@ -189,13 +189,16 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             }, 200) // 200ms de protection
           }
         }}
-        className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift"
+        className="flex items-center gap-2 px-4 py-3 rounded-2xl transition-all duration-300 group hover:scale-105"
         style={{
-          background: 'transparent',
-          border: 'none',
+          background: 'rgba(255, 255, 255, 0.95)',
+          backdropFilter: 'blur(12px)',
+          border: '1px solid rgba(255, 255, 255, 0.4)',
+          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
           flexShrink: 0,
           minWidth: 'fit-content',
-          color: '#0B0B0C'
+          color: '#0B0B0C',
+          cursor: 'pointer'
         }}
       >
         {/* Indicateur de statut avec sparkle - Hidden on small mobile */}
@@ -241,8 +244,8 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           </div>
         </div>
         
-        {/* Flèche - Smaller on mobile */}
-        <ChevronDown className={`w-3 h-3 lg:w-4 lg:h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0, color: '#0B0B0C' }} />
+        {/* Flèche */}
+        <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0, color: '#0B0B0C' }} />
       </button>
 
       {/* Menu déroulant - Rendu via Portal dans le body */}
@@ -271,8 +274,8 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
           className="mobile-profile-dropdown rounded-2xl shadow-xl overflow-y-auto" 
           style={{ 
             position: 'fixed',
-            right: '10px',
-            top: '70px',
+            right: '20px',
+            top: '80px',
             zIndex: 99999, 
             maxHeight: '80vh',
             width: '320px',
