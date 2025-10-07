@@ -471,16 +471,15 @@ const Home = memo(({ user, setUser }) => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {services.map((item) => (
                   <div key={item.id} className="card-gliitz hover-lift-refined cursor-pointer">
+                    {/* Image du service au lieu d'icône */}
                     <div 
-                      className="w-16 h-16 mb-4 rounded-xl flex items-center justify-center text-3xl"
-                      style={{
-                        background: 'rgba(255,255,255,0.12)',
-                        border: '1px solid rgba(255,255,255,0.25)',
-                        backdropFilter: 'blur(12px)'
+                      className="w-full h-48 mb-4 rounded-lg img-gliitz"
+                      style={{ 
+                        backgroundImage: `url("${item.image_url || 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800'}")`,
+                        backgroundSize: 'cover',
+                        backgroundPosition: 'center'
                       }}
-                    >
-                      {item.icon || '✨'}
-                    </div>
+                    />
                     <h4 
                       className="text-xl font-bold mb-2"
                       style={{ 
@@ -515,38 +514,63 @@ const Home = memo(({ user, setUser }) => {
 
         {/* 4️⃣ À PROPOS */}
         <section 
-          className="section-dark py-20"
+          className="section-premium py-32"
           style={{ 
             background: isDarkMode 
-              ? 'linear-gradient(135deg, #0B0B0C 0%, #1A1A1C 100%)'
-              : 'linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 100%)'
+              ? '#0B0B0C'
+              : '#FFFFFF'
           }}
         >
-          <div className="container mx-auto px-4">
-            <div className="max-w-4xl mx-auto text-center">
+          <div className="container-refined">
+            <div className="max-w-5xl mx-auto text-center">
               <h2 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6"
+                className="gliitz-title-section mb-8"
                 style={{ 
-                  fontFamily: 'var(--font-family-display)',
-                  color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-white)'
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                 }}
               >
-                À propos de Gliitz
+                Qui sommes-nous ?
               </h2>
-              <p 
-                className="text-lg md:text-xl mb-10 leading-relaxed"
-                style={{ 
-                  fontFamily: 'var(--font-family-primary)',
-                  color: isDarkMode ? 'var(--gliitz-silver-light)' : 'var(--gliitz-white)'
-                }}
-              >
-                Une conciergerie IA pensée pour sublimer vos expériences à Marbella.
-                Notre intelligence artificielle analyse vos préférences et vous recommande
-                les meilleures adresses, événements et services de la Costa del Sol.
-              </p>
-              <button className="btn-silver halo inline-flex items-center gap-2 px-6 py-3">
+              
+              <div className="space-y-6 mb-12 text-left md:text-center">
+                <p 
+                  className="gliitz-body text-lg leading-relaxed"
+                  style={{ 
+                    color: isDarkMode ? '#E0E0E0' : '#666666'
+                  }}
+                >
+                  <strong style={{ fontWeight: 600, color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}>Gliitz</strong> est votre conciergerie virtuelle de luxe, 
+                  propulsée par une intelligence artificielle de pointe. Nous combinons la technologie 
+                  la plus avancée avec une connaissance approfondie de Marbella et de la Costa del Sol.
+                </p>
+                
+                <p 
+                  className="gliitz-body text-lg leading-relaxed"
+                  style={{ 
+                    color: isDarkMode ? '#E0E0E0' : '#666666'
+                  }}
+                >
+                  Notre mission : <strong style={{ fontWeight: 600, color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}>sublimer chaque instant</strong> de votre séjour. 
+                  Que vous recherchiez un restaurant gastronomique, une villa de luxe, un yacht privé, 
+                  une soirée VIP ou un service sur mesure, notre IA anticipe vos désirs et vous guide 
+                  vers les expériences les plus exclusives.
+                </p>
+                
+                <p 
+                  className="gliitz-body text-lg leading-relaxed"
+                  style={{ 
+                    color: isDarkMode ? '#E0E0E0' : '#666666'
+                  }}
+                >
+                  Disponible <strong style={{ fontWeight: 600, color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}>24/7</strong>, 
+                  notre assistant intelligent apprend de vos préférences pour vous offrir 
+                  des recommandations toujours plus personnalisées. Bienvenue dans l'avenir de la conciergerie de luxe.
+                </p>
+              </div>
+              
+              <button className="btn-gliitz-secondary inline-flex items-center gap-2">
                 En savoir plus
-                <ArrowRight size={20} />
+                <ArrowRight size={18} strokeWidth={1.5} />
               </button>
             </div>
           </div>
@@ -581,16 +605,21 @@ const Home = memo(({ user, setUser }) => {
         <div className="container mx-auto px-4 py-16">
           <div className="text-center mb-12">
             <h2 
-              className="text-4xl font-bold mb-4 metallic"
-              style={{ fontFamily: 'var(--font-family-display)' }}
+              className="text-5xl font-bold mb-4"
+              style={{ 
+                fontFamily: 'Playfair Display, serif',
+                fontWeight: 700,
+                color: '#C0C0C0'
+              }}
             >
               Gliitz
             </h2>
             <p 
               className="text-lg"
               style={{ 
-                fontFamily: 'var(--font-family-primary)',
-                color: 'var(--gliitz-silver-light)'
+                fontFamily: 'Poppins, sans-serif',
+                fontWeight: 400,
+                color: '#E0E0E0'
               }}
             >
               Powered by AI ✨
@@ -599,38 +628,88 @@ const Home = memo(({ user, setUser }) => {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 text-center">
             <div>
-              <h4 className="text-xl font-bold mb-4" style={{ color: 'var(--gliitz-silver)' }}>
+              <h4 
+                className="text-xl font-bold mb-4" 
+                style={{ 
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
+                  color: '#C0C0C0' 
+                }}
+              >
                 Contact
               </h4>
-              <p className="text-sm" style={{ color: 'var(--gliitz-silver-light)' }}>
+              <p 
+                className="text-sm" 
+                style={{ 
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#E0E0E0' 
+                }}
+              >
                 hello@gliitz.com<br />
                 +34 123 456 789
               </p>
             </div>
             <div>
-              <h4 className="text-xl font-bold mb-4" style={{ color: 'var(--gliitz-silver)' }}>
+              <h4 
+                className="text-xl font-bold mb-4" 
+                style={{ 
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
+                  color: '#C0C0C0' 
+                }}
+              >
                 Services
               </h4>
-              <p className="text-sm" style={{ color: 'var(--gliitz-silver-light)' }}>
+              <p 
+                className="text-sm" 
+                style={{ 
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#E0E0E0' 
+                }}
+              >
                 IA Concierge<br />
                 Réservations VIP<br />
                 Support 24/7
               </p>
             </div>
             <div>
-              <h4 className="text-xl font-bold mb-4" style={{ color: 'var(--gliitz-silver)' }}>
+              <h4 
+                className="text-xl font-bold mb-4" 
+                style={{ 
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
+                  color: '#C0C0C0' 
+                }}
+              >
                 Localisation
               </h4>
-              <p className="text-sm" style={{ color: 'var(--gliitz-silver-light)' }}>
+              <p 
+                className="text-sm" 
+                style={{ 
+                  fontFamily: 'Poppins, sans-serif',
+                  color: '#E0E0E0' 
+                }}
+              >
                 Marbella, Espagne<br />
                 Costa del Sol
               </p>
             </div>
           </div>
 
-          <div className="text-center pt-8 border-t border-silver-dark">
-            <p className="text-sm" style={{ color: 'var(--gliitz-silver-light)' }}>
-              © 2025 Gliitz. Tous droits réservés. | Powered by AI Gliitz ✨
+          <div 
+            className="text-center pt-8"
+            style={{ 
+              borderTop: '1px solid rgba(192,192,192,0.2)'
+            }}
+          >
+            <p 
+              className="text-sm" 
+              style={{ 
+                fontFamily: 'Poppins, sans-serif',
+                color: '#E0E0E0' 
+              }}
+            >
+              © 2025 Gliitz. Tous droits réservés.
             </p>
           </div>
         </div>
