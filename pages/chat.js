@@ -6,7 +6,17 @@ import { Send, Loader2, MessageCircle, Plus, Trash2, ChevronLeft, X, Menu } from
 export default function Chat({ user, setUser }) {
   const router = useRouter()
   const [conversations, setConversations] = useState([
-    { id: 1, title: 'Nouvelle conversation', messages: [] }
+    { 
+      id: 1, 
+      title: 'Nouvelle conversation', 
+      messages: [
+        {
+          role: 'assistant',
+          content: 'Bonjour ! 👋 Je suis Gliitz, votre assistant personnel de conciergerie de luxe. Je suis là pour vous aider avec vos réservations, recommandations et toute demande spéciale. Comment puis-je sublimer votre journée ?',
+          timestamp: new Date()
+        }
+      ]
+    }
   ])
   const [currentConvId, setCurrentConvId] = useState(1)
   const [input, setInput] = useState('')
