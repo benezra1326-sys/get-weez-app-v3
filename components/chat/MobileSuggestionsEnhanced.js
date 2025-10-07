@@ -99,7 +99,7 @@ export default function MobileSuggestionsEnhanced({
       // VIP en priorité pour les sponsorisés seulement
       if (item.sponsored) return { text: 'VIP', color: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }
       // Ensuite les autres badges
-      if (item.tags?.includes('luxe') || item.price_level >= 4) return { text: 'LUXE', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
+      if (item.tags?.includes('luxe') || item.price_level >= 4) return { text: 'LUXE', color: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' }
       if (item.tags?.includes('romantic')) return { text: 'ROMANTIQUE', color: 'linear-gradient(135deg, #f43f5e, #e11d48)' }
       if (item.rating >= 4.7) return { text: 'TOP NOTÉ', color: 'linear-gradient(135deg, #f59e0b, #d97706)' }
       if (item.category === 'Japonais') return { text: 'SUSHI', color: 'linear-gradient(135deg, #ef4444, #dc2626)' }
@@ -115,7 +115,7 @@ export default function MobileSuggestionsEnhanced({
       // Ensuite les autres badges
       if (item.tags?.includes('luxe')) return { text: 'EXCLUSIF', color: 'linear-gradient(135deg, #ec4899, #f43f5e)' }
       if (item.tags?.includes('romantic')) return { text: 'ROMANTIQUE', color: 'linear-gradient(135deg, #f43f5e, #e11d48)' }
-      if (item.price >= 60) return { text: 'PREMIUM', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
+      if (item.price >= 60) return { text: 'PREMIUM', color: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' }
       if (item.tags?.includes('latino')) return { text: 'LATINO', color: 'linear-gradient(135deg, #ef4444, #dc2626)' }
       if (item.tags?.includes('chill')) return { text: 'CHILL', color: 'linear-gradient(135deg, #10b981, #059669)' }
       return { text: 'NOUVEAU', color: 'linear-gradient(135deg, #3b82f6, #2563eb)' }
@@ -126,7 +126,7 @@ export default function MobileSuggestionsEnhanced({
       // VIP en priorité pour les sponsorisés
       if (item.sponsored) return { text: 'VIP', color: 'linear-gradient(135deg, #fbbf24, #f59e0b)' }
       // Ensuite les autres badges
-      if (item.tags?.includes('luxe')) return { text: 'LUXE', color: 'linear-gradient(135deg, #a855f7, #6366f1)' }
+      if (item.tags?.includes('luxe')) return { text: 'LUXE', color: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' }
       if (item.category === 'transport') return { text: 'TRANSPORT', color: 'linear-gradient(135deg, #3b82f6, #2563eb)' }
       if (item.category === 'bien_etre') return { text: 'WELLNESS', color: 'linear-gradient(135deg, #10b981, #059669)' }
       if (item.category === 'gastronomie') return { text: 'FOOD', color: 'linear-gradient(135deg, #ef4444, #dc2626)' }
@@ -371,7 +371,7 @@ export default function MobileSuggestionsEnhanced({
             }}
             className="w-full flex items-center justify-between px-3 py-2 rounded-xl text-xs font-semibold"
             style={{
-              background: selectedStyle ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(243, 244, 246, 0.9)'),
+              background: selectedStyle ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(243, 244, 246, 0.9)'),
               border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.4)' : 'rgba(139, 92, 246, 0.2)'}`,
               color: selectedStyle ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563')
             }}
@@ -455,7 +455,7 @@ export default function MobileSuggestionsEnhanced({
           onClick={() => setActiveTab('all')}
           className={`px-2 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'all' ? 'scale-105' : ''}`}
           style={{
-            background: activeTab === 'all' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            background: activeTab === 'all' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'all' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
             boxShadow: activeTab === 'all' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
@@ -470,7 +470,7 @@ export default function MobileSuggestionsEnhanced({
           onClick={() => setActiveTab('establishments')}
           className={`px-2 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'establishments' ? 'scale-105' : ''}`}
           style={{
-            background: activeTab === 'establishments' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            background: activeTab === 'establishments' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'establishments' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
             boxShadow: activeTab === 'establishments' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
@@ -485,7 +485,7 @@ export default function MobileSuggestionsEnhanced({
           onClick={() => setActiveTab('services')}
           className={`px-2 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'services' ? 'scale-105' : ''}`}
           style={{
-            background: activeTab === 'services' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            background: activeTab === 'services' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'services' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
             boxShadow: activeTab === 'services' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
@@ -500,7 +500,7 @@ export default function MobileSuggestionsEnhanced({
           onClick={() => setActiveTab('events')}
           className={`px-2 py-2 rounded-lg text-xs font-bold transition-all ${activeTab === 'events' ? 'scale-105' : ''}`}
           style={{
-            background: activeTab === 'events' ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            background: activeTab === 'events' ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             color: activeTab === 'events' ? '#fff' : (isDarkMode ? '#d1d5db' : '#4b5563'),
             boxShadow: activeTab === 'events' ? '0 4px 12px rgba(168, 85, 247, 0.5)' : 'none'
           }}
@@ -534,7 +534,7 @@ export default function MobileSuggestionsEnhanced({
           onClick={() => setColumns(1)}
           className={`p-2.5 rounded-xl transition-all ${columns === 1 ? 'scale-110' : ''}`}
           style={{
-            background: columns === 1 ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            background: columns === 1 ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             boxShadow: columns === 1 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
           }}
         >
@@ -544,7 +544,7 @@ export default function MobileSuggestionsEnhanced({
           onClick={() => setColumns(2)}
           className={`p-2.5 rounded-xl transition-all ${columns === 2 ? 'scale-110' : ''}`}
           style={{
-            background: columns === 2 ? 'linear-gradient(135deg, #a855f7, #6366f1)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
+            background: columns === 2 ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)' : (isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)'),
             boxShadow: columns === 2 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
           }}
         >
@@ -691,7 +691,7 @@ export default function MobileSuggestionsEnhanced({
             onClick={handleShowMore}
             className="w-full py-4 rounded-2xl text-sm font-bold transition-all duration-300 hover:scale-105 active:scale-95"
             style={{
-              background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+              background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
               color: 'white',
               boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)',
               border: '2px solid rgba(255, 255, 255, 0.2)'

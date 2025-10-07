@@ -104,7 +104,7 @@ const DesktopNavigation = memo(({ user, setUser }) => {
             <div 
               className="px-6 py-3 rounded-xl transition-all duration-300 group-hover:scale-105"
               style={{
-                background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 borderRadius: '16px',
                 boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
                 minWidth: '180px',

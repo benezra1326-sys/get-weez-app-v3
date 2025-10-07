@@ -27,7 +27,7 @@ const WelcomeCard = memo(({
           className={`${styles.welcomeCard} ${styles.mobileOnly}`}
           onClick={handleCardClick}
           style={{
-            background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             width: '100%',
             maxWidth: '100%',
             margin: '0 auto',
@@ -159,7 +159,7 @@ const WelcomeCard = memo(({
       <div 
         className={`${styles.welcomeCard} ${styles.desktopOnly}`}
         style={{
-          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important'
+          background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0) !important'
         }}
       >
         {/* Overlay pour effet */}

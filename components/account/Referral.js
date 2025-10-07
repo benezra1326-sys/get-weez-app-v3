@@ -81,7 +81,7 @@ export default function Referral({ user }) {
         <div 
           className="p-3 rounded-xl mr-4"
           style={{
-            background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
           }}
         >
@@ -239,7 +239,7 @@ export default function Referral({ user }) {
               onClick={copyReferralCode}
               className="p-3 rounded-lg transition-all duration-200 hover:scale-105"
               style={{
-                background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 color: 'white',
                 boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
               }}
@@ -257,7 +257,7 @@ export default function Referral({ user }) {
                 background: isDarkMode 
                   ? 'rgba(59, 130, 246, 0.2)'
                   : 'rgba(59, 130, 246, 0.1)',
-                color: '#3B82F6',
+                color: '#C0C0C0',
                 border: '1px solid rgba(59, 130, 246, 0.3)'
               }}
             >

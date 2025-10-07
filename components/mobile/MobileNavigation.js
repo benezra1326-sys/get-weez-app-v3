@@ -168,7 +168,7 @@ export const MobileNavigation = memo(({
         .mobile-nav-header {
           padding: 20px;
           border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           color: white;
         }
         
@@ -188,7 +188,7 @@ export const MobileNavigation = memo(({
         
         .mobile-nav-item.active {
           background: rgba(139, 92, 246, 0.15);
-          border-left: 4px solid #8B5CF6;
+          border-left: 4px solid #C0C0C0;
         }
         
         .mobile-nav-item-icon {
@@ -229,7 +229,7 @@ export const MobileNavigation = memo(({
         
         .mobile-submenu-item:hover {
           background: rgba(139, 92, 246, 0.05);
-          color: #8B5CF6;
+          color: #C0C0C0;
         }
         
         .mobile-nav-footer {
@@ -251,7 +251,7 @@ export const MobileNavigation = memo(({
           width: 40px;
           height: 40px;
           border-radius: 20px;
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -445,7 +445,7 @@ export const MobileTabNavigation = memo(({
           position: absolute;
           top: 4px;
           height: calc(100% - 8px);
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           border-radius: 12px;
           transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
           box-shadow: 0 2px 8px rgba(139, 92, 246, 0.3);
@@ -469,7 +469,7 @@ export const MobileTabNavigation = memo(({
         }
         
         .mobile-tab-item:not(.active):hover {
-          color: #8B5CF6;
+          color: #C0C0C0;
         }
       `}</style>
       

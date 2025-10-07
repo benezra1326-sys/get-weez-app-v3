@@ -188,7 +188,7 @@ export default function Favorites({ user }) {
                   onClick={() => contactEstablishment(establishment)}
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-sm font-semibold transition-all duration-200 hover:scale-105"
                   style={{
-                    background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     color: 'white',
                     boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
                   }}
@@ -202,7 +202,7 @@ export default function Favorites({ user }) {
                     background: isDarkMode 
                       ? 'rgba(59, 130, 246, 0.2)'
                       : 'rgba(59, 130, 246, 0.1)',
-                    color: '#3B82F6',
+                    color: '#C0C0C0',
                     border: '1px solid rgba(59, 130, 246, 0.3)'
                   }}
                 >
@@ -465,7 +465,7 @@ export default function Favorites({ user }) {
             }`}
             style={{
               background: activeTab === tab.id
-                ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                 : isDarkMode 
                   ? 'rgba(55, 65, 81, 0.5)'
                   : 'rgba(255, 255, 255, 0.8)',
@@ -492,7 +492,7 @@ export default function Favorites({ user }) {
                   : isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.1)',
                 color: activeTab === tab.id 
                   ? 'white' 
-                  : '#8B5CF6'
+                  : '#C0C0C0'
               }}
             >
               {tab.count}

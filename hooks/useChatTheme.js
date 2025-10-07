@@ -34,7 +34,7 @@ export const useChatTheme = () => {
     // Input
     inputBackground: isDarkMode ? '#2D2D2D' : '#F9FAFB',
     inputBorder: isDarkMode ? '#374151' : '#D1D5DB',
-    inputFocus: '#3B82F6',
+    inputFocus: '#C0C0C0',
     
     // Overlay
     overlay: isDarkMode ? 'rgba(0, 0, 0, 0.5)' : 'rgba(17, 24, 39, 0.2)',
@@ -63,11 +63,11 @@ export const useChatTheme = () => {
   // Styles pour les boutons
   const buttonStyles = useMemo(() => ({
     primary: {
-      background: 'linear-gradient(to right, #3B82F6, #2563EB)',
+      background: 'linear-gradient(to right, #C0C0C0, #C0C0C0)',
       color: '#FFFFFF',
       boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)',
       hover: {
-        background: 'linear-gradient(to right, #2563EB, #1D4ED8)',
+        background: 'linear-gradient(to right, #C0C0C0, #A0A0A0)',
         boxShadow: '0 6px 16px rgba(59, 130, 246, 0.4)'
       }
     },
@@ -121,7 +121,7 @@ export const useChatTheme = () => {
       ? 'linear-gradient(135deg, #134e4a, #0d9488, #14b8a6)'
       : 'linear-gradient(135deg, #f0fdfa, #ccfbf1, #99f6e4)',
     indigo: isDarkMode
-      ? 'linear-gradient(135deg, #312e81, #4338ca, #6366f1)'
+      ? 'linear-gradient(135deg, #312e81, #4338ca, #C0C0C0)'
       : 'linear-gradient(135deg, #e0e7ff, #c7d2fe, #a5b4fc)'
   }), [isDarkMode])
 

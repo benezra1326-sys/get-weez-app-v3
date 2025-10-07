@@ -139,7 +139,7 @@ const Home = memo(({ user, setUser }) => {
                     <div 
                       className="w-2 h-2 rounded-full animate-pulse"
                       style={{
-                        background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+                        background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                       }}
                     />
                     <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-200' : 'text-gray-800'}`}>
@@ -178,7 +178,7 @@ const Home = memo(({ user, setUser }) => {
                     }`}
                     style={{
                       background: index === currentStep 
-                        ? 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)'
+                        ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                         : isDarkMode ? 'rgba(75, 85, 99, 0.6)' : 'rgba(156, 163, 175, 0.6)',
                       boxShadow: index === currentStep 
                         ? '0 0 8px rgba(139, 92, 246, 0.4)'
@@ -228,7 +228,7 @@ const Home = memo(({ user, setUser }) => {
                   onClick={nextStep}
                   className="px-5 py-2 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 flex items-center space-x-2"
                   style={{
-                    background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     color: 'white',
                     boxShadow: '0 4px 12px rgba(139, 92, 246, 0.4)',
                     border: '1px solid rgba(255, 255, 255, 0.1)',
@@ -343,7 +343,7 @@ const Home = memo(({ user, setUser }) => {
           {/* Effets de fond */}
           <div className="absolute inset-0" style={{ opacity: isDarkMode ? 0.05 : 0.08 }}>
             <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full" style={{
-              background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+              background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
               filter: 'blur(60px)'
             }}></div>
             <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full" style={{
@@ -367,7 +367,7 @@ const Home = memo(({ user, setUser }) => {
                     <div 
                       className="px-6 py-3 rounded-xl transition-all duration-300 hover:scale-105"
               style={{
-                background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                         borderRadius: '16px',
                         boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
                         display: 'flex',
@@ -394,7 +394,7 @@ const Home = memo(({ user, setUser }) => {
                   </div>
                   
                   <h3 className="text-2xl lg:text-3xl font-bold mb-4" style={{
-                    background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #F59E0B 100%)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     WebkitBackgroundClip: 'text',
                     WebkitTextFillColor: 'transparent',
                     backgroundClip: 'text'
@@ -412,7 +412,7 @@ const Home = memo(({ user, setUser }) => {
                   {/* Contact */}
                   <div className="text-center flex flex-col items-center">
                     <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
-                      background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                       boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)'
                     }}>
                       <span className="text-white text-xl">📧</span>
@@ -443,7 +443,7 @@ const Home = memo(({ user, setUser }) => {
                   {/* Localisation */}
                   <div className="text-center flex flex-col items-center">
                     <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center" style={{
-                      background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                       boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
                     }}>
                       <span className="text-white text-xl">📍</span>
@@ -465,7 +465,7 @@ const Home = memo(({ user, setUser }) => {
                     {/* Liens sociaux */}
                     <div className="flex items-center gap-4">
                       <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
-                        background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                        background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                         boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
                       }}>
                         <span className="text-white text-sm">📘</span>
@@ -477,7 +477,7 @@ const Home = memo(({ user, setUser }) => {
                         <span className="text-white text-sm">📷</span>
                       </a>
                       <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110" style={{
-                        background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+                        background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                         boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                       }}>
                         <span className="text-white text-sm">🐦</span>

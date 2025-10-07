@@ -219,14 +219,14 @@ export default function Aide({ user, setUser }) {
               
               <div className="relative">
                 <div className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-6" style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)'
                 }}>
                   <Sparkles size={32} className="text-white" />
                 </div>
                 
                 <h1 className="text-5xl md:text-6xl font-bold mb-6" style={{
-                  background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text'

@@ -27,7 +27,7 @@ export const serviceCategories = {
     name: 'Expériences',
     icon: '✨',
     count: 8,
-    color: '#8B5CF6'
+    color: '#C0C0C0'
   },
   sports: {
     name: 'Sports',

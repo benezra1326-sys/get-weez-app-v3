@@ -123,7 +123,7 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
         }
         
         .calendar-day.selected {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           color: white;
           box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
           transform: scale(1.1);
@@ -340,12 +340,12 @@ export default function EventCalendarView({ events, user, onBecomeMember }) {
                     party: '#EC4899',
                     gastronomy: '#EF4444',
                     wellness: '#10B981',
-                    show: '#8B5CF6',
+                    show: '#C0C0C0',
                     experience: '#F59E0B',
                     cultural: '#0EA5E9',
                     workshop: '#06B6D4',
                     sport: '#10B981',
-                    music: '#8B5CF6',
+                    music: '#C0C0C0',
                     fashion: '#EC4899',
                     festival: '#F59E0B',
                     gala: '#6D28D9',

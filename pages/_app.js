@@ -186,7 +186,7 @@ function MyApp({ Component, pageProps }) {
           width: '56px',
           height: '56px',
           borderRadius: '50%',
-          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+          background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',

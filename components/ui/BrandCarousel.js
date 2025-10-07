@@ -44,12 +44,24 @@ const BrandCarousel = memo(() => {
       <div className="max-w-7xl mx-auto px-4 lg:px-8">
         {/* En-tête */}
         <div className="text-center mb-8 lg:mb-12">
-          <h2 className={`text-4xl font-black mb-4 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
-            style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif' }}
+          <h2 
+            className="text-4xl font-bold mb-4"
+            style={{ 
+              fontFamily: 'Playfair Display, serif',
+              fontWeight: 600,
+              color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+            }}
           >
-            Ils nous font confiance
+            Ils nous font confiance 🤝
           </h2>
-          <p className={`text-lg ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+          <p 
+            className="text-lg"
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+              color: isDarkMode ? '#E0E0E0' : '#666666'
+            }}
+          >
             Plus de 500+ partenaires premium nous font confiance
           </p>
         </div>
@@ -61,11 +73,10 @@ const BrandCarousel = memo(() => {
               key={`${brand.name}-${index}`}
               className="flex flex-col items-center justify-center p-3 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
               style={{
-                background: isDarkMode
-                  ? 'rgba(139, 92, 246, 0.1)'
-                  : 'rgba(255, 255, 255, 0.8)',
-                border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
-                boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)'
+                background: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                backdropFilter: 'blur(12px)',
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
               }}
             >
               <span className="text-3xl mb-1">{brand.logo}</span>
@@ -85,11 +96,10 @@ const BrandCarousel = memo(() => {
                 className="flex-shrink-0 flex flex-col items-center justify-center p-4 lg:p-6 rounded-2xl transition-all duration-300 hover:scale-110 backdrop-blur-sm"
                 style={{
                   minWidth: '140px',
-                  background: isDarkMode
-                    ? 'rgba(139, 92, 246, 0.1)'
-                    : 'rgba(255, 255, 255, 0.8)',
-                  border: `2px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.2)' : 'rgba(139, 92, 246, 0.15)'}`,
-                  boxShadow: '0 4px 20px rgba(139, 92, 246, 0.1)'
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  backdropFilter: 'blur(12px)',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
                 }}
               >
                 <span className="text-4xl lg:text-5xl mb-2">{brand.logo}</span>
@@ -121,43 +131,43 @@ export const DestinationsSection = memo(() => {
   const destinations = [
     {
       id: 1,
-      name: 'MARBELLA',
+      name: 'Marbella',
       status: 'active',
-      tagline: 'Gliitz, anytime, everywhere',
+      tagline: 'Disponible maintenant',
       image: 'https://images.unsplash.com/photo-1583511655857-d19b40a7a54e?w=800',
-      gradient: 'from-purple-500 via-indigo-500 to-blue-500'
+      gradient: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
     },
     {
       id: 2,
-      name: 'MYKONOS',
+      name: 'Mykonos',
       status: 'coming-soon',
-      tagline: 'Coming Soon',
+      tagline: 'Bientôt disponible',
       image: 'https://images.unsplash.com/photo-1601581987809-a874a81309c9?w=800',
-      gradient: 'from-blue-400 to-cyan-500'
+      gradient: 'linear-gradient(135deg, #D0D0D0, #A0A0A0)'
     },
     {
       id: 3,
-      name: 'IBIZA',
+      name: 'Ibiza',
       status: 'coming-soon',
-      tagline: 'Coming Soon',
+      tagline: 'Bientôt disponible',
       image: 'https://images.unsplash.com/photo-1513415564515-763d91423bdd?w=800',
-      gradient: 'from-pink-500 to-rose-500'
+      gradient: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)'
     },
     {
       id: 4,
-      name: 'SAINT-TROPEZ',
+      name: 'Saint-Tropez',
       status: 'coming-soon',
-      tagline: 'Coming Soon',
+      tagline: 'Bientôt disponible',
       image: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=800',
-      gradient: 'from-amber-500 to-orange-500'
+      gradient: 'linear-gradient(135deg, #D5D5D5, #B0B0B0)'
     },
     {
       id: 5,
-      name: 'MARRAKECH',
+      name: 'Marrakech',
       status: 'coming-soon',
-      tagline: 'Coming Soon',
+      tagline: 'Bientôt disponible',
       image: 'https://images.unsplash.com/photo-1597212618440-806262de4f6b?w=800',
-      gradient: 'from-red-500 to-orange-600'
+      gradient: 'linear-gradient(135deg, #E8E8E8, #C8C8C8)'
     }
   ]
 
@@ -167,39 +177,53 @@ export const DestinationsSection = memo(() => {
         ? 'linear-gradient(180deg, #0D0D0D 0%, #1A1A1A 50%, #0D0D0D 100%)'
         : 'linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 50%, #FFFFFF 100%)'
     }}>
-      {/* Effet de particules en arrière-plan */}
+      {/* Effet de particules en arrière-plan argenté */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-32 h-32 bg-purple-500 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '4s' }} />
-        <div className="absolute bottom-10 right-10 w-40 h-40 bg-blue-500 rounded-full blur-3xl animate-pulse" style={{ animationDuration: '5s', animationDelay: '1s' }} />
-        <div className="absolute top-1/2 left-1/2 w-24 h-24 bg-indigo-500 rounded-full blur-2xl animate-pulse" style={{ animationDuration: '6s', animationDelay: '2s' }} />
+        <div className="absolute top-10 left-10 w-32 h-32 rounded-full blur-3xl animate-pulse" style={{ background: '#C0C0C0', animationDuration: '4s' }} />
+        <div className="absolute bottom-10 right-10 w-40 h-40 rounded-full blur-3xl animate-pulse" style={{ background: '#E0E0E0', animationDuration: '5s', animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/2 w-24 h-24 rounded-full blur-2xl animate-pulse" style={{ background: '#A0A0A0', animationDuration: '6s', animationDelay: '2s' }} />
       </div>
       
       <div className="max-w-7xl mx-auto px-4 relative z-10">
         <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 mb-4">
             <Sparkles 
-              className="h-8 w-8 text-purple-500 animate-pulse" 
+              className="h-8 w-8 animate-pulse" 
               style={{ 
-                filter: 'drop-shadow(0 0 8px rgba(168, 85, 247, 0.6))',
+                color: '#C0C0C0',
+                filter: 'drop-shadow(0 0 8px rgba(192, 192, 192, 0.6))',
                 background: 'transparent'
               }}
             />
-            <h2 className={`text-4xl font-black ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
-              style={{ fontFamily: '"Proxima Soft Black", Montserrat, sans-serif' }}
+            <h2 
+              className="text-4xl font-bold"
+              style={{ 
+                fontFamily: 'Playfair Display, serif',
+                fontWeight: 600,
+                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+              }}
             >
-              Gliitz, anytime, everywhere
+              Gliitz, Anytime, Everywhere 🌍
             </h2>
             <Sparkles 
-              className="h-8 w-8 text-blue-500 animate-pulse" 
+              className="h-8 w-8 animate-pulse" 
               style={{ 
+                color: '#C0C0C0',
                 animationDelay: '0.5s',
-                filter: 'drop-shadow(0 0 8px rgba(59, 130, 246, 0.6))',
+                filter: 'drop-shadow(0 0 8px rgba(192, 192, 192, 0.6))',
                 background: 'transparent'
               }}
             />
           </div>
-          <p className={`text-xl ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            Votre concierge IA de luxe s'étend dans le monde entier
+          <p 
+            className="text-xl"
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              fontWeight: 400,
+              color: isDarkMode ? '#E0E0E0' : '#666666'
+            }}
+          >
+            Votre conciergerie IA de luxe s'étend dans le monde entier
           </p>
         </div>
 
@@ -215,7 +239,7 @@ export const DestinationsSection = memo(() => {
                 style={{
                   height: '200px',
                   boxShadow: dest.status === 'active' 
-                    ? '0 8px 32px rgba(168, 85, 247, 0.4), 0 0 40px rgba(168, 85, 247, 0.2)'
+                    ? '0 8px 32px rgba(192, 192, 192, 0.4), 0 0 40px rgba(192, 192, 192, 0.2)'
                     : '0 4px 16px rgba(0, 0, 0, 0.2)'
                 }}
               >
@@ -527,7 +551,7 @@ export const PressSection = memo(() => {
             <div 
               className="px-6 py-2 rounded-full text-sm font-bold tracking-wider"
               style={{
-                background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 color: 'white',
                 boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)'
               }}
@@ -615,7 +639,7 @@ export const PressSection = memo(() => {
                     <div 
                       className="px-1.5 py-1 rounded-full text-xs font-bold text-white"
                       style={{
-                        background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                        background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                         boxShadow: '0 0 10px rgba(168, 85, 247, 0.4)'
                       }}
                     >
@@ -683,7 +707,7 @@ export const PressSection = memo(() => {
                 
                 {/* Citation */}
                 <div className="relative mb-4">
-                  <div className="absolute -left-2 -top-2 text-4xl opacity-20" style={{ color: '#a855f7' }}>"</div>
+                  <div className="absolute -left-2 -top-2 text-4xl opacity-20" style={{ color: '#C0C0C0' }}>"</div>
                   <p 
                     className={`text-sm italic text-center leading-relaxed ${
                       isDarkMode ? 'text-gray-300' : 'text-gray-700'
@@ -692,7 +716,7 @@ export const PressSection = memo(() => {
                   >
                     {press.quote}
                   </p>
-                  <div className="absolute -right-2 -bottom-2 text-4xl opacity-20" style={{ color: '#a855f7' }}>"</div>
+                  <div className="absolute -right-2 -bottom-2 text-4xl opacity-20" style={{ color: '#C0C0C0' }}>"</div>
                 </div>
                 
                 {/* Date */}
@@ -711,7 +735,7 @@ export const PressSection = memo(() => {
                   <div 
                     className="px-2 py-1 rounded-full text-[10px] font-bold text-white animate-pulse"
                     style={{
-                      background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                       boxShadow: '0 0 15px rgba(168, 85, 247, 0.5)'
                     }}
                   >
@@ -729,7 +753,7 @@ export const PressSection = memo(() => {
             <div 
               className={`text-5xl font-black mb-2 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
               style={{
-                background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent'
               }}

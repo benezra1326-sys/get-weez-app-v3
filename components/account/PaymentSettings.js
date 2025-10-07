@@ -100,7 +100,7 @@ export default function PaymentSettings({ user }) {
               }`}
               style={{
                 background: selectedCard === method.id
-                  ? 'linear-gradient(135deg, #3B82F6, #1D4ED8)'
+                  ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                   : isDarkMode 
                     ? 'rgba(55, 65, 81, 0.5)'
                     : 'rgba(255, 255, 255, 0.8)',
@@ -263,7 +263,7 @@ export default function PaymentSettings({ user }) {
           <button
             className="px-4 py-2 rounded-lg font-semibold text-sm transition-all duration-200 hover:scale-105"
             style={{
-              background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+              background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
               color: 'white',
               boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
             }}

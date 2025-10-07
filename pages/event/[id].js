@@ -128,7 +128,7 @@ export default function EventDetail({ user, setUser }) {
             <div className="absolute top-4 right-4">
               <span className="px-4 py-2 rounded-full text-sm font-bold text-white"
                 style={{
-                  background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   boxShadow: '0 4px 20px rgba(168, 85, 247, 0.4)'
                 }}
               >

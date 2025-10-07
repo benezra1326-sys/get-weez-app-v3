@@ -85,7 +85,7 @@ export default function CategoryFilter({ onCategoryChange, selectedCategory, cat
               className="w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200"
               style={{
                 background: !selectedCategory 
-                  ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                  ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                   : 'transparent',
                 color: !selectedCategory 
                   ? 'white'
@@ -116,7 +116,7 @@ export default function CategoryFilter({ onCategoryChange, selectedCategory, cat
                 className="w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200"
                 style={{
                   background: selectedCategory === key 
-                    ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : 'transparent',
                   color: selectedCategory === key 
                     ? 'white'

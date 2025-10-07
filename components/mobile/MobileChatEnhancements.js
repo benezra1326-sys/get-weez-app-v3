@@ -137,7 +137,7 @@ export const MobileChatEnhanced = memo(({
           padding: 6px 12px;
           margin: 2px;
           background: rgba(139, 92, 246, 0.1);
-          color: #8B5CF6;
+          color: #C0C0C0;
           border-radius: 20px;
           font-size: 14px;
           cursor: pointer;
@@ -212,7 +212,7 @@ export const MobileChatEnhanced = memo(({
         }
         
         .mobile-message.user .mobile-message-bubble {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           color: white;
           border-bottom-right-radius: 6px;
         }
@@ -303,7 +303,7 @@ export const MobileChatEnhanced = memo(({
                 disabled={!input.trim() || isLoading}
                 className="mobile-send-button"
                 style={{
-                  backgroundColor: input.trim() ? '#8B5CF6' : '#D1D5DB',
+                  backgroundColor: input.trim() ? '#C0C0C0' : '#D1D5DB',
                   color: 'white'
                 }}
               >

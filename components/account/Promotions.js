@@ -166,8 +166,8 @@ export default function Promotions({ user }) {
                   className="flex items-center space-x-2 px-3 py-2 rounded-lg text-xs font-semibold transition-all duration-200 hover:scale-105"
                   style={{
                     background: isDarkMode 
-                      ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)'
-                      : 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+                      ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
+                      : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     color: 'white',
                     boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
                   }}

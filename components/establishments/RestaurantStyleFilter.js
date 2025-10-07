@@ -89,7 +89,7 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
               className="w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200"
               style={{
                 background: !selectedStyle 
-                  ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                  ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                   : isDarkMode 
                     ? 'transparent'
                     : 'transparent',
@@ -122,7 +122,7 @@ export default function RestaurantStyleFilter({ onStyleChange, selectedStyle }) 
                 className="w-full flex items-center px-4 py-3 rounded-lg text-sm transition-all duration-200"
                 style={{
                   background: selectedStyle === key 
-                    ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : 'transparent',
                   color: selectedStyle === key 
                     ? 'white'

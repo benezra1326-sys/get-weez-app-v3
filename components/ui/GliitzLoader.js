@@ -176,7 +176,7 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
             <div 
               className="shimmer px-8 py-4 rounded-2xl"
               style={{
-                background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 boxShadow: '0 8px 32px rgba(168, 85, 247, 0.4), 0 0 80px rgba(168, 85, 247, 0.2)',
                 border: '2px solid rgba(255, 255, 255, 0.2)'
               }}
@@ -218,8 +218,8 @@ export default function GliitzLoader({ text = 'Chargement...' }) {
                   className="w-2 h-2 rounded-full"
                   style={{
                     background: isDarkMode 
-                      ? 'linear-gradient(135deg, #a855f7, #6366f1)'
-                      : 'linear-gradient(135deg, #a855f7, #6366f1)',
+                      ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
+                      : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     animation: 'logo-pulse 1.5s ease-in-out infinite',
                     animationDelay: `${i * 0.2}s`,
                     boxShadow: '0 0 8px rgba(168, 85, 247, 0.6)'

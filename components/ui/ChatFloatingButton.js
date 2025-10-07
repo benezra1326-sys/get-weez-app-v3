@@ -219,7 +219,7 @@ const ChatFloatingButton = ({ onOpenChat }) => {
             width: isExpanded ? '180px' : '56px',
             height: '56px',
             borderRadius: isExpanded ? '28px' : '50%',
-            background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             border: '2px solid rgba(255, 255, 255, 0.3)',
             boxShadow: isExpanded
               ? '0 12px 48px rgba(168, 85, 247, 0.6), 0 0 0 0 rgba(168, 85, 247, 0.4)'

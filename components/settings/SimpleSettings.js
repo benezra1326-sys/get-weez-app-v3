@@ -46,7 +46,7 @@ export default function SimpleSettings() {
         <div 
           className="p-3 rounded-xl mr-4"
           style={{
-            background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
           }}
         >
@@ -105,7 +105,7 @@ export default function SimpleSettings() {
                 }`}
                 style={{
                   background: themeMode === option.key
-                    ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : isDarkMode ? 'rgba(75, 85, 99, 0.3)' : 'rgba(243, 244, 246, 0.8)',
                   color: themeMode === option.key ? 'white' : isDarkMode ? '#D1D5DB' : '#374151'
                 }}

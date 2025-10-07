@@ -106,7 +106,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         }
         
         .menu-link.active {
-          background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0) !important;
           color: white !important;
           border-radius: 8px;
           padding: 8px 16px;
@@ -153,7 +153,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
             <div 
               className="transition-all duration-300 group-hover:scale-102"
               style={{
-                background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 padding: '2px 8px',
                 borderRadius: '10px',
                 overflow: 'hidden',

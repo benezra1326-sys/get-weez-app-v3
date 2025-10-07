@@ -99,7 +99,7 @@ export default function CookieBanner() {
               onClick={acceptCookies}
               className="px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300 hover:scale-105 active:scale-95 text-white"
               style={{
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)',
               }}
             >

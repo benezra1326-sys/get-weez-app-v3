@@ -52,7 +52,7 @@ const SimpleButtonTest = () => {
               borderRadius: '12px',
               border: 'none',
               background: input.trim()
-                ? 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)'
+                ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                 : 'rgba(156, 163, 175, 0.5)',
               color: 'white',
               opacity: input.trim() ? 1 : 0.5,

@@ -18,7 +18,7 @@ export default function EventDisplayToggle({ displayMode, onModeChange }) {
         }
         
         .toggle-button.active {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
           border-color: rgba(139, 92, 246, 0.8);
           box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
           color: white;
@@ -34,7 +34,7 @@ export default function EventDisplayToggle({ displayMode, onModeChange }) {
             }`}
             style={{
               background: displayMode === 'banner' 
-                ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                 : 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))',
               boxShadow: displayMode === 'banner' 
                 ? '0 8px 25px rgba(139, 92, 246, 0.4)'
@@ -52,7 +52,7 @@ export default function EventDisplayToggle({ displayMode, onModeChange }) {
             }`}
             style={{
               background: displayMode === 'calendar' 
-                ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                 : 'linear-gradient(135deg, rgba(139, 92, 246, 0.2), rgba(59, 130, 246, 0.2))',
               boxShadow: displayMode === 'calendar' 
                 ? '0 8px 25px rgba(139, 92, 246, 0.4)'

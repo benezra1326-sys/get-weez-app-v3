@@ -76,7 +76,7 @@ const DebugButtonInput = ({ onSend, isLoading, placeholder, isDarkMode = false }
           borderRadius: '10px',
           border: '3px solid green', // BORDURE VERTE pour le bouton
           background: input.trim() && !isLoading
-            ? 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)'
+            ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
             : isDarkMode ? 'rgba(75, 85, 99, 0.5)' : 'rgba(156, 163, 175, 0.5)',
           color: 'white',
           opacity: input.trim() && !isLoading ? 1 : 0.5,

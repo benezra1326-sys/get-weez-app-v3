@@ -383,7 +383,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
               onClick={createConversation}
               className="p-2 rounded-lg transition-all duration-300 desktop-hover-scale"
               style={{ 
-                background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
               }}
             >
@@ -420,7 +420,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                 }`}
                 style={{
                   background: currentConversationId === conversation.id 
-                    ? 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : vignetteBg,
                   color: currentConversationId === conversation.id ? 'white' : undefined,
                   border: currentConversationId === conversation.id 
@@ -516,7 +516,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
             <div 
               className="p-8 text-center rounded-2xl relative"
               style={{
-                background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)'
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
               }}
             >
               {/* Effet de palette animé */}
@@ -619,7 +619,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                   key={message.id}
                   className={`desktop-message ${isUser ? 'user' : 'assistant'}`}
                   style={{
-                    background: (isUser || isWelcome) ? 'linear-gradient(135deg, #a855f7 0%, #6366f1 40%, #3b82f6 100%)' : undefined,
+                    background: (isUser || isWelcome) ? 'linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 40%, #3b82f6 100%)' : undefined,
                     color: (isUser || isWelcome) ? 'white' : undefined,
                     border: (isUser || isWelcome) ? 'none' : undefined
                   }}
@@ -688,7 +688,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
               disabled={!input.trim() || isLoading || isCreating}
               className="desktop-send-button"
               style={{
-                background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 color: 'white',
                 border: 'none'
               }}
@@ -739,7 +739,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                     : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
               }`}
               style={suggestionFilter === 'all' ? {
-                background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 boxShadow: '0 2px 8px rgba(168, 85, 247, 0.3)'
               } : {}}
             >
@@ -1064,7 +1064,7 @@ const DesktopChat = ({ user, initialMessage, establishmentName }) => {
                   }}
                   className="py-4 rounded-xl text-white font-bold transition-all duration-300 transform hover:scale-105"
                   style={{
-                    background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     boxShadow: '0 8px 32px rgba(168, 85, 247, 0.4)'
                   }}
                 >

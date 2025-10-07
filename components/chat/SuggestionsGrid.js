@@ -40,7 +40,7 @@ export default function SuggestionsGrid({ suggestions, onSuggestionClick }) {
           className={`p-2 rounded-lg transition-all duration-300 ${columns === 1 ? 'scale-110' : ''}`}
           style={{
             background: columns === 1 
-              ? 'linear-gradient(135deg, #a855f7, #6366f1)'
+              ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
               : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
             boxShadow: columns === 1 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
           }}
@@ -54,7 +54,7 @@ export default function SuggestionsGrid({ suggestions, onSuggestionClick }) {
           className={`p-2 rounded-lg transition-all duration-300 ${columns === 2 ? 'scale-110' : ''}`}
           style={{
             background: columns === 2 
-              ? 'linear-gradient(135deg, #a855f7, #6366f1)'
+              ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
               : isDarkMode ? 'rgba(75, 85, 99, 0.4)' : 'rgba(243, 244, 246, 0.8)',
             boxShadow: columns === 2 ? '0 4px 12px rgba(168, 85, 247, 0.4)' : 'none'
           }}

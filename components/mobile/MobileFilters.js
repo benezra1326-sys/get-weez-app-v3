@@ -53,7 +53,7 @@ export default function MobileFilters({
           }`}
           style={{
             background: hasActiveFilters
-              ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+              ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
               : isDarkMode 
                 ? 'rgba(31, 41, 55, 0.95)' 
                 : 'rgba(255, 255, 255, 0.95)',
@@ -165,13 +165,13 @@ export default function MobileFilters({
                 }`}
                 style={{
                   background: activeFilterTab === 'category'
-                    ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : 'transparent',
                   color: activeFilterTab === 'category'
                     ? 'white'
                     : (isDarkMode ? '#D1D5DB' : '#6B7280'),
                   borderBottom: activeFilterTab === 'category' 
-                    ? '2px solid #8B5CF6' 
+                    ? '2px solid #C0C0C0' 
                     : 'none'
                 }}
               >
@@ -184,13 +184,13 @@ export default function MobileFilters({
                 }`}
                 style={{
                   background: activeFilterTab === 'style'
-                    ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : 'transparent',
                   color: activeFilterTab === 'style'
                     ? 'white'
                     : (isDarkMode ? '#D1D5DB' : '#6B7280'),
                   borderBottom: activeFilterTab === 'style' 
-                    ? '2px solid #8B5CF6' 
+                    ? '2px solid #C0C0C0' 
                     : 'none'
                 }}
               >
@@ -211,7 +211,7 @@ export default function MobileFilters({
                     }`}
                     style={{
                       background: !selectedCategory 
-                        ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                        ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                         : (isDarkMode 
                           ? 'rgba(31, 41, 55, 0.8)' 
                           : 'rgba(243, 244, 246, 0.8)'),
@@ -241,7 +241,7 @@ export default function MobileFilters({
                       }`}
                       style={{
                         background: selectedCategory === key 
-                          ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                          ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                           : (isDarkMode 
                             ? 'rgba(31, 41, 55, 0.8)' 
                             : 'rgba(243, 244, 246, 0.8)'),
@@ -282,7 +282,7 @@ export default function MobileFilters({
                     }`}
                     style={{
                       background: !selectedStyle 
-                        ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                        ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                         : (isDarkMode 
                           ? 'rgba(31, 41, 55, 0.8)' 
                           : 'rgba(243, 244, 246, 0.8)'),
@@ -312,7 +312,7 @@ export default function MobileFilters({
                       }`}
                       style={{
                         background: selectedStyle === key 
-                          ? 'linear-gradient(135deg, #8B5CF6, #3B82F6)'
+                          ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                           : (isDarkMode 
                             ? 'rgba(31, 41, 55, 0.8)' 
                             : 'rgba(243, 244, 246, 0.8)'),

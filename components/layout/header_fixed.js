@@ -95,7 +95,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
         }
         
         .menu-link:hover {
-          background: linear-gradient(135deg, #8B5CF6, #3B82F6) !important;
+          background: linear-gradient(135deg, #E5E5E5, #C0C0C0) !important;
           color: white !important;
           border-radius: 8px;
           padding: 8px 16px;

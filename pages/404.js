@@ -16,7 +16,7 @@ export default function Custom404() {
       padding: '2rem',
       textAlign: 'center'
     }}>
-      <h1 style={{ fontSize: '6rem', marginBottom: '1rem', color: '#8B5CF6' }}>
+      <h1 style={{ fontSize: '6rem', marginBottom: '1rem', color: '#C0C0C0' }}>
         404
       </h1>
       <h2 style={{ fontSize: '2rem', marginBottom: '1rem', color: '#ffffff' }}>
@@ -28,7 +28,7 @@ export default function Custom404() {
       <button
         onClick={() => router.push('/')}
         style={{
-          backgroundColor: '#8B5CF6',
+          backgroundColor: '#C0C0C0',
           color: 'white',
           border: 'none',
           padding: '12px 24px',
@@ -38,7 +38,7 @@ export default function Custom404() {
           transition: 'background-color 0.3s'
         }}
         onMouseOver={(e) => e.target.style.backgroundColor = '#7C3AED'}
-        onMouseOut={(e) => e.target.style.backgroundColor = '#8B5CF6'}
+        onMouseOut={(e) => e.target.style.backgroundColor = '#C0C0C0'}
       >
         Retour à l'accueil
       </button>

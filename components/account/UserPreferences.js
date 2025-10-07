@@ -48,7 +48,7 @@ export default function UserPreferences() {
   const budgetOptions = [
     { key: 'low', label: 'Économique', range: '< 50€', color: '#10B981' },
     { key: 'medium', label: 'Modéré', range: '50-150€', color: '#F59E0B' },
-    { key: 'high', label: 'Premium', range: '150-300€', color: '#8B5CF6' },
+    { key: 'high', label: 'Premium', range: '150-300€', color: '#C0C0C0' },
     { key: 'luxury', label: 'Luxe', range: '> 300€', color: '#EF4444' }
   ]
 
@@ -93,7 +93,7 @@ export default function UserPreferences() {
         <div 
           className="p-3 rounded-xl mr-4"
           style={{
-            background: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             boxShadow: '0 4px 15px rgba(139, 92, 246, 0.3)'
           }}
         >
@@ -135,7 +135,7 @@ export default function UserPreferences() {
                 }`}
                 style={{
                   background: preferences.priorityServices.includes(service.key)
-                    ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : isDarkMode 
                       ? 'rgba(55, 65, 81, 0.5)'
                       : 'rgba(255, 255, 255, 0.8)',
@@ -300,7 +300,7 @@ export default function UserPreferences() {
                 }`}
                 style={{
                   background: preferences.activityLevel === activity.key
-                    ? 'linear-gradient(135deg, #8B5CF6, #7C3AED)'
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                     : isDarkMode 
                       ? 'rgba(55, 65, 81, 0.5)'
                       : 'rgba(255, 255, 255, 0.8)',

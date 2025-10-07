@@ -562,7 +562,7 @@ export default function Events({ user, setUser }) {
             <div className="mb-6" style={{ position: 'relative', zIndex: 1 }}>
               <div className="relative overflow-hidden rounded-2xl p-6 text-center group"
                 style={{
-                  background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   backgroundSize: '400% 400%',
                   animation: 'gradientShift 8s ease infinite',
                   boxShadow: '0 12px 48px rgba(168, 85, 247, 0.4)'

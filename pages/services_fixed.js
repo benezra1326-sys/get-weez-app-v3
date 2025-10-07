@@ -165,7 +165,7 @@ export default function Services({ user, setUser }) {
             <div className="mb-8">
               <div className="relative overflow-hidden rounded-3xl p-8 mb-8"
                 style={{
-                  background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   backgroundSize: '400% 400%',
                   animation: 'gradientShift 8s ease infinite'
                 }}
@@ -245,7 +245,7 @@ export default function Services({ user, setUser }) {
             <div style={{ marginBottom: '0.5rem' }}>
               <div 
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   borderRadius: '12px',
                   padding: '8px 16px',
                   display: 'inline-block',

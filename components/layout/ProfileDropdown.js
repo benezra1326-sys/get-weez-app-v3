@@ -191,7 +191,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
         }}
         className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift text-white"
         style={{
-          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+          background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
           boxShadow: '0 4px 15px rgba(168, 85, 247, 0.3)',
           border: '1px solid rgba(255, 255, 255, 0.2)',
           flexShrink: 0,
@@ -214,7 +214,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             minHeight: '28px',
             maxWidth: '28px',
             maxHeight: '28px',
-            background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #06B6D4 100%)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             borderRadius: '8px',
             flexShrink: 0,
             display: 'flex',

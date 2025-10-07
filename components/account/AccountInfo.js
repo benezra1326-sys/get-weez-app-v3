@@ -25,7 +25,7 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
         <div 
           className="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-4"
           style={{
-            background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)', // Cohérent avec Get Weez
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)', // Cohérent avec Get Weez
             boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
           }}
         >
@@ -83,7 +83,7 @@ export default function AccountInfo({ user, onBecomeMember, onReserve }) {
           onClick={() => router.push('/subscriptions')}
           className="w-full flex items-center justify-center p-4 rounded-2xl font-bold text-lg transition-all duration-300 hover:scale-105 active:scale-95"
           style={{
-            background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             color: 'white',
             boxShadow: '0 8px 32px rgba(139, 92, 246, 0.3)',
             border: '1px solid rgba(255, 255, 255, 0.1)',

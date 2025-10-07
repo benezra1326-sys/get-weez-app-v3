@@ -403,7 +403,7 @@ export default function MobileChatBox({
               style={{
                 fontFamily: '"Proxima Soft Black", Montserrat, sans-serif',
                 letterSpacing: '-0.02em',
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #6366f1 50%, #3b82f6 100%)',
+                background: 'linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #3b82f6 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
@@ -598,7 +598,7 @@ export default function MobileChatBox({
               disabled={!input.trim() || isLoading}
               className="rounded-2xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95 flex-shrink-0"
               style={{
-                background: 'linear-gradient(135deg, #a855f7, #6366f1)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 boxShadow: '0 4px 12px rgba(168, 85, 247, 0.4)',
                 width: '60px',
                 height: '60px',

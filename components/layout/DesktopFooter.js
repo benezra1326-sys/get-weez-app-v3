@@ -25,7 +25,7 @@ const DesktopFooter = memo(() => {
       {/* Effets de fond */}
       <div className="absolute inset-0" style={{ opacity: isDarkMode ? 0.05 : 0.08 }}>
         <div className="absolute top-0 left-1/4 w-64 h-64 rounded-full" style={{
-          background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+          background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
           filter: 'blur(60px)'
         }}></div>
         <div className="absolute bottom-0 right-1/4 w-80 h-80 rounded-full" style={{
@@ -49,7 +49,7 @@ const DesktopFooter = memo(() => {
                 <div 
                   className="px-8 py-4 rounded-2xl shadow-2xl"
                   style={{
-                    background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     boxShadow: '0 12px 40px rgba(139, 92, 246, 0.4)'
                   }}
                 >
@@ -58,7 +58,7 @@ const DesktopFooter = memo(() => {
               </div>
               
               <h3 className="text-2xl lg:text-3xl font-bold mb-4" style={{
-                background: 'linear-gradient(135deg, #8B5CF6 0%, #3B82F6 50%, #F59E0B 100%)',
+                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text'
@@ -76,7 +76,7 @@ const DesktopFooter = memo(() => {
               {/* Contact */}
               <div className="text-center">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center desktop-hover-lift" style={{
-                  background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   boxShadow: '0 4px 16px rgba(139, 92, 246, 0.3)'
                 }}>
                   <span className="text-white text-xl">📧</span>
@@ -107,7 +107,7 @@ const DesktopFooter = memo(() => {
               {/* Localisation */}
               <div className="text-center">
                 <div className="w-12 h-12 mx-auto mb-4 rounded-xl flex items-center justify-center desktop-hover-lift" style={{
-                  background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+                  background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                   boxShadow: '0 4px 16px rgba(59, 130, 246, 0.3)'
                 }}>
                   <span className="text-white text-xl">📍</span>
@@ -129,7 +129,7 @@ const DesktopFooter = memo(() => {
                 {/* Liens sociaux */}
                 <div className="flex items-center gap-4">
                   <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 desktop-hover-scale" style={{
-                    background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     boxShadow: '0 4px 12px rgba(139, 92, 246, 0.3)'
                   }}>
                     <span className="text-white text-sm">📘</span>
@@ -141,7 +141,7 @@ const DesktopFooter = memo(() => {
                     <span className="text-white text-sm">📷</span>
                   </a>
                   <a href="#" className="w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 desktop-hover-scale" style={{
-                    background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+                    background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                     boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                   }}>
                     <span className="text-white text-sm">🐦</span>

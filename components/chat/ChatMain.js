@@ -467,7 +467,7 @@ const ChatMain = ({ user, initialMessage, establishmentName }) => {
                   className="w-full p-4 rounded-xl mb-3 text-left transition-all duration-300"
                   style={{
                     background: conv.id === currentConversationId
-                      ? 'linear-gradient(135deg, #a855f7, #6366f1)'
+                      ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
                       : isDarkMode ? 'rgba(31, 41, 55, 0.6)' : 'rgba(255, 255, 255, 0.8)',
                     border: `1px solid ${isDarkMode ? 'rgba(139, 92, 246, 0.3)' : 'rgba(139, 92, 246, 0.2)'}`
                   }}

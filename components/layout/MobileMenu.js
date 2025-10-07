@@ -146,7 +146,7 @@ const MobileMenu = memo(({ isOpen, onClose, user }) => {
                   <div 
                     className="relative px-4 py-2 transition-all duration-500 group-hover:scale-105 group-active:scale-95"
                     style={{ 
-                      background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%)',
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                       borderRadius: '10px',
                       boxShadow: '0 2px 8px rgba(139, 92, 246, 0.3)',
                       border: '1px solid rgba(255, 255, 255, 0.2)'

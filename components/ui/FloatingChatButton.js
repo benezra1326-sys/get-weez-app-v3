@@ -168,7 +168,7 @@ export default function FloatingChatButton() {
           width: '56px !important',
           height: '56px !important',
           borderRadius: '50% !important',
-          background: 'linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important',
+          background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0) !important',
           boxShadow: '0 8px 25px rgba(168, 85, 247, 0.6) !important',
           cursor: 'pointer !important',
           alignItems: 'center !important',
@@ -189,7 +189,7 @@ export default function FloatingChatButton() {
               transform: translateZ(0) !important;
               width: 56px !important;
               height: 56px !important;
-              background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+              background: linear-gradient(135deg, #E5E5E5, #C0C0C0) !important;
               border: none !important;
               border-radius: 50% !important;
               box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;

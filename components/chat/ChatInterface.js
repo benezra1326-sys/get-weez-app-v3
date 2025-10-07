@@ -1084,15 +1084,15 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   onClick={createConversation}
                   className="p-2 rounded-lg transition-all duration-300"
                   style={{ 
-                    backgroundColor: '#3B82F6',
+                    backgroundColor: '#C0C0C0',
                     boxShadow: '0 4px 12px rgba(59, 130, 246, 0.3)'
                   }}
                   onMouseEnter={(e) => {
-                    e.target.style.backgroundColor = '#2563EB'
+                    e.target.style.backgroundColor = '#C0C0C0'
                     e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
                   }}
                   onMouseLeave={(e) => {
-                    e.target.style.backgroundColor = '#3B82F6'
+                    e.target.style.backgroundColor = '#C0C0C0'
                     e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
                   }}
                   title="Nouvelle conversation"
@@ -1259,7 +1259,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   {/* Version mobile - design plus engageant */}
                   <div 
                     className="lg:hidden relative overflow-hidden rounded-2xl border border-purple-500/30 p-4 mb-4 w-full max-w-sm cursor-pointer transition-all duration-300 hover:scale-105"
-                    style={{ borderColor: '#3B82F6' }}
+                    style={{ borderColor: '#C0C0C0' }}
                     onClick={() => {
                       if (textareaRef.current) {
                         textareaRef.current.focus()
@@ -1478,7 +1478,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       fontSize: '16px' // Empêche le zoom sur iOS
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = '#3B82F6'
+                      e.target.style.borderColor = '#C0C0C0'
                       e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
                     }}
                     onBlur={(e) => {
@@ -1498,18 +1498,18 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   disabled={!input.trim() || isLoading}
                   className="absolute right-3 lg:right-4 top-1/2 transform -translate-y-1/2 p-2 lg:p-3 disabled:cursor-not-allowed text-white rounded-full transition-all duration-300 shadow-lg hover:shadow-xl"
                   style={{
-                    backgroundColor: !input.trim() || isLoading ? '#374151' : '#3B82F6',
+                    backgroundColor: !input.trim() || isLoading ? '#374151' : '#C0C0C0',
                     boxShadow: !input.trim() || isLoading ? 'none' : '0 4px 12px rgba(59, 130, 246, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {
-                      e.target.style.backgroundColor = '#2563EB'
+                      e.target.style.backgroundColor = '#C0C0C0'
                       e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isLoading && input.trim()) {
-                      e.target.style.backgroundColor = '#3B82F6'
+                      e.target.style.backgroundColor = '#C0C0C0'
                       e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
                     }
                   }}
@@ -1555,7 +1555,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                       fontSize: '16px' // Empêche le zoom sur iOS
                     }}
                     onFocus={(e) => {
-                      e.target.style.borderColor = '#3B82F6'
+                      e.target.style.borderColor = '#C0C0C0'
                       e.target.style.boxShadow = '0 0 0 3px rgba(59, 130, 246, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2)'
                     }}
                     onBlur={(e) => {
@@ -1575,18 +1575,18 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                   disabled={!input.trim() || isLoading}
                     className="px-3 py-3 disabled:cursor-not-allowed text-white rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center font-medium text-sm"
                   style={{
-                    backgroundColor: !input.trim() || isLoading ? '#6B7280' : '#3B82F6',
+                    backgroundColor: !input.trim() || isLoading ? '#6B7280' : '#C0C0C0',
                     boxShadow: !input.trim() || isLoading ? '0 2px 4px rgba(0, 0, 0, 0.1)' : '0 4px 12px rgba(59, 130, 246, 0.3)'
                   }}
                   onMouseEnter={(e) => {
                     if (!isLoading && input.trim()) {
-                      e.target.style.backgroundColor = '#2563EB'
+                      e.target.style.backgroundColor = '#C0C0C0'
                       e.target.style.boxShadow = '0 6px 16px rgba(59, 130, 246, 0.4)'
                     }
                   }}
                   onMouseLeave={(e) => {
                     if (!isLoading && input.trim()) {
-                      e.target.style.backgroundColor = '#3B82F6'
+                      e.target.style.backgroundColor = '#C0C0C0'
                       e.target.style.boxShadow = '0 4px 12px rgba(59, 130, 246, 0.3)'
                     }
                   }}
@@ -1624,7 +1624,7 @@ const ChatInterface = ({ user, initialMessage, establishmentName }) => {
                     onClick={() => setSidebarFilter('all')}
                     className="px-3 py-3 rounded-lg text-sm font-semibold transition-all duration-300 text-center shadow-lg hover:shadow-xl flex flex-col items-center justify-center"
                     style={{
-                      backgroundColor: sidebarFilter === 'all' ? '#3B82F6' : (isDarkMode ? '#374151' : '#F3F4F6'),
+                      backgroundColor: sidebarFilter === 'all' ? '#C0C0C0' : (isDarkMode ? '#374151' : '#F3F4F6'),
                       color: sidebarFilter === 'all' ? '#FFFFFF' : (isDarkMode ? '#FFFFFF' : '#374151'),
                       boxShadow: sidebarFilter === 'all' ? '0 4px 12px rgba(59, 130, 246, 0.4)' : (isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.1)'),
                       fontSize: '14px',

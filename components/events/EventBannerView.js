@@ -306,7 +306,7 @@ export default function EventBannerView({ events, user, onBecomeMember }) {
               party: 'linear-gradient(135deg, #EC4899, #BE185D)',
               gastronomy: 'linear-gradient(135deg, #EF4444, #DC2626)',
               wellness: 'linear-gradient(135deg, #10B981, #059669)',
-              show: 'linear-gradient(135deg, #8B5CF6, #7C3AED)',
+              show: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
               experience: 'linear-gradient(135deg, #F59E0B, #D97706)',
               cultural: 'linear-gradient(135deg, #0EA5E9, #0284C7)',
               workshop: 'linear-gradient(135deg, #06B6D4, #0891B2)'

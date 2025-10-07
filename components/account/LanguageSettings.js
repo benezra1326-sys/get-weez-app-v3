@@ -66,7 +66,7 @@ export default function LanguageSettings() {
         <div 
           className="p-3 rounded-xl mr-4"
           style={{
-            background: 'linear-gradient(135deg, #3B82F6, #1D4ED8)',
+            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
             boxShadow: '0 4px 15px rgba(59, 130, 246, 0.3)'
           }}
         >

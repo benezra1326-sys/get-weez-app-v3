@@ -95,7 +95,7 @@ export default function TipsPopup() {
         style={{
           background: isDarkMode
             ? 'linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #8b5cf6 100%)'
-            : 'linear-gradient(135deg, #10b981 0%, #3b82f6 50%, #a855f7 100%)',
+            : 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
           backdropFilter: 'blur(20px)',
           border: '2px solid rgba(255, 255, 255, 0.3)',
           boxShadow: '0 12px 32px rgba(59, 130, 246, 0.5)'
@@ -141,7 +141,7 @@ export default function TipsPopup() {
               onClick={() => setCurrentTipIndex((prev) => (prev + 1))}
               className="flex-1 text-white text-xs font-bold py-2 px-3 rounded-lg hover:scale-105 transition-all duration-200 shadow-lg"
               style={{
-                background: 'linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)',
+                background: 'linear-gradient(135deg, #C0C0C0 0%, #8b5cf6 100%)',
                 border: '2px solid rgba(255, 255, 255, 0.4)'
               }}
             >
