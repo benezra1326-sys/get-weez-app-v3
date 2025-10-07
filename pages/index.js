@@ -147,23 +147,31 @@ const Home = memo(({ user, setUser }) => {
             }}
           />
 
-          {/* Indicateurs de carrousel */}
-          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex gap-2">
-            {luxuryImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setCurrentImageIndex(index)}
-                className="w-2 h-2 rounded-full transition-all duration-300"
-                style={{
-                  background: index === currentImageIndex 
-                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
-                    : 'rgba(255,255,255,0.3)',
-                  transform: index === currentImageIndex ? 'scale(1.5)' : 'scale(1)',
-                  boxShadow: index === currentImageIndex ? '0 0 10px rgba(192,192,192,0.6)' : 'none'
-                }}
-              />
-            ))}
-          </div>
+        {/* Indicateurs de carrousel - VISIBLES */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-3">
+          {luxuryImages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentImageIndex(index)}
+              className="transition-all duration-300 cursor-pointer"
+              style={{
+                width: index === currentImageIndex ? '32px' : '12px',
+                height: '12px',
+                borderRadius: index === currentImageIndex ? '6px' : '50%',
+                background: index === currentImageIndex
+                  ? 'linear-gradient(135deg, #FFFFFF, #C0C0C0)'
+                  : 'rgba(255,255,255,0.5)',
+                transform: index === currentImageIndex ? 'scale(1)' : 'scale(1)',
+                boxShadow: index === currentImageIndex 
+                  ? '0 0 20px rgba(255,255,255,0.8), 0 4px 12px rgba(0,0,0,0.3)' 
+                  : '0 2px 8px rgba(0,0,0,0.3)',
+                border: '2px solid rgba(255,255,255,0.8)',
+                backdropFilter: 'blur(4px)'
+              }}
+              aria-label={`Image ${index + 1}`}
+            />
+          ))}
+        </div>
 
           {/* Contenu Hero - CENTRÉ VERTICALEMENT ET HORIZONTALEMENT */}
           <div className="relative z-20 w-full px-4">
