@@ -137,7 +137,7 @@ const Home = memo(({ user, setUser }) => {
               background: 'linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 100%)',
             }}
           />
-          
+
           {/* Effet de vignette subtil pour le luxe */}
           <div 
             className="absolute inset-0 z-10"
@@ -513,66 +513,182 @@ const Home = memo(({ user, setUser }) => {
           <BrandCarousel />
         </section>
 
-        {/* 4️⃣ À PROPOS */}
+        {/* 4️⃣ À PROPOS - Enrichi avec visuels */}
         <section 
-          className="section-premium py-32"
+          className="section-premium py-32 relative overflow-hidden"
           style={{ 
             background: isDarkMode 
               ? '#0B0B0C'
               : '#FFFFFF'
           }}
         >
-          <div className="container-refined">
-            <div className="max-w-5xl mx-auto text-center">
+          {/* Effet de fond subtil */}
+          <div className="absolute inset-0 opacity-5">
+            <div className="absolute top-20 right-20 w-96 h-96 rounded-full" style={{ background: '#C0C0C0', filter: 'blur(100px)' }} />
+            <div className="absolute bottom-20 left-20 w-96 h-96 rounded-full" style={{ background: '#E0E0E0', filter: 'blur(100px)' }} />
+          </div>
+
+          <div className="container-refined relative z-10">
+            {/* Titre principal */}
+            <div className="text-center mb-16">
+              <div 
+                className="inline-flex items-center gap-3 mb-6 px-6 py-3 rounded-full"
+                style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  backdropFilter: 'blur(12px)'
+                }}
+              >
+                <Sparkles size={24} style={{ color: '#C0C0C0' }} className="animate-pulse" />
+                <span 
+                  style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 500,
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                >
+                  Pourquoi Gliitz ?
+                </span>
+              </div>
+
               <h2 
-                className="gliitz-title-section mb-8"
+                className="text-4xl md:text-5xl font-bold mb-6"
                 style={{ 
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
                   color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                 }}
               >
-                Qui sommes-nous ?
+                L'avenir de la conciergerie de luxe
               </h2>
               
-              <div className="space-y-6 mb-12 text-left md:text-center">
-                <p 
-                  className="gliitz-body text-lg leading-relaxed"
-                  style={{ 
-                    color: isDarkMode ? '#E0E0E0' : '#666666'
+              <p 
+                className="text-xl max-w-3xl mx-auto"
+                style={{ 
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 300,
+                  color: isDarkMode ? '#E0E0E0' : '#666666'
+                }}
+              >
+                Une intelligence artificielle au service de vos expériences premium
+              </p>
+            </div>
+
+            {/* Grille d'avantages avec icônes et animations */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+              {[
+                {
+                  icon: '🤖',
+                  title: 'Intelligence Artificielle',
+                  desc: 'Notre IA analyse vos préférences en temps réel pour vous recommander les expériences qui vous correspondent vraiment.'
+                },
+                {
+                  icon: '⚡',
+                  title: 'Instantané & Personnalisé',
+                  desc: 'Réponses immédiates, disponibles 24/7. Chaque recommandation est unique et adaptée à vos goûts.'
+                },
+                {
+                  icon: '🌟',
+                  title: 'Accès Exclusif',
+                  desc: 'Restaurants étoilés, beach clubs VIP, yachts privés, villas de luxe - nous ouvrons toutes les portes.'
+                },
+                {
+                  icon: '🎯',
+                  title: 'Conciergerie Complète',
+                  desc: 'De la réservation au service après-vente, nous gérons tout. Vous profitez, nous nous occupons du reste.'
+                },
+                {
+                  icon: '💎',
+                  title: 'Réseau Premium',
+                  desc: 'Plus de 500 partenaires triés sur le volet : les meilleurs établissements de Marbella et au-delà.'
+                },
+                {
+                  icon: '🌍',
+                  title: 'Bientôt Partout',
+                  desc: 'Marbella aujourd\'hui, Mykonos, Ibiza, Saint-Tropez et le monde demain. Votre conciergerie vous suit partout.'
+                }
+              ].map((item, idx) => (
+                <div
+                  key={idx}
+                  className="card-gliitz text-center hover-lift-refined animate-fade-in"
+                  style={{ animationDelay: `${idx * 0.1}s` }}
+                >
+                  <div 
+                    className="text-6xl mb-4 animate-float-gentle"
+                    style={{ animationDelay: `${idx * 0.2}s` }}
+                  >
+                    {item.icon}
+                  </div>
+                  <h3 
+                    className="text-xl font-bold mb-3"
+                    style={{
+                      fontFamily: 'Playfair Display, serif',
+                      fontWeight: 600,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    }}
+                  >
+                    {item.title}
+                  </h3>
+                  <p 
+                    className="text-sm leading-relaxed"
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontWeight: 400,
+                      color: isDarkMode ? '#E0E0E0' : '#666666'
+                    }}
+                  >
+                    {item.desc}
+                  </p>
+                </div>
+              ))}
+            </div>
+
+            {/* Image illustrative avec texte */}
+            <div className="max-w-4xl mx-auto">
+              <div 
+                className="relative rounded-3xl overflow-hidden"
+                style={{
+                  height: '400px',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.2)'
+                }}
+              >
+                <div 
+                  className="absolute inset-0"
+                  style={{
+                    backgroundImage: 'url("https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                />
+                <div 
+                  className="absolute inset-0 flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%)'
                   }}
                 >
-                  <strong style={{ fontWeight: 600, color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}>Gliitz</strong> est votre conciergerie virtuelle de luxe, 
-                  propulsée par une intelligence artificielle de pointe. Nous combinons la technologie 
-                  la plus avancée avec une connaissance approfondie de Marbella et de la Costa del Sol.
-                </p>
-                
-                <p 
-                  className="gliitz-body text-lg leading-relaxed"
-                  style={{ 
-                    color: isDarkMode ? '#E0E0E0' : '#666666'
-                  }}
-                >
-                  Notre mission : <strong style={{ fontWeight: 600, color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}>sublimer chaque instant</strong> de votre séjour. 
-                  Que vous recherchiez un restaurant gastronomique, une villa de luxe, un yacht privé, 
-                  une soirée VIP ou un service sur mesure, notre IA anticipe vos désirs et vous guide 
-                  vers les expériences les plus exclusives.
-                </p>
-                
-                <p 
-                  className="gliitz-body text-lg leading-relaxed"
-                  style={{ 
-                    color: isDarkMode ? '#E0E0E0' : '#666666'
-                  }}
-                >
-                  Disponible <strong style={{ fontWeight: 600, color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}>24/7</strong>, 
-                  notre assistant intelligent apprend de vos préférences pour vous offrir 
-                  des recommandations toujours plus personnalisées. Bienvenue dans l'avenir de la conciergerie de luxe.
-                </p>
+                  <div className="text-center px-6">
+                    <h3 
+                      className="text-4xl font-bold mb-4"
+                      style={{
+                        fontFamily: 'Playfair Display, serif',
+                        color: '#FFFFFF'
+                      }}
+                    >
+                      Vivez Marbella autrement
+                    </h3>
+                    <p 
+                      className="text-xl"
+                      style={{
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 300,
+                        color: '#E0E0E0'
+                      }}
+                    >
+                      Avec Gliitz, chaque moment devient exceptionnel
+                    </p>
+                  </div>
+                </div>
               </div>
-              
-              <button className="btn-gliitz-secondary inline-flex items-center gap-2">
-                En savoir plus
-                <ArrowRight size={18} strokeWidth={1.5} />
-              </button>
             </div>
           </div>
         </section>

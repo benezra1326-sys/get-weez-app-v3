@@ -7,7 +7,7 @@ import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
-import FloatingChatButton from '../components/ui/FloatingChatButton'
+// FloatingChatButton supprimé pour éviter les doublons
 import UltraSimpleButton from '../components/ui/UltraSimpleButton'
 import TestButton from '../components/ui/TestButton'
 import { useEffect, useState } from 'react'
