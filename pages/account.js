@@ -44,7 +44,7 @@ function AccountContent({ user, setUser }) {
   }
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: isDarkMode ? '#0a0a0f' : '#f9fafb' }}>
+    <div className="min-h-screen" style={{ backgroundColor: isDarkMode ? '#0B0B0C' : '#F8F8F8' }}>
         <HeaderGliitz 
           user={user} 
           setUser={setUser}
@@ -57,13 +57,26 @@ function AccountContent({ user, setUser }) {
           user={user} 
         />
         
-        <main className="container mx-auto px-4 py-6">
+        <main className="container mx-auto px-4 py-12">
             {/* Header simplifié - PARFAITEMENT centré */}
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold bg-gradient-to-r from-purple-500 to-violet-600 bg-clip-text text-transparent mb-3">
+            <div className="text-center mb-12">
+              <h1 
+                className="text-4xl font-bold mb-3"
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                }}
+              >
                 Mon Compte
               </h1>
-              <p className="text-lg" style={{ color: isDarkMode ? '#9CA3AF' : '#6B7280' }}>
+              <p 
+                className="text-lg"
+                style={{ 
+                  fontFamily: 'Poppins, sans-serif',
+                  color: isDarkMode ? '#E0E0E0' : '#666666'
+                }}
+              >
                 Profil et préférences
               </p>
             </div>
@@ -74,15 +87,27 @@ function AccountContent({ user, setUser }) {
               <div className="absolute -top-20" id="scroll-anchor"></div>
               
               {/* Section 1: Mon Profil */}
-              <section id="profile" className="rounded-2xl p-6 shadow-lg border" style={{
-                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
-                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
-              }}>
+              <section id="profile" className="card-gliitz rounded-2xl hover-lift-refined">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
-                    <User className="w-5 h-5 text-gray-600" />
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                    style={{
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
+                      boxShadow: '0 4px 12px rgba(192,192,192,0.3)'
+                    }}
+                  >
+                    <User className="w-5 h-5" style={{ color: '#0B0B0C' }} />
                   </div>
-                  <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Mon Profil</h2>
+                  <h2 
+                    className="text-xl font-bold"
+                    style={{ 
+                      fontFamily: 'Playfair Display, serif',
+                      fontWeight: 600,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    }}
+                  >
+                    Mon Profil
+                  </h2>
                 </div>
                 <AccountInfo 
                   user={user} 
@@ -92,12 +117,15 @@ function AccountContent({ user, setUser }) {
               </section>
 
               {/* Section 2: Notifications */}
-              <section id="notifications" className="rounded-2xl p-6 shadow-lg border" style={{
-                backgroundColor: isDarkMode ? 'rgba(31, 41, 55, 0.8)' : '#ffffff',
-                borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
-              }}>
+              <section id="notifications" className="card-gliitz rounded-2xl hover-lift-refined">
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div 
+                    className="w-10 h-10 rounded-lg flex items-center justify-center mr-3"
+                    style={{
+                      background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
+                      boxShadow: '0 4px 12px rgba(192,192,192,0.3)'
+                    }}
+                  >
                     <Bell className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Notifications</h2>
@@ -111,7 +139,7 @@ function AccountContent({ user, setUser }) {
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
               }}>
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-100 to-gray-100 rounded-lg flex items-center justify-center mr-3">
                     <Heart className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Favoris</h2>
@@ -125,7 +153,7 @@ function AccountContent({ user, setUser }) {
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
               }}>
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-100 to-gray-100 rounded-lg flex items-center justify-center mr-3">
                     <Users className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Historique Chat</h2>
@@ -139,7 +167,7 @@ function AccountContent({ user, setUser }) {
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
               }}>
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-100 to-gray-100 rounded-lg flex items-center justify-center mr-3">
                     <Settings className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Langue</h2>
@@ -153,7 +181,7 @@ function AccountContent({ user, setUser }) {
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
               }}>
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-100 to-gray-100 rounded-lg flex items-center justify-center mr-3">
                     <Settings className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Paramètres</h2>
@@ -167,7 +195,7 @@ function AccountContent({ user, setUser }) {
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
               }}>
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-100 to-gray-100 rounded-lg flex items-center justify-center mr-3">
                     <Gift className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Promotions</h2>
@@ -181,7 +209,7 @@ function AccountContent({ user, setUser }) {
                 borderColor: isDarkMode ? 'rgba(75, 85, 99, 0.5)' : '#e5e7eb'
               }}>
                 <div className="flex items-center mb-4">
-                  <div className="w-10 h-10 bg-gradient-to-r from-purple-100 to-blue-100 rounded-lg flex items-center justify-center mr-3">
+                  <div className="w-10 h-10 bg-gradient-to-r from-gray-100 to-gray-100 rounded-lg flex items-center justify-center mr-3">
                     <Users className="w-5 h-5 text-gray-600" />
                   </div>
                   <h2 className="text-xl font-bold" style={{ color: isDarkMode ? '#FFFFFF' : '#1F2937' }}>Parrainage</h2>

@@ -644,51 +644,45 @@ const Home = memo(({ user, setUser }) => {
               ))}
             </div>
 
-            {/* Image illustrative avec texte */}
+            {/* CTA visuel - Pourquoi utiliser Gliitz */}
             <div className="max-w-4xl mx-auto">
               <div 
-                className="relative rounded-3xl overflow-hidden"
+                className="card-gliitz p-12 text-center"
                 style={{
-                  height: '400px',
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.2)'
+                  background: 'rgba(255,255,255,0.08)',
+                  backdropFilter: 'blur(20px)'
                 }}
               >
-                <div 
-                  className="absolute inset-0"
+                <div className="text-6xl mb-6">✨</div>
+                <h3 
+                  className="text-3xl font-bold mb-4"
                   style={{
-                    backgroundImage: 'url("https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2000")',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                  }}
-                />
-                <div 
-                  className="absolute inset-0 flex items-center justify-center"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0.3) 100%)'
+                    fontFamily: 'Playfair Display, serif',
+                    fontWeight: 600,
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                   }}
                 >
-                  <div className="text-center px-6">
-                    <h3 
-                      className="text-4xl font-bold mb-4"
-                      style={{
-                        fontFamily: 'Playfair Display, serif',
-                        color: '#FFFFFF'
-                      }}
-                    >
-                      Vivez Marbella autrement
-                    </h3>
-                    <p 
-                      className="text-xl"
-                      style={{
-                        fontFamily: 'Poppins, sans-serif',
-                        fontWeight: 300,
-                        color: '#E0E0E0'
-                      }}
-                    >
-                      Avec Gliitz, chaque moment devient exceptionnel
-                    </p>
-                  </div>
-                </div>
+                  Prêt à transformer vos expériences ?
+                </h3>
+                <p 
+                  className="text-lg mb-8 max-w-2xl mx-auto"
+                  style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 400,
+                    color: isDarkMode ? '#E0E0E0' : '#666666'
+                  }}
+                >
+                  Laissez notre IA orchestrer vos moments d'exception. 
+                  Une simple question, des milliers de possibilités.
+                </p>
+                <button 
+                  onClick={handleOpenChat}
+                  className="btn-gliitz-primary inline-flex items-center gap-3"
+                >
+                  <MessageCircle size={20} />
+                  Commencer maintenant
+                  <ArrowRight size={18} />
+                </button>
               </div>
             </div>
           </div>
