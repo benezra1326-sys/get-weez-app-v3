@@ -192,11 +192,13 @@ const Home = memo(({ user, setUser }) => {
 
               {/* Titre principal */}
               <h1 
-                className="gliitz-title-hero mb-8 animate-fade-in"
+                className="gliitz-title-hero mb-8 animate-fade-in px-4"
                 style={{ 
                   maxWidth: '900px',
                   margin: '0 auto 2rem auto',
-                  textShadow: '0 0 16px rgba(0,0,0,0.45)'
+                  textShadow: '0 0 16px rgba(0,0,0,0.45)',
+                  fontSize: 'clamp(2rem, 5vw, 3.5rem)',
+                  lineHeight: '1.2'
                 }}
               >
                 Laissez Gliitz sublimer vos envies ✨
@@ -204,13 +206,15 @@ const Home = memo(({ user, setUser }) => {
 
               {/* Sous-titre */}
               <p 
-                className="gliitz-subtitle mb-12 animate-fade-in"
+                className="gliitz-subtitle mb-12 animate-fade-in px-4"
                 style={{ 
                   maxWidth: '700px',
                   margin: '0 auto 3rem auto',
                   color: '#E0E0E0',
                   fontWeight: 300,
-                  animationDelay: '0.2s'
+                  animationDelay: '0.2s',
+                  fontSize: 'clamp(1rem, 3vw, 1.25rem)',
+                  lineHeight: '1.6'
                 }}
               >
                 Votre concierge IA de luxe, toujours à vos côtés pour des expériences d'exception.
