@@ -192,30 +192,28 @@ const Home = memo(({ user, setUser }) => {
 
               {/* Titre principal */}
               <h1 
-                className="gliitz-title-hero mb-8"
+                className="gliitz-title-hero mb-8 animate-fade-in"
                 style={{ 
                   maxWidth: '900px',
-                  margin: '0 auto 2rem auto'
+                  margin: '0 auto 2rem auto',
+                  textShadow: '0 0 16px rgba(0,0,0,0.45)'
                 }}
               >
-                Votre assistant personnel intelligent,
-                <br />
-                100% gratuit
+                Laissez Gliitz sublimer vos envies ✨
               </h1>
 
               {/* Sous-titre */}
               <p 
-                className="gliitz-subtitle mb-12"
+                className="gliitz-subtitle mb-12 animate-fade-in"
                 style={{ 
                   maxWidth: '700px',
                   margin: '0 auto 3rem auto',
                   color: '#E0E0E0',
-                  fontWeight: 300
+                  fontWeight: 300,
+                  animationDelay: '0.2s'
                 }}
               >
-                Gliitz, la conciergerie IA qui répond à tous vos besoins,
-                <br />
-                instantanément. ✨
+                Votre concierge IA de luxe, toujours à vos côtés pour des expériences d'exception.
               </p>
 
               {/* CTA Button */}
@@ -291,22 +289,47 @@ const Home = memo(({ user, setUser }) => {
           }}
         >
           <div className="container mx-auto px-4">
+            {/* Filtres dynamiques */}
+            <div className="max-w-4xl mx-auto mb-12">
+              <div 
+                className="glass-refined p-6 rounded-2xl flex flex-wrap gap-4 justify-center items-center"
+                style={{
+                  background: 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(255,255,255,0.2)',
+                  backdropFilter: 'blur(14px)'
+                }}
+              >
+                {[
+                  { name: 'Géolocalisation', icon: '📍' },
+                  { name: 'Prix', icon: '💰' },
+                  { name: 'Note', icon: '⭐' },
+                  { name: 'Recommandés par Gliitz', icon: '✨' }
+                ].map((filter, idx) => (
+                  <button
+                    key={idx}
+                    className="btn-gliitz-secondary px-4 py-2 text-sm flex items-center gap-2"
+                  >
+                    <span>{filter.icon}</span>
+                    <span>{filter.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
             {/* En-tête section */}
             <div className="text-center mb-12">
               <h2 
-                className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4"
+                className="gliitz-title-section"
                 style={{ 
-                  fontFamily: 'var(--font-family-display)',
-                  color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-black)'
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                 }}
               >
                 Nos recommandations personnalisées
               </h2>
               <p 
-                className="text-lg"
+                className="gliitz-subtitle"
                 style={{ 
-                  fontFamily: 'var(--font-family-primary)',
-                  color: 'var(--color-text-secondary)'
+                  color: isDarkMode ? '#E0E0E0' : '#666666'
                 }}
               >
                 Découvrez les meilleurs établissements, événements et services de Marbella
@@ -510,7 +533,12 @@ const Home = memo(({ user, setUser }) => {
         </section>
 
         {/* 3️⃣ PARTENAIRES */}
-        <section className="section-glass py-16">
+        <section 
+          className="py-16"
+          style={{
+            background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+          }}
+        >
           <BrandCarousel />
         </section>
 
