@@ -23,7 +23,27 @@ const Home = memo(({ user, setUser }) => {
   const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isChatOpen, setIsChatOpen] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { isDarkMode, toggleTheme, isLoaded } = useTheme()
+
+  // Images luxueuses de Marbella
+  const luxuryImages = [
+    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071', // Villa de luxe avec piscine
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070', // Rooftop luxe
+    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070', // Voiture de luxe
+    'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2025', // Piscine infinity moderne
+    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?q=80&w=2032', // Yacht de luxe
+    'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?q=80&w=2070', // Restaurant luxe avec vue
+  ]
+
+  // Carrousel automatique des images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % luxuryImages.length)
+    }, 5000) // Change toutes les 5 secondes
+
+    return () => clearInterval(interval)
+  }, [luxuryImages.length])
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen((prev) => !prev)
@@ -65,32 +85,53 @@ const Home = memo(({ user, setUser }) => {
 
       {/* Main Content */}
       <main className="w-full">
-        {/* 1️⃣ HERO BANNER - Chat IA */}
+        {/* 1️⃣ HERO BANNER - Chat IA avec carrousel d'images luxe */}
         <section 
           className="relative w-full overflow-hidden"
           style={{
-            minHeight: '600px',
+            minHeight: '700px',
             background: '#0B0B0C',
           }}
         >
-          {/* Image de fond */}
-          <div 
-            className="absolute inset-0 z-0"
-            style={{
-              backgroundImage: 'url("https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070")',
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              opacity: 1,
-            }}
-          />
+          {/* Carrousel d'images de fond */}
+          {luxuryImages.map((image, index) => (
+            <div 
+              key={index}
+              className="absolute inset-0 z-0 transition-opacity duration-1000"
+              style={{
+                backgroundImage: `url("${image}")`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                opacity: index === currentImageIndex ? 1 : 0,
+              }}
+            />
+          ))}
 
           {/* Overlay gradient */}
           <div 
             className="absolute inset-0 z-10"
             style={{
-              background: 'rgba(0,0,0,0.25)',
+              background: 'rgba(0,0,0,0.35)',
             }}
           />
+
+          {/* Indicateurs de carrousel */}
+          <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30 flex gap-2">
+            {luxuryImages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentImageIndex(index)}
+                className="w-2 h-2 rounded-full transition-all duration-300"
+                style={{
+                  background: index === currentImageIndex 
+                    ? 'linear-gradient(135deg, #E5E5E5, #C0C0C0)'
+                    : 'rgba(255,255,255,0.3)',
+                  transform: index === currentImageIndex ? 'scale(1.5)' : 'scale(1)',
+                  boxShadow: index === currentImageIndex ? '0 0 10px rgba(192,192,192,0.6)' : 'none'
+                }}
+              />
+            ))}
+          </div>
 
           {/* Contenu Hero */}
           <div className="relative z-20 container mx-auto px-4 py-24 lg:py-32">
