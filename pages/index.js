@@ -294,12 +294,12 @@ const Home = memo(({ user, setUser }) => {
 
         {/* 2️⃣ SUGGESTIONS PERSONNALISÉES */}
         <section 
-          className="section-light py-20"
+          className="section-spacing"
           style={{ 
             background: isDarkMode ? 'var(--gliitz-black)' : 'var(--gliitz-gray-light)' 
           }}
         >
-          <div className="container mx-auto px-4">
+          <div className="gliitz-container">
             {/* En-tête section */}
             <div className="text-center mb-12">
               <h2 
@@ -518,7 +518,7 @@ const Home = memo(({ user, setUser }) => {
 
         {/* 3️⃣ PARTENAIRES */}
         <section 
-          className="py-8"
+          className="section-spacing"
           style={{
             background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
           }}

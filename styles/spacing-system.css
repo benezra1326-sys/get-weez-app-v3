@@ -1,0 +1,79 @@
+/* 🎨 SYSTÈME D'ESPACEMENT UNIFORME GLIITZ */
+
+/* Espacements standardisés pour toutes les sections */
+.section-spacing {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing {
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-spacing {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
+  }
+}
+
+/* Espacement entre éléments dans une section */
+.element-spacing {
+  margin-bottom: 2rem;
+}
+
+@media (min-width: 768px) {
+  .element-spacing {
+    margin-bottom: 3rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .element-spacing {
+    margin-bottom: 4rem;
+  }
+}
+
+/* Titre de section */
+.section-title-spacing {
+  margin-bottom: 3rem;
+}
+
+@media (min-width: 768px) {
+  .section-title-spacing {
+    margin-bottom: 4rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .section-title-spacing {
+    margin-bottom: 5rem;
+  }
+}
+
+/* Container uniformisé */
+.gliitz-container {
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+@media (min-width: 768px) {
+  .gliitz-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .gliitz-container {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
