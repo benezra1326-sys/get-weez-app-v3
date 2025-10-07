@@ -99,23 +99,28 @@ const DesktopNavigation = memo(({ user, setUser }) => {
       >
         {/* Logo et navigation */}
         <div className="flex items-center justify-between px-6 py-4">
-          {/* Logo Gliitz */}
-          <Link href="/" className="flex items-center group">
-            <div 
-              className="px-6 py-3 rounded-xl transition-all duration-300 group-hover:scale-105"
+          {/* Logo Gliitz - Sans fond */}
+          <div className="flex items-center gap-6">
+            <Link href="/" className="flex items-center group transition-all duration-300 hover:scale-105">
+              <GliitzLogo size="text-4xl" />
+            </Link>
+            
+            {/* Bouton Demo - Même style que logo */}
+            <Link 
+              href="/chat"
+              className="transition-all duration-300 hover:scale-105"
               style={{
-                background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-                borderRadius: '16px',
-                boxShadow: '0 8px 32px rgba(192, 192, 192, 0.3)',
-                minWidth: '180px',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
+                fontFamily: 'Playfair Display, serif',
+                fontSize: '1.2rem',
+                fontWeight: '600',
+                color: '#0B0B0C',
+                letterSpacing: '-0.01em',
+                padding: '0'
               }}
             >
-              <GliitzLogo size="text-4xl" />
-            </div>
-          </Link>
+              Demo
+            </Link>
+          </div>
 
           {/* Menu de navigation central */}
           <nav className="desktop-nav">

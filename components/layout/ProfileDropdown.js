@@ -189,13 +189,13 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             }, 200) // 200ms de protection
           }
         }}
-        className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift text-white"
+        className="flex items-center gap-1 lg:gap-2 p-1.5 lg:p-2 rounded-xl transition-all duration-300 group animate-hover-lift"
         style={{
-          background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
-          boxShadow: '0 4px 15px rgba(192, 192, 192, 0.3)',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
+          background: 'transparent',
+          border: 'none',
           flexShrink: 0,
-          minWidth: 'fit-content'
+          minWidth: 'fit-content',
+          color: '#0B0B0C'
         }}
       >
         {/* Indicateur de statut avec sparkle - Hidden on small mobile */}
@@ -214,7 +214,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
             minHeight: '28px',
             maxWidth: '28px',
             maxHeight: '28px',
-            background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
+            background: '#C0C0C0',
             borderRadius: '8px',
             flexShrink: 0,
             display: 'flex',
@@ -236,13 +236,13 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
         
         {/* Info utilisateur - Hidden on mobile */}
         <div className="hidden lg:block text-left">
-          <div className="text-sm font-semibold text-white">
+          <div className="text-sm font-semibold" style={{ color: '#0B0B0C' }}>
             {user?.first_name || 'Utilisateur'}
           </div>
         </div>
         
         {/* Flèche - Smaller on mobile */}
-        <ChevronDown className={`w-3 h-3 lg:w-4 lg:h-4 text-white/70 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0 }} />
+        <ChevronDown className={`w-3 h-3 lg:w-4 lg:h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} style={{ flexShrink: 0, color: '#0B0B0C' }} />
       </button>
 
       {/* Menu déroulant - Rendu via Portal dans le body */}
