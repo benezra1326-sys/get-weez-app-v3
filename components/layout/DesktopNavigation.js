@@ -99,9 +99,9 @@ const DesktopNavigation = memo(({ user, setUser }) => {
       >
         {/* Logo et navigation */}
         <div className="flex items-center justify-between px-6 py-4">
-          {/* Logo Gliitz avec bouton blanc */}
+          {/* Logo Gliitz avec bouton adaptatif */}
           <Link href="/" className="flex items-center group transition-all duration-300 hover:scale-105">
-            <GliitzLogo size="text-4xl" />
+            <GliitzLogo size="text-4xl" isDarkMode={isDarkMode} />
           </Link>
 
           {/* Menu de navigation central */}

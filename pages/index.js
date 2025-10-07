@@ -147,8 +147,8 @@ const Home = memo(({ user, setUser }) => {
             }}
           />
 
-        {/* Indicateurs de carrousel - VISIBLES */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 flex gap-3">
+        {/* Indicateurs de carrousel - MASQUÉS SUR MOBILE */}
+        <div className="hidden md:flex absolute bottom-8 left-1/2 transform -translate-x-1/2 z-50 gap-3">
           {luxuryImages.map((_, index) => (
             <button
               key={index}
@@ -161,7 +161,6 @@ const Home = memo(({ user, setUser }) => {
                 background: index === currentImageIndex
                   ? 'linear-gradient(135deg, #FFFFFF, #C0C0C0)'
                   : 'rgba(255,255,255,0.5)',
-                transform: index === currentImageIndex ? 'scale(1)' : 'scale(1)',
                 boxShadow: index === currentImageIndex 
                   ? '0 0 20px rgba(255,255,255,0.8), 0 4px 12px rgba(0,0,0,0.3)' 
                   : '0 2px 8px rgba(0,0,0,0.3)',
@@ -173,9 +172,9 @@ const Home = memo(({ user, setUser }) => {
           ))}
         </div>
 
-          {/* Contenu Hero - CENTRÉ VERTICALEMENT ET HORIZONTALEMENT */}
-          <div className="relative z-20 w-full px-4">
-            <div className="max-w-5xl mx-auto text-center">
+          {/* Contenu Hero - CENTRÉ + ADAPTÉ MOBILE */}
+          <div className="relative z-20 w-full px-4 md:px-8">
+            <div className="max-w-5xl mx-auto text-center flex flex-col items-center justify-center">
               {/* Badge "IA Powered" */}
               <div 
                 className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full"
@@ -228,14 +227,14 @@ const Home = memo(({ user, setUser }) => {
                 Votre concierge IA de luxe, toujours à vos côtés pour des expériences d'exception.
               </p>
 
-              {/* CTA Button */}
+              {/* CTA Button - ADAPTÉ MOBILE */}
               <button
                 onClick={handleOpenChat}
-                className="btn-gliitz-primary inline-flex items-center gap-3"
+                className="btn-gliitz-primary inline-flex items-center gap-2 md:gap-3 text-sm md:text-base px-6 md:px-8 py-3 md:py-4"
               >
-                <MessageCircle size={22} strokeWidth={1.5} />
+                <MessageCircle size={20} strokeWidth={1.5} className="md:w-6 md:h-6" />
                 <span>Lancer le chat</span>
-                <ArrowRight size={18} strokeWidth={1.5} />
+                <ArrowRight size={16} strokeWidth={1.5} className="md:w-5 md:h-5" />
               </button>
 
               {/* Stats rapides */}
@@ -695,7 +694,7 @@ const Home = memo(({ user, setUser }) => {
                   <MessageCircle size={20} />
                   Commencer maintenant
                   <ArrowRight size={18} />
-                </button>
+              </button>
               </div>
             </div>
           </div>

@@ -191,13 +191,15 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
         }}
         className="flex items-center gap-2 px-4 py-3 rounded-2xl transition-all duration-300 group hover:scale-105"
         style={{
-          background: 'rgba(255, 255, 255, 0.95)',
+          background: isDarkMode ? '#0B0B0C' : 'rgba(255, 255, 255, 0.95)',
           backdropFilter: 'blur(12px)',
-          border: '1px solid rgba(255, 255, 255, 0.4)',
-          boxShadow: '0 4px 20px rgba(0, 0, 0, 0.08)',
+          border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(255, 255, 255, 0.4)'}`,
+          boxShadow: isDarkMode 
+            ? '0 4px 20px rgba(192, 192, 192, 0.15)' 
+            : '0 4px 20px rgba(0, 0, 0, 0.08)',
           flexShrink: 0,
           minWidth: 'fit-content',
-          color: '#0B0B0C',
+          color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
           cursor: 'pointer'
         }}
       >
