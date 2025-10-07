@@ -10,8 +10,10 @@ const FiltersBar = ({ onFilterChange, currentSort = 'rating' }) => {
 
   const sortOptions = [
     { name: 'Meilleures notes', icon: Star, value: 'rating' },
+    { name: 'Plus de reviews', icon: Star, value: 'reviews' },
     { name: 'Prix croissant', icon: DollarSign, value: 'price-asc' },
-    { name: 'Prix décroissant', icon: DollarSign, value: 'price-desc' }
+    { name: 'Prix décroissant', icon: DollarSign, value: 'price-desc' },
+    { name: 'À proximité', icon: MapPin, value: 'location' }
   ]
 
   const handleSortChange = (sortValue) => {

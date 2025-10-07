@@ -30,6 +30,9 @@ export default function Services({ user, setUser }) {
       case 'rating':
         sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
         break
+      case 'reviews':
+        sorted.sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
+        break
       case 'price-asc':
         sorted.sort((a, b) => {
           const priceA = parseInt(a.price_range?.replace(/[^0-9]/g, '') || '0')
@@ -43,6 +46,9 @@ export default function Services({ user, setUser }) {
           const priceB = parseInt(b.price_range?.replace(/[^0-9]/g, '') || '0')
           return priceB - priceA
         })
+        break
+      case 'location':
+        sorted.sort((a, b) => (a.name || '').localeCompare(b.name || ''))
         break
       default:
         break

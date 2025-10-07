@@ -59,14 +59,13 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
 
       {/* Sidebar */}
       <div 
-        className={`fixed left-0 top-0 h-full z-40 transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-screen z-40 transition-transform duration-300 flex flex-col ${
           open ? 'translate-x-0' : '-translate-x-full md:translate-x-0'
         }`}
         style={{
           width: '280px',
           background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
-          borderRight: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
-          overflowY: 'auto'
+          borderRight: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`
         }}
       >
         <div className="flex flex-col h-full">
@@ -167,7 +166,7 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
           </div>
 
           {/* Conversation History */}
-          <div className="flex-1 px-3 py-4" style={{ overflowY: 'auto' }}>
+          <div className="flex-1 px-3 py-4 overflow-y-auto">
             <div className="flex items-center gap-2 px-4 mb-3" style={{ 
               color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' 
             }}>
@@ -218,8 +217,8 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
             )}
           </div>
 
-          {/* Profile Button at Bottom */}
-          <div className="p-4 border-t" style={{ 
+          {/* Profile Button at Bottom - Always visible */}
+          <div className="p-4 border-t flex-shrink-0" style={{ 
             borderColor: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)' 
           }}>
             <button

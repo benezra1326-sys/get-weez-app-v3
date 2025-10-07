@@ -92,11 +92,17 @@ export default function Events({ user, setUser }) {
       case 'rating':
         sorted.sort((a, b) => new Date(b.date) - new Date(a.date))
         break
+      case 'reviews':
+        sorted.sort((a, b) => (b.attendees || 0) - (a.attendees || 0))
+        break
       case 'price-asc':
         sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
         break
       case 'price-desc':
         sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
+        break
+      case 'location':
+        sorted.sort((a, b) => (a.location || '').localeCompare(b.location || ''))
         break
       default:
         break

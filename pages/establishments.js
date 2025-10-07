@@ -30,11 +30,18 @@ export default function Establishments({ user, setUser }) {
       case 'rating':
         sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
         break
+      case 'reviews':
+        sorted.sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
+        break
       case 'price-asc':
         sorted.sort((a, b) => (a.price_level || 0) - (b.price_level || 0))
         break
       case 'price-desc':
         sorted.sort((a, b) => (b.price_level || 0) - (a.price_level || 0))
+        break
+      case 'location':
+        // Tri alphabétique par quartier/location
+        sorted.sort((a, b) => (a.location || '').localeCompare(b.location || ''))
         break
       default:
         break
