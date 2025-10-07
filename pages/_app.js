@@ -3,12 +3,15 @@ import '../styles/globals.css'
 import '../styles/fonts.css'
 import '../styles/animations.css'
 import '../styles/mobile-chat.css'
+import '../styles/chat-first.css'
 import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
 import UltraSimpleFloatingButton from '../components/ui/UltraSimpleFloatingButton'
+import ChatFirstLayout from '../components/layout/ChatFirstLayout'
 import { useEffect, useState } from 'react'
+import { useRouter } from 'next/router'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
 
@@ -17,6 +20,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
 
 function MyApp({ Component, pageProps }) {
+  const router = useRouter()
   const [user, setUser] = useState({
     id: 'demo-user',
     email: 'demo@getweez.com',
@@ -25,6 +29,21 @@ function MyApp({ Component, pageProps }) {
     is_member: true
   })
   const [loading, setLoading] = useState(false)
+
+  // Pages sans layout (authentification, tests, etc.)
+  const noLayoutPages = [
+    '/login',
+    '/register',
+    '/button-debug',
+    '/debug-button-test',
+    '/simple-button-test',
+    '/ultra-simple-test',
+    '/absolute-button-test',
+    '/mobile-test',
+    '/chat-mobile-fixed',
+    '/chat-old-broken'
+  ]
+  const useLayout = router && router.pathname ? !noLayoutPages.includes(router.pathname) : true
 
   useEffect(() => {
     // Vérifier la session existante
@@ -163,15 +182,11 @@ function MyApp({ Component, pageProps }) {
 
   // Écran de chargement supprimé pour permettre l'affichage immédiat
 
+  // Temporary: disable all wrappers for debugging
   return (
-    <>
-      <ThemeProvider>
-        <MobileTouchEnhancer enableHaptics={true}>
-          <Component {...pageProps} user={user} setUser={setUser} />
-          <UltraSimpleFloatingButton />
-        </MobileTouchEnhancer>
-      </ThemeProvider>
-    </>
+    <ThemeProvider>
+      <Component {...pageProps} user={user} setUser={setUser} />
+    </ThemeProvider>
   )
 }
 
