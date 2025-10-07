@@ -71,7 +71,7 @@ const Home = memo(({ user, setUser }) => {
   }
 
   const handleOpenChat = () => {
-    router.push('/aide')
+    router.push('/chat')
   }
 
   if (!isLoaded) {
@@ -716,11 +716,26 @@ const Home = memo(({ user, setUser }) => {
         </div>
       </footer>
 
-      {/* Bouton Chat Flottant */}
+      {/* Bouton Chat Flottant - UNIQUE */}
       <button
         onClick={handleOpenChat}
-        className="fixed bottom-6 right-6 z-50 btn-silver shadow-glow-strong w-16 h-16 rounded-full flex items-center justify-center hover-lift"
-        style={{ fontSize: '24px' }}
+        className="fixed bottom-6 right-6 z-[9999] w-16 h-16 rounded-full flex items-center justify-center transition-all duration-300"
+        style={{ 
+          fontSize: '24px',
+          background: '#C0C0C0',
+          color: '#0B0B0C',
+          border: 'none',
+          boxShadow: '0 0 20px rgba(192,192,192,0.6)',
+          cursor: 'pointer'
+        }}
+        onMouseEnter={(e) => {
+          e.currentTarget.style.transform = 'scale(1.1)'
+          e.currentTarget.style.boxShadow = '0 0 30px rgba(192,192,192,0.8)'
+        }}
+        onMouseLeave={(e) => {
+          e.currentTarget.style.transform = 'scale(1)'
+          e.currentTarget.style.boxShadow = '0 0 20px rgba(192,192,192,0.6)'
+        }}
       >
         💬
       </button>
