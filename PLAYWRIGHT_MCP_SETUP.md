@@ -138,3 +138,4 @@ This setup is perfect for:
 2. Try automating a simple task like navigating to your app
 3. Use it to test your chat interface and user flows
 4. Create automated tests for critical user journeys
+
