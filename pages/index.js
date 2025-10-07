@@ -333,12 +333,16 @@ const Home = memo(({ user, setUser }) => {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="card-silver p-6 hover-lift cursor-pointer">
+                {establishments.map((item) => (
+                  <div 
+                    key={item.id} 
+                    className="card-gliitz hover-lift-refined cursor-pointer"
+                    onClick={() => router.push(`/establishment/${item.id}`)}
+                  >
                     <div 
-                      className="w-full h-48 mb-4 rounded-lg bg-gradient-to-br from-silver to-silver-light"
+                      className="w-full h-48 mb-4 rounded-lg img-gliitz"
                       style={{ 
-                        backgroundImage: 'url("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070")',
+                        backgroundImage: `url("${item.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=800'}")`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                       }}
@@ -347,24 +351,36 @@ const Home = memo(({ user, setUser }) => {
                       <h4 
                         className="text-xl font-bold"
                         style={{ 
-                          fontFamily: 'var(--font-family-display)',
-                          color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-black)'
+                          fontFamily: 'Playfair Display, serif',
+                          fontWeight: 600,
+                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                         }}
                       >
-                        Restaurant {item}
+                        {item.name}
                       </h4>
                       <div className="flex items-center gap-1">
-                        <Star size={16} className="text-accent fill-accent" />
-                        <span className="font-semibold text-silver">4.8</span>
+                        <Star size={16} style={{ color: '#C0C0C0', fill: '#C0C0C0' }} />
+                        <span 
+                          className="font-semibold"
+                          style={{ 
+                            fontFamily: 'Poppins, sans-serif',
+                            color: '#C0C0C0'
+                          }}
+                        >
+                          {item.rating || '4.8'}
+                        </span>
                       </div>
                     </div>
                     <p 
                       className="text-sm mb-4"
-                      style={{ color: 'var(--color-text-secondary)' }}
+                      style={{ 
+                        fontFamily: 'Poppins, sans-serif',
+                        color: isDarkMode ? '#E0E0E0' : '#666666'
+                      }}
                     >
-                      Cuisine méditerranéenne raffinée avec vue imprenable
+                      {item.description || item.specialties?.[0] || 'Expérience gastronomique unique'}
                     </p>
-                    <button className="btn-silver w-full">Découvrir</button>
+                    <button className="btn-gliitz-primary w-full">Découvrir</button>
                   </div>
                 ))}
               </div>
@@ -392,36 +408,40 @@ const Home = memo(({ user, setUser }) => {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="card-silver p-6 hover-lift cursor-pointer">
+                {events.map((item) => (
+                  <div key={item.id} className="card-gliitz hover-lift-refined cursor-pointer">
                     <div 
-                      className="w-full h-48 mb-4 rounded-lg bg-gradient-to-br from-silver to-silver-light"
+                      className="w-full h-48 mb-4 rounded-lg img-gliitz"
                       style={{ 
-                        backgroundImage: 'url("https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070")',
+                        backgroundImage: `url("${item.image}")`,
                         backgroundSize: 'cover',
                         backgroundPosition: 'center'
                       }}
                     />
                     <div className="flex items-center gap-2 mb-2">
-                      <span className="badge-silver">25 Jan</span>
-                      <span className="badge-silver">20:00</span>
+                      <span className="badge-gliitz">{item.date}</span>
+                      <span className="badge-gliitz">{item.time}</span>
                     </div>
                     <h4 
                       className="text-xl font-bold mb-2"
                       style={{ 
-                        fontFamily: 'var(--font-family-display)',
-                        color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-black)'
+                        fontFamily: 'Playfair Display, serif',
+                        fontWeight: 600,
+                        color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                       }}
                     >
-                      Soirée VIP {item}
+                      {item.name}
                     </h4>
                     <p 
                       className="text-sm mb-4"
-                      style={{ color: 'var(--color-text-secondary)' }}
+                      style={{ 
+                        fontFamily: 'Poppins, sans-serif',
+                        color: isDarkMode ? '#E0E0E0' : '#666666'
+                      }}
                     >
                       Une soirée exclusive dans les meilleurs clubs de Marbella
                     </p>
-                    <button className="btn-silver w-full">Réserver</button>
+                    <button className="btn-gliitz-primary w-full">Réserver</button>
                   </div>
                 ))}
               </div>
@@ -449,27 +469,38 @@ const Home = memo(({ user, setUser }) => {
                 </button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {[1, 2, 3].map((item) => (
-                  <div key={item} className="card-silver p-6 hover-lift cursor-pointer">
-                    <div className="w-16 h-16 mb-4 rounded-xl glass flex items-center justify-center text-3xl">
-                      {item === 1 ? '🚗' : item === 2 ? '✈️' : '🏠'}
+                {services.map((item) => (
+                  <div key={item.id} className="card-gliitz hover-lift-refined cursor-pointer">
+                    <div 
+                      className="w-16 h-16 mb-4 rounded-xl flex items-center justify-center text-3xl"
+                      style={{
+                        background: 'rgba(255,255,255,0.12)',
+                        border: '1px solid rgba(255,255,255,0.25)',
+                        backdropFilter: 'blur(12px)'
+                      }}
+                    >
+                      {item.icon || '✨'}
                     </div>
                     <h4 
                       className="text-xl font-bold mb-2"
                       style={{ 
-                        fontFamily: 'var(--font-family-display)',
-                        color: isDarkMode ? 'var(--gliitz-silver)' : 'var(--gliitz-black)'
+                        fontFamily: 'Playfair Display, serif',
+                        fontWeight: 600,
+                        color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                       }}
                     >
-                      Service {item}
+                      {item.name}
                     </h4>
                     <p 
                       className="text-sm mb-4"
-                      style={{ color: 'var(--color-text-secondary)' }}
+                      style={{ 
+                        fontFamily: 'Poppins, sans-serif',
+                        color: isDarkMode ? '#E0E0E0' : '#666666'
+                      }}
                     >
-                      Un service haut de gamme pour votre confort
+                      {item.description || 'Un service haut de gamme pour votre confort'}
                     </p>
-                    <button className="btn-silver w-full">Demander</button>
+                    <button className="btn-gliitz-primary w-full">Demander</button>
                   </div>
                 ))}
               </div>
