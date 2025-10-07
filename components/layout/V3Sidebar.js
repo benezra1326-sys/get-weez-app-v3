@@ -35,21 +35,21 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
 
   return (
     <>
-      {/* Toggle Button (mobile uniquement) - décalé pour ne pas chevaucher le logo */}
-      <button
-        onClick={() => toggle(!open)}
-        className="md:hidden fixed z-50 p-3 rounded-xl transition-all"
-        style={{
-          top: '1rem',
-          right: open ? 'calc(100vw - 280px + 1rem)' : '1rem',
-          background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-          backdropFilter: 'blur(10px)',
-          border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
-          color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-        }}
-      >
-        {open ? <X size={24} /> : <Menu size={24} />}
-      </button>
+      {/* Toggle Button (mobile uniquement) - seulement quand fermé */}
+      {!open && (
+        <button
+          onClick={() => toggle(true)}
+          className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl transition-all"
+          style={{
+            background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+            backdropFilter: 'blur(10px)',
+            border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
+            color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+          }}
+        >
+          <Menu size={24} />
+        </button>
+      )}
 
       {/* Overlay (mobile uniquement) */}
       {open && (
@@ -88,18 +88,33 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
                 </h1>
               </button>
               
-              {/* Toggle Theme Button */}
-              <button
-                onClick={toggleTheme}
-                className="p-2 rounded-lg transition-all"
-                style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                }}
-                title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
-              >
-                {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Toggle Theme Button */}
+                <button
+                  onClick={toggleTheme}
+                  className="p-2 rounded-lg transition-all"
+                  style={{
+                    background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                  title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
+                >
+                  {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+                </button>
+
+                {/* Close button (mobile only when open) */}
+                <button
+                  onClick={() => toggle(false)}
+                  className="md:hidden p-2 rounded-lg transition-all"
+                  style={{
+                    background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                  title="Fermer le menu"
+                >
+                  <X size={20} />
+                </button>
+              </div>
             </div>
 
             {/* Search Bar */}
