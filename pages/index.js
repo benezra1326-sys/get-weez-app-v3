@@ -26,21 +26,23 @@ const Home = memo(({ user, setUser }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const { isDarkMode, toggleTheme, isLoaded } = useTheme()
 
-  // Images luxueuses de Marbella
+  // Images services de conciergerie luxe Marbella
   const luxuryImages = [
-    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2071', // Villa de luxe avec piscine
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070', // Rooftop luxe
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2070', // Voiture de luxe
-    'https://images.unsplash.com/photo-1582719508461-905c673771fd?q=80&w=2025', // Piscine infinity moderne
+    'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2071', // Jet privé sur tarmac
+    'https://images.unsplash.com/photo-1563720360172-67b8f3dce741?q=80&w=2070', // Villa de luxe moderne avec voiture
+    'https://images.unsplash.com/photo-1556910110-a5a63dfd393c?q=80&w=2070', // Chef privé en cuisine
+    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=2070', // Beach club luxe
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070', // Rooftop au bord de l'eau (gardée)
+    'https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?q=80&w=2070', // Soirée avec DJ
+    'https://images.unsplash.com/photo-1549294413-26f195200c16?q=80&w=2070', // Supercar de luxe
     'https://images.unsplash.com/photo-1564501049412-61c2a3083791?q=80&w=2032', // Yacht de luxe
-    'https://images.unsplash.com/photo-1595576508898-0ad5c879a061?q=80&w=2070', // Restaurant luxe avec vue
   ]
 
-  // Carrousel automatique des images
+  // Carrousel automatique des images (plus lent pour apprécier le luxe)
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % luxuryImages.length)
-    }, 5000) // Change toutes les 5 secondes
+    }, 6000) // Change toutes les 6 secondes pour plus d'élégance
 
     return () => clearInterval(interval)
   }, [luxuryImages.length])
@@ -93,25 +95,36 @@ const Home = memo(({ user, setUser }) => {
             background: '#0B0B0C',
           }}
         >
-          {/* Carrousel d'images de fond */}
+          {/* Carrousel d'images de fond avec transition douce */}
           {luxuryImages.map((image, index) => (
             <div 
               key={index}
-              className="absolute inset-0 z-0 transition-opacity duration-1000"
+              className="absolute inset-0 z-0"
               style={{
                 backgroundImage: `url("${image}")`,
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 opacity: index === currentImageIndex ? 1 : 0,
+                transition: 'opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                transform: index === currentImageIndex ? 'scale(1.05)' : 'scale(1)',
+                transitionDuration: '10s'
               }}
             />
           ))}
 
-          {/* Overlay gradient */}
+          {/* Overlay gradient élégant */}
           <div 
             className="absolute inset-0 z-10"
             style={{
-              background: 'rgba(0,0,0,0.35)',
+              background: 'linear-gradient(135deg, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.25) 100%)',
+            }}
+          />
+          
+          {/* Effet de vignette subtil pour le luxe */}
+          <div 
+            className="absolute inset-0 z-10"
+            style={{
+              background: 'radial-gradient(circle at center, transparent 0%, rgba(0,0,0,0.3) 100%)',
             }}
           />
 
