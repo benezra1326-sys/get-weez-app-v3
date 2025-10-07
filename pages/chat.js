@@ -293,44 +293,52 @@ export default function Chat({ user, setUser }) {
             )}
           </div>
 
-          {/* Input zone - PLEINE LARGEUR */}
+          {/* Input zone - PLEINE LARGEUR MOBILE */}
           <div 
-            className="p-6"
+            className="p-4 md:p-6"
             style={{
               background: isDarkMode ? 'rgba(26,26,28,0.95)' : 'rgba(255,255,255,0.95)',
               borderTop: `1px solid ${isDarkMode ? 'rgba(192,192,192,0.1)' : 'rgba(192,192,192,0.2)'}`,
-              backdropFilter: 'blur(12px)'
+              backdropFilter: 'blur(12px)',
+              width: '100%'
             }}
           >
-            <div className="w-full flex gap-3">
+            <div className="w-full flex gap-2 md:gap-3">
               <input
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                placeholder="Posez votre question à Gliitz..."
+                placeholder="Posez votre question..."
                 className="flex-1 input-gliitz"
                 style={{
                   fontFamily: 'Poppins, sans-serif',
                   background: isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(255,255,255,0.5)',
                   border: '1px solid rgba(192,192,192,0.2)',
                   borderRadius: '12px',
-                  padding: '14px 20px',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  padding: '12px 16px',
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  fontSize: '14px',
+                  width: '100%'
                 }}
               />
               <button
                 onClick={handleSend}
                 disabled={!input.trim() || isLoading}
-                className="btn-gliitz-primary px-6"
+                className="btn-gliitz-primary px-4 md:px-6 flex-shrink-0"
                 style={{
-                  opacity: !input.trim() || isLoading ? 0.5 : 1
+                  opacity: !input.trim() || isLoading ? 0.5 : 1,
+                  minWidth: '48px',
+                  height: '48px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
                 {isLoading ? (
-                  <Loader2 size={20} className="animate-spin" />
+                  <Loader2 size={18} className="animate-spin" />
                 ) : (
-                  <Send size={20} />
+                  <Send size={18} />
                 )}
               </button>
             </div>
