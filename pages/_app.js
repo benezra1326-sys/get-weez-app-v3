@@ -165,52 +165,13 @@ function MyApp({ Component, pageProps }) {
 
   return (
     <>
-      <MobileTouchEnhancer enableHaptics={true}>
-        <ThemeProvider>
+      <ThemeProvider>
+        <MobileTouchEnhancer enableHaptics={true}>
           <Component {...pageProps} user={user} setUser={setUser} />
-          {/* <CookieBanner /> */}
           <TipsPopup />
-        </ThemeProvider>
-      </MobileTouchEnhancer>
-      
-      {/* FORCER le bouton directement dans le HTML - SEUL BOUTON */}
-      <div
-        id="chat-button-fixed"
-        style={{
-          position: 'fixed',
-          bottom: '20px',
-          right: '20px',
-          zIndex: 2147483647,
-          width: '56px',
-          height: '56px',
-          borderRadius: '50%',
-          background: '#C0C0C0',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          fontSize: '20px',
-          color: 'white',
-          cursor: 'pointer',
-          boxShadow: '0 8px 25px rgba(192, 192, 192, 0.6)',
-          border: 'none',
-          top: 'auto',
-          left: 'auto',
-          margin: '0',
-          padding: '0',
-          transform: 'translateZ(0)',
-          willChange: 'transform',
-          backfaceVisibility: 'hidden',
-          opacity: 1,
-          visibility: 'visible',
-          pointerEvents: 'auto'
-        }}
-        onClick={() => {
-          console.log('🖱️ Bouton HTML cliqué !')
-          alert('Bouton chat HTML cliqué !')
-        }}
-      >
-        💬
-      </div>
+          <FloatingChatButton />
+        </MobileTouchEnhancer>
+      </ThemeProvider>
     </>
   )
 }
