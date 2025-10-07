@@ -7,9 +7,7 @@ import '../lib/i18n'
 import { MobileTouchEnhancer } from '../components/mobile/MobileTouchEnhancements'
 import CookieBanner from '../components/ui/CookieBanner'
 import TipsPopup from '../components/ui/TipsPopup'
-// FloatingChatButton supprimé pour éviter les doublons
-import UltraSimpleButton from '../components/ui/UltraSimpleButton'
-import TestButton from '../components/ui/TestButton'
+// Boutons de test supprimés pour production
 import { useEffect, useState } from 'react'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'

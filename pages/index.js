@@ -43,18 +43,19 @@ const Home = memo(({ user, setUser }) => {
     ])
   }, [])
 
-  // Images ULTRA-LUXE services de conciergerie Marbella
+  // Images ULTRA-LUXE - Vraies expériences Gliitz
   const luxuryImages = [
-    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2400', // Villa luxe piscine infinity
-    'https://images.unsplash.com/photo-1617806118233-18e1de247200?q=80&w=2400', // Lamborghini devant villa
-    'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2400', // Jet privé
-    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=2400', // Beach club luxe mer
-    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2400', // Rooftop au bord de l'eau 
-    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2400', // Soirée DJ luxe
-    'https://images.unsplash.com/photo-1583094022700-7ff4a6564001?q=80&w=2400', // Hélicoptère luxe
-    'https://images.unsplash.com/photo-1564501049412-61c2a3083791?q=80&w=2400', // Yacht de luxe
-    'https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?q=80&w=2400', // Supercar Ferrari/Porsche
-    'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2400', // Restaurant gastronomique luxe
+    'https://images.unsplash.com/photo-1559827260-dc66d52bef19?q=80&w=2400', // Petit-déjeuner beach club mer
+    'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?q=80&w=2400', // Voitures luxe alignées hôtel
+    'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?q=80&w=2400', // Yacht champagne sunset
+    'https://images.unsplash.com/photo-1540962351504-03099e0a754b?q=80&w=2400', // Jet privé intérieur
+    'https://images.unsplash.com/photo-1613490493576-7fde63acd811?q=80&w=2400', // Villa piscine infinity
+    'https://images.unsplash.com/photo-1470337458703-46ad1756a187?q=80&w=2400', // Dîner romantique bord de mer
+    'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?q=80&w=2400', // Soirée DJ exclusive
+    'https://images.unsplash.com/photo-1519671482749-fd09be7ccebf?q=80&w=2400', // EVJF yacht amies
+    'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2400', // EVG limousine club VIP
+    'https://images.unsplash.com/photo-1556910110-a5a63dfd393c?q=80&w=2400', // Chef privé villa
+    'https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2400', // Garde du corps VIP
   ]
 
   // Carrousel automatique des images (plus lent pour apprécier le luxe)
