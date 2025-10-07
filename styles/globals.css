@@ -245,10 +245,10 @@ body {
   --color-primary-dark: #A0A0A0;      /* Argent foncé */
   --color-primary-darker: #808080;     /* Argent très foncé */
   
-  /* === COULEURS ACCENT (Or pour touches luxe) === */
-  --color-accent: #F59E0B;            /* Or luxueux */
-  --color-accent-light: #FCD34D;      /* Or clair */
-  --color-accent-dark: #D97706;       /* Or foncé */
+  /* === COULEURS ACCENT (Argenté aussi) === */
+  --color-accent: #C0C0C0;            /* Argent */
+  --color-accent-light: #E8E8E8;      /* Argent clair */
+  --color-accent-dark: #A0A0A0;       /* Argent foncé */
   
   /* === SURFACES === */
   --color-surface: #FFFFFF;           /* Surface principale */
@@ -269,9 +269,9 @@ body {
   
   /* === ÉTATS === */
   --color-success: #10B981;           /* Succès */
-  --color-warning: #F59E0B;           /* Attention */
+  --color-warning: #C0C0C0;           /* Attention - argenté */
   --color-error: #EF4444;             /* Erreur */
-  --color-info: #3B82F6;              /* Information */
+  --color-info: #C0C0C0;              /* Information - argenté */
   
   /* === TYPOGRAPHIE GLIITZ === */
   --font-family-primary: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -298,8 +298,8 @@ body {
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  --shadow-glow: 0 0 20px rgba(139, 92, 246, 0.3);
-  --shadow-glow-accent: 0 0 20px rgba(245, 158, 11, 0.3);
+  --shadow-glow: 0 0 20px rgba(192, 192, 192, 0.4);
+  --shadow-glow-accent: 0 0 20px rgba(192, 192, 192, 0.5);
   
   /* === BREAKPOINTS === */
   --breakpoint-sm: 640px;
@@ -423,9 +423,9 @@ body {
   width: 60px !important;
   height: 60px !important;
   border-radius: 50% !important;
-  background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+  background: linear-gradient(135deg, #E5E5E5 0%, #C0C0C0 50%, #A0A0A0 100%) !important;
   border: none !important;
-  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6) !important;
   cursor: pointer !important;
   align-items: center !important;
   justify-content: center !important;
@@ -790,7 +790,7 @@ body {
   }
   
   .shadow-luxury {
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.4), 0 0 60px rgba(245, 158, 11, 0.2);
+    box-shadow: 0 0 30px rgba(192, 192, 192, 0.4), 0 0 60px rgba(192, 192, 192, 0.2);
   }
   
   /* === RESPONSIVE TYPOGRAPHY === */
@@ -1073,7 +1073,7 @@ body {
   
   .input-premium:focus {
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.1);
     outline: none;
     background: var(--color-surface-elevated);
   }
@@ -1201,7 +1201,7 @@ body {
 
 /* Selection styles */
 ::selection {
-  background: rgba(59, 130, 246, 0.3);
+  background: rgba(192, 192, 192, 0.3);
   color: var(--color-text-primary);
 }
 
@@ -1391,7 +1391,7 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+  background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.1), transparent);
   transition: left 0.6s ease;
   z-index: 4;
   pointer-events: none;
@@ -1403,10 +1403,10 @@ body {
 
 @keyframes banner-pulse-glow {
   0%, 100% {
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 5px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15), 0 0 5px rgba(192, 192, 192, 0.2);
   }
   50% {
-    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(139, 92, 246, 0.4), 0 0 30px rgba(139, 92, 246, 0.2);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.25), 0 0 20px rgba(192, 192, 192, 0.4), 0 0 30px rgba(192, 192, 192, 0.2);
   }
 }
 
@@ -1454,7 +1454,7 @@ body {
 }
 
 .uniform-banner .banner-badge {
-  background: linear-gradient(135deg, #FDE047, #FACC15, #F59E0B);
+  background: linear-gradient(135deg, #E5E5E5, #C0C0C0, #A0A0A0);
   color: #000000;
   font-size: 12px;
   font-weight: bold;
@@ -1517,14 +1517,14 @@ body {
 }
 
 .uniform-banner .banner-button.primary {
-  background: linear-gradient(135deg, #3B82F6, #2563EB);
+  background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
   color: white !important;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+  box-shadow: 0 4px 12px rgba(192, 192, 192, 0.4);
 }
 
 .uniform-banner .banner-button.primary:hover {
   background: linear-gradient(135deg, #2563EB, #1D4ED8);
-  box-shadow: 0 6px 16px rgba(59, 130, 246, 0.6);
+  box-shadow: 0 6px 16px rgba(192, 192, 192, 0.6);
   transform: scale(1.05);
 }
 
@@ -1570,7 +1570,7 @@ body:not(.dark) .filters-section {
 body.dark .filters-section,
 [data-theme="dark"] .filters-section {
   background: rgba(31, 41, 55, 0.98) !important;
-  box-shadow: 0 8px 32px rgba(139, 92, 246, 0.2) !important;
+  box-shadow: 0 8px 32px rgba(192, 192, 192, 0.2) !important;
 }
 
 /* Liste des établissements en dessous */
@@ -1607,8 +1607,8 @@ footer {
   width: 56px !important;
   height: 56px !important;
   border-radius: 50% !important;
-  background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
-  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+  background: linear-gradient(135deg, #E5E5E5 0%, #C0C0C0 50%, #A0A0A0 100%) !important;
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6) !important;
   cursor: pointer !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1634,8 +1634,8 @@ footer {
   width: 56px !important;
   height: 56px !important;
   border-radius: 50% !important;
-  background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
-  box-shadow: 0 8px 25px rgba(168, 85, 247, 0.6) !important;
+  background: linear-gradient(135deg, #E5E5E5 0%, #C0C0C0 50%, #A0A0A0 100%) !important;
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.6) !important;
   cursor: pointer !important;
   align-items: center !important;
   justify-content: center !important;
@@ -1679,7 +1679,7 @@ footer {
   letter-spacing: 0.01em;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3);
 }
 
 .btn-event::before {
@@ -1700,7 +1700,7 @@ footer {
 .btn-event:hover {
   background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent-light) 100%);
   transform: translateY(-2px);
-  box-shadow: 0 12px 35px rgba(139, 92, 246, 0.4);
+  box-shadow: 0 12px 35px rgba(192, 192, 192, 0.4);
 }
 
 .btn-outline {
@@ -1718,7 +1718,7 @@ footer {
   background: var(--color-primary);
   color: white;
   transform: translateY(-1px);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
+  box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3);
 }
 
 /* === SCROLLBAR CUSTOM === */
