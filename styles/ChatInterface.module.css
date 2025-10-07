@@ -303,12 +303,12 @@
 }
 
 .textInput:focus.dark {
-  border-color: #3B82F6;
+  border-color: #C0C0C0;
   box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
 .textInput:focus.light {
-  border-color: #3B82F6;
+  border-color: #C0C0C0;
   box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.2), 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
@@ -328,12 +328,12 @@
 }
 
 .buttonPrimary {
-  background: linear-gradient(to right, #3B82F6, #2563EB);
+  background: linear-gradient(to right, #C0C0C0, #A0A0A0);
   box-shadow: 0 4px 12px rgba(192, 192, 192, 0.3);
 }
 
 .buttonPrimary:hover:not(:disabled) {
-  background: linear-gradient(to right, #2563EB, #1D4ED8);
+  background: linear-gradient(to right, #A0A0A0, #1D4ED8);
   box-shadow: 0 6px 16px rgba(192, 192, 192, 0.4);
 }
 

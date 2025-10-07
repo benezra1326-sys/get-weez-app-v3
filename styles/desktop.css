@@ -108,7 +108,7 @@
   }
   
   .desktop-conversation-item.active {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
     box-shadow: 0 8px 25px rgba(192, 192, 192, 0.3) !important;
   }
@@ -118,7 +118,7 @@
   .desktop-conversation-item.active:hover,
   .desktop-conversation-item.active:active,
   .desktop-conversation-item.active:focus {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
   }
   
@@ -240,7 +240,7 @@
   }
   
   .desktop-nav-link.active {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
     box-shadow: 0 8px 25px rgba(192, 192, 192, 0.4);
   }
@@ -259,7 +259,7 @@
   
   .desktop-message.user {
     margin-left: auto !important;
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
     border-bottom-right-radius: 6px !important;
   }
@@ -269,7 +269,7 @@
   .desktop-message.user:hover,
   .desktop-message.user:active,
   .desktop-message.user:focus {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
   }
   
@@ -335,7 +335,7 @@
     padding: 0.75rem !important;
     border: none !important;
     border-radius: 12px !important;
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
     cursor: pointer !important;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
@@ -353,7 +353,7 @@
   .desktop-send-button:hover,
   .desktop-send-button:active,
   .desktop-send-button:focus {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     color: white !important;
     border: none !important;
   }
@@ -384,13 +384,13 @@
   }
   
   .desktop-scrollbar::-webkit-scrollbar-thumb {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
     border-radius: 3px;
     transition: background 0.2s ease;
   }
   
   .desktop-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(135deg, #a855f7 0%, #6366f1 50%, #3b82f6 100%) !important;
+    background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 50%, #C0C0C0 100%) !important;
   }
   
   /* === ANIMATIONS DESKTOP === */

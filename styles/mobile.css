@@ -282,7 +282,7 @@
 }
 
 .mobile-button-primary {
-  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+  background: linear-gradient(135deg, #C0C0C0, #C0C0C0);
   color: white;
   box-shadow: var(--mobile-shadow-md);
 }
@@ -299,7 +299,7 @@
 
 .mobile-button-ghost {
   background: transparent;
-  color: #8B5CF6;
+  color: #C0C0C0;
   border: 1px solid rgba(192, 192, 192, 0.3);
 }
 
@@ -434,7 +434,7 @@
 
 .mobile-input:focus {
   outline: none;
-  border-color: #8B5CF6;
+  border-color: #C0C0C0;
   box-shadow: 0 0 0 3px rgba(192, 192, 192, 0.1);
 }
 
@@ -676,7 +676,7 @@
 .mobile-button:focus-visible,
 .mobile-input:focus-visible,
 .mobile-list-item:focus-visible {
-  outline: 2px solid #8B5CF6;
+  outline: 2px solid #C0C0C0;
   outline-offset: 2px;
 }
 
@@ -988,7 +988,7 @@ body.keyboard-open .mobile-messages-container {
   transform: translateX(-50%);
   width: 40px;
   height: 40px;
-  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+  background: linear-gradient(135deg, #C0C0C0, #C0C0C0);
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -1218,7 +1218,7 @@ body.keyboard-open .mobile-messages-container {
   flex: 1;
   max-width: 120px;
   padding: 12px 8px;
-  background: linear-gradient(135deg, #8B5CF6, #3B82F6);
+  background: linear-gradient(135deg, #C0C0C0, #C0C0C0);
   color: white;
   border: none;
   border-radius: 16px;
@@ -1339,7 +1339,7 @@ body.keyboard-open .mobile-messages-container {
   width: 48px !important;
   height: 48px !important;
   border-radius: 12px !important;
-  background: linear-gradient(135deg, #8B5CF6 0%, #3B82F6 100%) !important;
+  background: linear-gradient(135deg, #C0C0C0 0%, #C0C0C0 100%) !important;
   color: white !important;
   border: none !important;
   box-shadow: 0 6px 16px rgba(192, 192, 192, 0.5) !important;
