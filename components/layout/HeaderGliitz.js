@@ -101,7 +101,7 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           left: -100%;
           width: 100%;
           height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.3), transparent);
+          background: linear-gradient(90deg, transparent, rgba(192, 192, 192, 0.3), transparent);
           transition: left 0.6s ease;
           z-index: 1;
         }
@@ -111,48 +111,48 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         }
         
         .menu-link:hover {
-          background: var(--gradient-silver) !important;
-          color: var(--gliitz-black) !important;
-          border-radius: var(--radius-md);
+          background: linear-gradient(135deg, #E0E0E0, #C0C0C0) !important;
+          color: #0B0B0C !important;
+          border-radius: 12px;
           padding: 8px 16px;
           transform: scale(1.05);
           transition: all 0.3s ease;
-          box-shadow: var(--shadow-glow) !important;
+          box-shadow: 0 0 10px rgba(192,192,192,0.5) !important;
         }
         
         /* Mode sombre par défaut */
         body.dark .menu-link.active,
         .menu-link.active {
-          background: var(--gradient-silver) !important;
-          color: var(--gliitz-black) !important;
-          border-radius: var(--radius-md);
+          background: linear-gradient(135deg, #E0E0E0, #C0C0C0) !important;
+          color: #0B0B0C !important;
+          border-radius: 12px;
           padding: 8px 16px;
-          box-shadow: var(--shadow-glow-strong) !important;
-          font-weight: 600;
+          box-shadow: 0 0 15px rgba(192,192,192,0.6) !important;
+          font-weight: 500;
         }
         
         body.dark .menu-link:hover {
-          background: var(--gradient-silver) !important;
-          color: var(--gliitz-black) !important;
+          background: linear-gradient(135deg, #E0E0E0, #C0C0C0) !important;
+          color: #0B0B0C !important;
         }
         
         /* Mode clair */
         body.light .menu-link:hover {
-          background: var(--gradient-silver) !important;
-          color: var(--gliitz-black) !important;
+          background: linear-gradient(135deg, #E0E0E0, #C0C0C0) !important;
+          color: #0B0B0C !important;
         }
         
         body.light .menu-link.active {
-          background: var(--gradient-silver) !important;
-          color: var(--gliitz-black) !important;
-          border-radius: var(--radius-md);
+          background: linear-gradient(135deg, #E0E0E0, #C0C0C0) !important;
+          color: #0B0B0C !important;
+          border-radius: 12px;
           padding: 8px 16px;
-          box-shadow: var(--shadow-glow-strong) !important;
-          font-weight: 600;
+          box-shadow: 0 0 15px rgba(192,192,192,0.6) !important;
+          font-weight: 500;
         }
         
         body.light .menu-link.active span {
-          color: var(--gliitz-black) !important;
+          color: #0B0B0C !important;
         }
         
         .menu-link span {
@@ -203,17 +203,17 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
         {/* Logo Gliitz - Compact */}
         <Link href="/" className="flex items-center group" style={{ flexShrink: 0 }}>
           <div 
-            className="px-2 py-1.5 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 group-hover:scale-105 metallic shadow-glow"
+            className="px-2 py-1.5 lg:px-8 lg:py-4 rounded-lg transition-all duration-300 group-hover:scale-105"
             style={{
-              background: 'var(--gradient-silver)',
-              borderRadius: 'var(--radius-md)',
-              boxShadow: 'var(--shadow-glow)',
+              background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
+              borderRadius: '12px',
+              boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               minWidth: 'auto',
               maxWidth: 'fit-content',
-              border: '1px solid var(--gliitz-silver-light)'
+              border: 'none'
             }}
           >
             <GliitzLogo size="text-xl lg:text-5xl" />
@@ -227,13 +227,17 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           href="/" 
           className={`${getLinkClasses('/')} menu-link`}
           style={isActive('/') ? {
-            background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-            color: 'white',
-            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
+            color: '#0B0B0C',
+            borderRadius: '12px',
             padding: '8px 16px',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.4)',
-            fontWeight: '600'
-          } : {}}
+            boxShadow: '0 0 15px rgba(192,192,192,0.6)',
+            fontWeight: '500'
+          } : {
+            fontFamily: 'Poppins, sans-serif',
+            fontWeight: 500,
+            color: '#C0C0C0'
+          }}
         >
           <span style={isActive('/') ? { color: 'white', fontWeight: '600' } : {}}>
             Accueil
@@ -244,13 +248,17 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           href="/establishments" 
           className={`${getLinkClasses('/establishments')} menu-link`}
           style={isActive('/establishments') ? {
-            background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-            color: 'white',
-            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
+            color: '#0B0B0C',
+            borderRadius: '12px',
             padding: '8px 16px',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.4)',
-            fontWeight: '600'
-          } : {}}
+            boxShadow: '0 0 15px rgba(192,192,192,0.6)',
+            fontWeight: '500'
+          } : {
+            fontFamily: 'Poppins, sans-serif',
+            fontWeight: 500,
+            color: '#C0C0C0'
+          }}
         >
           <span style={isActive('/establishments') ? { color: 'white', fontWeight: '600' } : {}}>
             Établissements
@@ -261,13 +269,17 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           href="/services" 
           className={`${getLinkClasses('/services')} menu-link`}
           style={isActive('/services') ? {
-            background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-            color: 'white',
-            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
+            color: '#0B0B0C',
+            borderRadius: '12px',
             padding: '8px 16px',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.4)',
-            fontWeight: '600'
-          } : {}}
+            boxShadow: '0 0 15px rgba(192,192,192,0.6)',
+            fontWeight: '500'
+          } : {
+            fontFamily: 'Poppins, sans-serif',
+            fontWeight: 500,
+            color: '#C0C0C0'
+          }}
         >
           <span style={isActive('/services') ? { color: 'white', fontWeight: '600' } : {}}>
             Services
@@ -278,13 +290,17 @@ const HeaderGliitz = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }
           href="/events" 
           className={`${getLinkClasses('/events')} menu-link`}
           style={isActive('/events') ? {
-            background: 'linear-gradient(135deg, #8B5CF6, #3B82F6)',
-            color: 'white',
-            borderRadius: '8px',
+            background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
+            color: '#0B0B0C',
+            borderRadius: '12px',
             padding: '8px 16px',
-            boxShadow: '0 4px 15px rgba(139, 92, 246, 0.4)',
-            fontWeight: '600'
-          } : {}}
+            boxShadow: '0 0 15px rgba(192,192,192,0.6)',
+            fontWeight: '500'
+          } : {
+            fontFamily: 'Poppins, sans-serif',
+            fontWeight: 500,
+            color: '#C0C0C0'
+          }}
         >
           <span style={isActive('/events') ? { color: 'white', fontWeight: '600' } : {}}>
             Événements

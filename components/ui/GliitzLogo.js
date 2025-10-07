@@ -4,14 +4,14 @@ const GliitzLogo = ({ size = 'text-2xl', compact = false }) => {
   return (
     <div className={`${size} relative inline-block`} style={{ background: 'transparent' }}>
       <div 
-        className="relative flex items-center logo-text"
+        className="relative flex items-center"
         style={{
-          fontFamily: '"Proxima Soft Black", "Montserrat", "Proxima Nova", "Source Sans Pro", Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          fontFamily: 'Playfair Display, serif',
           fontSize: compact ? '2rem' : '2.5rem',
-          fontWeight: '900',
-          color: '#ffffff',
+          fontWeight: '600',
+          color: '#0B0B0C',
           letterSpacing: '-0.02em',
-          textShadow: '0 2px 4px rgba(0, 0, 0, 0.5)'
+          textShadow: 'none'
         }}
       >
         Gliitz

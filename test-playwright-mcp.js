@@ -74,3 +74,4 @@ testProcess.on('error', (error) => {
   console.log('❌ Error running Playwright MCP:', error.message);
 });
 
+
