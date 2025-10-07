@@ -70,9 +70,7 @@ const Home = memo(({ user, setUser }) => {
           className="relative w-full overflow-hidden"
           style={{
             minHeight: '600px',
-            background: isDarkMode 
-              ? 'linear-gradient(135deg, #0B0B0C 0%, #1A1A1C 100%)'
-              : 'linear-gradient(135deg, #F8F8F8 0%, #E8E8E8 100%)',
+            background: '#0B0B0C',
           }}
         >
           {/* Image de fond */}
@@ -82,7 +80,7 @@ const Home = memo(({ user, setUser }) => {
               backgroundImage: 'url("https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=2070")',
               backgroundSize: 'cover',
               backgroundPosition: 'center',
-              opacity: isDarkMode ? 0.3 : 0.2,
+              opacity: 1,
             }}
           />
 
@@ -90,9 +88,7 @@ const Home = memo(({ user, setUser }) => {
           <div 
             className="absolute inset-0 z-10"
             style={{
-              background: isDarkMode
-                ? 'linear-gradient(135deg, rgba(11,11,12,0.85) 0%, rgba(26,26,28,0.75) 100%)'
-                : 'linear-gradient(135deg, rgba(248,248,248,0.85) 0%, rgba(232,232,232,0.75) 100%)',
+              background: 'rgba(0,0,0,0.25)',
             }}
           />
 
@@ -100,13 +96,21 @@ const Home = memo(({ user, setUser }) => {
           <div className="relative z-20 container mx-auto px-4 py-24 lg:py-32">
             <div className="max-w-4xl mx-auto text-center">
               {/* Badge "IA Powered" */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 mb-6 glass rounded-full border border-silver">
-                <Sparkles size={16} className="text-silver animate-pulse" />
+              <div 
+                className="inline-flex items-center gap-2 px-4 py-2 mb-6 rounded-full"
+                style={{
+                  background: 'rgba(255,255,255,0.15)',
+                  border: '1px solid rgba(255,255,255,0.25)',
+                  backdropFilter: 'blur(12px)',
+                }}
+              >
+                <Sparkles size={16} style={{ color: '#FFFFFF' }} className="animate-pulse" />
                 <span 
                   className="text-sm font-medium"
                   style={{ 
-                    fontFamily: 'var(--font-family-primary)',
-                    color: 'var(--gliitz-silver)'
+                    fontFamily: 'Poppins, sans-serif',
+                    fontWeight: 500,
+                    color: '#FFFFFF'
                   }}
                 >
                   Propulsé par Intelligence Artificielle
@@ -115,26 +119,26 @@ const Home = memo(({ user, setUser }) => {
 
               {/* Titre principal */}
               <h1 
-                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6"
                 style={{ 
-                  fontFamily: 'var(--font-family-display)',
-                  background: 'var(--gradient-silver)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
+                  fontFamily: 'Playfair Display, serif',
+                  fontWeight: 600,
+                  color: '#FFFFFF',
+                  lineHeight: 1.2
                 }}
               >
                 Votre assistant personnel intelligent,
                 <br />
-                <span className="metallic">100% gratuit</span>
+                100% gratuit
               </h1>
 
               {/* Sous-titre */}
               <p 
                 className="text-lg md:text-xl lg:text-2xl mb-10 leading-relaxed"
                 style={{ 
-                  fontFamily: 'var(--font-family-primary)',
-                  color: 'var(--color-text-secondary)',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 400,
+                  color: '#E0E0E0',
                 }}
               >
                 Gliitz, la conciergerie IA qui répond à tous vos besoins,
@@ -145,7 +149,28 @@ const Home = memo(({ user, setUser }) => {
               {/* CTA Button */}
               <button
                 onClick={handleOpenChat}
-                className="btn-silver halo inline-flex items-center gap-3 px-8 py-4 text-lg hover-lift"
+                className="inline-flex items-center gap-3 px-8 py-4 text-lg"
+                style={{
+                  background: 'linear-gradient(135deg, #E0E0E0, #C0C0C0)',
+                  color: '#0B0B0C',
+                  borderRadius: '12px',
+                  fontFamily: 'Poppins, sans-serif',
+                  fontWeight: 500,
+                  border: 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #FFFFFF, #D0D0D0)'
+                  e.currentTarget.style.boxShadow = '0 0 15px rgba(192,192,192,0.5)'
+                  e.currentTarget.style.transform = 'scale(1.02)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #E0E0E0, #C0C0C0)'
+                  e.currentTarget.style.boxShadow = '0 4px 20px rgba(0,0,0,0.1)'
+                  e.currentTarget.style.transform = 'scale(1)'
+                }}
               >
                 <MessageCircle size={24} />
                 <span>Lancer le chat</span>
@@ -159,13 +184,33 @@ const Home = memo(({ user, setUser }) => {
                   { label: 'Recommandations', icon: '🎯', value: '1000+' },
                   { label: 'Utilisateurs satisfaits', icon: '⭐', value: '98%' }
                 ].map((stat, idx) => (
-                  <div key={idx} className="card-silver p-4 text-center hover-glow">
+                  <div 
+                    key={idx} 
+                    className="p-4 text-center"
+                    style={{
+                      background: 'rgba(255,255,255,0.1)',
+                      borderRadius: '20px',
+                      border: '1px solid rgba(255,255,255,0.25)',
+                      backdropFilter: 'blur(12px)',
+                      transition: 'all 0.3s ease',
+                      cursor: 'pointer'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.transform = 'translateY(-4px)'
+                      e.currentTarget.style.boxShadow = '0 4px 20px rgba(192,192,192,0.4)'
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'translateY(0)'
+                      e.currentTarget.style.boxShadow = 'none'
+                    }}
+                  >
                     <div className="text-3xl mb-2">{stat.icon}</div>
                     <div 
                       className="text-2xl font-bold mb-1"
                       style={{ 
-                        fontFamily: 'var(--font-family-display)',
-                        color: 'var(--gliitz-silver)'
+                        fontFamily: 'Playfair Display, serif',
+                        fontWeight: 600,
+                        color: '#FFFFFF'
                       }}
                     >
                       {stat.value}
@@ -173,8 +218,9 @@ const Home = memo(({ user, setUser }) => {
                     <div 
                       className="text-sm"
                       style={{ 
-                        fontFamily: 'var(--font-family-primary)',
-                        color: 'var(--color-text-muted)'
+                        fontFamily: 'Poppins, sans-serif',
+                        fontWeight: 400,
+                        color: '#E0E0E0'
                       }}
                     >
                       {stat.label}
