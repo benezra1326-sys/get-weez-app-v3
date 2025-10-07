@@ -289,33 +289,6 @@ const Home = memo(({ user, setUser }) => {
           }}
         >
           <div className="container mx-auto px-4">
-            {/* Filtres dynamiques */}
-            <div className="max-w-4xl mx-auto mb-12">
-              <div 
-                className="glass-refined p-6 rounded-2xl flex flex-wrap gap-4 justify-center items-center"
-                style={{
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(14px)'
-                }}
-              >
-                {[
-                  { name: 'Géolocalisation', icon: '📍' },
-                  { name: 'Prix', icon: '💰' },
-                  { name: 'Note', icon: '⭐' },
-                  { name: 'Recommandés par Gliitz', icon: '✨' }
-                ].map((filter, idx) => (
-                  <button
-                    key={idx}
-                    className="btn-gliitz-secondary px-4 py-2 text-sm flex items-center gap-2"
-                  >
-                    <span>{filter.icon}</span>
-                    <span>{filter.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-
             {/* En-tête section */}
             <div className="text-center mb-12">
               <h2 
