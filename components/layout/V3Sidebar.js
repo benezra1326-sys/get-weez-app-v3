@@ -86,12 +86,15 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
                   className="w-10 h-10 rounded-full flex items-center justify-center logo-glow"
                   style={{
                     background: isDarkMode
-                      ? 'linear-gradient(135deg, rgba(167,199,197,0.3), rgba(157,180,192,0.3))'
-                      : 'linear-gradient(135deg, rgba(167,199,197,0.2), rgba(157,180,192,0.2))',
-                    border: '1px solid rgba(167,199,197,0.4)'
+                      ? 'linear-gradient(135deg, #1a1a1a, #2c2c2c)'
+                      : 'linear-gradient(135deg, #E8E8E8, #C0C0C0)',
+                    border: '1px solid rgba(192,192,192,0.4)',
+                    boxShadow: isDarkMode 
+                      ? '0 4px 15px rgba(0, 0, 0, 0.5)'
+                      : '0 4px 15px rgba(0, 0, 0, 0.2)'
                   }}
                 >
-                  <Sparkles size={18} style={{ color: '#A7C7C5' }} />
+                  <Sparkles size={18} style={{ color: '#FFFFFF' }} />
                 </div>
                 <h1 className="text-3xl font-bold" style={{
                   fontFamily: 'Playfair Display, serif',
