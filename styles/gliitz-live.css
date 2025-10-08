@@ -1,0 +1,545 @@
+/**
+ * 🌟 GLIITZ LIVE - Glass Experience
+ * Effets de verre, halos animés et animations fluides
+ * Palette: A7C7C5 (Gliitz Aqua)
+ */
+
+/* ============================================
+   🎨 VARIABLES GLIITZ LIVE
+   ============================================ */
+:root {
+  /* Palette Gliitz Live */
+  --gliitz-aqua: #A7C7C5;
+  --gliitz-aqua-light: rgba(167, 199, 197, 0.12);
+  --gliitz-aqua-medium: rgba(167, 199, 197, 0.3);
+  --gliitz-aqua-strong: rgba(167, 199, 197, 0.8);
+  --gliitz-aqua-hover: #9DB4C0;
+  
+  /* Glassmorphism */
+  --glass-live-bg: rgba(255, 255, 255, 0.08);
+  --glass-live-border: rgba(255, 255, 255, 0.25);
+  --glass-live-blur: blur(16px) saturate(180%);
+  --glass-live-shadow: 0 4px 30px rgba(167, 199, 197, 0.2);
+  
+  /* Halos */
+  --halo-color: rgba(167, 199, 197, 0.3);
+  --halo-pulse-duration: 5s;
+  
+  /* Sparkles */
+  --sparkle-color: rgba(167, 199, 197, 0.5);
+  --sparkle-intensity: 0.03;
+}
+
+[data-theme="dark"] {
+  --glass-live-bg: rgba(11, 11, 12, 0.08);
+  --glass-live-border: rgba(167, 199, 197, 0.25);
+}
+
+/* ============================================
+   ✨ GLASSMORPHISM EFFECTS
+   ============================================ */
+.glass-live {
+  background: var(--glass-live-bg);
+  border: 1px solid var(--glass-live-border);
+  backdrop-filter: var(--glass-live-blur);
+  -webkit-backdrop-filter: var(--glass-live-blur);
+  border-radius: 20px;
+  box-shadow: var(--glass-live-shadow);
+  transition: all 0.4s ease;
+}
+
+.glass-live:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--gliitz-aqua-medium);
+  box-shadow: 0 8px 40px rgba(167, 199, 197, 0.3);
+  transform: translateY(-2px);
+}
+
+.glass-live-strong {
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid var(--gliitz-aqua-medium);
+  backdrop-filter: blur(20px) saturate(200%);
+  -webkit-backdrop-filter: blur(20px) saturate(200%);
+  border-radius: 24px;
+  box-shadow: 0 8px 40px rgba(167, 199, 197, 0.25);
+}
+
+/* ============================================
+   💫 HALO EFFECTS
+   ============================================ */
+.halo-pulsing {
+  position: relative;
+  animation: halo-pulse 5s ease-in-out infinite;
+}
+
+@keyframes halo-pulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 20px rgba(167, 199, 197, 0.2),
+      0 0 40px rgba(167, 199, 197, 0.1);
+  }
+  50% {
+    box-shadow: 
+      0 0 40px rgba(167, 199, 197, 0.4),
+      0 0 80px rgba(167, 199, 197, 0.2),
+      0 0 120px rgba(167, 199, 197, 0.1);
+  }
+}
+
+.halo-glow {
+  position: relative;
+}
+
+.halo-glow::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, var(--gliitz-aqua-medium), transparent);
+  opacity: 0;
+  z-index: -1;
+  filter: blur(15px);
+  transition: opacity 0.4s ease;
+}
+
+.halo-glow:hover::after {
+  opacity: 1;
+  animation: halo-rotate 3s linear infinite;
+}
+
+@keyframes halo-rotate {
+  0% {
+    filter: blur(15px) hue-rotate(0deg);
+  }
+  100% {
+    filter: blur(15px) hue-rotate(360deg);
+  }
+}
+
+/* ============================================
+   ✨ SPARKLE EFFECTS
+   ============================================ */
+.sparkle-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.sparkle-effect::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, var(--sparkle-color) 1px, transparent 1px),
+    radial-gradient(circle at 80% 50%, var(--sparkle-color) 1px, transparent 1px),
+    radial-gradient(circle at 50% 20%, var(--sparkle-color) 1px, transparent 1px),
+    radial-gradient(circle at 50% 80%, var(--sparkle-color) 1px, transparent 1px);
+  background-size: 30px 30px, 40px 40px, 35px 35px, 45px 45px;
+  background-position: 0 0, 10px 10px, 20px 5px, 15px 15px;
+  opacity: var(--sparkle-intensity);
+  animation: sparkle-float 20s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes sparkle-float {
+  0% {
+    background-position: 0 0, 10px 10px, 20px 5px, 15px 15px;
+    opacity: var(--sparkle-intensity);
+  }
+  50% {
+    opacity: calc(var(--sparkle-intensity) * 2);
+  }
+  100% {
+    background-position: 100px 100px, 110px 110px, 120px 105px, 115px 115px;
+    opacity: var(--sparkle-intensity);
+  }
+}
+
+/* ============================================
+   🌊 TRANSITIONS FLUIDES
+   ============================================ */
+.transition-smooth {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.transition-page {
+  animation: page-fade-in 0.4s ease;
+}
+
+@keyframes page-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hover-smooth {
+  transition: all 0.25s ease;
+}
+
+.hover-smooth:hover {
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   💬 SUGGESTIONS DYNAMIQUES
+   ============================================ */
+.animate-fade-slide-up {
+  animation: fade-slide-up 0.6s ease-out;
+}
+
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.suggestion-card {
+  background: var(--gliitz-aqua-light);
+  border: 1px solid var(--gliitz-aqua-medium);
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.suggestion-card:hover {
+  background: rgba(167, 199, 197, 0.2);
+  border-color: rgba(167, 199, 197, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(167, 199, 197, 0.3);
+}
+
+/* ============================================
+   💭 CHAT BUBBLES ANIMATIONS
+   ============================================ */
+.chat-bubble-assistant {
+  animation: fadeInRight 0.5s ease-out;
+}
+
+.chat-bubble-user {
+  animation: fadeInLeft 0.5s ease-out;
+}
+
+@keyframes fadeInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Typing Indicator avec halo pulsant */
+.typing-indicator {
+  display: flex;
+  gap: 4px;
+  padding: 12px 16px;
+  background: var(--glass-live-bg);
+  border: 1px solid var(--gliitz-aqua-medium);
+  backdrop-filter: var(--glass-live-blur);
+  border-radius: 16px;
+  animation: halo-pulse 2s ease-in-out infinite;
+}
+
+.typing-dot {
+  width: 8px;
+  height: 8px;
+  background: var(--gliitz-aqua);
+  border-radius: 50%;
+  animation: typing-bounce 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing-bounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Typewriter effect pour le texte */
+.typewriter-text {
+  overflow: hidden;
+  white-space: pre-wrap;
+  animation: typewriter 0.03s steps(1) forwards;
+}
+
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* ============================================
+   🎨 SIDEBAR & LOGO ANIMATIONS
+   ============================================ */
+.logo-glow {
+  animation: logo-glow-pulse 20s ease-in-out infinite;
+}
+
+@keyframes logo-glow-pulse {
+  0%, 100% {
+    filter: drop-shadow(0 0 5px rgba(167, 199, 197, 0.3));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(167, 199, 197, 0.6));
+  }
+}
+
+.sidebar-item {
+  transition: all 0.25s ease;
+  position: relative;
+}
+
+.sidebar-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 0;
+  height: 70%;
+  background: linear-gradient(90deg, var(--gliitz-aqua), transparent);
+  border-radius: 0 4px 4px 0;
+  transition: width 0.3s ease;
+}
+
+.sidebar-item:hover::before,
+.sidebar-item.active::before {
+  width: 4px;
+}
+
+.sidebar-item:hover {
+  background: rgba(167, 199, 197, 0.1);
+  color: var(--gliitz-aqua);
+}
+
+.sidebar-item.active {
+  background: rgba(167, 199, 197, 0.15);
+  color: var(--gliitz-aqua);
+  box-shadow: inset 0 0 10px rgba(167, 199, 197, 0.3);
+}
+
+/* ============================================
+   🎪 FOOTER LUMINOUS BAND
+   ============================================ */
+.footer-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 200%;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(167, 199, 197, 0.2),
+    var(--gliitz-aqua),
+    rgba(167, 199, 197, 0.2),
+    transparent
+  );
+  animation: slow-horizontal-glow 8s linear infinite;
+}
+
+@keyframes slow-horizontal-glow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* ============================================
+   🗺️ MAP VIEW EFFECTS
+   ============================================ */
+.map-marker {
+  transition: all 0.3s ease;
+  animation: marker-bounce-in 0.5s ease-out;
+}
+
+@keyframes marker-bounce-in {
+  0% {
+    opacity: 0;
+    transform: translateY(-50px) scale(0);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(0) scale(1.1);
+  }
+  100% {
+    transform: translateY(0) scale(1);
+  }
+}
+
+.map-marker:hover {
+  transform: scale(1.2);
+  z-index: 10;
+}
+
+.map-marker-pulse {
+  animation: marker-pulse 2s ease-in-out infinite;
+}
+
+@keyframes marker-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(167, 199, 197, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 20px rgba(167, 199, 197, 0);
+  }
+}
+
+/* ============================================
+   🏙️ CITY SELECTOR EFFECTS
+   ============================================ */
+.city-card {
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.city-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(167, 199, 197, 0.2),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.city-card:hover::before {
+  left: 100%;
+}
+
+.city-card:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 30px rgba(167, 199, 197, 0.3);
+}
+
+.city-card.selected {
+  border-color: var(--gliitz-aqua-strong);
+  box-shadow: 
+    0 8px 30px rgba(167, 199, 197, 0.4),
+    inset 0 0 20px rgba(167, 199, 197, 0.1);
+}
+
+/* ============================================
+   📱 RESPONSIVE ADJUSTMENTS
+   ============================================ */
+@media (max-width: 768px) {
+  .glass-live,
+  .glass-live-strong {
+    border-radius: 16px;
+  }
+  
+  .halo-pulsing {
+    animation-duration: 3s;
+  }
+  
+  .sparkle-effect::before {
+    background-size: 20px 20px, 25px 25px, 22px 22px, 28px 28px;
+  }
+}
+
+/* ============================================
+   🎭 UTILITY CLASSES
+   ============================================ */
+.text-aqua {
+  color: var(--gliitz-aqua);
+}
+
+.bg-aqua-light {
+  background: var(--gliitz-aqua-light);
+}
+
+.border-aqua {
+  border-color: var(--gliitz-aqua-medium);
+}
+
+.shadow-aqua {
+  box-shadow: 0 4px 20px rgba(167, 199, 197, 0.3);
+}
+
+.shadow-aqua-strong {
+  box-shadow: 0 8px 40px rgba(167, 199, 197, 0.5);
+}
+
+/* Gradient text aqua */
+.text-gradient-aqua {
+  background: linear-gradient(135deg, var(--gliitz-aqua), var(--gliitz-aqua-hover));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ============================================
+   ⚡ PERFORMANCE OPTIMIZATIONS
+   ============================================ */
+.glass-live,
+.halo-pulsing,
+.sparkle-effect,
+.chat-bubble-assistant,
+.chat-bubble-user {
+  will-change: transform, opacity;
+}
+
+/* Réduire les animations sur les appareils à faible performance */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+

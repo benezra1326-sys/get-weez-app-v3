@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Calendar, MapPin, Clock, Euro, ArrowRight } from 'lucide-react'
+import { Calendar, MapPin, Clock, Euro, ArrowRight, Map } from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
 import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
+import MapView from '../components/map/MapView'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
 export default function Events({ user, setUser }) {
@@ -13,10 +14,11 @@ export default function Events({ user, setUser }) {
   const [isLoading, setIsLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [currentSort, setCurrentSort] = useState('rating')
+  const [showMap, setShowMap] = useState(false)
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
-    // Données d'événements statiques
+    // Données d'événements statiques avec coordonnées
     const fallbackEvents = [
       {
         id: 1,
@@ -25,8 +27,10 @@ export default function Events({ user, setUser }) {
         date: "2024-12-15T20:00:00Z",
         image_url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800",
         location: "Ocean Club Marbella",
+        address: "Playa de Marbella, Puerto Banús",
         price: 85,
-        category: "Beach Club"
+        category: "Beach Club",
+        coordinates: { lat: 36.4877, lng: -4.9528 }
       },
       {
         id: 2,
@@ -35,8 +39,10 @@ export default function Events({ user, setUser }) {
         date: "2024-12-20T19:30:00Z",
         image_url: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800",
         location: "La Terraza del Mar",
+        address: "Paseo Marítimo, Marbella Centro",
         price: 65,
-        category: "Gastronomie"
+        category: "Gastronomie",
+        coordinates: { lat: 36.5098, lng: -4.8826 }
       },
       {
         id: 3,
@@ -45,8 +51,10 @@ export default function Events({ user, setUser }) {
         date: "2024-12-22T21:00:00Z",
         image_url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800",
         location: "Puerto Banús",
+        address: "Puerto José Banús, Marbella",
         price: 150,
-        category: "VIP"
+        category: "VIP",
+        coordinates: { lat: 36.4843, lng: -4.9530 }
       },
       {
         id: 4,
@@ -55,8 +63,10 @@ export default function Events({ user, setUser }) {
         date: "2024-12-25T22:00:00Z",
         image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800",
         location: "Sky Lounge",
+        address: "Av. Ricardo Soriano, Marbella",
         price: 45,
-        category: "Nightlife"
+        category: "Nightlife",
+        coordinates: { lat: 36.5125, lng: -4.8850 }
       },
       {
         id: 5,
@@ -65,8 +75,10 @@ export default function Events({ user, setUser }) {
         date: "2024-12-28T20:00:00Z",
         image_url: "https://images.unsplash.com/photo-1556910110-a5a63dfd393c?w=800",
         location: "Villa Privée",
+        address: "Sierra Blanca, Marbella",
         price: 200,
-        category: "Premium"
+        category: "Premium",
+        coordinates: { lat: 36.5150, lng: -4.8900 }
       },
       {
         id: 6,
@@ -75,8 +87,10 @@ export default function Events({ user, setUser }) {
         date: "2024-12-31T21:00:00Z",
         image_url: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=800",
         location: "Le Club Premium",
+        address: "Golden Mile, Marbella",
         price: 250,
-        category: "Spécial"
+        category: "Spécial",
+        coordinates: { lat: 36.5070, lng: -4.9050 }
       }
     ]
     setEvents(fallbackEvents)
@@ -182,21 +196,74 @@ export default function Events({ user, setUser }) {
         </div>
       </section>
 
-      {/* FILTRES */}
+      {/* FILTRES & VIEW TOGGLE */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20">
-        <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
+        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-6">
+          <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
+          
+          {/* Toggle Map/Grid View */}
+          <button
+            onClick={() => setShowMap(!showMap)}
+            className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all"
+            style={{
+              background: showMap 
+                ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
+                : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+              border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
+              color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
+              backdropFilter: 'blur(10px)',
+              fontFamily: 'Poppins, sans-serif'
+            }}
+            onMouseEnter={(e) => {
+              if (!showMap) {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
+                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!showMap) {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
+                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
+              }
+            }}
+          >
+            <Map size={20} />
+            <span>{showMap ? 'Voir la liste' : 'Voir la carte'}</span>
+          </button>
+        </div>
       </div>
 
-      {/* GRILLE D'ÉVÉNEMENTS */}
+      {/* VUE CARTE OU GRILLE */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-        <div className="mb-8">
-          <p className="text-lg" style={{ 
-            fontFamily: 'Poppins, sans-serif',
-            color: isDarkMode ? '#E0E0E0' : '#666666'
-          }}>
-            {displayedEvents.length} événements à venir
-          </p>
-        </div>
+        {showMap ? (
+          <div className="mb-8">
+            <h2 
+              className="text-2xl font-bold mb-6"
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+              }}
+            >
+              Événements près de vous
+            </h2>
+            <MapView 
+              items={displayedEvents}
+              type="events"
+              onClose={() => setShowMap(false)}
+            />
+          </div>
+        ) : (
+          <>
+            <div className="mb-8">
+              <p className="text-lg" style={{ 
+                fontFamily: 'Poppins, sans-serif',
+                color: isDarkMode ? '#E0E0E0' : '#666666'
+              }}>
+                {displayedEvents.length} événements à venir
+              </p>
+            </div>
+
+            {/* GRILLE D'ÉVÉNEMENTS */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedEvents.map((event) => (
@@ -312,6 +379,8 @@ export default function Events({ user, setUser }) {
             </div>
           ))}
         </div>
+          </>
+        )}
       </section>
       </div>
     </div>

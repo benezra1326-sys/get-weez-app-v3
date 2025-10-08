@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User } from 'lucide-react'
+import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User, Sparkles } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onToggle }) {
@@ -39,12 +39,14 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
       {!open && (
         <button
           onClick={() => toggle(true)}
-          className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl transition-all"
+          className="md:hidden fixed top-4 left-4 z-50 p-3 rounded-xl transition-all flex items-center justify-center"
           style={{
             background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
             backdropFilter: 'blur(10px)',
             border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.1)'}`,
-            color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+            color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+            width: '48px',
+            height: '48px'
           }}
         >
           <Menu size={24} />
@@ -78,8 +80,19 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
             <div className="flex items-center justify-between mb-6">
               <button
                 onClick={handleLogoClick}
-                className="hover:opacity-80 transition-opacity"
+                className="hover:opacity-80 transition-opacity flex items-center gap-2"
               >
+                <div 
+                  className="w-10 h-10 rounded-full flex items-center justify-center logo-glow"
+                  style={{
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, rgba(167,199,197,0.3), rgba(157,180,192,0.3))'
+                      : 'linear-gradient(135deg, rgba(167,199,197,0.2), rgba(157,180,192,0.2))',
+                    border: '1px solid rgba(167,199,197,0.4)'
+                  }}
+                >
+                  <Sparkles size={18} style={{ color: '#A7C7C5' }} />
+                </div>
                 <h1 className="text-3xl font-bold" style={{
                   fontFamily: 'Playfair Display, serif',
                   color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
@@ -92,10 +105,12 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
                 {/* Toggle Theme Button */}
                 <button
                   onClick={toggleTheme}
-                  className="p-2 rounded-lg transition-all"
+                  className="p-2 rounded-lg transition-all flex items-center justify-center"
                   style={{
                     background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                    width: '40px',
+                    height: '40px'
                   }}
                   title={isDarkMode ? 'Mode clair' : 'Mode sombre'}
                 >
@@ -105,10 +120,12 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
                 {/* Close button (mobile only when open) */}
                 <button
                   onClick={() => toggle(false)}
-                  className="md:hidden p-2 rounded-lg transition-all"
+                  className="md:hidden p-2 rounded-lg transition-all flex items-center justify-center"
                   style={{
                     background: isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)',
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                    width: '40px',
+                    height: '40px'
                   }}
                   title="Fermer le menu"
                 >

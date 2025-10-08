@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Briefcase, ArrowRight, Sparkles } from 'lucide-react'
+import { Briefcase, ArrowRight, Sparkles, Map } from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
 import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
+import MapView from '../components/map/MapView'
 import { services as staticServices } from '../data/services-data'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
@@ -14,6 +15,7 @@ export default function Services({ user, setUser }) {
   const [isLoading, setIsLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [currentSort, setCurrentSort] = useState('rating')
+  const [showMap, setShowMap] = useState(false)
   const { isDarkMode } = useTheme()
 
   useEffect(() => {

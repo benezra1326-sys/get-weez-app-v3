@@ -4,6 +4,9 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { Mic, Send, Loader, Sparkles, X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import V3Sidebar from '../components/layout/V3Sidebar'
+import DynamicSuggestions from '../components/chat/DynamicSuggestions'
+import CitySelector from '../components/location/CitySelector'
+import ThemeTransition from '../components/ui/ThemeTransition'
 import { elevenLabs } from '../lib/elevenlabs'
 
 const Home = ({ user, setUser }) => {
@@ -14,6 +17,7 @@ const Home = ({ user, setUser }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [currentConversationId, setCurrentConversationId] = useState(null)
+  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const recognitionRef = useRef(null)
   const [conversations] = useState([
     { id: 1, title: 'Réservation tables d\'exception', date: 'Aujourd\'hui', preview: 'Je cherche un restaurant...' },
@@ -156,18 +160,16 @@ const Home = ({ user, setUser }) => {
     <div className="min-h-screen flex" style={{
       background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
     }}>
+      {/* Transition de thème */}
+      <ThemeTransition />
+      
       {/* Sidebar Component */}
       <V3Sidebar conversations={conversations} onNewChat={handleNewChat} />
 
       {/* Close/Reset Chat Button */}
       {messages.length > 0 && (
         <button
-          onClick={() => {
-            if (window.confirm('Voulez-vous réinitialiser la conversation ?')) {
-              setMessages([])
-              setInput('')
-            }
-          }}
+          onClick={() => setShowDeleteModal(true)}
           className="fixed top-4 right-4 z-50 p-3 rounded-xl transition-all group"
           style={{
             background: 'rgba(255, 255, 255, 0.8)',
@@ -189,6 +191,110 @@ const Home = ({ user, setUser }) => {
         </button>
       )}
 
+      {/* Modal de suppression élégant */}
+      {showDeleteModal && (
+        <div 
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
+          style={{ 
+            background: 'rgba(0, 0, 0, 0.6)', 
+            backdropFilter: 'blur(8px)',
+            animation: 'fadeIn 0.3s ease-out'
+          }}
+          onClick={() => setShowDeleteModal(false)}
+        >
+          <div
+            className="glass-live-strong max-w-md w-full p-8 rounded-3xl"
+            style={{
+              animation: 'slideUp 0.3s ease-out'
+            }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Icône */}
+            <div 
+              className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
+              style={{
+                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.3))',
+                border: '2px solid rgba(239, 68, 68, 0.5)'
+              }}
+            >
+              <X size={32} style={{ color: '#EF4444' }} />
+            </div>
+
+            {/* Titre */}
+            <h2 
+              className="text-2xl font-bold mb-3 text-center"
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+              }}
+            >
+              Supprimer la conversation ?
+            </h2>
+
+            {/* Description */}
+            <p 
+              className="text-center mb-8"
+              style={{
+                fontFamily: 'Poppins, sans-serif',
+                color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
+                fontSize: '15px'
+              }}
+            >
+              Cette action est irréversible. Tous les messages de cette conversation seront définitivement supprimés.
+            </p>
+
+            {/* Boutons */}
+            <div className="flex gap-3">
+              <button
+                onClick={() => setShowDeleteModal(false)}
+                className="flex-1 py-3 rounded-xl font-medium transition-all"
+                style={{
+                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                  border: '1px solid rgba(167,199,197,0.3)',
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  fontFamily: 'Poppins, sans-serif'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
+                }}
+              >
+                Annuler
+              </button>
+              
+              <button
+                onClick={() => {
+                  setMessages([])
+                  setInput('')
+                  setShowDeleteModal(false)
+                }}
+                className="flex-1 py-3 rounded-xl font-semibold transition-all"
+                style={{
+                  background: 'linear-gradient(135deg, #EF4444, #DC2626)',
+                  color: '#FFFFFF',
+                  fontFamily: 'Poppins, sans-serif',
+                  boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #DC2626, #B91C1C)'
+                  e.currentTarget.style.transform = 'translateY(-2px)'
+                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.5)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(239, 68, 68, 0.4)'
+                }}
+              >
+                Supprimer
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Main Chat Area */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden" style={{
         background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
@@ -198,34 +304,70 @@ const Home = ({ user, setUser }) => {
           <div className="flex-1 flex items-center justify-center p-4 md:p-6">
             <div className="text-center max-w-3xl w-full">
               <div 
-                className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8"
+                className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8 sparkle-effect sparkle-mirror halo-pulsing"
                 style={{
                   background: isDarkMode 
-                    ? 'linear-gradient(135deg, #D4AF37 0%, #F4E5A1 100%)'
-                    : 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)',
+                    ? 'linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%)'
+                    : 'linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 100%)',
                   boxShadow: isDarkMode 
-                    ? '0 10px 35px rgba(212, 175, 55, 0.4)'
-                    : '0 10px 35px rgba(0, 0, 0, 0.2)'
+                    ? '0 10px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.1)'
+                    : '0 10px 35px rgba(0, 0, 0, 0.3), 0 4px 15px rgba(0, 0, 0, 0.2)',
+                  animation: 'sparkle-float 4s ease-in-out infinite, halo-pulse 5s ease-in-out infinite',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}
               >
-                <Sparkles size={36} style={{ color: '#FFFFFF' }} />
+                <Sparkles 
+                  size={36} 
+                  style={{ 
+                    color: '#FFFFFF',
+                    position: 'relative',
+                    zIndex: 1,
+                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))'
+                  }} 
+                />
               </div>
 
-              <h1 
-                className="text-3xl md:text-4xl font-bold mb-3"
-                style={{ 
-                  fontFamily: 'Playfair Display, serif',
-                  background: isDarkMode
-                    ? 'linear-gradient(135deg, #D4AF37 0%, #F4E5A1 100%)'
-                    : 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  letterSpacing: '-0.02em',
-                  lineHeight: '1.2'
-                }}
-              >
-                Bonjour, je suis Gliitz
-              </h1>
+              <div className="relative w-full flex justify-center mb-3">
+                {/* Bande animée en arrière-plan */}
+                <div 
+                  className="absolute inset-0 rounded-2xl transition-all duration-500 flex justify-center"
+                  style={{
+                    zIndex: -1
+                  }}
+                >
+                  <div
+                    style={{
+                      background: isDarkMode
+                        ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(244, 229, 161, 0.15))'
+                        : 'linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.08))',
+                      transform: 'scaleX(1.05)',
+                      filter: 'blur(10px)',
+                      opacity: 0.8,
+                      width: 'fit-content',
+                      height: '100%',
+                      borderRadius: '16px',
+                      padding: '0 2rem'
+                    }}
+                  />
+                </div>
+                
+                <h1 
+                  className="text-3xl md:text-4xl font-bold px-6 py-2 relative text-center"
+                  style={{ 
+                    fontFamily: 'Playfair Display, serif',
+                    background: isDarkMode
+                      ? 'linear-gradient(135deg, #A7C7C5 0%, #9DB4C0 100%)'
+                      : 'linear-gradient(135deg, #5A8B89 0%, #7A9B99 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1.2'
+                  }}
+                >
+                  Bonjour, je suis Gliitz
+                </h1>
+              </div>
 
               <p 
                 className="text-base md:text-lg mb-6 leading-relaxed"
@@ -246,50 +388,65 @@ const Home = ({ user, setUser }) => {
                 </span>
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 px-4">
-                {[
-                  { text: 'Tables d\'exception à Marbella', icon: '🍽️' },
-                  { text: 'Événements privés exclusifs', icon: '🎭' },
-                  { text: 'Services de conciergerie VIP', icon: '💎' },
-                  { text: 'Expériences sur-mesure', icon: '✨' }
-                ].map((suggestion, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setInput(suggestion.text)}
-                    className="group relative p-4 rounded-2xl text-left transition-all duration-300"
-                    style={{
-                      background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : '#FAFAFA',
-                      border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid #E8E8E8',
-                      boxShadow: isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.04)'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : '#FFFFFF'
-                      e.currentTarget.style.borderColor = isDarkMode ? 'rgba(255, 255, 255, 0.2)' : '#E0E0E0'
-                      e.currentTarget.style.boxShadow = isDarkMode ? '0 8px 25px rgba(255, 255, 255, 0.1)' : '0 8px 25px rgba(0, 0, 0, 0.12)'
-                      e.currentTarget.style.transform = 'translateY(-2px)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.03)' : '#FAFAFA'
-                      e.currentTarget.style.borderColor = isDarkMode ? 'rgba(212, 175, 55, 0.2)' : '#E8E8E8'
-                      e.currentTarget.style.boxShadow = isDarkMode ? '0 2px 8px rgba(0, 0, 0, 0.3)' : '0 2px 8px rgba(0, 0, 0, 0.04)'
-                      e.currentTarget.style.transform = 'translateY(0)'
-                    }}
-                  >
-                    <div className="flex items-start gap-2">
-                      <span className="text-lg">{suggestion.icon}</span>
-                      <span style={{ 
-                        color: isDarkMode ? '#FFFFFF' : '#2c2c2c', 
-                        fontWeight: 400,
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '13px',
-                        letterSpacing: '0.01em',
-                        lineHeight: '1.4'
-                      }}>
-                        {suggestion.text}
-                      </span>
+              {/* Sélecteur de ville */}
+              <div className="mb-6 flex justify-center">
+                <CitySelector 
+                  onCitySelect={(city) => console.log('Ville sélectionnée:', city)}
+                />
                     </div>
-                  </button>
-                ))}
+
+              {/* Suggestions dynamiques avec rotation */}
+              <div className="mb-6">
+                <DynamicSuggestions 
+                  onSuggestionClick={(text) => {
+                    setInput(text)
+                    // Envoyer le message automatiquement
+                    setTimeout(() => {
+                      const userMessage = {
+                        id: Date.now(),
+                        role: 'user',
+                        content: text,
+                        timestamp: new Date()
+                      }
+                      setMessages([userMessage])
+                      setInput('')
+                      setIsLoading(true)
+
+                      fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          messages: [{ role: 'user', content: text }]
+                        })
+                      })
+                      .then(res => res.json())
+                      .then(data => {
+                        const assistantMessage = {
+                          id: Date.now() + 1,
+                          role: 'assistant',
+                          content: data.message || "Je suis Gliitz, votre assistant IA de luxe. Comment puis-je sublimer votre expérience à Marbella aujourd'hui ?",
+                          timestamp: new Date()
+                        }
+                        setMessages(prev => [...prev, assistantMessage])
+                        if (data.message) {
+                          elevenLabs.playAudio(data.message).catch(err => console.log('Audio playback not available:', err))
+                        }
+                      })
+                      .catch(error => {
+                        console.error('Error:', error)
+                        const errorMessage = {
+                          id: Date.now() + 1,
+                          role: 'assistant',
+                          content: "Je suis Gliitz, votre concierge de luxe. Comment puis-je vous aider aujourd'hui ?",
+                          timestamp: new Date()
+                        }
+                        setMessages(prev => [...prev, errorMessage])
+                      })
+                      .finally(() => setIsLoading(false))
+                    }, 100)
+                  }}
+                  isDarkMode={isDarkMode}
+                />
               </div>
             </div>
           </div>
@@ -306,24 +463,27 @@ const Home = ({ user, setUser }) => {
                 >
                   <div
                     className={`max-w-[80%] md:max-w-[70%] px-6 py-4 rounded-2xl ${
-                      message.role === 'user' ? 'rounded-br-sm' : 'rounded-bl-sm'
+                      message.role === 'user' 
+                        ? 'rounded-br-sm chat-bubble-user' 
+                        : 'rounded-bl-sm chat-bubble-assistant'
                     }`}
                   style={
                     message.role === 'user'
                       ? {
-                          background: isDarkMode ? 'rgba(212, 175, 55, 0.15)' : 'rgba(26, 26, 26, 0.05)',
+                          background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.8)',
                           color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                          boxShadow: isDarkMode ? '0 2px 10px rgba(212, 175, 55, 0.2)' : '0 2px 10px rgba(0, 0, 0, 0.08)',
-                          border: `1px solid ${isDarkMode ? 'rgba(212, 175, 55, 0.3)' : 'rgba(0, 0, 0, 0.1)'}`
+                          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
+                          border: `1px solid rgba(255, 255, 255, 0.25)`,
+                          backdropFilter: 'blur(16px) saturate(180%)'
                         }
                       : {
                           background: isDarkMode 
-                            ? 'linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8))'
-                            : 'linear-gradient(135deg, rgba(250, 250, 250, 0.95), rgba(245, 245, 245, 0.95))',
-                          backdropFilter: 'blur(15px)',
-                          border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid rgba(0, 0, 0, 0.08)',
+                            ? 'rgba(167, 199, 197, 0.08)'
+                            : 'rgba(167, 199, 197, 0.12)',
+                          backdropFilter: 'blur(16px) saturate(180%)',
+                          border: '1px solid rgba(167, 199, 197, 0.3)',
                           color: isDarkMode ? '#FFFFFF' : '#2c2c2c',
-                          boxShadow: isDarkMode ? '0 4px 20px rgba(212, 175, 55, 0.15)' : '0 4px 20px rgba(0, 0, 0, 0.06)'
+                          boxShadow: '0 4px 30px rgba(167, 199, 197, 0.2)'
                         }
                   }
                   >
@@ -346,18 +506,23 @@ const Home = ({ user, setUser }) => {
               {isLoading && (
                 <div className="flex justify-start">
                   <div
-                    className="px-6 py-4 rounded-2xl rounded-bl-sm flex items-center gap-3"
+                    className="typing-indicator"
                     style={{
                       background: isDarkMode 
-                        ? 'linear-gradient(135deg, rgba(26, 26, 26, 0.8), rgba(40, 40, 40, 0.8))'
-                        : 'linear-gradient(135deg, rgba(250, 250, 250, 0.95), rgba(245, 245, 245, 0.95))',
-                      backdropFilter: 'blur(15px)',
-                      border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid rgba(0, 0, 0, 0.08)',
-                      color: isDarkMode ? '#FFFFFF' : '#2c2c2c'
+                        ? 'rgba(167, 199, 197, 0.08)'
+                        : 'rgba(167, 199, 197, 0.12)',
+                      backdropFilter: 'blur(16px) saturate(180%)',
+                      border: '1px solid rgba(167, 199, 197, 0.3)',
+                      color: isDarkMode ? '#FFFFFF' : '#2c2c2c',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '12px'
                     }}
                   >
-                    <Loader className="animate-spin" size={20} style={{ color: '#D4AF37' }} />
-                    <span style={{ fontFamily: 'Poppins, sans-serif' }}>Gliitz réfléchit...</span>
+                    <div className="typing-dot"></div>
+                    <div className="typing-dot"></div>
+                    <div className="typing-dot"></div>
+                    <span style={{ fontFamily: 'Poppins, sans-serif', marginLeft: '8px' }}>Gliitz réfléchit...</span>
                   </div>
                 </div>
               )}
@@ -452,13 +617,6 @@ const Home = ({ user, setUser }) => {
                 {isLoading ? <Loader className="animate-spin" size={22} /> : <Send size={22} />}
               </button>
           </div>
-
-            <p className="text-center text-xs mt-3" style={{ 
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)',
-              fontFamily: 'Poppins, sans-serif'
-            }}>
-              Gliitz peut faire des erreurs. Vérifiez les informations importantes.
-            </p>
           </div>
         </div>
       </main>
