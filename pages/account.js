@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { User, Mail, Phone, MapPin, Calendar, Shield, CreditCard, Bell } from 'lucide-react'
+import { 
+  User, Mail, Phone, MapPin, Calendar, Shield, CreditCard, Bell, 
+  Settings, History, Heart, LogOut, ChevronRight, Award, Package,
+  HelpCircle, MessageSquare, Star
+} from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { supabase } from '../lib/supabase'
@@ -8,30 +12,138 @@ import { supabase } from '../lib/supabase'
 export default function Account({ user, setUser }) {
   const router = useRouter()
   const { isDarkMode } = useTheme()
-  const [isEditing, setIsEditing] = useState(false)
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [formData, setFormData] = useState({
-    first_name: user?.first_name || '',
-    last_name: user?.last_name || '',
-    email: user?.email || '',
-    phone: user?.phone || '',
-    location: user?.location || ''
-  })
+  const [activeTab, setActiveTab] = useState('profile')
 
-  const handleSave = async () => {
-    try {
-      const { error } = await supabase
-        .from('users')
-        .update(formData)
-        .eq('id', user.id)
+  // Données utilisateur par défaut
+  const userData = {
+    firstName: user?.first_name || 'Utilisateur',
+    lastName: user?.last_name || 'Gliitz',
+    email: user?.email || 'contact@gliitz.com',
+    phone: user?.phone || '+33 6 12 34 56 78',
+    memberSince: '2024',
+    reservations: 12,
+    favorites: 8,
+    reviews: 5
+  }
 
-      if (!error) {
-        setUser({ ...user, ...formData })
-        setIsEditing(false)
-      }
-    } catch (error) {
-      console.error('Error updating profile:', error)
+  const menuSections = [
+    {
+      id: 'account',
+      title: 'Mon Compte',
+      items: [
+        {
+          icon: User,
+          label: 'Informations personnelles',
+          description: 'Nom, email, téléphone',
+          onClick: () => setActiveTab('profile'),
+          active: activeTab === 'profile'
+        },
+        {
+          icon: Shield,
+          label: 'Sécurité & Connexion',
+          description: 'Mot de passe, authentification 2FA',
+          onClick: () => setActiveTab('security'),
+          active: activeTab === 'security'
+        },
+        {
+          icon: Bell,
+          label: 'Notifications',
+          description: 'Préférences email et push',
+          onClick: () => setActiveTab('notifications'),
+          active: activeTab === 'notifications'
+        }
+      ]
+    },
+    {
+      id: 'bookings',
+      title: 'Réservations & Activité',
+      items: [
+        {
+          icon: Calendar,
+          label: 'Mes Réservations',
+          description: `${userData.reservations} réservations`,
+          badge: userData.reservations,
+          onClick: () => setActiveTab('reservations'),
+          active: activeTab === 'reservations'
+        },
+        {
+          icon: History,
+          label: 'Historique',
+          description: 'Toutes vos anciennes réservations',
+          onClick: () => setActiveTab('history'),
+          active: activeTab === 'history'
+        },
+        {
+          icon: Heart,
+          label: 'Favoris',
+          description: `${userData.favorites} établissements`,
+          badge: userData.favorites,
+          onClick: () => setActiveTab('favorites'),
+          active: activeTab === 'favorites'
+        }
+      ]
+    },
+    {
+      id: 'payment',
+      title: 'Paiement & Abonnement',
+      items: [
+        {
+          icon: CreditCard,
+          label: 'Moyens de paiement',
+          description: 'Cartes et méthodes de paiement',
+          onClick: () => setActiveTab('payment'),
+          active: activeTab === 'payment'
+        },
+        {
+          icon: Package,
+          label: 'Mon Abonnement',
+          description: 'Plan Premium actif',
+          badge: 'Premium',
+          onClick: () => setActiveTab('subscription'),
+          active: activeTab === 'subscription'
+        },
+        {
+          icon: Award,
+          label: 'Programme Fidélité',
+          description: 'Points et récompenses',
+          onClick: () => setActiveTab('loyalty'),
+          active: activeTab === 'loyalty'
+        }
+      ]
+    },
+    {
+      id: 'support',
+      title: 'Support & Aide',
+      items: [
+        {
+          icon: MessageSquare,
+          label: 'Mes Avis',
+          description: `${userData.reviews} avis publiés`,
+          onClick: () => setActiveTab('reviews'),
+          active: activeTab === 'reviews'
+        },
+        {
+          icon: HelpCircle,
+          label: 'Centre d\'aide',
+          description: 'FAQ et assistance',
+          onClick: () => router.push('/help')
+        },
+        {
+          icon: Settings,
+          label: 'Paramètres',
+          description: 'Préférences générales',
+          onClick: () => setActiveTab('settings'),
+          active: activeTab === 'settings'
+        }
+      ]
     }
+  ]
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    setUser(null)
+    router.push('/')
   }
 
   return (
@@ -45,232 +157,195 @@ export default function Account({ user, setUser }) {
         onToggle={setSidebarOpen}
       />
       
-      <div className="flex-1 overflow-y-auto p-4 md:p-8">
-      <div className="max-w-4xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 
-            className="text-4xl md:text-5xl font-bold mb-2"
-            style={{
-              fontFamily: 'Playfair Display, serif',
-              color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-            }}
-          >
-            Mon Compte
-          </h1>
-          <p 
-            className="text-lg"
-            style={{
-              fontFamily: 'Poppins, sans-serif',
-              color: isDarkMode ? '#E0E0E0' : '#666666'
-            }}
-          >
-            Gérez vos informations personnelles et vos préférences
-          </p>
-        </div>
-
-        {/* Profile Card */}
+      <div className="flex-1 overflow-y-auto">
+        {/* Header Profile Banner */}
         <div 
-          className="rounded-3xl p-8 mb-8"
+          className="relative h-64 flex items-end"
           style={{
-            background: isDarkMode 
-              ? 'rgba(26,26,28,0.95)' 
-              : 'rgba(255,255,255,0.95)',
-            backdropFilter: 'blur(12px)',
-            border: '1px solid rgba(192,192,192,0.2)',
-            boxShadow: '0 8px 32px rgba(192,192,192,0.15)'
+            backgroundImage: 'url(https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=90)',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center'
           }}
         >
-          <div className="flex items-center justify-between mb-6">
-            <h2 
-              className="text-2xl font-bold"
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-              }}
-            >
-              Informations Personnelles
-            </h2>
-            <button
-              onClick={() => isEditing ? handleSave() : setIsEditing(true)}
-              className="px-6 py-2 rounded-xl font-semibold transition-all"
-              style={{
-                background: 'linear-gradient(135deg, #C0C0C0, #A0A0A0)',
-                color: 'white',
-                fontFamily: 'Poppins, sans-serif'
-              }}
-            >
-              {isEditing ? 'Sauvegarder' : 'Modifier'}
-            </button>
-          </div>
-
-          <div className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div>
-                <label 
-                  className="block text-sm font-semibold mb-2"
-                  style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    color: isDarkMode ? '#C0C0C0' : '#666666'
-                  }}
-                >
-                  <User size={16} className="inline mr-2" />
-                  Prénom
-                </label>
-                <input
-                  type="text"
-                  value={formData.first_name}
-                  onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                  disabled={!isEditing}
-                  className="w-full px-4 py-3 rounded-xl"
-                  style={{
-                    background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(192,192,192,0.1)',
-                    border: '1px solid rgba(192,192,192,0.3)',
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                    fontFamily: 'Poppins, sans-serif'
-                  }}
-                />
-              </div>
-
-              <div>
-                <label 
-                  className="block text-sm font-semibold mb-2"
-                  style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    color: isDarkMode ? '#C0C0C0' : '#666666'
-                  }}
-                >
-                  <User size={16} className="inline mr-2" />
-                  Nom
-                </label>
-                <input
-                  type="text"
-                  value={formData.last_name}
-                  onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                  disabled={!isEditing}
-                  className="w-full px-4 py-3 rounded-xl"
-                  style={{
-                    background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(192,192,192,0.1)',
-                    border: '1px solid rgba(192,192,192,0.3)',
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                    fontFamily: 'Poppins, sans-serif'
-                  }}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label 
-                className="block text-sm font-semibold mb-2"
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+          
+          <div className="relative z-10 max-w-7xl mx-auto w-full px-4 md:px-8 pb-8">
+            <div className="flex items-end gap-6">
+              {/* Avatar */}
+              <div 
+                className="w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold border-4"
                 style={{
-                  fontFamily: 'Poppins, sans-serif',
-                  color: isDarkMode ? '#C0C0C0' : '#666666'
+                  background: 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))',
+                  borderColor: 'rgba(255,255,255,0.3)',
+                  color: '#FFFFFF'
                 }}
               >
-                <Mail size={16} className="inline mr-2" />
-                Email
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-xl"
-                style={{
-                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(192,192,192,0.1)',
-                  border: '1px solid rgba(192,192,192,0.3)',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  fontFamily: 'Poppins, sans-serif'
-                }}
-              />
-            </div>
-
-            <div>
-              <label 
-                className="block text-sm font-semibold mb-2"
-                style={{
-                  fontFamily: 'Poppins, sans-serif',
-                  color: isDarkMode ? '#C0C0C0' : '#666666'
-                }}
-              >
-                <Phone size={16} className="inline mr-2" />
-                Téléphone
-              </label>
-              <input
-                type="tel"
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-xl"
-                style={{
-                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(192,192,192,0.1)',
-                  border: '1px solid rgba(192,192,192,0.3)',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  fontFamily: 'Poppins, sans-serif'
-                }}
-              />
+                {userData.firstName.charAt(0)}{userData.lastName.charAt(0)}
+              </div>
+              
+              {/* Info */}
+              <div className="flex-1 pb-4">
+                <h1 
+                  className="text-3xl md:text-4xl font-bold text-white mb-2"
+                  style={{ fontFamily: 'Playfair Display, serif' }}
+                >
+                  {userData.firstName} {userData.lastName}
+                </h1>
+                <p 
+                  className="text-white/80 mb-3"
+                  style={{ fontFamily: 'Poppins, sans-serif' }}
+                >
+                  {userData.email}
+                </p>
+                <div className="flex gap-4 text-sm text-white/70" style={{ fontFamily: 'Poppins, sans-serif' }}>
+                  <span className="flex items-center gap-1">
+                    <Calendar size={14} /> Membre depuis {userData.memberSince}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Star size={14} /> {userData.reservations} réservations
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* Quick Links */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {[
-            { icon: Shield, label: 'Sécurité', desc: 'Mot de passe et authentification', route: '/settings' },
-            { icon: CreditCard, label: 'Paiement', desc: 'Moyens de paiement', route: '/settings' },
-            { icon: Bell, label: 'Notifications', desc: 'Préférences de notifications', route: '/settings' },
-            { icon: Calendar, label: 'Réservations', desc: 'Historique et réservations', route: '/' }
-          ].map((item, idx) => {
-            const Icon = item.icon
-            return (
-              <button
-                key={idx}
-                onClick={() => router.push(item.route)}
-                className="text-left p-6 rounded-2xl transition-all"
-                style={{
-                  background: isDarkMode 
-                    ? 'rgba(26,26,28,0.95)' 
-                    : 'rgba(255,255,255,0.95)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(192,192,192,0.2)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 8px 25px rgba(192,192,192,0.3)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = 'none'
-                }}
-              >
-                <Icon 
-                  size={32} 
-                  className="mb-3"
-                  style={{ color: '#C0C0C0' }}
-                />
-                <h3 
-                  className="text-lg font-bold mb-1"
+        {/* Main Content */}
+        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
+          <div className="grid grid-cols-1 gap-8">
+            {menuSections.map((section) => (
+              <div key={section.id}>
+                <h2 
+                  className="text-xl font-bold mb-4 px-4"
                   style={{
                     fontFamily: 'Playfair Display, serif',
                     color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
                   }}
                 >
-                  {item.label}
-                </h3>
-                <p 
-                  className="text-sm"
-                  style={{
-                    fontFamily: 'Poppins, sans-serif',
-                    color: isDarkMode ? '#E0E0E0' : '#666666'
-                  }}
-                >
-                  {item.desc}
-                </p>
-              </button>
-            )
-          })}
+                  {section.title}
+                </h2>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {section.items.map((item, idx) => {
+                    const Icon = item.icon
+                    return (
+                      <button
+                        key={idx}
+                        onClick={item.onClick}
+                        className="glass-live p-6 rounded-2xl text-left transition-all group relative overflow-hidden"
+                        style={{
+                          background: item.active 
+                            ? (isDarkMode ? 'rgba(167,199,197,0.15)' : 'rgba(167,199,197,0.1)')
+                            : (isDarkMode ? 'rgba(26,26,28,0.8)' : 'rgba(255,255,255,0.8)'),
+                          border: item.active 
+                            ? '1px solid rgba(167,199,197,0.5)'
+                            : '1px solid rgba(167,199,197,0.2)'
+                        }}
+                        onMouseEnter={(e) => {
+                          if (!item.active) {
+                            e.currentTarget.style.transform = 'translateY(-4px)'
+                            e.currentTarget.style.boxShadow = '0 12px 35px rgba(167,199,197,0.3)'
+                            e.currentTarget.style.borderColor = 'rgba(167,199,197,0.4)'
+                          }
+                        }}
+                        onMouseLeave={(e) => {
+                          if (!item.active) {
+                            e.currentTarget.style.transform = 'translateY(0)'
+                            e.currentTarget.style.boxShadow = 'none'
+                            e.currentTarget.style.borderColor = 'rgba(167,199,197,0.2)'
+                          }
+                        }}
+                      >
+                        {/* Badge */}
+                        {item.badge && (
+                          <div 
+                            className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
+                            style={{
+                              background: 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))',
+                              color: '#FFFFFF'
+                            }}
+                          >
+                            {item.badge}
+                          </div>
+                        )}
+
+                        <div className="flex items-start justify-between mb-3">
+                          <div 
+                            className="p-3 rounded-xl"
+                            style={{
+                              background: item.active
+                                ? 'rgba(167,199,197,0.2)'
+                                : (isDarkMode ? 'rgba(167,199,197,0.1)' : 'rgba(167,199,197,0.15)')
+                            }}
+                          >
+                            <Icon 
+                              size={24} 
+                              style={{ color: '#A7C7C5' }}
+                            />
+                          </div>
+                          <ChevronRight 
+                            size={20} 
+                            className="opacity-50 group-hover:opacity-100 transition-opacity"
+                            style={{ color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}
+                          />
+                        </div>
+
+                        <h3 
+                          className="text-lg font-bold mb-1"
+                          style={{
+                            fontFamily: 'Playfair Display, serif',
+                            color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                          }}
+                        >
+                          {item.label}
+                        </h3>
+                        
+                        <p 
+                          className="text-sm"
+                          style={{
+                            fontFamily: 'Poppins, sans-serif',
+                            color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'
+                          }}
+                        >
+                          {item.description}
+                        </p>
+                      </button>
+                    )
+                  })}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Logout Button */}
+          <div className="mt-8 flex justify-center">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all"
+              style={{
+                background: isDarkMode ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)',
+                border: '1px solid rgba(239, 68, 68, 0.3)',
+                color: '#EF4444',
+                fontFamily: 'Poppins, sans-serif'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.9)'
+                e.currentTarget.style.color = '#FFFFFF'
+                e.currentTarget.style.transform = 'translateY(-2px)'
+                e.currentTarget.style.boxShadow = '0 8px 25px rgba(239, 68, 68, 0.4)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)'
+                e.currentTarget.style.color = '#EF4444'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = 'none'
+              }}
+            >
+              <LogOut size={20} />
+              <span>Se déconnecter</span>
+            </button>
+          </div>
         </div>
-      </div>
       </div>
     </div>
   )

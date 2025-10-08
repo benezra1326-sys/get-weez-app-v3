@@ -197,14 +197,25 @@ export default function Events({ user, setUser }) {
       </section>
 
       {/* FILTRES & VIEW TOGGLE */}
-      <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20">
-        <div className="flex flex-col md:flex-row gap-4 items-start md:items-center justify-between mb-6">
-          <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
+      <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20 mb-8">
+        <div 
+          className="p-6 rounded-3xl glass-live"
+          style={{
+            display: 'flex',
+            flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+            gap: '1rem',
+            alignItems: window.innerWidth < 768 ? 'stretch' : 'center',
+            justifyContent: 'space-between'
+          }}
+        >
+          <div className="flex-1">
+            <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
+          </div>
           
           {/* Toggle Map/Grid View */}
           <button
             onClick={() => setShowMap(!showMap)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all"
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap"
             style={{
               background: showMap 
                 ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
@@ -212,7 +223,8 @@ export default function Events({ user, setUser }) {
               border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
               color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
               backdropFilter: 'blur(10px)',
-              fontFamily: 'Poppins, sans-serif'
+              fontFamily: 'Poppins, sans-serif',
+              minWidth: '180px'
             }}
             onMouseEnter={(e) => {
               if (!showMap) {
