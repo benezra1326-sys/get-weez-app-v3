@@ -7,6 +7,7 @@ import V3Sidebar from '../components/layout/V3Sidebar'
 import DynamicSuggestions from '../components/chat/DynamicSuggestions'
 import CitySelector from '../components/location/CitySelector'
 import ThemeTransition from '../components/ui/ThemeTransition'
+import RichMessage from '../components/chat/RichMessage'
 import { elevenLabs } from '../lib/elevenlabs'
 
 const Home = ({ user, setUser }) => {
@@ -487,12 +488,16 @@ const Home = ({ user, setUser }) => {
                         }
                   }
                   >
-                    <p 
-                      className="whitespace-pre-wrap leading-relaxed"
+                    <div 
+                      className="leading-relaxed"
                       style={{ fontFamily: 'Poppins, sans-serif' }}
                     >
-                      {message.content}
-                    </p>
+                      {message.role === 'assistant' ? (
+                        <RichMessage content={message.content} isDarkMode={isDarkMode} />
+                      ) : (
+                        <p className="whitespace-pre-wrap">{message.content}</p>
+                      )}
+                    </div>
                     <p className="text-xs mt-2 opacity-50">
                       {message.timestamp.toLocaleTimeString('fr-FR', {
                         hour: '2-digit',

@@ -1,30 +1,25 @@
-import { askWeezAgent } from '../../lib/openai'
+import { askGliitzAgent } from '../../lib/openai-enhanced'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { message, messages, userName, isMember, conversationHistory } = req.body
+  const { messages } = req.body
 
   try {
     let reply
     
-    // Support both old and new format
     if (messages && Array.isArray(messages)) {
-      // New format with full conversation
+      // Format avec historique complet
       const lastUserMessage = messages.filter(m => m.role === 'user').pop()
-      const conversationContext = messages.map(m => `${m.role}: ${m.content}`).join('\n')
       
-      reply = await askWeezAgent(
-        lastUserMessage?.content || message,
-        userName || 'Utilisateur',
-        isMember !== false,
-        conversationContext
+      reply = await askGliitzAgent(
+        lastUserMessage?.content || '',
+        messages // Passer tout l'historique
       )
     } else {
-      // Old format with single message
-      reply = await askWeezAgent(message, userName, isMember, conversationHistory)
+      reply = await askGliitzAgent('Bonjour', [])
     }
 
     res.status(200).json({ 
@@ -35,8 +30,8 @@ export default async function handler(req, res) {
     console.error('Error in chat API:', error)
     res.status(500).json({ 
       error: 'Internal server error',
-      message: "Désolé, je rencontre un problème technique. Comment puis-je vous aider autrement ?",
-      reply: "Désolé, je rencontre un problème technique. Comment puis-je vous aider autrement?"
+      message: "Je rencontre un problème technique. Peux-tu reformuler ta demande ? 🔧",
+      reply: "Je rencontre un problème technique. Peux-tu reformuler ta demande ? 🔧"
     })
   }
 }
