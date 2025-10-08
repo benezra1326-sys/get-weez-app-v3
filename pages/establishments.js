@@ -7,6 +7,7 @@ import GliitzLoader from '../components/ui/GliitzLoader'
 import MapView from '../components/map/MapView'
 import { establishments as staticEstablishments } from '../data/marbella-data'
 import { useTheme } from '../contexts/ThemeContextSimple'
+import { smartSort, getUserPreferences } from '../lib/smartSorting'
 
 export default function Establishments({ user, setUser }) {
   const router = useRouter()
@@ -28,25 +29,31 @@ export default function Establishments({ user, setUser }) {
     setCurrentSort(filter.value)
     let sorted = [...establishments]
     
-    switch(filter.value) {
-      case 'rating':
-        sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
-        break
-      case 'reviews':
-        sorted.sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
-        break
-      case 'price-asc':
-        sorted.sort((a, b) => (a.price_level || 0) - (b.price_level || 0))
-        break
-      case 'price-desc':
-        sorted.sort((a, b) => (b.price_level || 0) - (a.price_level || 0))
-        break
-      case 'location':
-        // Tri alphabétique par quartier/location
-        sorted.sort((a, b) => (a.location || '').localeCompare(b.location || ''))
-        break
-      default:
-        break
+    // Si c'est le tri intelligent, utiliser les préférences utilisateur
+    if (filter.value === 'smart' && filter.userPreferences && user?.id) {
+      sorted = smartSort(establishments, filter.userPreferences, 'smart')
+    } else {
+      // Tri classique
+      switch(filter.value) {
+        case 'rating':
+          sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
+          break
+        case 'reviews':
+          sorted.sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
+          break
+        case 'price-asc':
+          sorted.sort((a, b) => (a.price_level || 0) - (b.price_level || 0))
+          break
+        case 'price-desc':
+          sorted.sort((a, b) => (b.price_level || 0) - (a.price_level || 0))
+          break
+        case 'location':
+          // Tri alphabétique par quartier/location
+          sorted.sort((a, b) => (a.location || '').localeCompare(b.location || ''))
+          break
+        default:
+          break
+      }
     }
     
     setDisplayedEstablishments(sorted)
@@ -72,7 +79,7 @@ export default function Establishments({ user, setUser }) {
       <div className="flex-1 overflow-y-auto">
       {/* HERO BANNER */}
       <section 
-        className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
+        className="banner-mirror-effect relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=90)',
           backgroundSize: 'cover',
@@ -109,49 +116,49 @@ export default function Establishments({ user, setUser }) {
       {/* FILTRES & VIEW TOGGLE */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20 mb-8">
         <div 
-          className="p-6 rounded-3xl glass-live"
+          className="p-4 rounded-3xl glass-live"
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            gap: '1rem'
+            flexDirection: window.innerWidth < 768 ? 'column' : 'row',
+            gap: '1rem',
+            alignItems: window.innerWidth < 768 ? 'stretch' : 'flex-end'
           }}
         >
-          <div className="flex flex-col md:flex-row gap-4 items-stretch md:items-center justify-between">
-            <div className="flex-1">
-              <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
-            </div>
-            
-            {/* Toggle Map/Grid View */}
-            <button
-              onClick={() => setShowMap(!showMap)}
-              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap"
-              style={{
-                background: showMap 
-                  ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
-                  : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-                border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
-                color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
-                backdropFilter: 'blur(10px)',
-                fontFamily: 'Poppins, sans-serif',
-                minWidth: '180px'
-              }}
-              onMouseEnter={(e) => {
-                if (!showMap) {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
-                  e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!showMap) {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
-                  e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
-                }
-              }}
-            >
-              <Map size={20} />
-              <span>{showMap ? 'Voir la liste' : 'Voir la carte'}</span>
-            </button>
+          <div className="flex-1">
+            <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} user={user} />
           </div>
+          
+          {/* Toggle Map/Grid View */}
+          <button
+            onClick={() => setShowMap(!showMap)}
+            className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all whitespace-nowrap"
+            style={{
+              background: showMap 
+                ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
+                : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+              border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
+              color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
+              backdropFilter: 'blur(10px)',
+              fontFamily: 'Poppins, sans-serif',
+              minWidth: '140px',
+              height: 'fit-content'
+            }}
+            onMouseEnter={(e) => {
+              if (!showMap) {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
+                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!showMap) {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
+                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
+              }
+            }}
+          >
+            <Map size={18} />
+            <span className="text-sm">{showMap ? 'Voir la liste' : 'Voir la carte'}</span>
+          </button>
         </div>
       </div>
 

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
+import { useTranslation } from 'next-i18next'
 import { Mic, Send, Loader, Sparkles, X } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import V3Sidebar from '../components/layout/V3Sidebar'
@@ -9,22 +10,29 @@ import CitySelector from '../components/location/CitySelector'
 import ThemeTransition from '../components/ui/ThemeTransition'
 import RichMessage from '../components/chat/RichMessage'
 import { elevenLabs } from '../lib/elevenlabs'
+import { useConversations } from '../hooks/useConversations'
 
 const Home = ({ user, setUser }) => {
   const router = useRouter()
+  const { t } = useTranslation('common')
   const { isDarkMode } = useTheme()
-  const [messages, setMessages] = useState([])
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
-  const [currentConversationId, setCurrentConversationId] = useState(null)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
   const recognitionRef = useRef(null)
-  const [conversations] = useState([
-    { id: 1, title: 'Réservation tables d\'exception', date: 'Aujourd\'hui', preview: 'Je cherche un restaurant...' },
-    { id: 2, title: 'Organisation événement VIP', date: 'Hier', preview: 'Événements privés exclusifs...' },
-    { id: 3, title: 'Services de conciergerie', date: 'Il y a 2 jours', preview: 'Services premium...' }
-  ])
+  
+  // Utiliser le hook useConversations
+  const {
+    conversations,
+    currentConversationId,
+    messages,
+    createConversation,
+    selectConversation,
+    deleteConversation,
+    addMessage
+  } = useConversations()
+  
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
@@ -91,7 +99,8 @@ const Home = ({ user, setUser }) => {
           messages: [...messages, userMessage].map(m => ({
             role: m.role,
             content: m.content
-          }))
+          })),
+          userId: user?.id // Passer l'ID utilisateur pour les préférences
         })
       })
 
@@ -304,71 +313,37 @@ const Home = ({ user, setUser }) => {
         {messages.length === 0 && (
           <div className="flex-1 flex items-center justify-center p-4 md:p-6">
             <div className="text-center max-w-3xl w-full">
-              <div 
-                className="inline-flex items-center justify-center w-20 h-20 rounded-full mb-8 sparkle-effect sparkle-mirror halo-pulsing"
-                style={{
-                  background: isDarkMode 
-                    ? 'linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%)'
-                    : 'linear-gradient(135deg, #E8E8E8 0%, #C0C0C0 100%)',
-                  boxShadow: isDarkMode 
-                    ? '0 10px 35px rgba(0, 0, 0, 0.8), 0 0 20px rgba(255, 255, 255, 0.1)'
-                    : '0 10px 35px rgba(0, 0, 0, 0.3), 0 4px 15px rgba(0, 0, 0, 0.2)',
-                  animation: 'sparkle-float 4s ease-in-out infinite, halo-pulse 5s ease-in-out infinite',
-                  position: 'relative',
-                  overflow: 'hidden'
+              <Sparkles 
+                size={48} 
+                className="mb-4"
+                style={{ 
+                  color: isDarkMode ? '#C0C0C0' : '#A7C7C5',
+                  animation: 'sparkle-pulse 2s ease-in-out infinite'
+                }} 
+              />
+
+              <h1 
+                className="text-3xl md:text-4xl font-bold text-center mb-3"
+                style={{ 
+                  fontFamily: 'Playfair Display, serif',
+                  background: isDarkMode
+                    ? 'linear-gradient(135deg, #A7C7C5 0%, #9DB4C0 100%)'
+                    : 'linear-gradient(135deg, #5A8B89 0%, #7A9B99 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  backgroundClip: 'text',
+                  MozBackgroundClip: 'text',
+                  MozTextFillColor: 'transparent',
+                  letterSpacing: '-0.02em',
+                  lineHeight: '1.2',
+                  padding: '0',
+                  margin: '0 auto',
+                  display: 'inline-block',
+                  backgroundColor: 'transparent'
                 }}
               >
-                <Sparkles 
-                  size={36} 
-                  style={{ 
-                    color: '#FFFFFF',
-                    position: 'relative',
-                    zIndex: 1,
-                    filter: 'drop-shadow(0 4px 12px rgba(0, 0, 0, 0.5))'
-                  }} 
-                />
-              </div>
-
-              <div className="relative w-full flex justify-center mb-3">
-                {/* Bande animée en arrière-plan */}
-                <div 
-                  className="absolute inset-0 rounded-2xl transition-all duration-500 flex justify-center"
-                  style={{
-                    zIndex: -1
-                  }}
-                >
-                  <div
-                    style={{
-                      background: isDarkMode
-                        ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(244, 229, 161, 0.15))'
-                        : 'linear-gradient(135deg, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.08))',
-                      transform: 'scaleX(1.05)',
-                      filter: 'blur(10px)',
-                      opacity: 0.8,
-                      width: 'fit-content',
-                      height: '100%',
-                      borderRadius: '16px',
-                      padding: '0 2rem'
-                    }}
-                  />
-                </div>
-                
-                <h1 
-                  className="text-3xl md:text-4xl font-bold px-6 py-2 relative text-center"
-                  style={{ 
-                    fontFamily: 'Playfair Display, serif',
-                    background: isDarkMode
-                      ? 'linear-gradient(135deg, #A7C7C5 0%, #9DB4C0 100%)'
-                      : 'linear-gradient(135deg, #5A8B89 0%, #7A9B99 100%)',
-                    WebkitBackgroundClip: 'text',
-                    WebkitTextFillColor: 'transparent',
-                    letterSpacing: '-0.02em',
-                    lineHeight: '1.2'
-                  }}
-                >
-                  Bonjour, je suis Gliitz
-                </h1>
-              </div>
+                Bonjour, je suis Gliitz
+              </h1>
 
               <p 
                 className="text-base md:text-lg mb-6 leading-relaxed"
@@ -417,7 +392,8 @@ const Home = ({ user, setUser }) => {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                          messages: [{ role: 'user', content: text }]
+                          messages: [{ role: 'user', content: text }],
+                          userId: user?.id
                         })
                       })
                       .then(res => res.json())
@@ -621,6 +597,20 @@ const Home = ({ user, setUser }) => {
               >
                 {isLoading ? <Loader className="animate-spin" size={22} /> : <Send size={22} />}
               </button>
+          </div>
+          
+          {/* Tagline sous le chat */}
+          <div 
+            className="mt-4 text-center"
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: '0.85rem',
+              color: isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(11, 11, 12, 0.5)',
+              fontWeight: '300',
+              letterSpacing: '0.02em'
+            }}
+          >
+            {t('brand.footer_tagline', { defaultValue: 'Gliitz, votre concierge intelligent pour des instants parfaits' })} <Sparkles size={14} style={{ display: 'inline', marginLeft: '4px', verticalAlign: 'middle' }} />
           </div>
           </div>
         </div>

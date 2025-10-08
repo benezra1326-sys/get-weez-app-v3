@@ -326,7 +326,7 @@ const ProfileDropdown = ({ user, isDarkMode }) => {
                   {user?.first_name || 'Utilisateur'}
                 </p>
               </div>
-              <Sparkles className="w-5 h-5" style={{ color: isDarkMode ? '#FFD700' : '#C0C0C0' }} />
+              <Sparkles className="w-5 h-5" style={{ color: isDarkMode ? '#C0C0C0' : '#C0C0C0' }} />
             </div>
           </div>
 

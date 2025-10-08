@@ -73,5 +73,9 @@
     "view_all": "Voir tout",
     "show_more": "Afficher plus",
     "show_less": "Afficher moins"
+  },
+  "brand": {
+    "tagline": "Votre IA concierge, partout, à tout moment",
+    "footer_tagline": "Gliitz, votre concierge intelligent pour des instants parfaits"
   }
 }

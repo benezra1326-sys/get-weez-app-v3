@@ -149,7 +149,7 @@ export default function Register() {
           {success ? (
             <div 
               className="glass-live p-8 rounded-3xl text-center"
-              style={{
+              style={{ 
                 animation: 'fade-slide-up 0.6s ease-out'
               }}
             >
@@ -162,7 +162,7 @@ export default function Register() {
               >
                 <Check size={40} style={{ color: '#A7C7C5' }} />
               </div>
-              
+
               <h2 
                 className="text-2xl font-bold mb-3"
                 style={{
@@ -217,13 +217,13 @@ export default function Register() {
                   }}
                 >
                   {error}
-                </div>
+              </div>
               )}
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* Prénom & Nom */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
+                    <div>
                     <label 
                       className="block mb-2 text-sm font-medium"
                       style={{
@@ -231,21 +231,21 @@ export default function Register() {
                         color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
                       }}
                     >
-                      Prénom
-                    </label>
-                    <div className="relative">
+                        Prénom
+                      </label>
+                      <div className="relative">
                       <User 
                         size={18} 
                         className="absolute left-4 top-1/2 transform -translate-y-1/2"
                         style={{ color: '#A7C7C5' }}
                       />
-                      <input
-                        type="text"
+                        <input
+                          type="text"
                         name="firstName"
                         value={formData.firstName}
                         onChange={handleChange}
                         placeholder="Jean"
-                        required
+                          required
                         className="w-full pl-12 pr-4 py-3 rounded-xl outline-none transition-all"
                         style={{
                           background: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
@@ -389,12 +389,12 @@ export default function Register() {
                         e.target.style.borderColor = 'rgba(167,199,197,0.2)'
                         e.target.style.boxShadow = 'none'
                       }}
-                    />
+                      />
+                    </div>
                   </div>
-                </div>
 
                 {/* Mot de passe */}
-                <div>
+                  <div>
                   <label 
                     className="block mb-2 text-sm font-medium"
                     style={{
@@ -402,21 +402,21 @@ export default function Register() {
                       color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
                     }}
                   >
-                    Mot de passe
-                  </label>
-                  <div className="relative">
+                      Mot de passe
+                    </label>
+                    <div className="relative">
                     <Lock 
                       size={18} 
                       className="absolute left-4 top-1/2 transform -translate-y-1/2"
                       style={{ color: '#A7C7C5' }}
                     />
-                    <input
-                      type={showPassword ? 'text' : 'password'}
+                      <input
+                        type={showPassword ? 'text' : 'password'}
                       name="password"
                       value={formData.password}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      required
+                        required
                       className="w-full pl-12 pr-12 py-3 rounded-xl outline-none transition-all"
                       style={{
                         background: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
@@ -432,20 +432,20 @@ export default function Register() {
                         e.target.style.borderColor = 'rgba(167,199,197,0.2)'
                         e.target.style.boxShadow = 'none'
                       }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowPassword(!showPassword)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2"
                       style={{ color: '#A7C7C5' }}
-                    >
+                      >
                       {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
+                      </button>
+                    </div>
                   </div>
-                </div>
 
                 {/* Confirmation mot de passe */}
-                <div>
+                  <div>
                   <label 
                     className="block mb-2 text-sm font-medium"
                     style={{
@@ -453,21 +453,21 @@ export default function Register() {
                       color: isDarkMode ? 'rgba(255,255,255,0.8)' : 'rgba(0,0,0,0.8)'
                     }}
                   >
-                    Confirmer le mot de passe
-                  </label>
-                  <div className="relative">
+                      Confirmer le mot de passe
+                    </label>
+                    <div className="relative">
                     <Lock 
                       size={18} 
                       className="absolute left-4 top-1/2 transform -translate-y-1/2"
                       style={{ color: '#A7C7C5' }}
                     />
-                    <input
-                      type={showConfirmPassword ? 'text' : 'password'}
+                      <input
+                        type={showConfirmPassword ? 'text' : 'password'}
                       name="confirmPassword"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                       placeholder="••••••••"
-                      required
+                        required
                       className="w-full pl-12 pr-12 py-3 rounded-xl outline-none transition-all"
                       style={{
                         background: isDarkMode ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.03)',
@@ -483,17 +483,17 @@ export default function Register() {
                         e.target.style.borderColor = 'rgba(167,199,197,0.2)'
                         e.target.style.boxShadow = 'none'
                       }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                       className="absolute right-4 top-1/2 transform -translate-y-1/2"
                       style={{ color: '#A7C7C5' }}
-                    >
+                      >
                       {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
-                    </button>
+                      </button>
+                    </div>
                   </div>
-                </div>
 
                 {/* Submit Button */}
                 <button
@@ -550,7 +550,7 @@ export default function Register() {
             </div>
           )}
         </section>
-      </div>
+          </div>
     </div>
   )
 }

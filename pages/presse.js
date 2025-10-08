@@ -217,7 +217,7 @@ export default function Presse() {
                 <div className="p-6">
                   <div className="flex items-center gap-2 mb-3 text-sm" style={{ 
                     fontFamily: 'Poppins, sans-serif',
-                    color: '#D4AF37'
+                    color: isDarkMode ? '#C0C0C0' : '#D4AF37'
                   }}>
                     <span className="font-semibold">{article.outlet}</span>
                     <span>•</span>
@@ -251,7 +251,7 @@ export default function Presse() {
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-2 text-sm font-semibold transition-all"
                     style={{
-                      color: isDarkMode ? '#D4AF37' : '#0B0B0C',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
                       fontFamily: 'Poppins, sans-serif'
                     }}
                   >

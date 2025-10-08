@@ -94,7 +94,7 @@ export default function Newsletter() {
                     className="inline-flex items-center justify-center w-16 h-16 rounded-full mb-4"
                     style={{
                       background: isDarkMode 
-                        ? 'linear-gradient(135deg, #D4AF37 0%, #F4E5A1 100%)'
+                        ? 'linear-gradient(135deg, #C0C0C0 0%, #E5E5E5 100%)'
                         : 'linear-gradient(135deg, #1a1a1a 0%, #3a3a3a 100%)'
                     }}
                   >

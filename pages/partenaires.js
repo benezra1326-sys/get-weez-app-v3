@@ -82,13 +82,13 @@ export default function Partenaires() {
                 className="px-6 py-3 rounded-xl font-semibold transition-all"
                 style={{
                   background: activeTab === tab.id
-                    ? (isDarkMode ? 'rgba(212, 175, 55, 0.2)' : 'rgba(0, 0, 0, 0.08)')
+                    ? (isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(0, 0, 0, 0.08)')
                     : (isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)'),
                   color: activeTab === tab.id
-                    ? (isDarkMode ? '#D4AF37' : '#0B0B0C')
+                    ? (isDarkMode ? '#C0C0C0' : '#0B0B0C')
                     : (isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'),
                   border: `1px solid ${activeTab === tab.id 
-                    ? (isDarkMode ? 'rgba(212, 175, 55, 0.3)' : 'rgba(0, 0, 0, 0.15)')
+                    ? (isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(0, 0, 0, 0.15)')
                     : (isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)')
                   }`,
                   fontFamily: 'Poppins, sans-serif'
@@ -124,13 +124,13 @@ export default function Partenaires() {
                     ? 'rgba(26,26,28,0.95)' 
                     : 'rgba(255,255,255,0.95)',
                   backdropFilter: 'blur(12px)',
-                  border: isDarkMode ? '1px solid rgba(212, 175, 55, 0.2)' : '1px solid rgba(0, 0, 0, 0.1)',
+                  border: isDarkMode ? '1px solid rgba(192, 192, 192, 0.2)' : '1px solid rgba(0, 0, 0, 0.1)',
                   boxShadow: isDarkMode ? '0 8px 32px rgba(0, 0, 0, 0.3)' : '0 8px 32px rgba(0, 0, 0, 0.08)'
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-4px)'
                   e.currentTarget.style.boxShadow = isDarkMode 
-                    ? '0 12px 40px rgba(212, 175, 55, 0.2)' 
+                    ? '0 12px 40px rgba(192, 192, 192, 0.2)' 
                     : '0 12px 40px rgba(0, 0, 0, 0.15)'
                 }}
                 onMouseLeave={(e) => {
@@ -143,10 +143,10 @@ export default function Partenaires() {
                 {/* Type Badge */}
                 <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-semibold" style={{
                   background: item.type === 'establishment' 
-                    ? 'rgba(212, 175, 55, 0.2)' 
+                    ? (isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(212, 175, 55, 0.2)')
                     : 'rgba(100, 100, 255, 0.2)',
                   color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  border: `1px solid ${item.type === 'establishment' ? 'rgba(212, 175, 55, 0.4)' : 'rgba(100, 100, 255, 0.4)'}`
+                  border: `1px solid ${item.type === 'establishment' ? (isDarkMode ? 'rgba(192, 192, 192, 0.4)' : 'rgba(212, 175, 55, 0.4)') : 'rgba(100, 100, 255, 0.4)'}`
                 }}>
                   {item.type === 'establishment' ? <Building size={12} className="inline mr-1" /> : <Briefcase size={12} className="inline mr-1" />}
                   {item.type === 'establishment' ? 'Établissement' : 'Service'}
@@ -175,12 +175,12 @@ export default function Partenaires() {
                     </h3>
                     {item.rating && (
                       <div className="flex items-center gap-1 ml-2">
-                        <Star size={18} style={{ color: '#D4AF37', fill: '#D4AF37' }} />
+                        <Star size={18} style={{ color: isDarkMode ? '#C0C0C0' : '#D4AF37', fill: isDarkMode ? '#C0C0C0' : '#D4AF37' }} />
                         <span 
                           className="font-semibold"
                           style={{ 
                             fontFamily: 'Poppins, sans-serif',
-                            color: '#D4AF37'
+                            color: isDarkMode ? '#C0C0C0' : '#D4AF37'
                           }}
                         >
                           {item.rating}

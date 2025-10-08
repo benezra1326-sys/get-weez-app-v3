@@ -5,7 +5,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' })
   }
 
-  const { messages } = req.body
+  const { messages, userId } = req.body
 
   try {
     let reply
@@ -16,10 +16,11 @@ export default async function handler(req, res) {
       
       reply = await askGliitzAgent(
         lastUserMessage?.content || '',
-        messages // Passer tout l'historique
+        messages, // Passer tout l'historique
+        userId // Passer l'ID utilisateur pour les préférences
       )
     } else {
-      reply = await askGliitzAgent('Bonjour', [])
+      reply = await askGliitzAgent('Bonjour', [], userId)
     }
 
     res.status(200).json({ 

@@ -1,6 +1,9 @@
 import React from 'react'
+import { useTranslation } from 'next-i18next'
 
-const GliitzLogo = ({ size = 'text-2xl', compact = false, forHeader = false, isDarkMode = false }) => {
+const GliitzLogo = ({ size = 'text-2xl', compact = false, forHeader = false, isDarkMode = false, showTagline = false }) => {
+  const { t } = useTranslation('common')
+  
   // Bouton avec fond adaptatif selon le mode
   return (
     <div 
@@ -14,16 +17,33 @@ const GliitzLogo = ({ size = 'text-2xl', compact = false, forHeader = false, isD
           : '0 4px 20px rgba(0, 0, 0, 0.08)'
       }}
     >
-      <div 
-        style={{
-          fontFamily: 'Playfair Display, serif',
-          fontSize: compact ? '1.2rem' : '1.8rem',
-          fontWeight: '700',
-          color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
-          letterSpacing: '-0.02em'
-        }}
-      >
-        Gliitz
+      <div>
+        <div 
+          style={{
+            fontFamily: 'Playfair Display, serif',
+            fontSize: compact ? '1.2rem' : '1.8rem',
+            fontWeight: '700',
+            color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+            letterSpacing: '-0.02em'
+          }}
+        >
+          Gliitz
+        </div>
+        {showTagline && (
+          <div 
+            style={{
+              fontFamily: 'Poppins, sans-serif',
+              fontSize: '0.65rem',
+              fontWeight: '400',
+              color: isDarkMode ? 'rgba(192, 192, 192, 0.7)' : 'rgba(11, 11, 12, 0.6)',
+              marginTop: '0.1rem',
+              letterSpacing: '0.05em',
+              textAlign: 'center'
+            }}
+          >
+            {t('brand.tagline')}
+          </div>
+        )}
       </div>
     </div>
   )

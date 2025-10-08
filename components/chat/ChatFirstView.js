@@ -96,15 +96,14 @@ const ChatFirstView = ({ conversationId, onNewMessage }) => {
       {messages.length === 0 && (
         <div className="flex-1 flex items-center justify-center p-8">
           <div className="text-center max-w-2xl">
-            <div 
-              className="inline-flex items-center justify-center w-20 h-20 rounded-3xl mb-6 animate-pulse"
-              style={{
-                background: 'linear-gradient(135deg, #C0C0C0 0%, #E8E8E8 100%)',
-                boxShadow: '0 8px 30px rgba(192,192,192,0.5)'
-              }}
-            >
-              <FiSparkles size={36} className="text-white" />
-            </div>
+            <FiSparkles 
+              size={48} 
+              className="mb-4"
+              style={{ 
+                color: '#C0C0C0',
+                animation: 'sparkle-pulse 2s ease-in-out infinite'
+              }} 
+            />
             
             <h1 
               className="text-5xl font-bold mb-4"
@@ -112,7 +111,10 @@ const ChatFirstView = ({ conversationId, onNewMessage }) => {
                 fontFamily: 'Playfair Display, serif',
                 background: 'linear-gradient(135deg, #C0C0C0 0%, #808080 100%)',
                 WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent'
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                display: 'inline-block',
+                padding: '0.5rem 1rem'
               }}
             >
               Bonjour, je suis Gliitz

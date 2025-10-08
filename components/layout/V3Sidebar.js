@@ -158,6 +158,36 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
                 }}
               />
             </div>
+            
+            {/* Nouveau Chat Button */}
+            <button
+              onClick={() => {
+                if (onNewChat) onNewChat()
+                router.push('/')
+                toggle(false)
+              }}
+              className="w-full mt-3 px-4 py-3 rounded-xl font-medium transition-all flex items-center justify-center gap-2"
+              style={{
+                background: 'linear-gradient(135deg, #A7C7C5, #9DB4C0)',
+                color: '#FFFFFF',
+                fontFamily: 'Poppins, sans-serif',
+                fontWeight: 600,
+                boxShadow: '0 4px 15px rgba(167, 199, 197, 0.3)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #9DB4C0, #8CA0A8)'
+                e.currentTarget.style.transform = 'translateY(-1px)'
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(167, 199, 197, 0.4)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #A7C7C5, #9DB4C0)'
+                e.currentTarget.style.transform = 'translateY(0)'
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(167, 199, 197, 0.3)'
+              }}
+            >
+              <Sparkles size={18} />
+              <span>Nouveau chat</span>
+            </button>
           </div>
 
           {/* Navigation Links */}
@@ -174,10 +204,10 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
                   className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl transition-all mb-1"
                   style={{
                     color: isActive 
-                      ? (isDarkMode ? '#D4AF37' : '#1a1a1a')
+                      ? (isDarkMode ? '#C0C0C0' : '#1a1a1a')
                       : (isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)'),
                     background: isActive 
-                      ? (isDarkMode ? 'rgba(212, 175, 55, 0.1)' : 'rgba(0, 0, 0, 0.03)')
+                      ? (isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(0, 0, 0, 0.03)')
                       : 'transparent',
                     fontFamily: 'Poppins, sans-serif',
                     fontWeight: isActive ? 500 : 400

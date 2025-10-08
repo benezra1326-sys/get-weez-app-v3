@@ -3,9 +3,10 @@ import { useRouter } from 'next/router'
 import { 
   User, Mail, Phone, MapPin, Calendar, Shield, CreditCard, Bell, 
   Settings, History, Heart, LogOut, ChevronRight, Award, Package,
-  HelpCircle, MessageSquare, Star
+  HelpCircle, MessageSquare, Star, Sparkles
 } from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
+import PreferencesManager from '../components/preferences/PreferencesManager'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { supabase } from '../lib/supabase'
 
@@ -109,6 +110,19 @@ export default function Account({ user, setUser }) {
           description: 'Points et récompenses',
           onClick: () => setActiveTab('loyalty'),
           active: activeTab === 'loyalty'
+        }
+      ]
+    },
+    {
+      id: 'preferences',
+      title: 'Préférences & Personnalisation',
+      items: [
+        {
+          icon: Sparkles,
+          label: 'Configuration des goûts',
+          description: 'Goûts, interdictions, peurs, alimentation',
+          onClick: () => setActiveTab('preferences'),
+          active: activeTab === 'preferences'
         }
       ]
     },
@@ -345,6 +359,72 @@ export default function Account({ user, setUser }) {
               <span>Se déconnecter</span>
             </button>
           </div>
+        </div>
+
+        {/* Content Area */}
+        <div className="flex-1 overflow-y-auto">
+          {activeTab === 'preferences' && (
+            <PreferencesManager 
+              user={user} 
+              onSave={(preferences) => {
+                console.log('Préférences sauvegardées:', preferences)
+                // TODO: Sauvegarder dans Supabase
+              }}
+            />
+          )}
+          
+          {activeTab !== 'preferences' && (
+            <div className="p-8">
+              <div 
+                className="text-center py-16 rounded-2xl"
+                style={{
+                  background: isDarkMode 
+                    ? 'rgba(255, 255, 255, 0.03)' 
+                    : 'rgba(255, 255, 255, 0.6)',
+                  border: isDarkMode 
+                    ? '1px solid rgba(192, 192, 192, 0.2)' 
+                    : '1px solid rgba(0, 0, 0, 0.1)',
+                  backdropFilter: 'blur(14px)'
+                }}
+              >
+                <Sparkles 
+                  size={64} 
+                  style={{ 
+                    color: isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(0, 0, 0, 0.3)',
+                    margin: '0 auto 1rem'
+                  }} 
+                />
+                <h3 
+                  className="text-2xl font-bold mb-2"
+                  style={{
+                    fontFamily: 'Playfair Display, serif',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                >
+                  {activeTab === 'profile' && 'Informations personnelles'}
+                  {activeTab === 'security' && 'Sécurité & Connexion'}
+                  {activeTab === 'notifications' && 'Notifications'}
+                  {activeTab === 'reservations' && 'Mes Réservations'}
+                  {activeTab === 'history' && 'Historique'}
+                  {activeTab === 'favorites' && 'Favoris'}
+                  {activeTab === 'payment' && 'Moyens de paiement'}
+                  {activeTab === 'subscription' && 'Mon Abonnement'}
+                  {activeTab === 'loyalty' && 'Programme Fidélité'}
+                  {activeTab === 'reviews' && 'Mes Avis'}
+                  {activeTab === 'settings' && 'Paramètres'}
+                </h3>
+                <p 
+                  className="text-lg"
+                  style={{
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                    fontFamily: 'Poppins, sans-serif'
+                  }}
+                >
+                  Cette section sera bientôt disponible
+                </p>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

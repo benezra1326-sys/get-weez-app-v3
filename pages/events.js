@@ -6,6 +6,7 @@ import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import MapView from '../components/map/MapView'
 import { useTheme } from '../contexts/ThemeContextSimple'
+import { smartSort, getUserPreferences } from '../lib/smartSorting'
 
 export default function Events({ user, setUser }) {
   const router = useRouter()
@@ -102,24 +103,30 @@ export default function Events({ user, setUser }) {
     setCurrentSort(filter.value)
     let sorted = [...events]
     
-    switch(filter.value) {
-      case 'rating':
-        sorted.sort((a, b) => new Date(b.date) - new Date(a.date))
-        break
-      case 'reviews':
-        sorted.sort((a, b) => (b.attendees || 0) - (a.attendees || 0))
-        break
-      case 'price-asc':
-        sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
-        break
-      case 'price-desc':
-        sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
-        break
-      case 'location':
-        sorted.sort((a, b) => (a.location || '').localeCompare(b.location || ''))
-        break
-      default:
-        break
+    // Si c'est le tri intelligent, utiliser les préférences utilisateur
+    if (filter.value === 'smart' && filter.userPreferences && user?.id) {
+      sorted = smartSort(events, filter.userPreferences, 'smart')
+    } else {
+      // Tri classique
+      switch(filter.value) {
+        case 'rating':
+          sorted.sort((a, b) => new Date(b.date) - new Date(a.date))
+          break
+        case 'reviews':
+          sorted.sort((a, b) => (b.attendees || 0) - (a.attendees || 0))
+          break
+        case 'price-asc':
+          sorted.sort((a, b) => (a.price || 0) - (b.price || 0))
+          break
+        case 'price-desc':
+          sorted.sort((a, b) => (b.price || 0) - (a.price || 0))
+          break
+        case 'location':
+          sorted.sort((a, b) => (a.location || '').localeCompare(b.location || ''))
+          break
+        default:
+          break
+      }
     }
     
     setDisplayedEvents(sorted)
@@ -162,7 +169,7 @@ export default function Events({ user, setUser }) {
       <div className="flex-1 overflow-y-auto">
       {/* HERO BANNER */}
       <section 
-        className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
+        className="banner-mirror-effect relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1920&q=90)',
           backgroundSize: 'cover',
@@ -209,7 +216,7 @@ export default function Events({ user, setUser }) {
           }}
         >
           <div className="flex-1">
-            <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
+            <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} user={user} />
           </div>
           
           {/* Toggle Map/Grid View */}
@@ -321,7 +328,7 @@ export default function Events({ user, setUser }) {
               </div>
 
               {/* Content */}
-              <div className="p-6">
+              <div className="p-6 flex flex-col" style={{ minHeight: '360px' }}>
                 <h3 
                   className="text-2xl font-bold mb-3"
                   style={{
@@ -369,19 +376,36 @@ export default function Events({ user, setUser }) {
                     e.stopPropagation()
                     handleReserve(event)
                   }}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all"
+                  className="w-full mt-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300"
                   style={{
-                    background: 'linear-gradient(135deg, #C0C0C0, #A0A0A0)',
-                    color: 'white',
-                    fontFamily: 'Poppins, sans-serif'
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.25))' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.8), rgba(192, 192, 192, 0.95))',
+                    color: isDarkMode ? '#C0C0C0' : '#FFFFFF',
+                    fontFamily: 'Poppins, sans-serif',
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.5)'}`,
+                    boxShadow: isDarkMode 
+                      ? '0 4px 15px rgba(192, 192, 192, 0.1)' 
+                      : '0 4px 15px rgba(192, 192, 192, 0.3)'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.02)'
-                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(192,192,192,0.4)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = isDarkMode 
+                      ? '0 8px 25px rgba(192, 192, 192, 0.2)' 
+                      : '0 8px 25px rgba(192, 192, 192, 0.5)'
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.25), rgba(192, 192, 192, 0.35))' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(192, 192, 192, 1))'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)'
-                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = isDarkMode 
+                      ? '0 4px 15px rgba(192, 192, 192, 0.1)' 
+                      : '0 4px 15px rgba(192, 192, 192, 0.3)'
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.25))' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.8), rgba(192, 192, 192, 0.95))'
                   }}
                 >
                   <span>Réserver</span>

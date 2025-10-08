@@ -237,7 +237,7 @@ export default function Services({ user, setUser }) {
               </div>
 
               {/* Content */}
-              <div className="p-6">
+              <div className="p-6 flex flex-col" style={{ minHeight: '360px' }}>
                 <h3 
                   className="text-2xl font-bold mb-3"
                   style={{
@@ -296,19 +296,36 @@ export default function Services({ user, setUser }) {
                     e.stopPropagation()
                     handleRequest(service)
                   }}
-                  className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all"
+                  className="w-full mt-auto flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all duration-300"
                   style={{
-                    background: 'linear-gradient(135deg, #C0C0C0, #A0A0A0)',
-                    color: 'white',
-                    fontFamily: 'Poppins, sans-serif'
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.25))' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.8), rgba(192, 192, 192, 0.95))',
+                    color: isDarkMode ? '#C0C0C0' : '#FFFFFF',
+                    fontFamily: 'Poppins, sans-serif',
+                    backdropFilter: 'blur(10px)',
+                    border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.5)'}`,
+                    boxShadow: isDarkMode 
+                      ? '0 4px 15px rgba(192, 192, 192, 0.1)' 
+                      : '0 4px 15px rgba(192, 192, 192, 0.3)'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = 'scale(1.02)'
-                    e.currentTarget.style.boxShadow = '0 4px 20px rgba(192,192,192,0.4)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                    e.currentTarget.style.boxShadow = isDarkMode 
+                      ? '0 8px 25px rgba(192, 192, 192, 0.2)' 
+                      : '0 8px 25px rgba(192, 192, 192, 0.5)'
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.25), rgba(192, 192, 192, 0.35))' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.9), rgba(192, 192, 192, 1))'
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = 'scale(1)'
-                    e.currentTarget.style.boxShadow = 'none'
+                    e.currentTarget.style.transform = 'translateY(0)'
+                    e.currentTarget.style.boxShadow = isDarkMode 
+                      ? '0 4px 15px rgba(192, 192, 192, 0.1)' 
+                      : '0 4px 15px rgba(192, 192, 192, 0.3)'
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15), rgba(192, 192, 192, 0.25))' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.8), rgba(192, 192, 192, 0.95))'
                   }}
                 >
                   <span>Demander</span>
