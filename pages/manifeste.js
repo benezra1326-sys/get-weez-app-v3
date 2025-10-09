@@ -355,13 +355,23 @@ export default function Manifeste() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.98 }}
               onClick={() => router.push('/')}
-              className="px-12 py-5 rounded-2xl font-semibold transition-all inline-flex items-center gap-3"
+              className="px-12 py-5 rounded-2xl font-semibold transition-all inline-flex items-center gap-3 cursor-pointer"
               style={{
                 background: 'linear-gradient(135deg, #A7C7C5, #9DB4C0)',
                 color: '#FFFFFF',
                 fontFamily: 'Poppins, sans-serif',
                 fontSize: '1.2rem',
-                boxShadow: '0 10px 40px rgba(167, 199, 197, 0.4)'
+                boxShadow: '0 10px 40px rgba(167, 199, 197, 0.4)',
+                border: 'none',
+                cursor: 'pointer'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #9DB4C0, #8CA0A8)'
+                e.currentTarget.style.boxShadow = '0 15px 50px rgba(167, 199, 197, 0.6)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'linear-gradient(135deg, #A7C7C5, #9DB4C0)'
+                e.currentTarget.style.boxShadow = '0 10px 40px rgba(167, 199, 197, 0.4)'
               }}
             >
               <Sparkles size={24} />

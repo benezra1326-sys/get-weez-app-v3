@@ -15,9 +15,8 @@ export function ConversationsProvider({ children }) {
 
 export function useConversationsContext() {
   const context = useContext(ConversationsContext)
-  if (!context) {
-    throw new Error('useConversationsContext must be used within ConversationsProvider')
-  }
+  // Ne pas throw d'erreur, juste retourner null si pas de provider
+  // Cela permet aux composants de fonctionner même sans le context
   return context
 }
 

@@ -29,7 +29,7 @@ export default function V3Sidebar({
     { label: 'Établissements', icon: Building, route: '/establishments' },
     { label: 'Services', icon: Briefcase, route: '/services' },
     { label: 'Événements', icon: Calendar, route: '/events' },
-    { label: 'Manifeste', icon: Sparkles, route: '/manifeste' },
+    { label: 'Manifeste', icon: FileText, route: '/manifeste' },
     { label: 'Devenir Partenaire', icon: Users, route: '/partenaires' },
     { label: 'Presse', icon: FileText, route: '/presse' },
     { label: 'Newsletter', icon: Mail, route: '/newsletter' }
