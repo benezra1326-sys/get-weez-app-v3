@@ -38,11 +38,11 @@ export default function Newsletter() {
       />
       
       <div className="flex-1 overflow-y-auto">
-        {/* HERO BANNER */}
+        {/* HERO BANNER - NOUVELLE IMAGE */}
         <section 
-          className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
+          className="banner-mirror-effect relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1557838923-2985c318be48?w=1920&q=90)',
+            backgroundImage: 'url(https://images.unsplash.com/photo-1563986768609-322da13575f3?w=1920&q=90)',
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}

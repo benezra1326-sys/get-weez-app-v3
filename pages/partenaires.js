@@ -1,27 +1,41 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Building, Briefcase, Star, MapPin, ArrowRight } from 'lucide-react'
+import { Building, Briefcase, Star, MapPin, ArrowRight, Check, Send, Sparkles } from 'lucide-react'
+import { motion } from 'framer-motion'
 import V3Sidebar from '../components/layout/V3Sidebar'
-import { establishments as staticEstablishments } from '../data/marbella-data'
-import { services as staticServices } from '../data/services-data'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
-export default function Partenaires() {
+export default function DevenirPartenaire() {
   const router = useRouter()
   const { isDarkMode } = useTheme()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [establishments] = useState(staticEstablishments || [])
-  const [services] = useState(staticServices || [])
-  const [activeTab, setActiveTab] = useState('all') // all, establishments, services
+  const [formData, setFormData] = useState({
+    establishmentName: '',
+    establishmentType: '',
+    contactName: '',
+    email: '',
+    phone: '',
+    description: '',
+    location: ''
+  })
+  const [submitted, setSubmitted] = useState(false)
 
-  const filteredItems = () => {
-    if (activeTab === 'establishments') return establishments.map(e => ({ ...e, type: 'establishment' }))
-    if (activeTab === 'services') return services.map(s => ({ ...s, type: 'service' }))
-    return [
-      ...establishments.map(e => ({ ...e, type: 'establishment' })),
-      ...services.map(s => ({ ...s, type: 'service' }))
-    ]
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    // TODO: Envoyer à Supabase ou email
+    console.log('Formulaire soumis:', formData)
+    setSubmitted(true)
+    setTimeout(() => setSubmitted(false), 5000)
   }
+
+  const partnerBenefits = [
+    { icon: '🌟', title: 'Visibilité Premium', description: 'Apparaissez en haut des recommandations IA' },
+    { icon: '🎯', title: 'Ciblage Intelligent', description: 'Suggestions personnalisées à votre clientèle cible' },
+    { icon: '📱', title: 'Réservations Directes', description: 'Système de réservation intégré' },
+    { icon: '📊', title: 'Analytics Avancés', description: 'Statistiques détaillées de performance' },
+    { icon: '✨', title: 'Badge Vérifié', description: 'Établissement vérifié par Gliitz' },
+    { icon: '🤖', title: 'IA Recommandation', description: 'L\'IA Gliitz recommande votre établissement' }
+  ]
 
   return (
     <div className="min-h-screen flex" style={{
@@ -35,212 +49,464 @@ export default function Partenaires() {
       />
       
       <div className="flex-1 overflow-y-auto">
-        {/* HERO BANNER */}
+        {/* HERO BANNER - DEVENIR PARTENAIRE */}
         <section 
-          className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
+          className="banner-mirror-effect relative w-full h-[60vh] flex items-center justify-center overflow-hidden"
           style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1920&q=90)',
+            backgroundImage: 'url(https://images.unsplash.com/photo-1556761175-b413da4baf72?w=1920&q=90)',
             backgroundSize: 'cover',
             backgroundPosition: 'center'
           }}
         >
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-black/30" />
           
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
+            <Sparkles 
+              size={48} 
+              className="mx-auto mb-6 text-white"
+              style={{ filter: 'drop-shadow(0 0 20px rgba(255, 255, 255, 0.5))' }}
+            />
             <h1 
-              className="text-4xl md:text-6xl font-bold text-white mb-6"
+              className="text-5xl md:text-7xl font-bold text-white mb-6"
               style={{
                 fontFamily: 'Playfair Display, serif',
-                textShadow: '0 4px 20px rgba(0,0,0,0.5)'
+                textShadow: '0 4px 30px rgba(0,0,0,0.7)',
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #C0C0C0 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
               }}
             >
-              Nos Partenaires Premium
+              Devenez Partenaire Gliitz
             </h1>
             <p 
-              className="text-xl md:text-2xl text-white/90"
+              className="text-xl md:text-2xl text-white/95 mb-8"
               style={{
                 fontFamily: 'Poppins, sans-serif',
-                textShadow: '0 2px 10px rgba(0,0,0,0.5)'
+                textShadow: '0 2px 15px rgba(0,0,0,0.6)',
+                fontWeight: '300'
               }}
             >
-              Découvrez tous nos établissements et services exclusifs
+              Rejoignez l'élite des établissements recommandés par notre IA de luxe
             </p>
+            <div className="flex items-center justify-center gap-3 text-white/80">
+              <Star size={20} style={{ color: '#C0C0C0' }} />
+              <span style={{ fontFamily: 'Poppins, sans-serif' }}>
+                Visibilité maximale • Clients qualifiés • Technologie IA
+              </span>
+              <Star size={20} style={{ color: '#C0C0C0' }} />
+            </div>
           </div>
         </section>
 
-        {/* Tabs */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-          <div className="flex gap-4 mb-8 justify-center">
-            {[
-              { id: 'all', label: 'Tous' },
-              { id: 'establishments', label: 'Établissements' },
-              { id: 'services', label: 'Services' }
-            ].map(tab => (
-              <button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id)}
-                className="px-6 py-3 rounded-xl font-semibold transition-all"
+        {/* Benefits Section */}
+        <div className="max-w-6xl mx-auto px-4 md:px-8 py-16">
+          <div className="text-center mb-12">
+            <h2
+              style={{
+                fontFamily: 'Playfair Display, serif',
+                fontSize: '2.5rem',
+                fontWeight: '700',
+                color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+                marginBottom: '16px'
+              }}
+            >
+              Pourquoi rejoindre Gliitz ?
+            </h2>
+            <p
+              style={{
+                fontFamily: 'Poppins, sans-serif',
+                fontSize: '1.1rem',
+                color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                maxWidth: '600px',
+                margin: '0 auto'
+              }}
+            >
+              Bénéficiez de la puissance de notre IA pour attirer une clientèle de luxe
+            </p>
+          </div>
+
+          {/* Benefits Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+            {partnerBenefits.map((benefit, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                className="p-6 rounded-2xl text-center"
                 style={{
-                  background: activeTab === tab.id
-                    ? (isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(0, 0, 0, 0.08)')
-                    : (isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.03)'),
-                  color: activeTab === tab.id
-                    ? (isDarkMode ? '#C0C0C0' : '#0B0B0C')
-                    : (isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)'),
-                  border: `1px solid ${activeTab === tab.id 
-                    ? (isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(0, 0, 0, 0.15)')
-                    : (isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)')
-                  }`,
-                  fontFamily: 'Poppins, sans-serif'
+                  background: isDarkMode 
+                    ? 'rgba(255, 255, 255, 0.05)' 
+                    : 'rgba(255, 255, 255, 0.8)',
+                  border: `1px solid ${isDarkMode 
+                    ? 'rgba(192, 192, 192, 0.2)' 
+                    : 'rgba(192, 192, 192, 0.3)'}`,
+                  backdropFilter: 'blur(10px)'
                 }}
               >
-                {tab.label}
-              </button>
+                <div style={{ fontSize: '3rem', marginBottom: '16px' }}>{benefit.icon}</div>
+                <h3
+                  style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: '1.2rem',
+                    fontWeight: '600',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                    marginBottom: '8px'
+                  }}
+                >
+                  {benefit.title}
+                </h3>
+                <p
+                  style={{
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: '0.9rem',
+                    color: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : 'rgba(0, 0, 0, 0.6)',
+                    lineHeight: '1.5'
+                  }}
+                >
+                  {benefit.description}
+                </p>
+              </motion.div>
             ))}
           </div>
 
-          <p className="text-lg mb-8" style={{ 
-            fontFamily: 'Poppins, sans-serif',
-            color: isDarkMode ? '#E0E0E0' : '#666666'
-          }}>
-            {filteredItems().length} partenaire{filteredItems().length > 1 ? 's' : ''}
-          </p>
-
-          {/* Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredItems().map((item) => (
-              <div
-                key={`${item.type}-${item.id}`}
-                className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"
-                onClick={() => {
-                  if (item.type === 'establishment') {
-                    router.push(`/establishment/${item.id}`)
-                  } else {
-                    router.push(`/service/${item.id}`)
-                  }
-                }}
+          {/* Partner Application Form */}
+          <div className="max-w-3xl mx-auto">
+            <div
+              className="p-8 md:p-12 rounded-3xl"
+              style={{
+                background: isDarkMode 
+                  ? 'rgba(255, 255, 255, 0.05)' 
+                  : 'rgba(255, 255, 255, 0.9)',
+                border: `1px solid ${isDarkMode 
+                  ? 'rgba(192, 192, 192, 0.2)' 
+                  : 'rgba(192, 192, 192, 0.3)'}`,
+                backdropFilter: 'blur(20px)',
+                boxShadow: '0 20px 60px rgba(0, 0, 0, 0.2)'
+              }}
+            >
+              <h2
                 style={{
-                  background: isDarkMode 
-                    ? 'rgba(26,26,28,0.95)' 
-                    : 'rgba(255,255,255,0.95)',
-                  backdropFilter: 'blur(12px)',
-                  border: isDarkMode ? '1px solid rgba(192, 192, 192, 0.2)' : '1px solid rgba(0, 0, 0, 0.1)',
-                  boxShadow: isDarkMode ? '0 8px 32px rgba(0, 0, 0, 0.3)' : '0 8px 32px rgba(0, 0, 0, 0.08)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-4px)'
-                  e.currentTarget.style.boxShadow = isDarkMode 
-                    ? '0 12px 40px rgba(192, 192, 192, 0.2)' 
-                    : '0 12px 40px rgba(0, 0, 0, 0.15)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = isDarkMode 
-                    ? '0 8px 32px rgba(0, 0, 0, 0.3)' 
-                    : '0 8px 32px rgba(0, 0, 0, 0.08)'
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '2rem',
+                  fontWeight: '700',
+                  color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+                  marginBottom: '24px',
+                  textAlign: 'center'
                 }}
               >
-                {/* Type Badge */}
-                <div className="absolute top-4 left-4 z-10 px-3 py-1 rounded-full text-xs font-semibold" style={{
-                  background: item.type === 'establishment' 
-                    ? (isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(212, 175, 55, 0.2)')
-                    : 'rgba(100, 100, 255, 0.2)',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  border: `1px solid ${item.type === 'establishment' ? (isDarkMode ? 'rgba(192, 192, 192, 0.4)' : 'rgba(212, 175, 55, 0.4)') : 'rgba(100, 100, 255, 0.4)'}`
-                }}>
-                  {item.type === 'establishment' ? <Building size={12} className="inline mr-1" /> : <Briefcase size={12} className="inline mr-1" />}
-                  {item.type === 'establishment' ? 'Établissement' : 'Service'}
-                </div>
+                Formulaire de Candidature
+              </h2>
 
-                {/* Image */}
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={item.image_url || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600'} 
-                    alt={item.name}
-                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* Nom de l'établissement */}
+                <div>
+                  <label
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      display: 'block',
+                      marginBottom: '8px'
+                    }}
+                  >
+                    Nom de l'établissement *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.establishmentName}
+                    onChange={(e) => setFormData({ ...formData, establishmentName: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl outline-none transition-all"
+                    style={{
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                      border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                      fontFamily: 'Poppins, sans-serif'
+                    }}
+                    placeholder="Ex: Restaurant Le Jardin"
                   />
                 </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  <div className="flex items-start justify-between mb-3">
-                    <h3 
-                      className="text-2xl font-bold flex-1"
-                      style={{
-                        fontFamily: 'Playfair Display, serif',
-                        color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                      }}
-                    >
-                      {item.name}
-                    </h3>
-                    {item.rating && (
-                      <div className="flex items-center gap-1 ml-2">
-                        <Star size={18} style={{ color: isDarkMode ? '#C0C0C0' : '#D4AF37', fill: isDarkMode ? '#C0C0C0' : '#D4AF37' }} />
-                        <span 
-                          className="font-semibold"
-                          style={{ 
-                            fontFamily: 'Poppins, sans-serif',
-                            color: isDarkMode ? '#C0C0C0' : '#D4AF37'
-                          }}
-                        >
-                          {item.rating}
-                        </span>
-                      </div>
-                    )}
-                  </div>
-
-                  {item.location && (
-                    <div className="flex items-center gap-2 mb-4 text-sm" style={{ 
-                      fontFamily: 'Poppins, sans-serif',
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.6)' : '#666666'
-                    }}>
-                      <MapPin size={16} />
-                      <span>{item.location || 'Marbella'}</span>
-                    </div>
-                  )}
-
-                  <p 
-                    className="text-sm mb-4 line-clamp-2"
+                {/* Type d'établissement */}
+                <div>
+                  <label
                     style={{
                       fontFamily: 'Poppins, sans-serif',
-                      color: isDarkMode ? '#E0E0E0' : '#666666'
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      display: 'block',
+                      marginBottom: '8px'
                     }}
                   >
-                    {item.description || item.specialties?.[0] || 'Expérience premium'}
-                  </p>
-
-                  <button
-                    onClick={(e) => {
-                      e.stopPropagation()
-                      router.push(`/?msg=${encodeURIComponent(`Je souhaite ${item.type === 'establishment' ? 'réserver une table chez' : 'demander le service'} ${item.name}`)}`)
-                    }}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all"
+                    Type d'établissement *
+                  </label>
+                  <select
+                    required
+                    value={formData.establishmentType}
+                    onChange={(e) => setFormData({ ...formData, establishmentType: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl outline-none transition-all"
                     style={{
-                      background: isDarkMode 
-                        ? 'linear-gradient(135deg, #1a1a1a, #2c2c2c)'
-                        : 'linear-gradient(135deg, #0B0B0C, #1a1a1a)',
-                      color: 'white',
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                      border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
                       fontFamily: 'Poppins, sans-serif'
                     }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'scale(1.02)'
-                      e.currentTarget.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.4)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'scale(1)'
-                      e.currentTarget.style.boxShadow = 'none'
+                  >
+                    <option value="">Sélectionnez...</option>
+                    <option value="Restaurant">Restaurant</option>
+                    <option value="Beach Club">Beach Club</option>
+                    <option value="Club">Club / Discothèque</option>
+                    <option value="Bar">Bar / Lounge</option>
+                    <option value="Hotel">Hôtel</option>
+                    <option value="Spa">Spa / Wellness</option>
+                    <option value="Service">Service</option>
+                  </select>
+                </div>
+
+                {/* Nom du contact */}
+                <div>
+                  <label
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      display: 'block',
+                      marginBottom: '8px'
                     }}
                   >
-                    <span>{item.type === 'establishment' ? 'Réserver' : 'Demander'}</span>
-                    <ArrowRight size={18} />
-                  </button>
+                    Nom du contact *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.contactName}
+                    onChange={(e) => setFormData({ ...formData, contactName: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl outline-none"
+                    style={{
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                      border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                      fontFamily: 'Poppins, sans-serif'
+                    }}
+                    placeholder="Votre nom complet"
+                  />
                 </div>
-              </div>
-            ))}
+
+                {/* Email et Phone en 2 colonnes */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <label
+                      style={{
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '0.9rem',
+                        fontWeight: '500',
+                        color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                        display: 'block',
+                        marginBottom: '8px'
+                      }}
+                    >
+                      Email *
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl outline-none"
+                      style={{
+                        background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                        border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                        color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                        fontFamily: 'Poppins, sans-serif'
+                      }}
+                      placeholder="contact@restaurant.com"
+                    />
+                  </div>
+
+                  <div>
+                    <label
+                      style={{
+                        fontFamily: 'Poppins, sans-serif',
+                        fontSize: '0.9rem',
+                        fontWeight: '500',
+                        color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                        display: 'block',
+                        marginBottom: '8px'
+                      }}
+                    >
+                      Téléphone *
+                    </label>
+                    <input
+                      type="tel"
+                      required
+                      value={formData.phone}
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      className="w-full px-4 py-3 rounded-xl outline-none"
+                      style={{
+                        background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                        border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                        color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                        fontFamily: 'Poppins, sans-serif'
+                      }}
+                      placeholder="+34 ..."
+                    />
+                  </div>
+                </div>
+
+                {/* Localisation */}
+                <div>
+                  <label
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      display: 'block',
+                      marginBottom: '8px'
+                    }}
+                  >
+                    Localisation *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.location}
+                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    className="w-full px-4 py-3 rounded-xl outline-none"
+                    style={{
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                      border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                      fontFamily: 'Poppins, sans-serif'
+                    }}
+                    placeholder="Ex: Puerto Banús, Marbella"
+                  />
+                </div>
+
+                {/* Description */}
+                <div>
+                  <label
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      fontSize: '0.9rem',
+                      fontWeight: '500',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      display: 'block',
+                      marginBottom: '8px'
+                    }}
+                  >
+                    Présentation de votre établissement *
+                  </label>
+                  <textarea
+                    required
+                    value={formData.description}
+                    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    rows={5}
+                    className="w-full px-4 py-3 rounded-xl outline-none resize-none"
+                    style={{
+                      background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
+                      border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.4)'}`,
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                      fontFamily: 'Poppins, sans-serif',
+                      lineHeight: '1.6'
+                    }}
+                    placeholder="Décrivez votre établissement, votre ambiance, vos spécialités..."
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <motion.button
+                  type="submit"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  disabled={submitted}
+                  className="w-full py-4 rounded-xl font-semibold transition-all flex items-center justify-center gap-3"
+                  style={{
+                    background: submitted
+                      ? 'linear-gradient(135deg, #10B981, #059669)'
+                      : 'linear-gradient(135deg, #A7C7C5, #9DB4C0)',
+                    color: '#FFFFFF',
+                    fontFamily: 'Poppins, sans-serif',
+                    fontSize: '1.1rem',
+                    boxShadow: '0 4px 20px rgba(167, 199, 197, 0.4)',
+                    cursor: submitted ? 'not-allowed' : 'pointer',
+                    opacity: submitted ? 0.8 : 1
+                  }}
+                >
+                  {submitted ? (
+                    <>
+                      <Check size={24} />
+                      <span>Candidature envoyée !</span>
+                    </>
+                  ) : (
+                    <>
+                      <Send size={24} />
+                      <span>Envoyer ma candidature</span>
+                    </>
+                  )}
+                </motion.button>
+
+                {submitted && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center mt-4"
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      color: '#10B981',
+                      fontWeight: '500'
+                    }}
+                  >
+                    ✅ Merci ! Notre équipe vous contactera sous 48h
+                  </motion.p>
+                )}
+              </form>
+            </div>
+          </div>
+
+          {/* CTA Section */}
+          <div className="max-w-4xl mx-auto text-center">
+            <div
+              className="p-8 rounded-2xl"
+              style={{
+                background: isDarkMode
+                  ? 'linear-gradient(135deg, rgba(167, 199, 197, 0.1), rgba(157, 180, 192, 0.1))'
+                  : 'linear-gradient(135deg, rgba(167, 199, 197, 0.15), rgba(157, 180, 192, 0.15))',
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(167, 199, 197, 0.4)'}`,
+                backdropFilter: 'blur(10px)'
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: 'Playfair Display, serif',
+                  fontSize: '1.8rem',
+                  color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+                  marginBottom: '16px'
+                }}
+              >
+                Questions ?
+              </h3>
+              <p
+                style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
+                  marginBottom: '24px',
+                  lineHeight: '1.6'
+                }}
+              >
+                Notre équipe est là pour vous accompagner dans votre intégration.
+                <br />
+                Contactez-nous à <a href="mailto:partners@gliitz.com" style={{ color: '#A7C7C5', textDecoration: 'underline' }}>partners@gliitz.com</a>
+              </p>
+            </div>
           </div>
         </div>
       </div>
     </div>
   )
 }
-
