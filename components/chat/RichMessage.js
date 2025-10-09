@@ -192,14 +192,42 @@ export default function RichMessage({ content, isDarkMode }) {
         )
       }
       
-      // Texte normal avec formatage markdown basique
+      // Texte normal avec formatage markdown basique - Noms en gras CLIQUABLES
       return (
         <span key={idx}>
-          {part.split('**').map((segment, i) => 
-            i % 2 === 0 
-              ? segment 
-              : <strong key={i} style={{ fontWeight: 700, color: '#A7C7C5' }}>{segment}</strong>
-          )}
+          {part.split('**').map((segment, i) => {
+            if (i % 2 === 0) {
+              return segment
+            } else {
+              // Les noms en gras sont cliquables
+              return (
+                <strong 
+                  key={i} 
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    handleProductClick(segment)
+                  }}
+                  style={{ 
+                    fontWeight: 700, 
+                    color: '#A7C7C5',
+                    cursor: 'pointer',
+                    borderBottom: '2px dotted rgba(167, 199, 197, 0.5)',
+                    transition: 'all 0.2s ease'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.color = isDarkMode ? '#C0C0C0' : '#5A8B89'
+                    e.currentTarget.style.borderBottomStyle = 'solid'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.color = '#A7C7C5'
+                    e.currentTarget.style.borderBottomStyle = 'dotted'
+                  }}
+                >
+                  {segment}
+                </strong>
+              )
+            }
+          })}
         </span>
       )
     })

@@ -2,18 +2,20 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User, Sparkles } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
+import { useConversationsContext } from '../../contexts/ConversationsContext'
 import EnrichedHistory from '../chat/EnrichedHistory'
 
 export default function V3Sidebar({ 
-  conversations = [], 
-  currentConversationId,
   onNewChat, 
-  onSelectConversation,
-  onDeleteConversation,
-  onRenameConversation,
   isOpen, 
   onToggle 
 }) {
+  // Utiliser le contexte global pour les conversations
+  const conversationsCtx = useConversationsContext()
+  const conversations = conversationsCtx?.conversations || []
+  const currentConversationId = conversationsCtx?.currentConversationId
+  const selectConversation = conversationsCtx?.selectConversation
+  const deleteConversation = conversationsCtx?.deleteConversation
   const router = useRouter()
   const { isDarkMode, toggleTheme } = useTheme()
   const [searchQuery, setSearchQuery] = useState('')
@@ -256,11 +258,13 @@ export default function V3Sidebar({
               conversations={conversations}
               currentId={currentConversationId}
               onSelect={(id) => {
-                if (onSelectConversation) onSelectConversation(id)
+                if (selectConversation) {
+                  selectConversation(id)
+                  router.push('/') // Retourner au chat
+                }
                 toggle(false)
               }}
-              onDelete={onDeleteConversation}
-              onRename={onRenameConversation}
+              onDelete={deleteConversation}
             />
           </div>
 

@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/router'
 import { createClient } from '@supabase/supabase-js'
 import { ThemeProvider } from '../contexts/ThemeContextSimple'
+import { ConversationsProvider } from '../contexts/ConversationsContext'
 
 // Configuration Supabase
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
@@ -185,7 +186,9 @@ function MyApp({ Component, pageProps }) {
   // Temporary: disable all wrappers for debugging
   return (
     <ThemeProvider>
-      <Component {...pageProps} user={user} setUser={setUser} />
+      <ConversationsProvider>
+        <Component {...pageProps} user={user} setUser={setUser} />
+      </ConversationsProvider>
     </ThemeProvider>
   )
 }
