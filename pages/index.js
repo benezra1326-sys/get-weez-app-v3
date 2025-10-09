@@ -243,7 +243,7 @@ const Home = ({ user, setUser }) => {
         content: "Je suis Gliitz, votre concierge de luxe. Comment puis-je vous aider aujourd'hui ?",
         timestamp: new Date()
       }
-      setMessages(prev => [...prev, errorMessage])
+      addMessage(errorMessage, conversationId)
     } finally {
       setIsLoading(false)
     }

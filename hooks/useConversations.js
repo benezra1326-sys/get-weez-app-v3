@@ -103,10 +103,13 @@ export function useConversations() {
     })
     
     // Utiliser setTimeout pour éviter les problèmes de state
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setCurrentConversationId(newConversation.id)
-    setIsCreating(false)
+      setIsCreating(false)
     }, 0)
+    
+    // Nettoyer le timeout si le composant se démonte
+    return () => clearTimeout(timeoutId)
     
     return newConversation.id
   }
