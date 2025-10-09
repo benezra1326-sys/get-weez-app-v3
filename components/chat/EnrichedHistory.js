@@ -1,20 +1,17 @@
 import React, { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Search, Clock, Trash2, Edit2, Check, X, Sparkles } from 'lucide-react'
+import { Search, Clock, Trash2, Sparkles } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function EnrichedHistory({ 
   conversations = [], 
   currentId,
   onSelect,
-  onDelete,
-  onRename
+  onDelete
 }) {
   const { isDarkMode } = useTheme()
   const [searchQuery, setSearchQuery] = useState('')
   const [filteredConversations, setFilteredConversations] = useState(conversations)
-  const [editingId, setEditingId] = useState(null)
-  const [editingName, setEditingName] = useState('')
 
   useEffect(() => {
     // Filtrer les conversations par recherche
@@ -31,23 +28,6 @@ export default function EnrichedHistory({
     }
   }, [searchQuery, conversations])
 
-  const handleStartEdit = (conv) => {
-    setEditingId(conv.id)
-    setEditingName(conv.name)
-  }
-
-  const handleSaveEdit = (id) => {
-    if (editingName.trim() && onRename) {
-      onRename(id, editingName.trim())
-    }
-    setEditingId(null)
-    setEditingName('')
-  }
-
-  const handleCancelEdit = () => {
-    setEditingId(null)
-    setEditingName('')
-  }
 
   const formatDate = (dateString) => {
     const date = new Date(dateString)
@@ -117,7 +97,6 @@ export default function EnrichedHistory({
           ) : (
             filteredConversations.map((conv, index) => {
               const isActive = conv.id === currentId
-              const isEditing = editingId === conv.id
               
               return (
                 <motion.div
@@ -140,7 +119,7 @@ export default function EnrichedHistory({
                         : (isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(192, 192, 192, 0.2)')}`,
                       backdropFilter: 'blur(10px)'
                     }}
-                    onClick={() => !isEditing && onSelect && onSelect(conv.id)}
+                    onClick={() => onSelect && onSelect(conv.id)}
                   >
                     {/* Sparkle indicator for active */}
                     {isActive && (
@@ -152,54 +131,23 @@ export default function EnrichedHistory({
                     )}
 
                     {/* Conversation Name */}
-                    {isEditing ? (
-                      <div className="flex items-center gap-2 mb-2">
-                        <input
-                          type="text"
-                          value={editingName}
-                          onChange={(e) => setEditingName(e.target.value)}
-                          className="flex-1 bg-transparent outline-none px-2 py-1 rounded"
-                          style={{
-                            fontFamily: 'Poppins, sans-serif',
-                            fontSize: '0.9rem',
-                            color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                            border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.4)'}`
-                          }}
-                          autoFocus
-                          onKeyPress={(e) => e.key === 'Enter' && handleSaveEdit(conv.id)}
-                        />
-                        <button
-                          onClick={() => handleSaveEdit(conv.id)}
-                          className="p-1 rounded hover:bg-opacity-20 hover:bg-green-500"
-                        >
-                          <Check size={14} style={{ color: '#10B981' }} />
-                        </button>
-                        <button
-                          onClick={handleCancelEdit}
-                          className="p-1 rounded hover:bg-opacity-20 hover:bg-red-500"
-                        >
-                          <X size={14} style={{ color: '#EF4444' }} />
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h4
-                          style={{
-                            fontFamily: 'Poppins, sans-serif',
-                            fontSize: '0.9rem',
-                            fontWeight: '600',
-                            color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                            lineHeight: '1.3',
-                            flex: 1
-                          }}
-                        >
-                          {conv.name}
-                        </h4>
-                      </div>
-                    )}
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                      <h4
+                        style={{
+                          fontFamily: 'Poppins, sans-serif',
+                          fontSize: '0.9rem',
+                          fontWeight: '600',
+                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                          lineHeight: '1.3',
+                          flex: 1
+                        }}
+                      >
+                        {conv.name}
+                      </h4>
+                    </div>
 
                     {/* Last Message Preview */}
-                    {conv.lastMessage && !isEditing && (
+                    {conv.lastMessage && (
                       <p
                         style={{
                           fontFamily: 'Poppins, sans-serif',
@@ -249,43 +197,24 @@ export default function EnrichedHistory({
                       )}
                     </div>
 
-                    {/* Action Buttons (visible on hover) */}
-                    {!isEditing && (
-                      <div 
-                        className="absolute top-2 right-8 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity"
-                        onClick={(e) => e.stopPropagation()}
+                    {/* Delete Button (visible on hover) - Seulement suppression */}
+                    <div 
+                      className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => onDelete && onDelete(conv.id)}
+                        className="p-1.5 rounded-lg"
+                        style={{
+                          background: 'rgba(239, 68, 68, 0.1)',
+                          border: '1px solid rgba(239, 68, 68, 0.3)'
+                        }}
                       >
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => handleStartEdit(conv)}
-                          className="p-1.5 rounded-lg"
-                          style={{
-                            background: isDarkMode 
-                              ? 'rgba(255, 255, 255, 0.1)' 
-                              : 'rgba(0, 0, 0, 0.05)',
-                            border: `1px solid ${isDarkMode 
-                              ? 'rgba(192, 192, 192, 0.2)' 
-                              : 'rgba(192, 192, 192, 0.3)'}`
-                          }}
-                        >
-                          <Edit2 size={12} style={{ color: isDarkMode ? '#C0C0C0' : '#5A8B89' }} />
-                        </motion.button>
-
-                        <motion.button
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          onClick={() => onDelete && onDelete(conv.id)}
-                          className="p-1.5 rounded-lg"
-                          style={{
-                            background: 'rgba(239, 68, 68, 0.1)',
-                            border: '1px solid rgba(239, 68, 68, 0.3)'
-                          }}
-                        >
-                          <Trash2 size={12} style={{ color: '#EF4444' }} />
-                        </motion.button>
-                      </div>
-                    )}
+                        <Trash2 size={12} style={{ color: '#EF4444' }} />
+                      </motion.button>
+                    </div>
                   </motion.div>
                 </motion.div>
               )

@@ -1,4 +1,5 @@
 import { askGliitzAgent } from '../../lib/openai-enhanced'
+import { fetchAllDataForAI } from '../../lib/supabaseData'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -8,19 +9,28 @@ export default async function handler(req, res) {
   const { messages, userId } = req.body
 
   try {
+    // Récupérer les données réelles depuis Supabase
+    const realData = await fetchAllDataForAI()
+    console.log('📊 Données Supabase chargées:', {
+      establishments: realData.establishments?.length || 0,
+      events: realData.events?.length || 0,
+      services: realData.services?.length || 0
+    })
+    
     let reply
     
     if (messages && Array.isArray(messages)) {
-      // Format avec historique complet
+      // Format avec historique complet + données Supabase
       const lastUserMessage = messages.filter(m => m.role === 'user').pop()
       
       reply = await askGliitzAgent(
         lastUserMessage?.content || '',
         messages, // Passer tout l'historique
-        userId // Passer l'ID utilisateur pour les préférences
+        userId, // Passer l'ID utilisateur pour les préférences
+        realData // Passer les données Supabase
       )
     } else {
-      reply = await askGliitzAgent('Bonjour', [], userId)
+      reply = await askGliitzAgent('Bonjour', [], userId, realData)
     }
 
     res.status(200).json({ 

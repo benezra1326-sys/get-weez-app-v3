@@ -1,10 +1,33 @@
 import { useState } from 'react'
 import { ExternalLink, FileText, Image as ImageIcon, MapPin, Calendar, Star } from 'lucide-react'
-import ProductPopup from './ProductPopup'
+import ProductPopupChat from './ProductPopupChat'
+import { searchEstablishment, searchEvent } from '../../lib/supabaseData'
 
 export default function RichMessage({ content, isDarkMode }) {
   const [imageError, setImageError] = useState({})
   const [popupData, setPopupData] = useState(null)
+  const [isLoadingProduct, setIsLoadingProduct] = useState(false)
+
+  // Gérer le clic sur un nom d'établissement/événement
+  const handleProductClick = async (name) => {
+    setIsLoadingProduct(true)
+    
+    // Rechercher d'abord dans les établissements
+    let product = await searchEstablishment(name)
+    
+    // Si pas trouvé, chercher dans les événements
+    if (!product) {
+      product = await searchEvent(name)
+    }
+    
+    setIsLoadingProduct(false)
+    
+    if (product) {
+      setPopupData(product)
+    } else {
+      console.log('Produit non trouvé:', name)
+    }
+  }
 
   // Fonction pour formater le texte avec structure visuelle
   const formatStructuredText = (text) => {
@@ -259,12 +282,8 @@ export default function RichMessage({ content, isDarkMode }) {
                     backdropFilter: 'blur(10px)'
                   }}
                   onClick={() => {
-                    // Créer un lien fictif pour déclencher la popup
-                    const mockLink = {
-                      text: element.title,
-                      url: `/establishment/${element.title.toLowerCase().replace(/\s+/g, '-')}`
-                    }
-                    handleLinkClick(mockLink)
+                    // Rechercher le produit réel dans Supabase
+                    handleProductClick(element.title)
                   }}
                 >
                   <div className="flex items-start gap-3">
@@ -340,11 +359,10 @@ export default function RichMessage({ content, isDarkMode }) {
         }
       })}
       
-      {/* Popup pour les détails */}
+      {/* Popup pour les détails - Données réelles Supabase */}
       {popupData && (
-        <ProductPopup
-          item={popupData.item}
-          type={popupData.type}
+        <ProductPopupChat
+          product={popupData}
           onClose={() => setPopupData(null)}
         />
       )}

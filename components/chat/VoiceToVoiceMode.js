@@ -340,57 +340,44 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
             </motion.div>
           )}
 
-          {/* Controls */}
-          <div className="flex items-center justify-center gap-4">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={toggleListening}
-              className="p-4 rounded-full"
-              style={{
-                background: isListening
-                  ? 'linear-gradient(135deg, #EF4444, #DC2626)'
-                  : `linear-gradient(135deg, ${isDarkMode ? '#C0C0C0' : '#E5E5E5'}, ${isDarkMode ? '#A8A8A8' : '#C0C0C0'})`,
-                color: '#FFFFFF',
-                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.2)'
-              }}
-            >
-              {isListening ? <MicOff size={24} /> : <Mic size={24} />}
-            </motion.button>
-
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setIsMuted(!isMuted)}
-              className="p-4 rounded-full"
-              style={{
-                background: isDarkMode 
-                  ? 'rgba(255, 255, 255, 0.1)' 
-                  : 'rgba(0, 0, 0, 0.05)',
-                border: `1px solid ${isDarkMode 
-                  ? 'rgba(192, 192, 192, 0.2)' 
-                  : 'rgba(192, 192, 192, 0.3)'}`,
-                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-              }}
-            >
-              {isMuted ? <VolumeX size={24} /> : <Volume2 size={24} />}
-            </motion.button>
-          </div>
-
-          {/* Info Text */}
+          {/* Info Text - Simulation appel téléphonique */}
           <p
             className="mt-6"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              fontSize: '0.85rem',
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
-              fontStyle: 'italic'
+              fontSize: '1rem',
+              color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
+              fontStyle: 'italic',
+              textAlign: 'center',
+              maxWidth: '600px',
+              lineHeight: '1.6'
             }}
           >
             {isListening 
-              ? "Parlez naturellement, Gliitz vous répond automatiquement après 2s de silence"
-              : "Activez le micro pour commencer une conversation fluide"}
+              ? "🎤 Je vous écoute..."
+              : isSpeaking
+                ? "💬 Gliitz répond..."
+                : "📞 Conversation vocale active"}
           </p>
+
+          {/* Petit indicateur mute discret */}
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            onClick={() => setIsMuted(!isMuted)}
+            className="mt-4 px-4 py-2 rounded-full text-xs"
+            style={{
+              background: isDarkMode 
+                ? 'rgba(255, 255, 255, 0.05)' 
+                : 'rgba(0, 0, 0, 0.03)',
+              border: `1px solid ${isDarkMode 
+                ? 'rgba(192, 192, 192, 0.15)' 
+                : 'rgba(192, 192, 192, 0.2)'}`,
+              color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
+              fontFamily: 'Poppins, sans-serif'
+            }}
+          >
+            {isMuted ? '🔇 Son désactivé' : '🔊 Son activé'}
+          </motion.button>
         </div>
       </motion.div>
     </AnimatePresence>
