@@ -305,7 +305,7 @@ export default function ProductPopupChat({ product, onClose }) {
                       }}
                     >
                       {product.phone}
-                    </p>
+                    </a>
                   </div>
                 </div>
               )}
