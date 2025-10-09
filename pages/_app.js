@@ -181,8 +181,6 @@ function MyApp({ Component, pageProps }) {
 
   // Écran de chargement supprimé pour permettre l'affichage immédiat
 
-  // Écran de chargement supprimé pour permettre l'affichage immédiat
-
   // Temporary: disable all wrappers for debugging
   return (
     <ThemeProvider>

@@ -10,29 +10,37 @@ const nextConfig = {
   
   // Optimisations de performance de base
   swcMinify: true,
+  compress: true,
   
-  // Optimisations pour éviter les problèmes de cache
+  // Optimisations webpack
   webpack: (config, { dev, isServer }) => {
-    if (dev) {
-      // Désactiver le cache webpack en développement pour éviter les erreurs
-      config.cache = false
+    if (!dev) {
+      // Optimisations de production
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+        },
+      }
     }
     
     return config
   },
   
-  // Configuration pour éviter les problèmes de cache
-  onDemandEntries: {
-    // Période d'inactivité avant de supprimer les pages du cache
-    maxInactiveAge: 25 * 1000,
-    // Nombre de pages à garder en cache
-    pagesBufferLength: 2,
+  // Configuration des images
+  images: {
+    domains: ['your-domain.com'],
+    formats: ['image/webp', 'image/avif'],
   },
   
   // Optimisations de performance
   experimental: {
-    // Désactiver les optimisations qui peuvent causer des problèmes
-    optimizeCss: false,
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'framer-motion'],
   },
   
   // Désactiver styled-jsx pour éviter les erreurs de compilation
