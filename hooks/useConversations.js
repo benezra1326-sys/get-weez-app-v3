@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { generateConversationTitle } from '../lib/autoLanguageDetection'
 
 const STORAGE_KEY = 'gliitz_conversations'
 
@@ -85,34 +86,14 @@ export function useConversations() {
       month: 'short' 
     })
     
-    // Messages de bienvenue variés
-    const welcomeMessages = [
-      "✨ **Bienvenue sur Gliitz !** 🏖️\n\nJe suis votre **concierge IA personnel** pour vivre Marbella comme un local ! 🇪🇸\n\n🎯 **Je peux vous aider avec :**\n• 🍽️ **Restaurants** exclusifs et tables VIP\n• 🎉 **Événements** et soirées privées\n• 🛥️ **Yachts** et expériences de luxe\n• 🏨 **Hébergements** premium\n• 🚁 **Activités** uniques\n\n💬 **Dites-moi simplement ce dont vous rêvez** et je m'occupe de tout ! ✨",
-      
-      "🌟 **Bonjour ! Je suis votre assistant Gliitz** 🏖️\n\nPrêt à vous faire découvrir les **meilleurs secrets de Marbella** ? 🇪🇸\n\n🎯 **Mes spécialités :**\n• 🍽️ **Tables VIP** dans les restaurants les plus exclusifs\n• 🎉 **Soirées privées** et événements exceptionnels\n• 🛥️ **Croisières de luxe** avec équipage professionnel\n• 🏨 **Suites premium** avec vue panoramique\n• 🚁 **Transports VIP** hélicoptère, yacht, voiture de luxe\n\n💬 **Que souhaitez-vous organiser aujourd'hui ?** ✨",
-      
-      "🏖️ **Salut ! Votre concierge Gliitz est là !** ✨\n\nEnvie de vivre **Marbella au maximum** ? Je connais tous les **endroits secrets** ! 🇪🇸\n\n🎯 **Je réserve pour vous :**\n• 🍽️ **Restaurants étoilés** et tables avec vue mer\n• 🎉 **Événements privés** et soirées exclusives\n• 🛥️ **Yachts de luxe** pour des escapades inoubliables\n• 🏨 **Hôtels 5 étoiles** et villas privées\n• 🚁 **Activités VIP** hélicoptère, golf, spa\n\n💬 **Parlez-moi de vos envies** et je m'en occupe ! 🌟",
-      
-      "💎 **Bienvenue dans l'univers Gliitz !** 🏖️\n\nVotre **concierge personnel** pour des expériences **uniques à Marbella** ! 🇪🇸\n\n🎯 **Services premium :**\n• 🍽️ **Cuisine gastronomique** dans les meilleures adresses\n• 🎉 **Soirées exclusives** et événements privés\n• 🛥️ **Expériences nautiques** de luxe\n• 🏨 **Hébergements d'exception** avec services VIP\n• 🚁 **Transports premium** pour vos déplacements\n\n💬 **Quelle expérience vous tente aujourd'hui ?** ✨"
-    ]
-    
-    // Sélectionner un message aléatoire
-    const randomMessage = welcomeMessages[Math.floor(Math.random() * welcomeMessages.length)]
-    
-    const welcomeMessage = {
-      id: `welcome-${Date.now()}`,
-      content: randomMessage,
-      role: 'assistant',
-      timestamp: new Date()
-    }
-
     const newConversation = {
       id: Date.now().toString(),
-      name: `Chat du ${dateString} à ${timeString}`,
-      messages: [welcomeMessage],
-      lastMessage: 'Bonjour ! Comment puis-je vous aider ?',
+      name: `Chat du ${dateString} à ${timeString}`, // Sera mis à jour avec le premier message
+      messages: [],
+      lastMessage: '',
       createdAt: new Date().toISOString(),
-      updatedAt: formatDate(new Date())
+      updatedAt: formatDate(new Date()),
+      autoTitleGenerated: false // Pour savoir si on doit générer un titre
     }
     
     setConversations(prev => {
@@ -170,18 +151,29 @@ export function useConversations() {
     }
 
     setConversations(prev => {
-      const updated = prev.map(conv => 
-        conv.id === conversationId
-          ? {
-              ...conv,
-              messages: [...conv.messages, message],
-              lastMessage: message.content.length > 50 
-                ? message.content.substring(0, 50) + '...' 
-                : message.content,
-              updatedAt: formatDate(new Date())
-            }
-          : conv
-      )
+      const updated = prev.map(conv => {
+        if (conv.id !== conversationId) return conv
+        
+        const updatedMessages = [...conv.messages, message]
+        
+        // Générer un titre automatique basé sur le premier message utilisateur
+        let newName = conv.name
+        if (!conv.autoTitleGenerated && message.role === 'user' && updatedMessages.length === 1) {
+          newName = generateConversationTitle(message.content)
+          console.log('📝 Titre auto-généré:', newName)
+        }
+        
+        return {
+          ...conv,
+          name: newName,
+          messages: updatedMessages,
+          lastMessage: message.content.length > 50 
+            ? message.content.substring(0, 50) + '...' 
+            : message.content,
+          updatedAt: formatDate(new Date()),
+          autoTitleGenerated: true
+        }
+      })
       
       // Nettoyer les conversations vides après chaque ajout de message
       const cleaned = cleanEmptyConversations(updated)

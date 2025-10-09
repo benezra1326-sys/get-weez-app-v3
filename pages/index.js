@@ -2,14 +2,19 @@ import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/router'
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations'
 import { useTranslation } from 'next-i18next'
-import { Mic, Send, Loader, Sparkles, X } from 'lucide-react'
+import { Mic, Send, Loader, Sparkles, X, Radio } from 'lucide-react'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import V3Sidebar from '../components/layout/V3Sidebar'
-import DynamicSuggestions from '../components/chat/DynamicSuggestions'
+import ContextualSuggestions from '../components/chat/ContextualSuggestions'
+import ReactiveMessage from '../components/chat/ReactiveMessage'
+import VoiceToVoiceMode from '../components/chat/VoiceToVoiceMode'
+import SimpleDictation from '../components/chat/SimpleDictation'
 import CitySelector from '../components/location/CitySelector'
 import ThemeTransition from '../components/ui/ThemeTransition'
-import RichMessage from '../components/chat/RichMessage'
 import { elevenLabs } from '../lib/elevenlabs'
+import { feedbackSystem } from '../lib/feedbackSystem'
+import { preferencesManager } from '../lib/userPreferences'
+import { initializeLanguage, getTextDirection } from '../lib/autoLanguageDetection'
 import { useConversations } from '../hooks/useConversations'
 
 const Home = ({ user, setUser }) => {
@@ -20,6 +25,8 @@ const Home = ({ user, setUser }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
   const [showDeleteModal, setShowDeleteModal] = useState(false)
+  const [showVoiceToVoice, setShowVoiceToVoice] = useState(false)
+  const [playingMessageId, setPlayingMessageId] = useState(null)
   const recognitionRef = useRef(null)
   
   // Utiliser le hook useConversations
@@ -30,16 +37,100 @@ const Home = ({ user, setUser }) => {
     createConversation,
     selectConversation,
     deleteConversation,
+    renameConversation,
     addMessage
   } = useConversations()
   
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
 
+  // Initialiser la langue automatiquement au chargement
+  useEffect(() => {
+    const detectedLang = initializeLanguage()
+    console.log('🌍 Langue de l\'application:', detectedLang)
+    
+    // Appliquer la direction du texte (RTL pour arabe, hébreu, etc.)
+    const direction = getTextDirection(detectedLang)
+    if (typeof document !== 'undefined') {
+      document.documentElement.dir = direction
+      document.documentElement.lang = detectedLang
+    }
+  }, [])
+
   const handleNewChat = () => {
-    setMessages([])
+    // Si on est déjà sur une conversation vide, on ne fait rien mais on focus l'input
+    if (currentConversationId && messages.length === 0) {
+      console.log('Déjà sur une conversation vide')
+      setInput('') // Juste vider l'input si l'utilisateur avait commencé à taper
+      // Focus sur l'input pour montrer que c'est prêt
+      setTimeout(() => {
+        inputRef.current?.focus()
+      }, 100)
+      return
+    }
+    
+    // Sinon, créer une nouvelle conversation
+    const newConversationId = createConversation()
     setInput('')
-    setCurrentConversationId(null)
+    console.log('Nouvelle conversation créée:', newConversationId)
+    
+    // Focus sur l'input
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 100)
+  }
+
+  const handleVoiceTranscription = (transcript) => {
+    // Créer une nouvelle conversation si nécessaire
+    let conversationId = currentConversationId
+    if (!conversationId) {
+      conversationId = createConversation()
+    }
+
+    const userMessage = {
+      id: Date.now(),
+      role: 'user',
+      content: transcript,
+      timestamp: new Date()
+    }
+
+    // Ajouter le message utilisateur
+    addMessage(userMessage, conversationId)
+    setIsLoading(true)
+
+    // Envoyer à l'API
+    fetch('/api/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        messages: [{ role: 'user', content: transcript }],
+        userId: user?.id
+      })
+    })
+    .then(res => res.json())
+    .then(data => {
+      const assistantMessage = {
+        id: Date.now() + 1,
+        role: 'assistant',
+        content: data.message || "Je suis Gliitz, votre assistant IA de luxe. Comment puis-je sublimer votre expérience à Marbella aujourd'hui ?",
+        timestamp: new Date()
+      }
+      addMessage(assistantMessage, conversationId)
+      if (data.message) {
+        elevenLabs.playAudio(data.message).catch(err => console.log('Audio playback not available:', err))
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error)
+      const errorMessage = {
+        id: Date.now() + 1,
+        role: 'assistant',
+        content: "Je suis Gliitz, votre concierge de luxe. Comment puis-je vous aider aujourd'hui ?",
+        timestamp: new Date()
+      }
+      addMessage(errorMessage, conversationId)
+    })
+    .finally(() => setIsLoading(false))
   }
 
   // Save conversation after first message
@@ -79,6 +170,15 @@ const Home = ({ user, setUser }) => {
   const handleSendMessage = async () => {
     if (!input.trim() || isLoading) return
 
+    // Feedback audio/visuel
+    feedbackSystem.send()
+
+    // S'assurer qu'on a une conversation active
+    let conversationId = currentConversationId
+    if (!conversationId) {
+      conversationId = createConversation()
+    }
+
     const userMessage = {
       id: Date.now(),
       role: 'user',
@@ -86,7 +186,8 @@ const Home = ({ user, setUser }) => {
       timestamp: new Date()
     }
 
-    setMessages(prev => [...prev, userMessage])
+    // Ajouter le message utilisateur via le hook
+    addMessage(userMessage, conversationId)
     setInput('')
     setIsLoading(true)
 
@@ -117,11 +218,22 @@ const Home = ({ user, setUser }) => {
         timestamp: new Date()
       }
 
-      setMessages(prev => [...prev, assistantMessage])
+      // Feedback audio pour la réception
+      feedbackSystem.receive()
+
+      // Ajouter le message assistant via le hook
+      addMessage(assistantMessage, conversationId)
       
-      // Play response with ElevenLabs if available
-      if (data.message) {
-        elevenLabs.playAudio(data.message).catch(err => console.log('Audio playback not available:', err))
+      // Play response with ElevenLabs if auto-voice is enabled
+      const autoVoice = preferencesManager.get('chat.autoVoice')
+      if (autoVoice && data.message) {
+        setPlayingMessageId(assistantMessage.id)
+        elevenLabs.playAudio(data.message)
+          .then(() => setPlayingMessageId(null))
+          .catch(err => {
+            console.log('Audio playback not available:', err)
+            setPlayingMessageId(null)
+          })
       }
     } catch (error) {
       console.error('Error sending message:', error)
@@ -174,7 +286,14 @@ const Home = ({ user, setUser }) => {
       <ThemeTransition />
       
       {/* Sidebar Component */}
-      <V3Sidebar conversations={conversations} onNewChat={handleNewChat} />
+      <V3Sidebar 
+        conversations={conversations}
+        currentConversationId={currentConversationId}
+        onNewChat={handleNewChat}
+        onSelectConversation={selectConversation}
+        onDeleteConversation={deleteConversation}
+        onRenameConversation={renameConversation}
+      />
 
       {/* Close/Reset Chat Button */}
       {messages.length > 0 && (
@@ -276,7 +395,7 @@ const Home = ({ user, setUser }) => {
               
               <button
                 onClick={() => {
-                  setMessages([])
+                  handleNewChat()
                   setInput('')
                   setShowDeleteModal(false)
                 }}
@@ -313,37 +432,33 @@ const Home = ({ user, setUser }) => {
         {messages.length === 0 && (
           <div className="flex-1 flex items-center justify-center p-4 md:p-6">
             <div className="text-center max-w-3xl w-full">
-              <Sparkles 
-                size={48} 
-                className="mb-4"
-                style={{ 
-                  color: isDarkMode ? '#C0C0C0' : '#A7C7C5',
-                  animation: 'sparkle-pulse 2s ease-in-out infinite'
-                }} 
-              />
-
-              <h1 
-                className="text-3xl md:text-4xl font-bold text-center mb-3"
-                style={{ 
-                  fontFamily: 'Playfair Display, serif',
-                  background: isDarkMode
-                    ? 'linear-gradient(135deg, #A7C7C5 0%, #9DB4C0 100%)'
-                    : 'linear-gradient(135deg, #5A8B89 0%, #7A9B99 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  MozBackgroundClip: 'text',
-                  MozTextFillColor: 'transparent',
-                  letterSpacing: '-0.02em',
-                  lineHeight: '1.2',
-                  padding: '0',
-                  margin: '0 auto',
-                  display: 'inline-block',
-                  backgroundColor: 'transparent'
-                }}
-              >
-                Bonjour, je suis Gliitz
-              </h1>
+              <div className="flex justify-center mb-4">
+                <Sparkles 
+                  size={48} 
+                  style={{ 
+                    color: isDarkMode ? '#C0C0C0' : '#A7C7C5',
+                    animation: 'sparkle-pulse 2s ease-in-out infinite'
+                    }}
+                  />
+                </div>
+                
+                <h1 
+                  className="welcome-title text-3xl md:text-4xl font-bold mb-3"
+                  style={{ 
+                    fontFamily: 'Playfair Display, serif',
+                    color: isDarkMode ? '#A7C7C5' : '#5A8B89',
+                    letterSpacing: '-0.02em',
+                    lineHeight: '1.2',
+                    textAlign: 'center',
+                    margin: '0',
+                    padding: '0',
+                    backgroundColor: 'transparent',
+                    border: 'none',
+                    outline: 'none'
+                  }}
+                >
+                  Bonjour, je suis Gliitz
+                </h1>
 
               <p 
                 className="text-base md:text-lg mb-6 leading-relaxed"
@@ -371,29 +486,34 @@ const Home = ({ user, setUser }) => {
                 />
                     </div>
 
-              {/* Suggestions dynamiques avec rotation */}
+              {/* Suggestions contextuelles avec rotation */}
               <div className="mb-6">
-                <DynamicSuggestions 
+                <ContextualSuggestions 
                   onSuggestionClick={(text) => {
-                    setInput(text)
-                    // Envoyer le message automatiquement
-                    setTimeout(() => {
+                    // Créer une nouvelle conversation si nécessaire
+                    let conversationId = currentConversationId
+                    if (!conversationId) {
+                      conversationId = createConversation()
+                    }
+
                       const userMessage = {
                         id: Date.now(),
                         role: 'user',
                         content: text,
                         timestamp: new Date()
                       }
-                      setMessages([userMessage])
-                      setInput('')
+
+                    // Ajouter le message utilisateur
+                    addMessage(userMessage, conversationId)
                       setIsLoading(true)
 
+                    // Envoyer à l'API
                       fetch('/api/chat', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
-                          messages: [{ role: 'user', content: text }],
-                          userId: user?.id
+                        messages: [{ role: 'user', content: text }],
+                        userId: user?.id
                         })
                       })
                       .then(res => res.json())
@@ -404,7 +524,7 @@ const Home = ({ user, setUser }) => {
                           content: data.message || "Je suis Gliitz, votre assistant IA de luxe. Comment puis-je sublimer votre expérience à Marbella aujourd'hui ?",
                           timestamp: new Date()
                         }
-                        setMessages(prev => [...prev, assistantMessage])
+                      addMessage(assistantMessage, conversationId)
                         if (data.message) {
                           elevenLabs.playAudio(data.message).catch(err => console.log('Audio playback not available:', err))
                         }
@@ -417,10 +537,9 @@ const Home = ({ user, setUser }) => {
                           content: "Je suis Gliitz, votre concierge de luxe. Comment puis-je vous aider aujourd'hui ?",
                           timestamp: new Date()
                         }
-                        setMessages(prev => [...prev, errorMessage])
+                      addMessage(errorMessage, conversationId)
                       })
                       .finally(() => setIsLoading(false))
-                    }, 100)
                   }}
                   isDarkMode={isDarkMode}
                 />
@@ -429,95 +548,68 @@ const Home = ({ user, setUser }) => {
           </div>
         )}
 
-        {/* Messages List */}
+        {/* Messages Area (shown when there are messages) */}
         {messages.length > 0 && (
-          <div className="flex-1 px-4 py-8 md:px-8 lg:px-12" style={{ overflowY: 'auto' }}>
-            <div className="max-w-4xl mx-auto space-y-6">
+          <div className="flex-1 flex flex-col overflow-hidden">
+            {/* Messages */}
+            <div className="flex-1 overflow-y-auto p-4 md:p-6">
               {messages.map((message) => (
-                <div
+                <ReactiveMessage
                   key={message.id}
-                  className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}
-                >
-                  <div
-                    className={`max-w-[80%] md:max-w-[70%] px-6 py-4 rounded-2xl ${
-                      message.role === 'user' 
-                        ? 'rounded-br-sm chat-bubble-user' 
-                        : 'rounded-bl-sm chat-bubble-assistant'
-                    }`}
-                  style={
-                    message.role === 'user'
-                      ? {
-                          background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.8)',
-                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                          boxShadow: '0 4px 15px rgba(0, 0, 0, 0.1)',
-                          border: `1px solid rgba(255, 255, 255, 0.25)`,
-                          backdropFilter: 'blur(16px) saturate(180%)'
-                        }
-                      : {
-                          background: isDarkMode 
-                            ? 'rgba(167, 199, 197, 0.08)'
-                            : 'rgba(167, 199, 197, 0.12)',
-                          backdropFilter: 'blur(16px) saturate(180%)',
-                          border: '1px solid rgba(167, 199, 197, 0.3)',
-                          color: isDarkMode ? '#FFFFFF' : '#2c2c2c',
-                          boxShadow: '0 4px 30px rgba(167, 199, 197, 0.2)'
-                        }
-                  }
-                  >
-                    <div 
-                      className="leading-relaxed"
-                      style={{ fontFamily: 'Poppins, sans-serif' }}
-                    >
-                      {message.role === 'assistant' ? (
-                        <RichMessage content={message.content} isDarkMode={isDarkMode} />
-                      ) : (
-                        <p className="whitespace-pre-wrap">{message.content}</p>
-                      )}
-                    </div>
-                    <p className="text-xs mt-2 opacity-50">
-                      {message.timestamp.toLocaleTimeString('fr-FR', {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </p>
-                  </div>
-                  </div>
-                ))}
-
+                  message={message}
+                  isUser={message.role === 'user'}
+                  isPlaying={playingMessageId === message.id}
+                  onPlayVoice={message.role === 'assistant' ? async () => {
+                    if (playingMessageId === message.id) {
+                      elevenLabs.stop()
+                      setPlayingMessageId(null)
+                    } else {
+                      setPlayingMessageId(message.id)
+                      try {
+                        await elevenLabs.playAudio(message.content)
+                        setPlayingMessageId(null)
+                      } catch (error) {
+                        console.error('Error playing audio:', error)
+                        setPlayingMessageId(null)
+                      }
+                    }
+                  } : undefined}
+                />
+              ))}
               {isLoading && (
                 <div className="flex justify-start">
                   <div
-                    className="typing-indicator"
+                    className="max-w-[80%] p-4 rounded-2xl rounded-bl-md"
                     style={{
                       background: isDarkMode 
-                        ? 'rgba(167, 199, 197, 0.08)'
-                        : 'rgba(167, 199, 197, 0.12)',
-                      backdropFilter: 'blur(16px) saturate(180%)',
-                      border: '1px solid rgba(167, 199, 197, 0.3)',
-                      color: isDarkMode ? '#FFFFFF' : '#2c2c2c',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '12px'
+                        ? 'rgba(255, 255, 255, 0.08)'
+                        : 'rgba(255, 255, 255, 0.6)',
+                      border: isDarkMode
+                        ? '1px solid rgba(255, 255, 255, 0.15)'
+                        : '1px solid rgba(192, 192, 192, 0.3)',
+                      backdropFilter: 'blur(10px)',
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                      fontFamily: 'Poppins, sans-serif'
                     }}
                   >
-                    <div className="typing-dot"></div>
-                    <div className="typing-dot"></div>
-                    <div className="typing-dot"></div>
-                    <span style={{ fontFamily: 'Poppins, sans-serif', marginLeft: '8px' }}>Gliitz réfléchit...</span>
+                    <div className="flex items-center gap-2">
+                      <Loader className="animate-spin" size={16} />
+                      <span>Gliitz réfléchit...</span>
+                    </div>
                   </div>
                 </div>
               )}
-
               <div ref={messagesEndRef} />
             </div>
           </div>
         )}
 
+
         {/* Input Bar - Fixed at bottom */}
         <div 
           className="p-4 md:p-6 border-t"
           style={{ 
-            background: isDarkMode ? '#000000' : 'rgba(255, 255, 255, 0.6)',
+            background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
             backdropFilter: 'blur(20px)',
             borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.2)'}`
           }}
@@ -531,30 +623,38 @@ const Home = ({ user, setUser }) => {
                 boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.5)' : '0 4px 20px rgba(192, 192, 192, 0.2)'
               }}
             >
-              {/* Voice Button */}
+              {/* Dictation Button - Simple dictée pour remplir le champ */}
+              <SimpleDictation
+                onTranscript={(text) => {
+                  // Ajouter le texte dicté au champ input
+                  setInput(prev => prev ? `${prev} ${text}` : text)
+                  feedbackSystem.receive()
+                }}
+                isDarkMode={isDarkMode}
+                disabled={isLoading}
+              />
+
+              {/* Voice-to-Voice Button - Conversation vocale complète avec icône onde */}
               <button
-                onClick={toggleVoiceRecording}
-                className={`p-3 rounded-xl transition-all ${isRecording ? 'animate-pulse' : ''}`}
+                onClick={() => {
+                  feedbackSystem.micOn()
+                  setShowVoiceToVoice(true)
+                }}
+                className="p-3 rounded-xl transition-all relative"
                 style={{
-                  color: isRecording 
-                    ? '#ef4444' 
-                    : (isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666'),
-                  background: isRecording ? 'rgba(239, 68, 68, 0.1)' : 'transparent'
+                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666',
+                  background: 'transparent'
                 }}
                 onMouseEnter={(e) => {
-                  if (!isRecording) {
                     e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
-                  }
                 }}
                 onMouseLeave={(e) => {
-                  if (!isRecording) {
                     e.currentTarget.style.background = 'transparent'
-                  }
                 }}
                 disabled={isLoading}
-                title={isRecording ? 'Arrêter l\'enregistrement' : 'Commande vocale'}
+                title="Mode vocal continu (conversation)"
               >
-                <Mic size={22} />
+                <Radio size={22} className="animate-pulse" />
               </button>
 
               {/* Text Input */}
@@ -615,6 +715,40 @@ const Home = ({ user, setUser }) => {
           </div>
         </div>
       </main>
+
+      {/* Voice to Voice Mode */}
+      <VoiceToVoiceMode
+        isOpen={showVoiceToVoice}
+        onClose={() => {
+          feedbackSystem.micOff()
+          setShowVoiceToVoice(false)
+        }}
+        onMessage={({ user: userText, assistant: assistantText }) => {
+          // Créer une conversation si nécessaire
+          let conversationId = currentConversationId
+          if (!conversationId) {
+            conversationId = createConversation()
+          }
+
+          // Ajouter les messages
+          const userMessage = {
+            id: Date.now(),
+            role: 'user',
+            content: userText,
+            timestamp: new Date()
+          }
+
+          const assistantMessage = {
+            id: Date.now() + 1,
+            role: 'assistant',
+            content: assistantText,
+            timestamp: new Date()
+          }
+
+          addMessage(userMessage, conversationId)
+          addMessage(assistantMessage, conversationId)
+        }}
+      />
     </div>
   )
 }

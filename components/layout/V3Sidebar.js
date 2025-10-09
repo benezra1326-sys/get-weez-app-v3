@@ -2,8 +2,18 @@ import { useState } from 'react'
 import { useRouter } from 'next/router'
 import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User, Sparkles } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
+import EnrichedHistory from '../chat/EnrichedHistory'
 
-export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onToggle }) {
+export default function V3Sidebar({ 
+  conversations = [], 
+  currentConversationId,
+  onNewChat, 
+  onSelectConversation,
+  onDeleteConversation,
+  onRenameConversation,
+  isOpen, 
+  onToggle 
+}) {
   const router = useRouter()
   const { isDarkMode, toggleTheme } = useTheme()
   const [searchQuery, setSearchQuery] = useState('')
@@ -232,7 +242,7 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
             })}
           </div>
 
-          {/* Conversation History */}
+          {/* Conversation History - Enriched */}
           <div className="flex-1 px-3 py-4 overflow-y-auto">
             <div className="flex items-center gap-2 px-4 mb-3" style={{ 
               color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)' 
@@ -241,47 +251,16 @@ export default function V3Sidebar({ conversations = [], onNewChat, isOpen, onTog
               <span className="text-xs font-semibold uppercase tracking-wider">Conversations</span>
             </div>
             
-            {conversations.length === 0 ? (
-              <p className="px-4 py-6 text-center text-sm" style={{ 
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' 
-              }}>
-                Aucune conversation
-              </p>
-            ) : (
-              <div className="space-y-1">
-                {conversations.map((conv) => (
-                  <button
-                    key={conv.id}
-                    onClick={() => {
-                      toggle(false)
-                    }}
-                    className="w-full text-left px-4 py-2.5 rounded-xl transition-all"
-                    style={{
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-                      fontFamily: 'Poppins, sans-serif'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.background = 'transparent'
-                    }}
-                  >
-                    <p className="text-sm font-medium truncate mb-0.5">{conv.title}</p>
-                    <p className="text-xs truncate" style={{ 
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)' 
-                    }}>
-                      {conv.preview}
-                    </p>
-                    <p className="text-xs mt-0.5" style={{ 
-                      color: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)' 
-                    }}>
-                      {conv.date}
-                    </p>
-                  </button>
-                ))}
-              </div>
-            )}
+            <EnrichedHistory
+              conversations={conversations}
+              currentId={currentConversationId}
+              onSelect={(id) => {
+                if (onSelectConversation) onSelectConversation(id)
+                toggle(false)
+              }}
+              onDelete={onDeleteConversation}
+              onRename={onRenameConversation}
+            />
           </div>
 
           {/* Profile Button at Bottom - Always visible */}

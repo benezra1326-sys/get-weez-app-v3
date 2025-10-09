@@ -46,6 +46,23 @@
   border-radius: inherit;
 }
 
+/* Fix for "Bonjour" title - Remove any background band */
+.welcome-title {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  position: relative;
+  z-index: 1;
+}
+
+.welcome-title::before,
+.welcome-title::after {
+  display: none !important;
+}
+
 /* Banner Mirror Effect */
 .banner-mirror-effect {
   position: relative;
