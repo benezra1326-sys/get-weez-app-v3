@@ -116,13 +116,7 @@ export default function Establishments({ user, setUser }) {
       {/* FILTRES & VIEW TOGGLE */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20 mb-8">
         <div 
-          className="p-4 rounded-3xl glass-live"
-          style={{
-            display: 'flex',
-            flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-            gap: '1rem',
-            alignItems: window.innerWidth < 768 ? 'stretch' : 'flex-end'
-          }}
+          className="p-4 rounded-3xl glass-live flex flex-col md:flex-row gap-4 md:items-end"
         >
           <div className="flex-1">
             <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} user={user} />

@@ -22,10 +22,11 @@ export default function ProductPopupChat({ product, onClose }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+        className="fixed inset-0 z-[100] flex items-center md:items-center justify-center p-0 md:p-4"
         style={{
           background: 'rgba(0, 0, 0, 0.7)',
-          backdropFilter: 'blur(8px)'
+          backdropFilter: 'blur(8px)',
+          overflowY: 'auto'
         }}
         onClick={onClose}
       >
@@ -34,19 +35,29 @@ export default function ProductPopupChat({ product, onClose }) {
           animate={{ scale: 1, y: 0 }}
           exit={{ scale: 0.9, y: 20 }}
           transition={{ type: 'spring', damping: 25 }}
-          className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-3xl"
+          className="relative max-w-2xl w-full md:max-h-[90vh] overflow-y-auto md:rounded-3xl"
           style={{
             background: isDarkMode 
-              ? 'rgba(11, 11, 12, 0.95)' 
+              ? 'rgba(11, 11, 12, 0.98)' 
               : 'rgba(255, 255, 255, 0.98)',
             border: `1px solid ${isDarkMode 
               ? 'rgba(192, 192, 192, 0.2)' 
               : 'rgba(192, 192, 192, 0.3)'}`,
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
-            backdropFilter: 'blur(20px)'
+            backdropFilter: 'blur(20px)',
+            minHeight: '100vh',
+            maxHeight: '100vh'
           }}
           onClick={(e) => e.stopPropagation()}
         >
+          <style jsx>{`
+            @media (min-width: 768px) {
+              .relative {
+                min-height: auto !important;
+                max-height: 90vh !important;
+              }
+            }
+          `}</style>
           {/* Close Button */}
           <button
             onClick={onClose}
