@@ -519,6 +519,48 @@ export const establishments = [
 ]
 
 export const events = [
+  // Événements du 10 octobre 2024 - Pour tester le filtrage par date
+  {
+    id: 100,
+    name: "Soirée VIP au Buddha Beach",
+    type: "Soirée club",
+    date: "2024-10-10",
+    time: "22:00",
+    location: "Buddha Beach, Playa de la Fontanilla",
+    description: "Soirée exclusive avec DJ international et ambiance décontractée",
+    price: 80,
+    capacity: 150,
+    category: "Nightlife",
+    dress_code: "Smart casual",
+    age_restriction: "18+",
+    includes: ["Cocktail de bienvenue", "DJ set", "Accès VIP"],
+    dj: "DJ Marbella",
+    music_style: "House, Deep House",
+    image_url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800&h=600&fit=crop&q=80",
+    tags: ["luxe", "vip", "beach", "dj"],
+    sponsored: true
+  },
+  {
+    id: 101,
+    name: "Rooftop Sunset au Sky Lounge",
+    type: "Événement rooftop",
+    date: "2024-10-10",
+    time: "19:00",
+    location: "Sky Lounge, Puerto Banús",
+    description: "Coucher de soleil avec vue panoramique et cocktails premium",
+    price: 60,
+    capacity: 100,
+    category: "Rooftop",
+    dress_code: "Elegant casual",
+    age_restriction: "21+",
+    includes: ["Cocktail premium", "Vue panoramique", "Tapas"],
+    dj: "Ambient DJ",
+    music_style: "Chill, Lounge",
+    image_url: "https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=800&h=600&fit=crop&q=80",
+    tags: ["luxe", "rooftop", "sunset", "cocktails"],
+    sponsored: false
+  },
+  
   // Événements d'août 2024 - Soirées et DJ
   {
     id: 1,
