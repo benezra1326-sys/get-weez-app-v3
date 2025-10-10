@@ -761,14 +761,16 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
                 <button
                   onClick={() => {
                     if (onSendMessage) {
-                      onSendMessage(`Je veux réserver ${selectedProduct.name}`)
+                      // Message direct de réservation
+                      onSendMessage(`Je veux réserver ${selectedProduct.name} pour ce soir à 20h pour 2 personnes au nom de Monsieur Dupont`)
                       setShowProductPopup(false)
                     }
                   }}
                   className="flex-1 py-3 px-4 rounded-xl font-semibold transition-all hover:scale-105"
                   style={{
-                    background: isDarkMode ? '#C0C0C0' : '#0B0B0C',
-                    color: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+                    background: 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))',
+                    color: '#FFFFFF',
+                    border: '1px solid rgba(167,199,197,0.5)'
                   }}
                 >
                   Réserver

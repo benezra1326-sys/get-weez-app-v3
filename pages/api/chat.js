@@ -1,5 +1,6 @@
 import { askGliitzAgent } from '../../lib/openai-enhanced'
 import { fetchAllDataForAI } from '../../lib/supabaseData'
+import { enrichDataWithMenus } from '../../lib/openai'
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -17,6 +18,10 @@ export default async function handler(req, res) {
       services: realData.services?.length || 0
     })
     
+    // Enrichir les données avec les menus
+    const enrichedData = enrichDataWithMenus(realData)
+    console.log('🍽️ Données enrichies avec les menus')
+    
     let reply
     
     if (messages && Array.isArray(messages)) {
@@ -27,10 +32,10 @@ export default async function handler(req, res) {
         lastUserMessage?.content || '',
         messages, // Passer tout l'historique
         userId, // Passer l'ID utilisateur pour les préférences
-        realData // Passer les données Supabase
+        enrichedData // Passer les données enrichies avec les menus
       )
     } else {
-      reply = await askGliitzAgent('Bonjour', [], userId, realData)
+      reply = await askGliitzAgent('Bonjour', [], userId, enrichedData)
     }
 
     res.status(200).json({ 
