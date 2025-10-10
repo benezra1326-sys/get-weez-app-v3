@@ -43,11 +43,7 @@ const nextConfig = {
       '@': require('path').resolve(__dirname),
     }
     
-    // Tree shaking optimisé
-    config.optimization.usedExports = true
-    config.optimization.sideEffects = false
-    
-    // Optimisation des chunks
+    // Optimisation des chunks (seulement en production)
     if (!dev && !isServer) {
       config.optimization.splitChunks = {
         chunks: 'all',
