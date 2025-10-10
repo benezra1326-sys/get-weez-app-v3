@@ -5,6 +5,7 @@ import V3Sidebar from '../components/layout/V3Sidebar'
 import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import MapView from '../components/map/MapView'
+import EventsCalendar from '../components/ui/EventsCalendar'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { smartSort, getUserPreferences } from '../lib/smartSorting'
 
@@ -16,6 +17,7 @@ export default function Events({ user, setUser }) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [currentSort, setCurrentSort] = useState('rating')
   const [showMap, setShowMap] = useState(false)
+  const [showCalendar, setShowCalendar] = useState(false)
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
@@ -219,6 +221,37 @@ export default function Events({ user, setUser }) {
             <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} user={user} />
           </div>
           
+          {/* Toggle Calendar View */}
+          <button
+            onClick={() => setShowCalendar(!showCalendar)}
+            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap mr-3"
+            style={{
+              background: showCalendar 
+                ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
+                : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+              border: `1px solid ${showCalendar ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
+              color: showCalendar ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
+              backdropFilter: 'blur(10px)',
+              fontFamily: 'Poppins, sans-serif',
+              minWidth: '180px'
+            }}
+            onMouseEnter={(e) => {
+              if (!showCalendar) {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
+                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
+              }
+            }}
+            onMouseLeave={(e) => {
+              if (!showCalendar) {
+                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
+                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
+              }
+            }}
+          >
+            <Calendar size={20} />
+            <span>{showCalendar ? 'Voir la liste' : 'Calendrier'}</span>
+          </button>
+
           {/* Toggle Map/Grid View */}
           <button
             onClick={() => setShowMap(!showMap)}
@@ -252,8 +285,99 @@ export default function Events({ user, setUser }) {
         </div>
       </div>
 
+      {/* VUE CALENDRIER */}
+      {showCalendar && (
+        <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <div className="lg:col-span-2">
+              <EventsCalendar 
+                events={events} 
+                onEventClick={(event) => {
+                  // Rediriger vers la page de l'événement
+                  router.push(`/event/${event.id}`)
+                }}
+                isDarkMode={isDarkMode}
+              />
+            </div>
+            
+            <div className="lg:col-span-1">
+              <div 
+                className="rounded-2xl p-6 sticky top-8"
+                style={{
+                  background: isDarkMode 
+                    ? 'rgba(192, 192, 192, 0.08)' 
+                    : 'rgba(192, 192, 192, 0.12)',
+                  border: isDarkMode 
+                    ? '1px solid rgba(192, 192, 192, 0.2)' 
+                    : '1px solid rgba(192, 192, 192, 0.3)',
+                  backdropFilter: 'blur(10px)'
+                }}
+              >
+                <h3 
+                  className="text-lg font-bold mb-4"
+                  style={{
+                    fontFamily: 'Playfair Display, serif',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                >
+                  Événements à venir
+                </h3>
+                
+                <div className="space-y-3">
+                  {events
+                    .filter(event => new Date(event.date) > new Date())
+                    .sort((a, b) => new Date(a.date) - new Date(b.date))
+                    .slice(0, 5)
+                    .map(event => (
+                      <div 
+                        key={event.id}
+                        className="p-3 rounded-lg cursor-pointer transition-all hover:scale-105"
+                        style={{
+                          background: isDarkMode 
+                            ? 'rgba(192, 192, 192, 0.05)' 
+                            : 'rgba(0, 0, 0, 0.02)',
+                          border: isDarkMode 
+                            ? '1px solid rgba(192, 192, 192, 0.1)' 
+                            : '1px solid rgba(0, 0, 0, 0.05)'
+                        }}
+                        onClick={() => router.push(`/event/${event.id}`)}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div 
+                            className="w-2 h-2 rounded-full flex-shrink-0"
+                            style={{ background: '#A7C7C5' }}
+                          />
+                          <div className="flex-1 min-w-0">
+                            <p 
+                              className="font-semibold text-sm truncate"
+                              style={{
+                                color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
+                              }}
+                            >
+                              {event.name}
+                            </p>
+                            <p 
+                              className="text-xs opacity-70"
+                              style={{
+                                color: isDarkMode ? '#C0C0C0' : '#666666'
+                              }}
+                            >
+                              {new Date(event.date).toLocaleDateString('fr-FR')}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* VUE CARTE OU GRILLE */}
-      <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
+      {!showCalendar && (
+        <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
         {showMap ? (
           <div className="mb-8">
             <h2 

@@ -8,6 +8,8 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
   const [imageError, setImageError] = useState({})
   const [popupData, setPopupData] = useState(null)
   const [isLoadingProduct, setIsLoadingProduct] = useState(false)
+  const [showProductPopup, setShowProductPopup] = useState(false)
+  const [selectedProduct, setSelectedProduct] = useState(null)
   const router = useRouter()
 
   // Gérer le clic sur un nom d'établissement/événement/service
@@ -102,8 +104,16 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
     lines.forEach((line, index) => {
       const trimmedLine = line.trim()
       
+      // Titre de journée (### Jour 1, ### Jour 2, etc.)
+      if (trimmedLine.match(/^###\s*(Jour|Day|Día)\s*\d+/i)) {
+        elements.push({
+          type: 'day-title',
+          content: trimmedLine.replace(/^###\s*/, ''),
+          key: `day-${index}`
+        })
+      }
       // Titre principal (commence par "Voici" ou "Découvrez" etc.)
-      if (trimmedLine.match(/^(Voici|Découvrez|Pour continuer|Je te recommande|I recommend|Te recomiendo)/i)) {
+      else if (trimmedLine.match(/^(Voici|Découvrez|Pour continuer|Je te recommande|I recommend|Te recomiendo)/i)) {
         elements.push({
           type: 'title',
           content: trimmedLine,
@@ -353,10 +363,82 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
     setPopupData({ type, item: mockData })
   }
 
+  // Fonction pour afficher les détails du produit dans un popup
+  const showProductDetails = (title, description) => {
+    const productData = {
+      name: title,
+      description: description || 'Découvrez cette expérience unique à Marbella',
+      rating: 4.5,
+      price: 'Prix sur demande',
+      location: 'Marbella, Espagne',
+      image: '/api/placeholder/400/300',
+      category: 'experience'
+    }
+    setSelectedProduct(productData)
+    setShowProductPopup(true)
+  }
+
   return (
     <div className="rich-message-content">
       {formatStructuredText(content).map((element) => {
         switch (element.type) {
+          case 'day-title':
+            return (
+              <div key={element.key} className="mb-6 mt-8">
+                <div 
+                  className="relative overflow-hidden rounded-2xl p-6"
+                  style={{
+                    background: isDarkMode 
+                      ? 'linear-gradient(135deg, rgba(192, 192, 192, 0.15) 0%, rgba(192, 192, 192, 0.05) 100%)' 
+                      : 'linear-gradient(135deg, rgba(192, 192, 192, 0.2) 0%, rgba(192, 192, 192, 0.1) 100%)',
+                    border: isDarkMode 
+                      ? '1px solid rgba(192, 192, 192, 0.3)' 
+                      : '1px solid rgba(192, 192, 192, 0.4)',
+                    backdropFilter: 'blur(15px)'
+                  }}
+                >
+                  <div className="flex items-center gap-4">
+                    <div 
+                      className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl font-bold"
+                      style={{
+                        background: isDarkMode 
+                          ? 'linear-gradient(135deg, #C0C0C0 0%, #A0A0A0 100%)' 
+                          : 'linear-gradient(135deg, #0B0B0C 0%, #333333 100%)',
+                        color: isDarkMode ? '#0B0B0C' : '#FFFFFF',
+                        boxShadow: isDarkMode 
+                          ? '0 4px 15px rgba(192, 192, 192, 0.3)' 
+                          : '0 4px 15px rgba(0, 0, 0, 0.2)'
+                      }}
+                    >
+                      📅
+                    </div>
+                    <div>
+                      <h2 
+                        className="text-xl font-bold"
+                        style={{
+                          fontFamily: 'Playfair Display, serif',
+                          color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                          textShadow: isDarkMode 
+                            ? '0 2px 4px rgba(0, 0, 0, 0.3)' 
+                            : '0 2px 4px rgba(0, 0, 0, 0.1)'
+                        }}
+                      >
+                        {element.content}
+                      </h2>
+                      <p 
+                        className="text-sm opacity-70 mt-1"
+                        style={{
+                          color: isDarkMode ? '#C0C0C0' : '#666666'
+                        }}
+                      >
+                        Votre programme personnalisé
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )
+          
           case 'title':
             return (
               <div key={element.key} className="mb-4">
@@ -413,7 +495,7 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
             return (
               <div key={element.key} className="mb-3">
                 <div 
-                  className="p-4 rounded-xl transition-all cursor-pointer hover:scale-[1.02]"
+                  className="p-4 rounded-xl transition-all duration-300 cursor-pointer hover:scale-[1.03] hover:shadow-lg group"
                   style={{
                     background: isDarkMode 
                       ? 'rgba(192, 192, 192, 0.08)' 
@@ -423,9 +505,27 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
                       : '1px solid rgba(192, 192, 192, 0.3)',
                     backdropFilter: 'blur(10px)'
                   }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'rgba(192, 192, 192, 0.15)' 
+                      : 'rgba(192, 192, 192, 0.2)'
+                    e.currentTarget.style.border = isDarkMode 
+                      ? '1px solid rgba(192, 192, 192, 0.4)' 
+                      : '1px solid rgba(192, 192, 192, 0.5)'
+                    e.currentTarget.style.transform = 'translateY(-2px)'
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = isDarkMode 
+                      ? 'rgba(192, 192, 192, 0.08)' 
+                      : 'rgba(192, 192, 192, 0.12)'
+                    e.currentTarget.style.border = isDarkMode 
+                      ? '1px solid rgba(192, 192, 192, 0.2)' 
+                      : '1px solid rgba(192, 192, 192, 0.3)'
+                    e.currentTarget.style.transform = 'translateY(0px)'
+                  }}
                   onClick={() => {
-                    // Rechercher le produit réel dans Supabase
-                    handleProductClick(element.title)
+                    // Afficher les détails du produit dans un popup au lieu de naviguer
+                    showProductDetails(element.title, element.description)
                   }}
                 >
                   <div className="flex items-start gap-3">
@@ -440,21 +540,62 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
                           : '1px solid rgba(192, 192, 192, 0.4)'
                       }}
                     >
-                      {(() => {
-                        if (!element.title) return '🏢'
-                        const lowerTitle = element.title.toLowerCase()
-                        if (lowerTitle.includes('restaurant') || lowerTitle.includes('dîner') || lowerTitle.includes('déjeuner') || lowerTitle.includes('cuisine')) return '🍽️'
-                        if (lowerTitle.includes('spa') || lowerTitle.includes('massage') || lowerTitle.includes('relaxation')) return '🧖‍♀️'
-                        if (lowerTitle.includes('plage') || lowerTitle.includes('beach') || lowerTitle.includes('mer')) return '🏖️'
-                        if (lowerTitle.includes('hotel') || lowerTitle.includes('hôtel') || lowerTitle.includes('hébergement')) return '🏨'
-                        if (lowerTitle.includes('activité') || lowerTitle.includes('excursion') || lowerTitle.includes('tour')) return '🎯'
-                        if (lowerTitle.includes('bar') || lowerTitle.includes('cocktail') || lowerTitle.includes('boisson')) return '🍸'
-                        if (lowerTitle.includes('shopping') || lowerTitle.includes('boutique') || lowerTitle.includes('magasin')) return '🛍️'
-                        if (lowerTitle.includes('sport') || lowerTitle.includes('golf') || lowerTitle.includes('tennis')) return '⛳'
-                        if (lowerTitle.includes('culture') || lowerTitle.includes('musée') || lowerTitle.includes('art')) return '🎨'
-                        if (lowerTitle.includes('transport') || lowerTitle.includes('voiture') || lowerTitle.includes('taxi')) return '🚗'
-                        return '📍'
-                      })()}
+                      <img 
+                        src={(() => {
+                          if (!element.title) return '/images/placeholders/establishment.jpg'
+                          const lowerTitle = element.title.toLowerCase()
+                          
+                          // Images spécifiques pour les établissements connus
+                          if (lowerTitle.includes('buddha beach')) return 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('el lago')) return 'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('coya')) return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('marbella club')) return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('amare beach')) return 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('olivia valere')) return 'https://images.unsplash.com/photo-1571266028243-eef72e0e8e6c?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('sky lounge')) return 'https://images.unsplash.com/photo-1514933651103-005eec06c04b?w=100&h=100&fit=crop'
+                          if (lowerTitle.includes('pangea')) return 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=100&h=100&fit=crop'
+                          
+                          // Images par catégorie
+                          if (lowerTitle.includes('restaurant') || lowerTitle.includes('dîner') || lowerTitle.includes('déjeuner') || lowerTitle.includes('cuisine')) {
+                            return 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('spa') || lowerTitle.includes('massage') || lowerTitle.includes('relaxation')) {
+                            return 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('plage') || lowerTitle.includes('beach') || lowerTitle.includes('mer')) {
+                            return 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('hotel') || lowerTitle.includes('hôtel') || lowerTitle.includes('hébergement')) {
+                            return 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('activité') || lowerTitle.includes('excursion') || lowerTitle.includes('tour')) {
+                            return 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('bar') || lowerTitle.includes('cocktail') || lowerTitle.includes('boisson')) {
+                            return 'https://images.unsplash.com/photo-1571266028243-eef72e0e8e6c?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('club') || lowerTitle.includes('nightlife') || lowerTitle.includes('soirée')) {
+                            return 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('sport') || lowerTitle.includes('golf') || lowerTitle.includes('tennis')) {
+                            return 'https://images.unsplash.com/photo-1535131749006-b7f58c99034b?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('culture') || lowerTitle.includes('musée') || lowerTitle.includes('art')) {
+                            return 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=100&h=100&fit=crop'
+                          }
+                          if (lowerTitle.includes('transport') || lowerTitle.includes('voiture') || lowerTitle.includes('taxi')) {
+                            return 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=100&h=100&fit=crop'
+                          }
+                          
+                          // Image par défaut
+                          return 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=100&h=100&fit=crop'
+                        })()}
+                        alt={element.title}
+                        className="w-full h-full object-cover rounded-lg"
+                        style={{
+                          filter: isDarkMode ? 'brightness(0.8) contrast(1.1)' : 'brightness(1) contrast(1)'
+                        }}
+                      />
                     </div>
                     <div className="flex-1">
                       <h4 
@@ -523,6 +664,138 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
             return null
         }
       })}
+      
+      {/* Popup pour les détails du produit */}
+      {showProductPopup && selectedProduct && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+          onClick={() => setShowProductPopup(false)}
+        >
+          <div 
+            className="bg-white dark:bg-gray-800 rounded-2xl max-w-md w-full max-h-[80vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              background: isDarkMode 
+                ? 'rgba(11, 11, 12, 0.95)' 
+                : 'rgba(255, 255, 255, 0.95)',
+              backdropFilter: 'blur(20px)',
+              border: isDarkMode 
+                ? '1px solid rgba(192, 192, 192, 0.2)' 
+                : '1px solid rgba(192, 192, 192, 0.3)'
+            }}
+          >
+            <div className="p-6">
+              {/* Header */}
+              <div className="flex items-center justify-between mb-4">
+                <h3 
+                  className="text-xl font-bold"
+                  style={{
+                    fontFamily: 'Playfair Display, serif',
+                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  }}
+                >
+                  {selectedProduct.name}
+                </h3>
+                <button
+                  onClick={() => setShowProductPopup(false)}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Image */}
+              <div className="mb-4">
+                <div 
+                  className="w-full h-48 rounded-xl flex items-center justify-center text-4xl"
+                  style={{
+                    background: isDarkMode 
+                      ? 'rgba(192, 192, 192, 0.1)' 
+                      : 'rgba(192, 192, 192, 0.15)',
+                    border: isDarkMode 
+                      ? '1px solid rgba(192, 192, 192, 0.2)' 
+                      : '1px solid rgba(192, 192, 192, 0.3)'
+                  }}
+                >
+                  🏖️
+                </div>
+              </div>
+
+              {/* Description */}
+              <p 
+                className="mb-4 leading-relaxed"
+                style={{
+                  fontFamily: 'Poppins, sans-serif',
+                  color: isDarkMode ? '#C0C0C0' : '#666666'
+                }}
+              >
+                {selectedProduct.description}
+              </p>
+
+              {/* Infos */}
+              <div className="space-y-3 mb-6">
+                <div className="flex items-center gap-2">
+                  <span className="text-yellow-500">⭐</span>
+                  <span 
+                    style={{
+                      color: isDarkMode ? '#C0C0C0' : '#666666'
+                    }}
+                  >
+                    {selectedProduct.rating}/5
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-blue-500">📍</span>
+                  <span 
+                    style={{
+                      color: isDarkMode ? '#C0C0C0' : '#666666'
+                    }}
+                  >
+                    {selectedProduct.location}
+                  </span>
+                </div>
+              </div>
+
+              {/* Actions */}
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    if (onSendMessage) {
+                      onSendMessage(`Je veux réserver ${selectedProduct.name}`)
+                      setShowProductPopup(false)
+                    }
+                  }}
+                  className="flex-1 py-3 px-4 rounded-xl font-semibold transition-all hover:scale-105"
+                  style={{
+                    background: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                    color: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+                  }}
+                >
+                  Réserver
+                </button>
+                <button
+                  onClick={() => {
+                    if (onSendMessage) {
+                      onSendMessage(`Plus d'informations sur ${selectedProduct.name}`)
+                      setShowProductPopup(false)
+                    }
+                  }}
+                  className="flex-1 py-3 px-4 rounded-xl font-semibold transition-all hover:scale-105"
+                  style={{
+                    background: 'transparent',
+                    border: isDarkMode 
+                      ? '2px solid #C0C0C0' 
+                      : '2px solid #0B0B0C',
+                    color: isDarkMode ? '#C0C0C0' : '#0B0B0C'
+                  }}
+                >
+                  Plus d'infos
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
       
     </div>
   )

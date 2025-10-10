@@ -8,13 +8,18 @@ export function useConversations() {
   const [currentConversationId, setCurrentConversationId] = useState(null)
   const [isCreating, setIsCreating] = useState(false)
 
-  // Nettoyer les conversations vides
+  // Nettoyer les conversations vides (mais garder celles récentes)
   const cleanEmptyConversations = (conversationsList) => {
     return conversationsList.filter(conv => {
       // Garder la conversation si elle a des messages
       const hasMessages = conv.messages && conv.messages.length > 0
-      console.log(`🔍 Conversation ${conv.id} (${conv.title}): ${hasMessages ? 'GARDÉE' : 'SUPPRIMÉE (vide)'}`)
-      return hasMessages
+      
+      // Ou si elle a été créée récemment (moins de 5 minutes)
+      const isRecent = conv.createdAt && (Date.now() - new Date(conv.createdAt).getTime()) < 5 * 60 * 1000
+      
+      const shouldKeep = hasMessages || isRecent
+      console.log(`🔍 Conversation ${conv.id} (${conv.title || conv.name}): ${shouldKeep ? 'GARDÉE' : 'SUPPRIMÉE (vide/ancienne)'}`)
+      return shouldKeep
     })
   }
 
@@ -66,9 +71,9 @@ export function useConversations() {
     // Vérifier si on est côté client
     if (typeof window === 'undefined') return
     
-    if (conversations.length > 0) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations))
-    }
+    // Sauvegarder même les conversations vides pour éviter les pertes
+    console.log('💾 Sauvegarde conversations:', conversations.length)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations))
   }, [conversations])
 
   // Créer une nouvelle conversation
