@@ -159,20 +159,43 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
         onMessage({ user: transcript, assistant: reply })
       }
 
-      // Lire la réponse vocalement si non muted - UNIQUEMENT ElevenLabs
+      // Lire la réponse vocalement si non muted - AVEC FALLBACK
       if (!isMuted) {
-        console.log('🔊 Lecture de la réponse vocale avec ElevenLabs...')
+        console.log('🔊 Lecture de la réponse vocale...')
         setIsSpeaking(true)
         
         try {
+          // Essayer ElevenLabs d'abord
           await elevenLabs.playAudio(reply)
           console.log('✅ Audio ElevenLabs joué avec succès')
         } catch (error) {
-          console.error('❌ Erreur ElevenLabs:', error)
-          // Afficher l'erreur à l'utilisateur mais ne pas utiliser de fallback
-          console.error('Impossible de lire l\'audio. Vérifiez votre clé API ElevenLabs.')
+          console.error('❌ Erreur ElevenLabs, utilisation du fallback TTS:', error)
+          
+          // Fallback avec Web Speech API
+          try {
+            const utterance = new SpeechSynthesisUtterance(reply)
+            utterance.lang = 'fr-FR'
+            utterance.rate = 0.9
+            utterance.pitch = 1.0
+            utterance.volume = 0.8
+            
+            utterance.onend = () => {
+              console.log('✅ Audio fallback joué avec succès')
+              setIsSpeaking(false)
+            }
+            
+            utterance.onerror = (error) => {
+              console.error('❌ Erreur fallback TTS:', error)
+              setIsSpeaking(false)
+            }
+            
+            speechSynthesis.speak(utterance)
+          } catch (fallbackError) {
+            console.error('❌ Erreur fallback TTS:', fallbackError)
+            setIsSpeaking(false)
+          }
         }
-        
+      } else {
         setIsSpeaking(false)
       }
 

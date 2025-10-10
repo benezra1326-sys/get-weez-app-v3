@@ -171,7 +171,7 @@ export default function Events({ user, setUser }) {
       <div className="flex-1 overflow-y-auto">
       {/* HERO BANNER */}
       <section 
-        className="banner-mirror-effect relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
+        className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden"
         style={{
           backgroundImage: 'url(https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=1920&q=90)',
           backgroundSize: 'cover',
@@ -207,26 +207,50 @@ export default function Events({ user, setUser }) {
 
       {/* FILTRES & VIEW TOGGLE */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20 mb-8">
-        <div 
-          className="p-6 rounded-3xl glass-live"
-          style={{
-            display: 'flex',
-            flexDirection: window.innerWidth < 768 ? 'column' : 'row',
-            gap: '1rem',
-            alignItems: window.innerWidth < 768 ? 'stretch' : 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+        <div className="p-4 rounded-3xl glass-live flex flex-col md:flex-row gap-4 md:items-center">
           <div className="flex-1">
             <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} user={user} />
           </div>
           
-          {/* Toggle Calendar View */}
-          <button
-            onClick={() => setShowCalendar(!showCalendar)}
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap mr-3"
-            style={{
-              background: showCalendar 
+          {/* View Toggle Buttons - Flex row on all screens */}
+          <div className="flex gap-2 flex-wrap justify-end">
+            {/* Toggle Map View */}
+            <button
+              onClick={() => setShowMap(!showMap)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all whitespace-nowrap"
+              style={{
+                background: showMap 
+                  ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
+                  : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
+                border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
+                color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
+                backdropFilter: 'blur(10px)',
+                fontFamily: 'Poppins, sans-serif',
+                minWidth: '120px'
+              }}
+              onMouseEnter={(e) => {
+                if (!showMap) {
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
+                  e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
+                }
+              }}
+              onMouseLeave={(e) => {
+                if (!showMap) {
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
+                  e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
+                }
+              }}
+            >
+              <Map size={18} />
+              <span className="text-sm">{showMap ? 'Masquer' : 'Carte'}</span>
+            </button>
+            
+            {/* Toggle Calendar View */}
+            <button
+              onClick={() => setShowCalendar(!showCalendar)}
+              className="flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all whitespace-nowrap"
+              style={{
+                background: showCalendar 
                 ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
                 : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
               border: `1px solid ${showCalendar ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
@@ -248,40 +272,10 @@ export default function Events({ user, setUser }) {
               }
             }}
           >
-            <Calendar size={20} />
-            <span>{showCalendar ? 'Voir la liste' : 'Calendrier'}</span>
+            <Calendar size={18} />
+            <span className="text-sm">{showCalendar ? 'Liste' : 'Calendrier'}</span>
           </button>
-
-          {/* Toggle Map/Grid View */}
-          <button
-            onClick={() => setShowMap(!showMap)}
-            className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap"
-            style={{
-              background: showMap 
-                ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
-                : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-              border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
-              color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
-              backdropFilter: 'blur(10px)',
-              fontFamily: 'Poppins, sans-serif',
-              minWidth: '180px'
-            }}
-            onMouseEnter={(e) => {
-              if (!showMap) {
-                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
-                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
-              }
-            }}
-            onMouseLeave={(e) => {
-              if (!showMap) {
-                e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
-                e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
-              }
-            }}
-          >
-            <Map size={20} />
-            <span>{showMap ? 'Voir la liste' : 'Voir la carte'}</span>
-          </button>
+          </div>
         </div>
       </div>
 

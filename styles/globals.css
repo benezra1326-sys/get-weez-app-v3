@@ -1541,15 +1541,33 @@ body {
   justify-content: center;
 }
 
-.uniform-banner .banner-button.primary {
+/* Mode sombre - boutons argentés */
+.dark-mode .uniform-banner .banner-button.primary {
   background: linear-gradient(135deg, #E5E5E5, #C0C0C0);
-  color: white !important;
+  color: #0B0B0C !important;
   box-shadow: 0 4px 12px rgba(192, 192, 192, 0.4);
 }
 
-.uniform-banner .banner-button.primary:hover {
+.dark-mode .uniform-banner .banner-button.primary:hover {
   background: linear-gradient(135deg, #FFFFFF, #D0D0D0);
   box-shadow: 0 6px 16px rgba(192, 192, 192, 0.6);
+  transform: scale(1.05);
+}
+
+.dark-mode .uniform-banner .banner-button.primary:active {
+  transform: scale(0.98);
+}
+
+/* Mode clair - boutons vert clair (comme Nouveau Chat) */
+.uniform-banner .banner-button.primary {
+  background: linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8));
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 12px rgba(167,199,197, 0.4);
+}
+
+.uniform-banner .banner-button.primary:hover {
+  background: linear-gradient(135deg, rgba(167,199,197,1), rgba(157,180,192,1));
+  box-shadow: 0 6px 16px rgba(167,199,197, 0.6);
   transform: scale(1.05);
 }
 

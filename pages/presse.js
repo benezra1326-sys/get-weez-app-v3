@@ -141,23 +141,25 @@ export default function Presse() {
                 key={index}
                 className="flex items-center justify-center p-6 rounded-2xl transition-all duration-300"
                 style={{
-                  background: isDarkMode ? 'rgba(255, 255, 255, 0.03)' : 'rgba(0, 0, 0, 0.02)',
-                  border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.08)',
-                  filter: isDarkMode ? 'grayscale(1) invert(1)' : 'grayscale(1)',
-                  opacity: 0.7
+                  background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.02)',
+                  border: isDarkMode ? '1px solid rgba(255, 255, 255, 0.2)' : '1px solid rgba(0, 0, 0, 0.08)',
+                  opacity: 0.9
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.opacity = '1'
                   e.currentTarget.style.transform = 'scale(1.05)'
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.12)' : 'rgba(0, 0, 0, 0.05)'
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.opacity = '0.7'
+                  e.currentTarget.style.opacity = '0.9'
                   e.currentTarget.style.transform = 'scale(1)'
+                  e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.02)'
                 }}
               >
-                <span className="text-sm font-bold" style={{
+                <span className="text-lg font-bold" style={{
                   fontFamily: 'Playfair Display, serif',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  letterSpacing: '0.5px'
                 }}>
                   {media.name}
                 </span>

@@ -39,17 +39,22 @@ export default function MapView({ items = [], type = 'establishments', onClose }
   }
 
   // Ajouter la distance aux items si la géolocalisation est disponible
-  const itemsWithDistance = items.map(item => ({
-    ...item,
-    distance: userLocation && item.coordinates 
-      ? calculateDistance(
-          userLocation.lat, 
-          userLocation.lng, 
-          item.coordinates.lat, 
-          item.coordinates.lng
-        )
-      : null
-  })).sort((a, b) => (a.distance || 999) - (b.distance || 999))
+  const itemsWithDistance = items.map(item => {
+    const lat = item.lat || item.latitude || item.coordinates?.lat
+    const lng = item.lng || item.longitude || item.coordinates?.lng
+    
+    return {
+      ...item,
+      distance: userLocation && lat && lng
+        ? calculateDistance(
+            userLocation.lat, 
+            userLocation.lng, 
+            lat, 
+            lng
+          )
+        : null
+    }
+  }).sort((a, b) => (a.distance || 999) - (b.distance || 999))
 
   return (
     <div className="relative w-full h-[600px] rounded-3xl overflow-hidden">
@@ -101,7 +106,14 @@ export default function MapView({ items = [], type = 'establishments', onClose }
 
       {/* Markers sur la carte Google Maps avec coordonnées réelles */}
       {itemsWithDistance.map((item, index) => {
-        if (!item.lat || !item.lng) return null
+        // Support pour différents formats de coordonnées
+        const lat = item.lat || item.latitude || (item.coordinates?.lat)
+        const lng = item.lng || item.longitude || (item.coordinates?.lng)
+        
+        if (!lat || !lng) {
+          console.log('❌ Item sans coordonnées:', item.name || item.title, { lat, lng, item })
+          return null
+        }
         
         // Convertir les coordonnées en position sur la carte
         // Marbella centre: 36.5101, -4.8824
@@ -114,8 +126,8 @@ export default function MapView({ items = [], type = 'establishments', onClose }
         }
         
         // Calculer la position relative sur la carte
-        const xPercent = ((item.lng - mapBounds.west) / (mapBounds.east - mapBounds.west)) * 100
-        const yPercent = ((mapBounds.north - item.lat) / (mapBounds.north - mapBounds.south)) * 100
+        const xPercent = ((lng - mapBounds.west) / (mapBounds.east - mapBounds.west)) * 100
+        const yPercent = ((mapBounds.north - lat) / (mapBounds.north - mapBounds.south)) * 100
         
         return (
           <button

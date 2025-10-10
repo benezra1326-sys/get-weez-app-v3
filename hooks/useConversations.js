@@ -126,16 +126,18 @@ export function useConversations() {
   }
 
   // Sélectionner une conversation
-  const selectConversation = (id) => {
+  const selectConversation = useCallback((id) => {
     console.log('📍 selectConversation appelé avec ID:', id)
+    console.log('📍 Conversations disponibles:', conversations.map(c => ({ id: c.id, name: c.name || c.title })))
     const conv = conversations.find(c => c.id === id)
     if (conv) {
-      console.log('✅ Conversation trouvée:', conv.name, 'avec', conv.messages?.length || 0, 'messages')
+      console.log('✅ Conversation trouvée:', conv.name || conv.title, 'avec', conv.messages?.length || 0, 'messages')
       setCurrentConversationId(id)
     } else {
       console.error('❌ Conversation non trouvée pour ID:', id)
+      console.error('❌ IDs disponibles:', conversations.map(c => c.id))
     }
-  }
+  }, [conversations])
 
   // Supprimer une conversation
   const deleteConversation = (id) => {

@@ -142,21 +142,22 @@ const Newsletter = ({ isDarkMode = false }) => {
             <button
               type="submit"
               disabled={isLoading || !email}
-                className="px-8 py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
+              className="px-8 py-4 rounded-xl font-bold transition-all duration-300 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 active:scale-95"
               style={{
                 background: 'linear-gradient(135deg, #E5E5E5, #C0C0C0)',
                 color: '#0B0B0C',
                 fontFamily: 'Poppins, sans-serif',
-                fontWeight: 500,
-                boxShadow: '0 4px 20px rgba(0,0,0,0.1)'
+                fontWeight: 600,
+                boxShadow: '0 4px 20px rgba(0,0,0,0.1)',
+                minWidth: '150px'
               }}
             >
               {isLoading ? (
-                  <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                <div className="w-5 h-5 border-2 border-gray-800 border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
-                    <Send size={22} />
-                  S'abonner
+                  <Send size={18} />
+                  <span>S'inscrire</span>
                 </>
               )}
             </button>
