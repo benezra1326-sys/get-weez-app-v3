@@ -5,7 +5,7 @@ import {
   FiPlus, FiSearch, FiHome, FiCalendar, FiBriefcase, 
   FiMail, FiFileText, FiClock, FiUser, FiSettings,
   FiHelpCircle, FiLogOut, FiSun, FiMoon, FiMenu, FiX,
-  FiMessageSquare, FiBuilding
+  FiMessageSquare, FiMapPin
 } from 'react-icons/fi';
 
 const ChatFirstSidebar = ({ 
@@ -24,7 +24,7 @@ const ChatFirstSidebar = ({
   const [searchOpen, setSearchOpen] = useState(false);
 
   const navItems = [
-    { label: 'Établissements', icon: FiBuilding, route: '/establishments' },
+    { label: 'Établissements', icon: FiMapPin, route: '/establishments' },
     { label: 'Événements', icon: FiCalendar, route: '/events' },
     { label: 'Services', icon: FiBriefcase, route: '/services' },
     { label: 'Newsletter', icon: FiMail, route: '/newsletter' },

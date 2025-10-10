@@ -8,37 +8,95 @@ const nextConfig = {
     CUSTOM_KEY: process.env.CUSTOM_KEY,
   },
   
-  // Optimisations de performance de base
+  // Optimisations de performance avancées
   swcMinify: true,
+  compress: true,
   
-  // Optimisations pour éviter les problèmes de cache
+  // Headers de sécurité
+  async headers() {
+    return [
+      {
+        source: '/(.*)',
+        headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'origin-when-cross-origin',
+          },
+        ],
+      },
+    ]
+  },
+  
+  // Optimisations webpack
   webpack: (config, { dev, isServer }) => {
-    if (dev) {
-      // Désactiver le cache webpack en développement pour éviter les erreurs
-      config.cache = false
+    // Optimisation des imports
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': require('path').resolve(__dirname),
+    }
+    
+    // Tree shaking optimisé
+    config.optimization.usedExports = true
+    config.optimization.sideEffects = false
+    
+    // Optimisation des chunks
+    if (!dev && !isServer) {
+      config.optimization.splitChunks = {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            priority: 10,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
+      }
     }
     
     return config
   },
   
-  // Configuration pour éviter les problèmes de cache
-  onDemandEntries: {
-    // Période d'inactivité avant de supprimer les pages du cache
-    maxInactiveAge: 25 * 1000,
-    // Nombre de pages à garder en cache
-    pagesBufferLength: 2,
-  },
-  
-  // Optimisations de performance
+  // Optimisations expérimentales
   experimental: {
-    // Désactiver les optimisations qui peuvent causer des problèmes
-    optimizeCss: false,
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', 'react-icons'],
+    turbo: {
+      rules: {
+        '*.svg': {
+          loaders: ['@svgr/webpack'],
+          as: '*.js',
+        },
+      },
+    },
   },
   
-  // Désactiver styled-jsx pour éviter les erreurs de compilation
+  // Optimisation des images
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+  },
+  
+  // Compiler optimisé
   compiler: {
-    styledComponents: false,
-  }
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
 }
 
 module.exports = nextConfig
