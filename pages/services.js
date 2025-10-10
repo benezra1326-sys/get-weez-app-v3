@@ -1,10 +1,9 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { Briefcase, ArrowRight, Sparkles, Map } from 'lucide-react'
+import { Briefcase, ArrowRight, Sparkles } from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
 import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
-import MapView from '../components/map/MapView'
 import { services as staticServices } from '../data/services-data'
 import { useTheme } from '../contexts/ThemeContextSimple'
 
@@ -15,7 +14,6 @@ export default function Services({ user, setUser }) {
   const [isLoading, setIsLoading] = useState(true)
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [currentSort, setCurrentSort] = useState('rating')
-  const [showMap, setShowMap] = useState(false)
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
@@ -113,7 +111,7 @@ export default function Services({ user, setUser }) {
         </div>
       </section>
 
-      {/* FILTRES & VIEW TOGGLE */}
+      {/* FILTRES SEULEMENT - PAS DE MAP POUR LES SERVICES */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20 mb-8">
         <div 
           className="p-6 rounded-3xl glass-live"
@@ -127,69 +125,19 @@ export default function Services({ user, setUser }) {
             <div className="flex-1">
               <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} />
             </div>
-            
-            {/* Toggle Map/Grid View */}
-            <button
-              onClick={() => setShowMap(!showMap)}
-              className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-medium transition-all whitespace-nowrap"
-              style={{
-                background: showMap 
-                  ? 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))'
-                  : isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)',
-                border: `1px solid ${showMap ? 'rgba(167,199,197,0.5)' : 'rgba(167,199,197,0.3)'}`,
-                color: showMap ? '#FFFFFF' : (isDarkMode ? '#A7C7C5' : '#5A8B89'),
-                backdropFilter: 'blur(10px)',
-                fontFamily: 'Poppins, sans-serif',
-                minWidth: '180px'
-              }}
-              onMouseEnter={(e) => {
-                if (!showMap) {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.12)' : 'rgba(0,0,0,0.08)'
-                  e.currentTarget.style.borderColor = 'rgba(167,199,197,0.5)'
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (!showMap) {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'
-                  e.currentTarget.style.borderColor = 'rgba(167,199,197,0.3)'
-                }
-              }}
-            >
-              <Map size={20} />
-              <span>{showMap ? 'Voir la liste' : 'Voir la carte'}</span>
-            </button>
           </div>
         </div>
       </div>
 
-      {/* VUE CARTE OU GRILLE */}
+      {/* GRILLE DES SERVICES - PAS DE MAP */}
       <section className="max-w-7xl mx-auto px-4 md:px-8 py-16">
-        {showMap ? (
-          <div className="mb-8">
-            <h2 
-              className="text-2xl font-bold mb-6"
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-              }}
-            >
-              Services près de vous
-            </h2>
-            <MapView 
-              items={displayedServices}
-              type="services"
-              onClose={() => setShowMap(false)}
-            />
-          </div>
-        ) : (
-          <>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedServices.map((service) => (
             <div
               key={service.id}
               className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"
-              onClick={() => router.push(`/service/${service.id}`)}
+              onClick={() => router.push(`/product/service/${service.id}`)}
               style={{
                 background: isDarkMode 
                   ? 'rgba(26,26,28,0.95)' 
@@ -327,8 +275,6 @@ export default function Services({ user, setUser }) {
             </div>
           ))}
         </div>
-          </>
-        )}
       </section>
       </div>
     </div>

@@ -238,3 +238,4 @@ BEGIN
     RAISE NOTICE 'Index et triggers configurés pour optimiser les performances';
 END $$;
 
+

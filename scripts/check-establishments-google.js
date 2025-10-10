@@ -41,3 +41,4 @@ async function checkEstablishments() {
 
 checkEstablishments()
 
+

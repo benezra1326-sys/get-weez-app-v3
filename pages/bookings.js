@@ -469,3 +469,4 @@ function DetailRow({ icon, label, value, valueStyle, isDarkMode }) {
   )
 }
 
+

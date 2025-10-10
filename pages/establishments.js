@@ -194,7 +194,7 @@ export default function Establishments({ user, setUser }) {
             <div
               key={establishment.id}
               className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"
-              onClick={() => router.push(`/establishment/${establishment.id}`)}
+              onClick={() => router.push(`/product/establishment/${establishment.id}`)}
               style={{
                 background: isDarkMode 
                   ? 'rgba(26,26,28,0.95)' 

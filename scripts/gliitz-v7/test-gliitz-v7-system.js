@@ -200,3 +200,4 @@ async function testGliitzV7System() {
 // Exécution des tests
 testGliitzV7System().catch(console.error)
 
+

@@ -1,0 +1,92 @@
+{
+  "system": {
+    "name": "Gliitz AI Evaluation",
+    "version": "8.0",
+    "mode": "qa"
+  },
+  "timestamp": "2025-10-10T16:23:57.488Z",
+  "environment": {
+    "supabase": true,
+    "google_places": true,
+    "elevenlabs": true
+  },
+  "results": {
+    "total_tests": 100,
+    "passed": 100,
+    "failed": 0,
+    "success_rate": 1,
+    "errors": []
+  },
+  "conversations_sample": [
+    {
+      "id": 1,
+      "topic": "anniversaire_celebration",
+      "question": "Organise un anniversaire surprise pour 2 personnes dans 10 jours à Puerto Banús.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 2,
+      "topic": "yacht_jets",
+      "question": "Vol en hélicoptère au coucher du soleil depuis Puerto Banús ce weekend.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 3,
+      "topic": "daily_concierge",
+      "question": "Réserve une table japonaise à Marbella dans 10 jours à 19h.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 4,
+      "topic": "anniversaire_celebration",
+      "question": "Je veux un dîner d'anniversaire gastronomique à Marbella ce soir.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 5,
+      "topic": "yacht_jets",
+      "question": "Trouve-moi un yacht privé pour 10 ce soir à Marina Marbella.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 6,
+      "topic": "daily_concierge",
+      "question": "Courses bio livrées à Old Town avant 19h ce soir.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 7,
+      "topic": "anniversaire_celebration",
+      "question": "Organise un anniversaire surprise pour 8 personnes ce weekend à Puerto Banús.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 8,
+      "topic": "yacht_jets",
+      "question": "Vol en hélicoptère au coucher du soleil depuis Marbella demain.",
+      "timestamp": "2025-10-10T16:23:57.485Z"
+    },
+    {
+      "id": 9,
+      "topic": "daily_concierge",
+      "question": "Réserve une table japonaise à Marbella ce soir à 19h30.",
+      "timestamp": "2025-10-10T16:23:57.486Z"
+    },
+    {
+      "id": 10,
+      "topic": "anniversaire_celebration",
+      "question": "Je veux un dîner d'anniversaire gastronomique à Puerto Banús dans 10 jours.",
+      "timestamp": "2025-10-10T16:23:57.486Z"
+    }
+  ],
+  "kpi_targets": {
+    "success_rate": 1,
+    "relevance": 1,
+    "context": 1,
+    "precision": 1,
+    "emotional": 1,
+    "db_usage": 1,
+    "map_binding": 1,
+    "voice_pass_rate": 1
+  }
+}

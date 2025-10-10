@@ -281,7 +281,7 @@ export default function Events({ user, setUser }) {
             <div
               key={event.id}
               className="group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300"
-              onClick={() => router.push(`/event/${event.id}`)}
+              onClick={() => router.push(`/product/event/${event.id}`)}
               style={{
                 background: isDarkMode 
                   ? 'rgba(26,26,28,0.95)' 

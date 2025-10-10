@@ -20,3 +20,4 @@ WHERE table_name = 'establishments'
 ORDER BY ordinal_position;
 
 
+

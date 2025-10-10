@@ -158,8 +158,21 @@ const Home = ({ user, setUser }) => {
 
   // Check for message in URL
   useEffect(() => {
-    const { msg } = router.query
-    if (msg && typeof msg === 'string') {
+    const { msg, reservation } = router.query
+    
+    // Si c'est une réservation, envoyer automatiquement le message
+    if (reservation && typeof reservation === 'string') {
+      setInput(reservation)
+      // Clean URL
+      router.replace('/', undefined, { shallow: true })
+      
+      // Envoyer automatiquement après un court délai
+      setTimeout(() => {
+        handleSendMessage()
+      }, 500)
+    } 
+    // Sinon juste pré-remplir l'input avec msg
+    else if (msg && typeof msg === 'string') {
       setInput(msg)
       // Clean URL
       router.replace('/', undefined, { shallow: true })
@@ -547,20 +560,23 @@ const Home = ({ user, setUser }) => {
 
         {/* Input Bar - Fixed at bottom */}
         <div 
-          className="p-4 md:p-6 border-t"
+          className="p-4 md:p-6"
           style={{ 
             background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
             backdropFilter: 'blur(20px)',
-            borderTop: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(192, 192, 192, 0.2)'}`
+            borderTop: 'none'
           }}
         >
-          <div className="max-w-4xl mx-auto">
+          {/* Barre de saisie pleine largeur */}
+          <div className="w-full mb-3">
             <div
-              className="flex items-center gap-2 p-3 rounded-full"
+              className="flex items-center gap-2 px-4 py-3 transition-all duration-300 rounded-full"
               style={{ 
-                background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
-                border: 'none',
-                boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(192, 192, 192, 0.15)'
+                background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(0, 0, 0, 0.05)',
+                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+                boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(0, 0, 0, 0.1)',
+                width: '100%',
+                minHeight: '56px'
               }}
             >
               {/* Text Input - Prend toute la largeur, s'adapte en hauteur */}
@@ -569,25 +585,30 @@ const Home = ({ user, setUser }) => {
                 value={input}
                 onChange={(e) => {
                   setInput(e.target.value)
-                  // Auto-resize
-                  e.target.style.height = 'auto'
-                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px'
+                  // Auto-resize du conteneur parent
+                  const container = e.target.closest('.flex')
+                  if (container) {
+                    const newHeight = Math.min(e.target.scrollHeight, 120) + 16 // +16 pour padding
+                    container.style.height = `${newHeight}px`
+                  }
                 }}
                 onKeyPress={handleKeyPress}
                 placeholder="Message Gliitz..."
-                className="flex-1 bg-transparent outline-none resize-none px-3 py-2"
+                className="flex-1 bg-transparent outline-none resize-none px-2 py-1"
                 style={{ 
                   fontFamily: 'Poppins, sans-serif',
                   color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  minHeight: '24px',
-                  maxHeight: '200px'
+                  minHeight: '20px',
+                  maxHeight: '100px',
+                  border: 'none',
+                  transition: 'all 0.3s ease'
                 }}
                 rows={1}
                 disabled={isLoading}
               />
 
-              {/* Boutons à droite - Dictée + Vocal OU Envoi */}
-              <div className="flex items-center gap-2 ml-auto">
+              {/* Boutons à droite - Dictée + Chat Vocal OU Envoi */}
+              <div className="flex items-center gap-1 ml-auto">
                 {!input.trim() && (
                   <>
                     {/* Dictation Button */}
@@ -600,7 +621,7 @@ const Home = ({ user, setUser }) => {
                       disabled={isLoading}
                     />
 
-                    {/* Voice-to-Voice Button */}
+                    {/* Voice-to-Voice Button - Chat vocal */}
                     <button
                       onClick={() => {
                         feedbackSystem.micOn()
@@ -618,9 +639,14 @@ const Home = ({ user, setUser }) => {
                         e.currentTarget.style.background = 'transparent'
                       }}
                       disabled={isLoading}
-                      title="Mode vocal continu"
+                      title="Chat vocal continu"
                     >
-                      <Sparkles size={20} />
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+                        <path d="M19 10v2a7 7 0 0 1-14 0v-2"/>
+                        <line x1="12" y1="19" x2="12" y2="23"/>
+                        <line x1="8" y1="23" x2="16" y2="23"/>
+                      </svg>
                     </button>
                   </>
                 )}
@@ -653,21 +679,21 @@ const Home = ({ user, setUser }) => {
                   </button>
                 )}
               </div>
+            </div>
           </div>
           
-          {/* Tagline sous le chat */}
+          {/* Tagline sous la barre de saisie */}
           <div 
-            className="mt-4 text-center"
+            className="text-center px-4"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              fontSize: '0.85rem',
-              color: isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(11, 11, 12, 0.5)',
+              fontSize: '0.75rem',
+              color: isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(11, 11, 12, 0.4)',
               fontWeight: '300',
               letterSpacing: '0.02em'
             }}
           >
-            {t('brand.footer_tagline', { defaultValue: 'Gliitz, votre concierge intelligent pour des instants parfaits' })} <Sparkles size={14} style={{ display: 'inline', marginLeft: '4px', verticalAlign: 'middle' }} />
-          </div>
+            {t('brand.footer_tagline', { defaultValue: 'Gliitz, votre concierge intelligent pour des instants parfaits' })} <Sparkles size={12} style={{ display: 'inline', marginLeft: '4px', verticalAlign: 'middle', opacity: 0.6 }} />
           </div>
         </div>
       </main>

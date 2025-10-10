@@ -16,7 +16,9 @@
     "test:concierge": "node test-concierge-config.js",
     "test:gliitz": "node test-gliitz-specific.js",
     "audit:final": "node audit-performance-final.js",
-    "audit:code": "npm run lint && npm run test:agent"
+    "audit:code": "npm run lint && npm run test:agent",
+    "test:qa": "./tests/run-with-env.sh",
+    "test:qa:full": "TOTAL_TESTS=100000 ./tests/run-with-env.sh"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.58.0",

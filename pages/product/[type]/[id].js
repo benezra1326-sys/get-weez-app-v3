@@ -6,6 +6,128 @@ import V3Sidebar from '../../../components/layout/V3Sidebar'
 import { fetchEstablishments, fetchEvents, fetchServices } from '../../../lib/supabaseData'
 import { useTheme } from '../../../contexts/ThemeContextSimple'
 
+// Données statiques d'événements (fallback)
+const STATIC_EVENTS = [
+  {
+    id: 1,
+    title: "Sunset Beach Party",
+    name: "Sunset Beach Party",
+    description: "DJ set exclusif avec vue sur mer, cocktails premium et ambiance lounge",
+    date: "2025-12-15T20:00:00Z",
+    image_url: "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=800",
+    location: "Ocean Club Marbella",
+    price: 85,
+    category: "Beach Club",
+    lat: 36.5101,
+    lng: -4.8824
+  },
+  {
+    id: 2,
+    title: "Mediterranean Wine & Tapas",
+    name: "Mediterranean Wine & Tapas",
+    description: "Dégustation de vins méditerranéens accompagnée de tapas gastronomiques",
+    date: "2025-12-20T19:30:00Z",
+    image_url: "https://images.unsplash.com/photo-1551218808-94e220e084d2?w=800",
+    location: "La Terraza del Mar",
+    price: 65,
+    category: "Gastronomie",
+    lat: 36.5123,
+    lng: -4.8890
+  },
+  {
+    id: 3,
+    title: "Yacht VIP Night",
+    name: "Yacht VIP Night",
+    description: "Soirée exclusive sur yacht privé avec DJ et champagne",
+    date: "2025-12-22T21:00:00Z",
+    image_url: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=800",
+    location: "Puerto Banús",
+    price: 150,
+    category: "VIP",
+    lat: 36.4879,
+    lng: -4.9522
+  },
+  {
+    id: 4,
+    title: "Rooftop DJ Session",
+    name: "Rooftop DJ Session",
+    description: "Session DJ sur rooftop avec vue panoramique sur Marbella",
+    date: "2025-12-25T22:00:00Z",
+    image_url: "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800",
+    location: "Sky Lounge",
+    price: 45,
+    category: "Nightlife",
+    lat: 36.5145,
+    lng: -4.8795
+  },
+  {
+    id: 5,
+    title: "Private Chef Experience",
+    name: "Private Chef Experience",
+    description: "Dîner privé préparé par un chef étoilé Michelin",
+    date: "2025-12-28T20:00:00Z",
+    image_url: "https://images.unsplash.com/photo-1556910110-a5a63dfd393c?w=800",
+    location: "Villa Privée",
+    price: 200,
+    category: "Premium",
+    lat: 36.5080,
+    lng: -4.9100
+  },
+  {
+    id: 6,
+    title: "New Year's Eve Gala",
+    name: "New Year's Eve Gala",
+    description: "Célébrez le Nouvel An avec style dans le club le plus exclusif",
+    date: "2025-12-31T21:00:00Z",
+    image_url: "https://images.unsplash.com/photo-1467810563316-b5476525c0f9?w=800",
+    location: "Le Club Premium",
+    price: 250,
+    category: "Spécial",
+    lat: 36.5067,
+    lng: -4.8950
+  }
+]
+
+// Données statiques de services (fallback)
+const STATIC_SERVICES = [
+  {
+    id: 1,
+    name: 'Transport VIP',
+    title: 'Transport VIP',
+    category: 'Transport',
+    description: 'Voiture avec chauffeur, yacht privé, hélicoptère - Service de transport de luxe 24/7',
+    price: 'Sur devis',
+    image_url: 'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=800'
+  },
+  {
+    id: 2,
+    name: 'Conciergerie Premium',
+    title: 'Conciergerie Premium',
+    category: 'Services',
+    description: 'Réservations, organisation d\'événements, assistance 24/7 - Votre concierge personnel',
+    price: 'À partir de 200€/jour',
+    image_url: 'https://images.unsplash.com/photo-1556910110-a5a63dfd393c?w=800'
+  },
+  {
+    id: 3,
+    name: 'Location Yacht',
+    title: 'Location Yacht',
+    category: 'Transport',
+    description: 'Yachts de luxe avec équipage professionnel pour des journées inoubliables en mer',
+    price: 'À partir de 5000€/jour',
+    image_url: 'https://images.unsplash.com/photo-1567899378494-47b22a2ae96a?w=800'
+  },
+  {
+    id: 4,
+    name: 'Villas de Luxe',
+    title: 'Villas de Luxe',
+    category: 'Hébergement',
+    description: 'Villas privées avec services premium, piscine, vue mer et personnel dédié',
+    price: 'À partir de 1500€/nuit',
+    image_url: 'https://images.unsplash.com/photo-1613490493576-7fde63acd811?w=800'
+  }
+]
+
 export default function ProductPage({ user, setUser }) {
   const router = useRouter()
   const { type, id } = router.query
@@ -21,17 +143,21 @@ export default function ProductPage({ user, setUser }) {
       try {
         console.log('🔍 Chargement produit:', { type, id })
         let data = []
+        const numericId = parseInt(id)
         
         if (type === 'establishment') {
           data = await fetchEstablishments()
+          // Si Supabase échoue, pas de fallback pour establishments
         } else if (type === 'event') {
-          data = await fetchEvents()
+          // Utiliser les données statiques pour les événements
+          data = STATIC_EVENTS
         } else if (type === 'service') {
-          data = await fetchServices()
+          // Utiliser les données statiques pour les services
+          data = STATIC_SERVICES
         }
 
         console.log('📊 Données récupérées:', data.length, 'éléments')
-        const foundProduct = data.find(item => item.id === parseInt(id))
+        const foundProduct = data.find(item => item.id === numericId || item.id === id)
         console.log('🎯 Produit trouvé:', foundProduct ? 'OUI' : 'NON')
         
         if (!foundProduct) {
@@ -86,32 +212,31 @@ export default function ProductPage({ user, setUser }) {
   )
 
   const handleReserve = () => {
+    const productName = product.name || product.title
     const message = isEvent 
-      ? `Je souhaite réserver pour l'événement "${product.title}"`
-      : `Je souhaite réserver ${product.name || product.title}`
-    router.push(`/?msg=${encodeURIComponent(message)}`)
+      ? `Je souhaite réserver pour l'événement "${productName}"`
+      : `Je souhaite réserver ${productName}`
+    
+    // Rediriger vers le chat avec le message pré-rempli
+    router.push(`/?reservation=${encodeURIComponent(message)}`)
   }
 
   return (
     <div className="min-h-screen" style={{ background: isDarkMode ? '#0B0B0C' : '#FFFFFF' }}>
-      <V3Sidebar
-        isOpen={sidebarOpen}
-        onToggle={setSidebarOpen}
-      />
-
-      {/* Header */}
-      <div className="sticky top-0 z-40 p-4 border-b" style={{ 
-        background: isDarkMode ? 'rgba(11, 11, 12, 0.95)' : 'rgba(255, 255, 255, 0.95)',
+      {/* Header fixe en haut sans sidebar */}
+      <div className="fixed top-0 left-0 right-0 z-50 p-4 border-b" style={{ 
+        background: isDarkMode ? 'rgba(11, 11, 12, 0.98)' : 'rgba(255, 255, 255, 0.98)',
         borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)',
-        backdropFilter: 'blur(10px)'
+        backdropFilter: 'blur(20px)'
       }}>
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <button
             onClick={() => router.back()}
-            className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all hover:scale-105"
+            className="flex items-center gap-2 px-4 py-2 rounded-xl transition-all hover:scale-105 z-10"
             style={{
-              background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-              color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+              background: isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)',
+              color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+              border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'}`
             }}
           >
             <ArrowLeft size={18} />
@@ -130,8 +255,8 @@ export default function ProductPage({ user, setUser }) {
         </div>
       </div>
 
-      {/* Contenu principal */}
-      <div className="max-w-6xl mx-auto p-4 py-8">
+      {/* Contenu principal avec padding-top pour le header fixe */}
+      <div className="max-w-6xl mx-auto p-4 pt-20">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}

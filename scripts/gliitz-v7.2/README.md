@@ -248,3 +248,4 @@ MIT License - Gliitz Tech 2025
 
 **Gliitz Intelligence Core v7.2** - *Système complet et opérationnel* ✨🚀
 
+

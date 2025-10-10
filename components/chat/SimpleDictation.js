@@ -35,6 +35,7 @@ export default function SimpleDictation({
     recognition.maxAlternatives = 1
 
     recognition.onstart = () => {
+      console.log('🎤 Dictée démarrée')
       setIsListening(true)
       feedbackSystem.micOn()
     }
@@ -52,9 +53,20 @@ export default function SimpleDictation({
         }
       }
       
+      console.log('📝 Résultat dictée:', { final, interim })
+      
       if (final && onTranscript) {
+        console.log('✅ Envoi de la transcription finale:', final)
         onTranscript(final)
         setInterimText('')
+        // Arrêter la reconnaissance après le résultat final
+        if (recognitionRef.current) {
+          try {
+            recognitionRef.current.stop()
+          } catch (e) {
+            // Ignore
+          }
+        }
       } else {
         setInterimText(interim)
       }
@@ -90,10 +102,14 @@ export default function SimpleDictation({
   }, [onTranscript])
 
   const toggleDictation = () => {
-    if (!recognitionRef.current || !isSupported) return
+    if (!recognitionRef.current || !isSupported) {
+      console.error('❌ Reconnaissance vocale non disponible')
+      return
+    }
 
     if (isListening) {
       // Arrêter la dictée
+      console.log('⏸️ Arrêt de la dictée')
       try {
         recognitionRef.current.stop()
       } catch (e) {
@@ -101,11 +117,26 @@ export default function SimpleDictation({
       }
     } else {
       // Démarrer la dictée
+      console.log('▶️ Démarrage de la dictée')
       try {
         recognitionRef.current.start()
       } catch (e) {
         console.error('Erreur démarrage dictée:', e)
-        feedbackSystem.error()
+        
+        // Si l'erreur est "already started", arrêter puis redémarrer
+        if (e.message && e.message.includes('already')) {
+          try {
+            recognitionRef.current.stop()
+            setTimeout(() => {
+              recognitionRef.current.start()
+            }, 100)
+          } catch (restartError) {
+            console.error('Erreur redémarrage:', restartError)
+            feedbackSystem.error()
+          }
+        } else {
+          feedbackSystem.error()
+        }
       }
     }
   }

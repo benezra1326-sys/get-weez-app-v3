@@ -243,3 +243,4 @@ Pour toute question ou problème :
 
 **Gliitz Intelligence Core v7.0** - *L'art de prendre soin, réinventé par l'intelligence* ✨
 
+

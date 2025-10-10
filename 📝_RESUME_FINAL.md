@@ -197,3 +197,4 @@ Les deux dernières étapes (Google Places + Événements) sont **optionnelles**
 **Statut** : ✅ **PRÊT À TESTER**
 
 
+

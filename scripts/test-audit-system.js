@@ -117,3 +117,4 @@ console.log("  npm run audit-quick  - Audit rapide (100 conversations)")
 console.log("  npm run intelligence - Tests d'intelligence seulement")
 console.log("  npm run analyze      - Analyser les résultats existants")
 
+

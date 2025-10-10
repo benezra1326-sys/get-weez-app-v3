@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/router'
 import { MapPin, Navigation, X, ExternalLink } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function MapView({ items = [], type = 'establishments', onClose }) {
+  const router = useRouter()
   const { isDarkMode } = useTheme()
   const [selectedItem, setSelectedItem] = useState(null)
   const [userLocation, setUserLocation] = useState(null)
@@ -97,56 +99,78 @@ export default function MapView({ items = [], type = 'establishments', onClose }
         />
       </div>
 
-      {/* Liste des établissements en overlay */}
-      <div className="absolute top-4 left-4 right-4 max-h-96 overflow-y-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {itemsWithDistance.slice(0, 6).map((item, index) => (
-            <button
-              key={item.id}
-              onClick={() => setSelectedItem(item)}
-              className="relative group"
+      {/* Markers sur la carte Google Maps avec coordonnées réelles */}
+      {itemsWithDistance.map((item, index) => {
+        if (!item.lat || !item.lng) return null
+        
+        // Convertir les coordonnées en position sur la carte
+        // Marbella centre: 36.5101, -4.8824
+        const mapCenter = { lat: 36.5101, lng: -4.8824 }
+        const mapBounds = {
+          north: 36.5600,
+          south: 36.4600,
+          east: -4.8000,
+          west: -4.9800
+        }
+        
+        // Calculer la position relative sur la carte
+        const xPercent = ((item.lng - mapBounds.west) / (mapBounds.east - mapBounds.west)) * 100
+        const yPercent = ((mapBounds.north - item.lat) / (mapBounds.north - mapBounds.south)) * 100
+        
+        return (
+          <button
+            key={item.id}
+            onClick={() => setSelectedItem(item)}
+            className="absolute transform -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer"
+            style={{
+              top: `${yPercent}%`,
+              left: `${xPercent}%`
+            }}
+          >
+            <div
+              className="relative p-3 rounded-full transition-all duration-300 hover:scale-110"
               style={{
-                animation: `fadeIn 0.5s ease-out ${index * 0.1}s both`
+                background: selectedItem?.id === item.id
+                  ? 'rgba(167,199,197,0.95)'
+                  : 'rgba(167,199,197,0.8)',
+                boxShadow: selectedItem?.id === item.id 
+                  ? '0 0 25px rgba(167,199,197,0.9)' 
+                  : '0 4px 15px rgba(167,199,197,0.5)',
+                border: '3px solid #FFFFFF'
               }}
             >
-              <div
-                className="p-2 rounded-full transition-all duration-300"
-                style={{
-                  background: selectedItem?.id === item.id
-                    ? 'rgba(167,199,197,0.9)'
-                    : 'rgba(167,199,197,0.6)',
-                  boxShadow: '0 4px 15px rgba(167,199,197,0.4)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'scale(1.2)'
-                  e.currentTarget.style.background = 'rgba(167,199,197,0.9)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = 'scale(1)'
-                  e.currentTarget.style.background = selectedItem?.id === item.id
-                    ? 'rgba(167,199,197,0.9)'
-                    : 'rgba(167,199,197,0.6)'
-                }}
-              >
-                <MapPin size={24} color="#FFFFFF" />
-              </div>
+              <MapPin size={20} color="#FFFFFF" />
               
               {/* Distance badge */}
               {item.distance && (
                 <div
-                  className="absolute -top-2 -right-2 px-2 py-1 rounded-full text-xs font-bold"
+                  className="absolute -top-1 -right-1 px-1.5 py-0.5 rounded-full text-xs font-bold"
                   style={{
-                    background: 'rgba(167,199,197,0.9)',
-                    color: '#FFFFFF'
+                    background: '#FF6B6B',
+                    color: '#FFFFFF',
+                    fontSize: '10px'
                   }}
                 >
                   {item.distance}km
                 </div>
               )}
-            </button>
-          ))}
-        </div>
-      </div>
+              
+              {/* Tooltip au survol */}
+              <div
+                className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 rounded-lg text-xs font-medium whitespace-nowrap opacity-0 transition-opacity duration-300 pointer-events-none"
+                style={{
+                  background: isDarkMode ? 'rgba(11,11,12,0.9)' : 'rgba(255,255,255,0.9)',
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  border: `1px solid ${isDarkMode ? 'rgba(255,255,255,0.2)' : 'rgba(0,0,0,0.1)'}`
+                }}
+                onMouseEnter={(e) => e.target.style.opacity = '1'}
+              >
+                {item.name || item.title}
+              </div>
+            </div>
+          </button>
+        )
+      })}
 
       {/* User Location Indicator */}
       {userLocation && (
@@ -237,6 +261,10 @@ export default function MapView({ items = [], type = 'establishments', onClose }
           )}
 
           <button
+            onClick={() => {
+              const itemType = type === 'establishments' ? 'establishment' : type === 'events' ? 'event' : 'service'
+              router.push(`/product/${itemType}/${selectedItem.id}`)
+            }}
             className="w-full py-3 rounded-xl font-semibold transition-all"
             style={{
               background: 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))',

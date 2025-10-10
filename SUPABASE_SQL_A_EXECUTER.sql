@@ -24,3 +24,4 @@ WHERE table_name = 'establishments' AND column_name = 'id';
 
 
 
+

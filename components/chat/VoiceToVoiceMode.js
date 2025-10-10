@@ -78,19 +78,27 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
     }
   }, [isOpen])
 
-  // Détection du silence
+  // Détection du silence et envoi automatique
   useEffect(() => {
-    if (!isListening) return
+    if (!isListening || !transcript.trim()) return
 
+    // Nettoyer le timer précédent
+    if (silenceTimerRef.current) {
+      clearInterval(silenceTimerRef.current)
+    }
+
+    // Créer un nouveau timer pour détecter le silence
     silenceTimerRef.current = setInterval(() => {
       const now = Date.now()
       const timeSinceLastSpeech = now - lastSpeechTimeRef.current
       
-      // Si 2 secondes de silence et on a une transcription
-      if (timeSinceLastSpeech > 2000 && transcript.trim().length > 0) {
+      // Si 1.5 secondes de silence et on a une transcription
+      if (timeSinceLastSpeech > 1500 && transcript.trim().length > 0) {
+        console.log('🔊 Silence détecté, envoi du message:', transcript)
+        clearInterval(silenceTimerRef.current)
         handleAutoSend()
       }
-    }, 500)
+    }, 300)
 
     return () => {
       if (silenceTimerRef.current) {
@@ -267,7 +275,7 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
                 fontWeight: '300'
               }}
             >
-              {isListening ? "Je vous écoute..." : isSpeaking ? "Gliitz répond..." : "En pause"}
+              {isListening ? "🎤 Parlez maintenant..." : isSpeaking ? "💬 Je réponds..." : "📞 En attente"}
             </p>
           </motion.div>
 
@@ -360,44 +368,78 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
             ))}
           </div>
 
-          {/* Info Text - Simulation appel téléphonique */}
+          {/* Contrôles - Micro et Mute */}
+          <div className="flex items-center justify-center gap-4 mt-6">
+            {/* Bouton Micro / Silence */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={toggleListening}
+              className="p-4 rounded-full transition-all"
+              style={{
+                background: isListening 
+                  ? 'linear-gradient(135deg, #EF4444, #DC2626)'
+                  : isDarkMode 
+                    ? 'rgba(255, 255, 255, 0.1)' 
+                    : 'rgba(0, 0, 0, 0.05)',
+                border: `2px solid ${isListening ? '#EF4444' : (isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.4)')}`,
+                color: isListening ? '#FFFFFF' : (isDarkMode ? '#C0C0C0' : '#666666'),
+                boxShadow: isListening ? '0 0 20px rgba(239, 68, 68, 0.5)' : 'none'
+              }}
+              title={isListening ? "Mettre en pause" : "Activer le micro"}
+            >
+              {isListening ? <MicOff size={28} /> : <Mic size={28} />}
+            </motion.button>
+
+            {/* Bouton Mute */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setIsMuted(!isMuted)}
+              className="p-4 rounded-full transition-all"
+              style={{
+                background: isMuted
+                  ? 'linear-gradient(135deg, #F59E0B, #D97706)'
+                  : isDarkMode 
+                    ? 'rgba(255, 255, 255, 0.1)' 
+                    : 'rgba(0, 0, 0, 0.05)',
+                border: `2px solid ${isMuted ? '#F59E0B' : (isDarkMode ? 'rgba(192, 192, 192, 0.3)' : 'rgba(192, 192, 192, 0.4)')}`,
+                color: isMuted ? '#FFFFFF' : (isDarkMode ? '#C0C0C0' : '#666666')
+              }}
+              title={isMuted ? "Activer le son" : "Désactiver le son"}
+            >
+              {isMuted ? <VolumeX size={28} /> : <Volume2 size={28} />}
+            </motion.button>
+
+            {/* Bouton Arrêter (Croix rouge) */}
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={onClose}
+              className="p-4 rounded-full transition-all"
+              style={{
+                background: 'linear-gradient(135deg, #DC2626, #B91C1C)',
+                border: '2px solid #DC2626',
+                color: '#FFFFFF',
+                boxShadow: '0 0 20px rgba(220, 38, 38, 0.4)'
+              }}
+              title="Arrêter la conversation"
+            >
+              <X size={28} />
+            </motion.button>
+          </div>
+
+          {/* Texte d'état simplifié */}
           <p
-            className="mt-6"
+            className="mt-6 text-sm"
             style={{
               fontFamily: 'Poppins, sans-serif',
-              fontSize: '1rem',
-              color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.7)',
-              fontStyle: 'italic',
-              textAlign: 'center',
-              maxWidth: '600px',
-              lineHeight: '1.6'
-            }}
-          >
-            {isListening 
-              ? "🎤 Je vous écoute..."
-              : isSpeaking
-                ? "💬 Gliitz répond..."
-                : "📞 Conversation vocale active"}
-          </p>
-
-          {/* Petit indicateur mute discret */}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            onClick={() => setIsMuted(!isMuted)}
-            className="mt-4 px-4 py-2 rounded-full text-xs"
-            style={{
-              background: isDarkMode 
-                ? 'rgba(255, 255, 255, 0.05)' 
-                : 'rgba(0, 0, 0, 0.03)',
-              border: `1px solid ${isDarkMode 
-                ? 'rgba(192, 192, 192, 0.15)' 
-                : 'rgba(192, 192, 192, 0.2)'}`,
               color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
-              fontFamily: 'Poppins, sans-serif'
+              textAlign: 'center'
             }}
           >
-            {isMuted ? '🔇 Son désactivé' : '🔊 Son activé'}
-          </motion.button>
+            {transcript && `📝 "${transcript.slice(0, 50)}${transcript.length > 50 ? '...' : ''}"`}
+          </p>
         </div>
       </motion.div>
     </AnimatePresence>

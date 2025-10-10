@@ -11,3 +11,4 @@ ALTER TABLE establishments ADD COLUMN IF NOT EXISTS opening_hours TEXT;
 
 
 
+

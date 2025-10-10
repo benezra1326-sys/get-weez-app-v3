@@ -368,3 +368,4 @@ BEGIN
     RAISE NOTICE '🎯 Données de test insérées pour user_test_001';
 END $$;
 
+
