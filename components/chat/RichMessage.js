@@ -86,7 +86,10 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
       }
     } else {
       console.error('❌ PRODUIT NON TROUVÉ:', name)
-      alert(`Produit "${name}" non trouvé dans la base de données`)
+      // Au lieu d'alerter, déclencher une recherche dans le chat
+      if (onProductClick) {
+        onProductClick(name)
+      }
     }
   }
 
@@ -110,14 +113,24 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
       // Éléments avec puces (• ou -)
       else if (trimmedLine.match(/^[•\-\*]\s+/)) {
         const content = trimmedLine.replace(/^[•\-\*]\s+/, '')
-        const parts = content.split(/\s*-\s*/)
         
-        elements.push({
-          type: 'item',
-          title: parts[0]?.trim(),
-          description: parts[1]?.trim(),
-          key: `item-${index}`
-        })
+        // Vérifier si c'est un titre de journée (Matin, Après-midi, Soir)
+        if (content.match(/^\*\*(Matin|Après-midi|Soir|Midi|Après-midi)\*\*/i)) {
+          elements.push({
+            type: 'time-title',
+            content: content,
+            key: `time-${index}`
+          })
+        } else {
+          const parts = content.split(/\s*-\s*/)
+          
+          elements.push({
+            type: 'item',
+            title: parts[0]?.trim(),
+            description: parts[1]?.trim(),
+            key: `item-${index}`
+          })
+        }
       }
       // Question finale
       else if (trimmedLine.match(/^(Souhaitez-vous|Que souhaitez-vous|Quelle est|Would you|¿Qué|¿Te gustaría)/i)) {
@@ -359,6 +372,43 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
               </div>
             )
           
+          case 'time-title':
+            return (
+              <div key={element.key} className="mb-3">
+                <div 
+                  className="p-3 rounded-lg flex items-center gap-3"
+                  style={{
+                    background: isDarkMode 
+                      ? 'rgba(192, 192, 192, 0.1)' 
+                      : 'rgba(192, 192, 192, 0.15)',
+                    border: isDarkMode 
+                      ? '1px solid rgba(192, 192, 192, 0.2)' 
+                      : '1px solid rgba(192, 192, 192, 0.3)'
+                  }}
+                >
+                  <div 
+                    className="w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold"
+                    style={{
+                      background: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      color: isDarkMode ? '#0B0B0C' : '#FFFFFF'
+                    }}
+                  >
+                    🕐
+                  </div>
+                  <span 
+                    className="font-semibold"
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      color: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                      fontSize: '15px'
+                    }}
+                  >
+                    {element.content.replace(/\*\*/g, '')}
+                  </span>
+                </div>
+              </div>
+            )
+          
           case 'item':
             return (
               <div key={element.key} className="mb-3">
@@ -380,9 +430,32 @@ export default function RichMessage({ content, isDarkMode, onSendMessage }) {
                 >
                   <div className="flex items-start gap-3">
                     <div 
-                      className="w-2 h-2 rounded-full mt-2 flex-shrink-0"
-                      style={{ background: '#C0C0C0' }}
-                    />
+                      className="w-10 h-10 rounded-lg flex items-center justify-center text-lg flex-shrink-0"
+                      style={{
+                        background: isDarkMode 
+                          ? 'rgba(192, 192, 192, 0.15)' 
+                          : 'rgba(192, 192, 192, 0.2)',
+                        border: isDarkMode 
+                          ? '1px solid rgba(192, 192, 192, 0.3)' 
+                          : '1px solid rgba(192, 192, 192, 0.4)'
+                      }}
+                    >
+                      {(() => {
+                        if (!element.title) return '🏢'
+                        const lowerTitle = element.title.toLowerCase()
+                        if (lowerTitle.includes('restaurant') || lowerTitle.includes('dîner') || lowerTitle.includes('déjeuner') || lowerTitle.includes('cuisine')) return '🍽️'
+                        if (lowerTitle.includes('spa') || lowerTitle.includes('massage') || lowerTitle.includes('relaxation')) return '🧖‍♀️'
+                        if (lowerTitle.includes('plage') || lowerTitle.includes('beach') || lowerTitle.includes('mer')) return '🏖️'
+                        if (lowerTitle.includes('hotel') || lowerTitle.includes('hôtel') || lowerTitle.includes('hébergement')) return '🏨'
+                        if (lowerTitle.includes('activité') || lowerTitle.includes('excursion') || lowerTitle.includes('tour')) return '🎯'
+                        if (lowerTitle.includes('bar') || lowerTitle.includes('cocktail') || lowerTitle.includes('boisson')) return '🍸'
+                        if (lowerTitle.includes('shopping') || lowerTitle.includes('boutique') || lowerTitle.includes('magasin')) return '🛍️'
+                        if (lowerTitle.includes('sport') || lowerTitle.includes('golf') || lowerTitle.includes('tennis')) return '⛳'
+                        if (lowerTitle.includes('culture') || lowerTitle.includes('musée') || lowerTitle.includes('art')) return '🎨'
+                        if (lowerTitle.includes('transport') || lowerTitle.includes('voiture') || lowerTitle.includes('taxi')) return '🚗'
+                        return '📍'
+                      })()}
+                    </div>
                     <div className="flex-1">
                       <h4 
                         className="font-semibold mb-1"

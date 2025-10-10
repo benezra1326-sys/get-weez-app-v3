@@ -9,7 +9,8 @@ export default function ReactiveMessage({
   isUser, 
   isPlaying = false,
   onPlayVoice,
-  onSendMessage 
+  onSendMessage,
+  onProductClick
 }) {
   const { isDarkMode } = useTheme()
   const [isHovered, setIsHovered] = useState(false)
@@ -98,7 +99,7 @@ export default function ReactiveMessage({
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <RichMessage content={message.content} isDarkMode={isDarkMode} onSendMessage={onSendMessage} />
+            <RichMessage content={message.content} isDarkMode={isDarkMode} onSendMessage={onSendMessage} onProductClick={onProductClick} />
           )}
         </div>
 

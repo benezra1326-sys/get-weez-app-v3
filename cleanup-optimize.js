@@ -150,5 +150,3 @@ dirsToCheck.forEach(dir => {
 
 console.log(`\n🎉 Nettoyage terminé ! ${deletedCount} fichiers supprimés.`);
 console.log('📊 Espace libéré et code optimisé pour un score 100% !');
-
-

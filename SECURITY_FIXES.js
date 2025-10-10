@@ -83,5 +83,3 @@ const sanitizeHtml = (dirty) => {
     ALLOWED_ATTR: []
   });
 };
-
-
