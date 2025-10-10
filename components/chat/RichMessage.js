@@ -1,31 +1,92 @@
 import { useState } from 'react'
+import { useRouter } from 'next/router'
 import { ExternalLink, FileText, Image as ImageIcon, MapPin, Calendar, Star } from 'lucide-react'
 import ProductPopupChat from './ProductPopupChat'
-import { searchEstablishment, searchEvent } from '../../lib/supabaseData'
+import { searchEstablishment, searchEvent, searchService } from '../../lib/supabaseData'
 
-export default function RichMessage({ content, isDarkMode }) {
+export default function RichMessage({ content, isDarkMode, onSendMessage }) {
   const [imageError, setImageError] = useState({})
   const [popupData, setPopupData] = useState(null)
   const [isLoadingProduct, setIsLoadingProduct] = useState(false)
+  const router = useRouter()
 
-  // Gérer le clic sur un nom d'établissement/événement
+  // Gérer le clic sur un nom d'établissement/événement/service
   const handleProductClick = async (name) => {
+    console.log('🖱️ CLIC SUR:', name)
+    
+    // NETTOYER le nom - supprimer les astérisques et descriptions
+    let cleanName = name
+      .replace(/\*\*/g, '') // Supprimer les astérisques
+      .replace(/[✨🌊🍽️🏖️☀️💆🍸🌙💃🎉🎊🍱🎭👜🌟🥂🚗]/g, '') // Supprimer emojis
+      .trim()
+    
+    // Si le texte contient ":" prendre seulement ce qui est avant
+    if (cleanName.includes(':')) {
+      cleanName = cleanName.split(':')[0].trim()
+    }
+    
+    // Si le texte contient "-" prendre seulement ce qui est avant  
+    if (cleanName.includes(' - ')) {
+      cleanName = cleanName.split(' - ')[0].trim()
+    }
+    
+    // Prendre seulement les 3 premiers mots maximum
+    const words = cleanName.split(' ')
+    if (words.length > 3) {
+      cleanName = words.slice(0, 3).join(' ')
+    }
+    
+    console.log('🧹 NOM NETTOYÉ:', cleanName)
     setIsLoadingProduct(true)
     
-    // Rechercher d'abord dans les établissements
-    let product = await searchEstablishment(name)
+    // Rechercher dans les établissements
+    console.log('🔍 Recherche dans establishments...')
+    let product = await searchEstablishment(cleanName)
+    let productType = 'establishment'
+    console.log('📊 Résultat establishment:', product ? 'TROUVÉ' : 'NON TROUVÉ')
     
     // Si pas trouvé, chercher dans les événements
     if (!product) {
-      product = await searchEvent(name)
+      console.log('🔍 Recherche dans events...')
+      product = await searchEvent(cleanName)
+      productType = 'event'
+      console.log('📊 Résultat event:', product ? 'TROUVÉ' : 'NON TROUVÉ')
+    }
+    
+    // Si toujours pas trouvé, chercher dans les services
+    if (!product) {
+      console.log('🔍 Recherche dans services...')
+      product = await searchService(cleanName)
+      productType = 'service'
+      console.log('📊 Résultat service:', product ? 'TROUVÉ' : 'NON TROUVÉ')
     }
     
     setIsLoadingProduct(false)
     
     if (product) {
-      setPopupData(product)
+      // Vérifier que l'ID est valide
+      const productId = product.id || product.ID
+      if (!productId) {
+        console.error('❌ ID produit manquant:', product)
+        alert('Erreur: ID produit manquant')
+        return
+      }
+      console.log('✅ PRODUIT TROUVÉ:', { name: product.name || product.title, id: productId, type: productType })
+      console.log('🔗 REDIRECTION VERS:', `/product/${productType}/${productId}`)
+      
+      // Rediriger vers une vraie page produit - Utiliser window.location pour garantir la navigation
+      const targetUrl = `/product/${productType}/${productId}`
+      console.log('🚀 Navigation vers:', targetUrl)
+      
+      if (typeof window !== 'undefined') {
+        window.location.href = targetUrl
+      } else {
+        // Fallback avec router si window n'est pas disponible
+        router.push(targetUrl)
+      }
     } else {
-      console.log('Produit non trouvé:', name)
+      console.error('❌ PRODUIT NON TROUVÉ:', name)
+      alert(`Produit "${name}" non trouvé dans la base de données`)
     }
   }
 
@@ -208,18 +269,21 @@ export default function RichMessage({ content, isDarkMode }) {
                     handleProductClick(segment)
                   }}
                   style={{ 
-                    fontWeight: 700, 
-                    color: '#A7C7C5',
+                    fontWeight: 700,
                     cursor: 'pointer',
+                    color: '#A7C7C5',
                     borderBottom: '2px dotted rgba(167, 199, 197, 0.5)',
                     transition: 'all 0.2s ease'
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.color = isDarkMode ? '#C0C0C0' : '#5A8B89'
+                    e.currentTarget.style.color = isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    e.currentTarget.style.borderBottomColor = isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    e.currentTarget.style.borderBottomWidth = '2px'
                     e.currentTarget.style.borderBottomStyle = 'solid'
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.color = '#A7C7C5'
+                    e.currentTarget.style.borderBottomColor = 'rgba(167, 199, 197, 0.5)'
                     e.currentTarget.style.borderBottomStyle = 'dotted'
                   }}
                 >
@@ -387,13 +451,6 @@ export default function RichMessage({ content, isDarkMode }) {
         }
       })}
       
-      {/* Popup pour les détails - Données réelles Supabase */}
-      {popupData && (
-        <ProductPopupChat
-          product={popupData}
-          onClose={() => setPopupData(null)}
-        />
-      )}
     </div>
   )
 }

@@ -127,14 +127,14 @@ export default function Manifeste() {
               Gliitz
             </h1>
             
-            <div className="h-1 w-32 mx-auto mb-8 rounded-full"
+            <div className="h-1 w-32 mx-auto mb-4 rounded-full"
               style={{
                 background: 'linear-gradient(90deg, transparent, #C0C0C0, transparent)'
               }}
             />
 
             <h2 
-              className="text-3xl md:text-5xl font-light mb-8"
+              className="text-3xl md:text-5xl font-light mb-4"
               style={{
                 fontFamily: 'Playfair Display, serif',
                 color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
@@ -142,11 +142,11 @@ export default function Manifeste() {
                 letterSpacing: '0.02em'
               }}
             >
-              Le Manifeste
+              The Gliitz Way
             </h2>
             
             <p 
-              className="text-xl md:text-2xl"
+              className="text-xl md:text-2xl mb-16"
               style={{
                 fontFamily: 'Poppins, sans-serif',
                 color: isDarkMode ? 'rgba(255, 255, 255, 0.8)' : 'rgba(0, 0, 0, 0.7)',
@@ -159,29 +159,25 @@ export default function Manifeste() {
               L'art de prendre soin, réinventé par l'intelligence
             </p>
 
-            {/* Scroll Indicator */}
+            {/* Simple scroll hint */}
             <motion.div
-              animate={{ y: [0, 10, 0] }}
+              animate={{ opacity: [0.4, 0.8, 0.4] }}
               transition={{ duration: 2, repeat: Infinity }}
-              className="absolute bottom-12 left-1/2 transform -translate-x-1/2"
-              style={{
-                color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)'
-              }}
+              className="text-center"
             >
-              <div className="text-xs mb-2" style={{ fontFamily: 'Poppins, sans-serif' }}>
+              <div className="text-sm mb-2" style={{ 
+                fontFamily: 'Poppins, sans-serif',
+                color: isDarkMode ? 'rgba(255, 255, 255, 0.4)' : 'rgba(0, 0, 0, 0.4)'
+              }}>
                 Découvrir
               </div>
-              <div className="w-6 h-10 border-2 rounded-full mx-auto relative"
+              <div className="w-0.5 h-8 mx-auto"
                 style={{
-                  borderColor: isDarkMode ? 'rgba(192, 192, 192, 0.5)' : 'rgba(0, 0, 0, 0.3)'
+                  background: 'linear-gradient(to bottom, transparent, #C0C0C0, transparent)'
                 }}
-              >
-                <div 
-                  className="w-1.5 h-1.5 rounded-full absolute top-2 left-1/2 transform -translate-x-1/2"
-                  style={{ background: '#C0C0C0' }}
-                />
-              </div>
+              />
             </motion.div>
+
           </motion.div>
         </section>
 

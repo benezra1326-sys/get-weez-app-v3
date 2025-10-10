@@ -33,7 +33,7 @@ export default function Services({ user, setUser }) {
         sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
         break
       case 'reviews':
-        sorted.sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
+        sorted.sort((a, b) => (b.reviews_count || 0) - (a.reviews_count || 0))
         break
       case 'price-asc':
         sorted.sort((a, b) => {
@@ -183,14 +183,6 @@ export default function Services({ user, setUser }) {
           </div>
         ) : (
           <>
-            <div className="mb-8">
-              <p className="text-lg" style={{ 
-                fontFamily: 'Poppins, sans-serif',
-                color: isDarkMode ? '#E0E0E0' : '#666666'
-              }}>
-                {displayedServices.length} services disponibles
-              </p>
-            </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedServices.map((service) => (

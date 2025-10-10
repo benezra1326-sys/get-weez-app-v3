@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { MapPin, Navigation, X } from 'lucide-react'
+import { MapPin, Navigation, X, ExternalLink } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 export default function MapView({ items = [], type = 'establishments', onClose }) {
@@ -84,9 +84,22 @@ export default function MapView({ items = [], type = 'establishments', onClose }
         <X size={20} />
       </button>
 
-      {/* Map Markers */}
-      <div className="absolute inset-0 flex items-center justify-center">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-8 p-8">
+      {/* Vraie carte intégrée */}
+      <div className="absolute inset-0">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d102665.12236566136!2d-4.8853444!3d36.5100712!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd72d809904dabdf%3A0xe6c9a9072945a067!2sMarbella%2C%20Malaga%2C%20Espagne!5e0!3m2!1sfr!2sfr!4v1699123456789!5m2!1sfr!2sfr"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen=""
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+        />
+      </div>
+
+      {/* Liste des établissements en overlay */}
+      <div className="absolute top-4 left-4 right-4 max-h-96 overflow-y-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {itemsWithDistance.slice(0, 6).map((item, index) => (
             <button
               key={item.id}

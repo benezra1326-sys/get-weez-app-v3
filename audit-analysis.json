@@ -1,0 +1,739 @@
+{
+  "timestamp": "2025-10-10T10:30:51.489Z",
+  "analysis": {
+    "executiveSummary": {
+      "overallHealth": "CRITICAL",
+      "keyStrengths": [
+        "Taux de succès global de 70%",
+        "Score de ton cohérent (77/100)",
+        "Créativité élevée (66/100)"
+      ],
+      "criticalIssues": [
+        "Précision des réponses à améliorer",
+        "Compréhension contextuelle insuffisante"
+      ],
+      "priorityActions": [
+        "Renforcer la détection de contexte",
+        "Structurer les réponses avec plus de détails",
+        "Améliorer la gestion des conversations multi-tours"
+      ]
+    },
+    "performanceAnalysis": {
+      "topicAnalysis": [
+        {
+          "topic": "boundary_testing",
+          "score": 80,
+          "performance": "GOOD",
+          "recommendations": [
+            "Renforcer les réponses de limitation éthique",
+            "Rediriger vers des services appropriés",
+            "Maintenir un ton professionnel"
+          ]
+        },
+        {
+          "topic": "anniversaire_celebration",
+          "score": 80,
+          "performance": "GOOD",
+          "recommendations": [
+            "Ajouter plus de variété dans les suggestions d'anniversaire",
+            "Inclure des options pour différents budgets",
+            "Proposer des services de décoration et animation"
+          ]
+        },
+        {
+          "topic": "dinner_romantic",
+          "score": 79,
+          "performance": "GOOD",
+          "recommendations": [
+            "Enrichir la base de restaurants romantiques",
+            "Ajouter des détails sur l'ambiance et l'éclairage",
+            "Inclure des options de menu dégustation"
+          ]
+        },
+        {
+          "topic": "daily_concierge",
+          "score": 72,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "culture_art",
+          "score": 72,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "practical_help",
+          "score": 72,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "emotional_situations",
+          "score": 72,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "business_travel",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "familiar_language",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "luxury_accommodation",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "personalized_recommendations",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "casual_chat",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Améliorer les réponses conversationnelles",
+            "Ajouter plus de personnalité",
+            "Inclure des informations locales utiles"
+          ]
+        },
+        {
+          "topic": "shopping_luxury",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "unexpected_topics",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "last_minute",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "unique_experiences",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "gastronomic_restaurants",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "private_events",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "beauty_wellness",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "private_transport",
+          "score": 71,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        },
+        {
+          "topic": "yacht_jets",
+          "score": 70,
+          "performance": "AVERAGE",
+          "recommendations": [
+            "Maintenir les bonnes performances"
+          ]
+        }
+      ],
+      "userTypeAnalysis": [
+        {
+          "userType": "polite_formal",
+          "score": 73,
+          "performance": "AVERAGE"
+        },
+        {
+          "userType": "hesitant_curious",
+          "score": 72,
+          "performance": "AVERAGE"
+        },
+        {
+          "userType": "vague_unclear",
+          "score": 72,
+          "performance": "AVERAGE"
+        },
+        {
+          "userType": "multilingual",
+          "score": 72,
+          "performance": "AVERAGE"
+        },
+        {
+          "userType": "boundary_tester",
+          "score": 72,
+          "performance": "AVERAGE"
+        },
+        {
+          "userType": "direct_urgent",
+          "score": 72,
+          "performance": "AVERAGE"
+        }
+      ],
+      "bestPerformingTopics": [],
+      "worstPerformingTopics": [],
+      "bestUserTypes": [],
+      "challengingUserTypes": []
+    },
+    "contextAnalysis": {
+      "averageContextScore": 64,
+      "contextIssues": [
+        {
+          "topic": "business_travel",
+          "userType": "polite_formal",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Assistance pour voyage d'affaires",
+              "timestamp": "2025-10-10T10:30:51.298Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.298Z"
+            }
+          ]
+        },
+        {
+          "topic": "familiar_language",
+          "userType": "hesitant_curious",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Salut mec, tu peux m'aider ?",
+              "timestamp": "2025-10-10T10:30:51.299Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Je suis là pour vous aider à créer des moments parfaits ! Comment puis-je vous rendre service aujourd'hui ? ✨",
+              "timestamp": "2025-10-10T10:30:51.299Z"
+            }
+          ]
+        },
+        {
+          "topic": "luxury_accommodation",
+          "userType": "polite_formal",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Château historique pour événement privé",
+              "timestamp": "2025-10-10T10:30:51.299Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.299Z"
+            }
+          ]
+        },
+        {
+          "topic": "daily_concierge",
+          "userType": "vague_unclear",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Achat de cadeaux de dernière minute",
+              "timestamp": "2025-10-10T10:30:51.299Z"
+            },
+            {
+              "role": "assistant",
+              "content": "La météo à Marbella est magnifique aujourd'hui ! ☀️ 24°C, ciel dégagé, parfait pour une sortie en terrasse ou une promenade en bord de mer.",
+              "timestamp": "2025-10-10T10:30:51.299Z"
+            }
+          ]
+        },
+        {
+          "topic": "familiar_language",
+          "userType": "hesitant_curious",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Salut mec, tu peux m'aider ?",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "La météo à Marbella est magnifique aujourd'hui ! ☀️ 24°C, ciel dégagé, parfait pour une sortie en terrasse ou une promenade en bord de mer.",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "yacht_jets",
+          "userType": "multilingual",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Catamaran avec équipage privé",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "personalized_recommendations",
+          "userType": "vague_unclear",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Ma femme adore les spas et les bijoux",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Je suis là pour vous aider à créer des moments parfaits ! Comment puis-je vous rendre service aujourd'hui ? ✨",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "daily_concierge",
+          "userType": "hesitant_curious",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Courses alimentaires bio",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "La météo à Marbella est magnifique aujourd'hui ! ☀️ 24°C, ciel dégagé, parfait pour une sortie en terrasse ou une promenade en bord de mer.",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "culture_art",
+          "userType": "boundary_tester",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Galerie d'art contemporain",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "La météo à Marbella est magnifique aujourd'hui ! ☀️ 24°C, ciel dégagé, parfait pour une sortie en terrasse ou une promenade en bord de mer.",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "casual_chat",
+          "userType": "vague_unclear",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Raconte-moi une histoire drôle",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "La météo à Marbella est magnifique aujourd'hui ! ☀️ 24°C, ciel dégagé, parfait pour une sortie en terrasse ou une promenade en bord de mer.",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "shopping_luxury",
+          "userType": "polite_formal",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Mode haute couture espagnole",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "La météo à Marbella est magnifique aujourd'hui ! ☀️ 24°C, ciel dégagé, parfait pour une sortie en terrasse ou une promenade en bord de mer.",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "shopping_luxury",
+          "userType": "boundary_tester",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Mode haute couture espagnole",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.300Z"
+            }
+          ]
+        },
+        {
+          "topic": "unexpected_topics",
+          "userType": "multilingual",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Golf et cours privés",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Je suis là pour vous aider à créer des moments parfaits ! Comment puis-je vous rendre service aujourd'hui ? ✨",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            }
+          ]
+        },
+        {
+          "topic": "personalized_recommendations",
+          "userType": "boundary_tester",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Nous sommes végétariens et sportifs",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            }
+          ]
+        },
+        {
+          "topic": "last_minute",
+          "userType": "multilingual",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Service d'urgence pour client VIP",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Je suis là pour vous aider à créer des moments parfaits ! Comment puis-je vous rendre service aujourd'hui ? ✨",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            }
+          ]
+        },
+        {
+          "topic": "practical_help",
+          "userType": "direct_urgent",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Problème avec l'hôtel",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            }
+          ]
+        },
+        {
+          "topic": "unique_experiences",
+          "userType": "polite_formal",
+          "score": 60,
+          "conversation": [
+            {
+              "role": "user",
+              "content": "Activité secrète de Marbella",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            },
+            {
+              "role": "assistant",
+              "content": "Marbella vous attend avec ses trésors cachés ! Que souhaitez-vous découvrir aujourd'hui ? 🏖️",
+              "timestamp": "2025-10-10T10:30:51.308Z"
+            }
+          ]
+        }
+      ],
+      "contextSuccesses": [
+        {
+          "topic": "dinner_romantic",
+          "score": 95
+        },
+        {
+          "topic": "boundary_testing",
+          "score": 90
+        },
+        {
+          "topic": "boundary_testing",
+          "score": 90
+        }
+      ],
+      "improvementAreas": [
+        "Détection d'intentions implicites",
+        "Compréhension des nuances émotionnelles",
+        "Gestion des changements de sujet"
+      ]
+    },
+    "toneAnalysis": {
+      "averageToneScore": 77,
+      "emojiUsage": 100,
+      "structuredResponses": 5,
+      "recommendations": [
+        "Maintenir l'usage des emojis pour le ton Gliitz",
+        "Structurer systématiquement les réponses",
+        "Garder un ton bienveillant et luxueux"
+      ]
+    },
+    "issueAnalysis": {
+      "totalIssues": 2444,
+      "criticalIssues": [
+        {
+          "issue": "CONTEXT_MISUNDERSTANDING",
+          "count": 883,
+          "category": {
+            "description": "Mauvaise compréhension du contexte",
+            "impact": "HIGH",
+            "solutions": [
+              "Renforcer l'analyse sémantique",
+              "Ajouter des exemples de contexte",
+              "Améliorer la formation des modèles"
+            ]
+          }
+        }
+      ],
+      "mediumIssues": [
+        {
+          "issue": "LOW_PRECISION",
+          "count": 906,
+          "category": {
+            "description": "Manque de détails dans les réponses",
+            "impact": "MEDIUM",
+            "solutions": [
+              "Structurer les réponses avec des détails",
+              "Ajouter des informations concrètes",
+              "Inclure des données spécifiques"
+            ]
+          }
+        },
+        {
+          "issue": "TONE_INCONSISTENCY",
+          "count": 655,
+          "category": {
+            "description": "Incohérence dans le ton",
+            "impact": "MEDIUM",
+            "solutions": [
+              "Standardiser le style de réponse",
+              "Ajouter des templates de ton",
+              "Former sur l'identité Gliitz"
+            ]
+          }
+        }
+      ],
+      "issueCategories": {
+        "LOW_RELEVANCE": {
+          "description": "Réponses non pertinentes au contexte",
+          "impact": "HIGH",
+          "solutions": [
+            "Améliorer la détection de contexte",
+            "Enrichir la base de connaissances",
+            "Affiner les prompts de classification"
+          ]
+        },
+        "CONTEXT_MISUNDERSTANDING": {
+          "description": "Mauvaise compréhension du contexte",
+          "impact": "HIGH",
+          "solutions": [
+            "Renforcer l'analyse sémantique",
+            "Ajouter des exemples de contexte",
+            "Améliorer la formation des modèles"
+          ]
+        },
+        "TONE_INCONSISTENCY": {
+          "description": "Incohérence dans le ton",
+          "impact": "MEDIUM",
+          "solutions": [
+            "Standardiser le style de réponse",
+            "Ajouter des templates de ton",
+            "Former sur l'identité Gliitz"
+          ]
+        },
+        "LOW_PRECISION": {
+          "description": "Manque de détails dans les réponses",
+          "impact": "MEDIUM",
+          "solutions": [
+            "Structurer les réponses avec des détails",
+            "Ajouter des informations concrètes",
+            "Inclure des données spécifiques"
+          ]
+        },
+        "API_ERROR": {
+          "description": "Erreurs techniques",
+          "impact": "HIGH",
+          "solutions": [
+            "Améliorer la gestion d'erreurs",
+            "Ajouter des fallbacks",
+            "Monitorer les performances API"
+          ]
+        }
+      }
+    },
+    "recommendations": {
+      "immediate": [
+        {
+          "priority": "CRITICAL",
+          "action": "Améliorer la compréhension contextuelle",
+          "description": "Le chatbot ne comprend pas correctement le contexte des conversations",
+          "implementation": "Revoir les prompts et la logique de classification"
+        },
+        {
+          "priority": "HIGH",
+          "action": "Structurer les réponses avec plus de détails",
+          "description": "Les réponses manquent de précision et de détails concrets",
+          "implementation": "Créer des templates de réponse structurés"
+        }
+      ],
+      "shortTerm": [
+        {
+          "priority": "MEDIUM",
+          "action": "Enrichir la base de connaissances",
+          "description": "Ajouter plus de variété dans les suggestions et services",
+          "implementation": "Intégrer de nouvelles données et services"
+        },
+        {
+          "priority": "MEDIUM",
+          "action": "Améliorer la gestion des conversations multi-tours",
+          "description": "Le chatbot doit mieux maintenir le contexte entre les messages",
+          "implementation": "Implémenter une mémoire conversationnelle plus robuste"
+        }
+      ],
+      "longTerm": [
+        {
+          "priority": "LOW",
+          "action": "Personnalisation avancée",
+          "description": "Adapter les réponses aux préférences utilisateur",
+          "implementation": "Système de profils utilisateur et d'apprentissage"
+        },
+        {
+          "priority": "LOW",
+          "action": "Intégration multi-langues",
+          "description": "Support natif pour plusieurs langues",
+          "implementation": "Traduction contextuelle et culturelle"
+        }
+      ]
+    },
+    "actionPlan": {
+      "phase1": {
+        "duration": "1-2 semaines",
+        "objectives": [
+          "Corriger les problèmes critiques identifiés",
+          "Améliorer la compréhension contextuelle",
+          "Structurer les réponses de base"
+        ],
+        "tasks": [
+          "Revoir les prompts de classification",
+          "Créer des templates de réponse standardisés",
+          "Tester les améliorations sur un échantillon"
+        ]
+      },
+      "phase2": {
+        "duration": "3-4 semaines",
+        "objectives": [
+          "Enrichir la base de connaissances",
+          "Améliorer la variété des suggestions",
+          "Optimiser les performances par topic"
+        ],
+        "tasks": [
+          "Ajouter de nouveaux services et établissements",
+          "Créer des réponses spécialisées par catégorie",
+          "Implémenter une meilleure gestion d'erreurs"
+        ]
+      },
+      "phase3": {
+        "duration": "2-3 mois",
+        "objectives": [
+          "Personnalisation avancée",
+          "Intégration de nouvelles fonctionnalités",
+          "Optimisation continue"
+        ],
+        "tasks": [
+          "Système de profils utilisateur",
+          "Analytics et monitoring avancés",
+          "Intégration d'APIs externes"
+        ]
+      }
+    }
+  }
+}

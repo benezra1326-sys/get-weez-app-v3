@@ -1,0 +1,773 @@
+{
+  "date": "2025-10-10",
+  "totalConversations": 10,
+  "conversations": [
+    {
+      "id": "mgkrc092hfahfq0vwka",
+      "timestamp": "2025-10-10T11:22:40.838Z",
+      "userMessage": {
+        "content": "Bonjour, je cherche un restaurant gastronomique pour ce soir",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_restaurant",
+          "confidence": 0.16666666666666666,
+          "keywords": [
+            "restaurant"
+          ]
+        },
+        "clarity": {
+          "score": 0.65,
+          "factors": {
+            "length": 1,
+            "specificity": 0.1,
+            "structure": 0.5,
+            "completeness": 1
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "session_1",
+        "userId": "user_1",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "gastronomie",
+        "confidence": 0.14285714285714285,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0.14285714285714285,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc16ofwhcl9wqrhm",
+      "timestamp": "2025-10-10T11:22:42.048Z",
+      "userMessage": {
+        "content": "Je suis stressé par mon travail, j'ai besoin de me détendre",
+        "emotion": {
+          "dominant": "stress",
+          "confidence": 0.16666666666666666,
+          "all": [
+            {
+              "emotion": "stress",
+              "confidence": 0.16666666666666666,
+              "keywords": [
+                "stressé"
+              ]
+            }
+          ]
+        },
+        "intent": {
+          "intent": "conversation",
+          "confidence": 0.1
+        },
+        "clarity": {
+          "score": 0.55,
+          "factors": {
+            "length": 1,
+            "specificity": 0,
+            "structure": 0.5,
+            "completeness": 0.7
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "session_2",
+        "userId": "user_2",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "bien-être",
+        "confidence": 0.16666666666666666,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0.16666666666666666,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc1byvklse36w43",
+      "timestamp": "2025-10-10T11:22:42.238Z",
+      "userMessage": {
+        "content": "Organisez-moi une soirée romantique pour mon anniversaire de mariage",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_événement",
+          "confidence": 0.16666666666666666,
+          "keywords": [
+            "soirée"
+          ]
+        },
+        "clarity": {
+          "score": 0.55,
+          "factors": {
+            "length": 1,
+            "specificity": 0,
+            "structure": 0.5,
+            "completeness": 0.7
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "session_3",
+        "userId": "user_3",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "événement",
+        "confidence": 0.14285714285714285,
+        "all": {
+          "événement": 0.14285714285714285,
+          "gastronomie": 0,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc1gz1d1i05v6i2",
+      "timestamp": "2025-10-10T11:22:42.419Z",
+      "userMessage": {
+        "content": "Trouvez-moi une villa de luxe à Puerto Banús pour mes vacances",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_hébergement",
+          "confidence": 0.2,
+          "keywords": [
+            "villa"
+          ]
+        },
+        "clarity": {
+          "score": 0.65,
+          "factors": {
+            "length": 1,
+            "specificity": 0.1,
+            "structure": 0.5,
+            "completeness": 1
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "session_4",
+        "userId": "user_4",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "voyage",
+        "confidence": 0.3333333333333333,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0,
+          "luxe": 0.16666666666666666,
+          "voyage": 0.3333333333333333,
+          "concierge": 0,
+          "bien-être": 0,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc1u9w8bb9uslmz",
+      "timestamp": "2025-10-10T11:22:42.897Z",
+      "userMessage": {
+        "content": "J'ai besoin d'informations sur les activités culturelles à Marbella",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_activité",
+          "confidence": 0.16666666666666666,
+          "keywords": [
+            "activité"
+          ]
+        },
+        "clarity": {
+          "score": 0.65,
+          "factors": {
+            "length": 1,
+            "specificity": 0.1,
+            "structure": 0.5,
+            "completeness": 1
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "session_5",
+        "userId": "user_5",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "bien-être",
+        "confidence": 0.16666666666666666,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0.16666666666666666,
+          "sport": 0.16666666666666666
+        }
+      }
+    },
+    {
+      "id": "mgkrc21kznumtzjkdoh",
+      "timestamp": "2025-10-10T11:22:43.160Z",
+      "userMessage": {
+        "content": "Je cherche un restaurant pour ce soir",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_restaurant",
+          "confidence": 0.16666666666666666,
+          "keywords": [
+            "restaurant"
+          ]
+        },
+        "clarity": {
+          "score": 0.65,
+          "factors": {
+            "length": 1,
+            "specificity": 0.1,
+            "structure": 0.5,
+            "completeness": 1
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "test_session",
+        "userId": "ghost_test",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "gastronomie",
+        "confidence": 0.14285714285714285,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0.14285714285714285,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc28ksexk0oxd679",
+      "timestamp": "2025-10-10T11:22:43.412Z",
+      "userMessage": {
+        "content": "Organisez-moi une soirée romantique",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_événement",
+          "confidence": 0.16666666666666666,
+          "keywords": [
+            "soirée"
+          ]
+        },
+        "clarity": {
+          "score": 0.55,
+          "factors": {
+            "length": 1,
+            "specificity": 0,
+            "structure": 0.5,
+            "completeness": 0.7
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "test_session",
+        "userId": "ghost_test",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "événement",
+        "confidence": 0.14285714285714285,
+        "all": {
+          "événement": 0.14285714285714285,
+          "gastronomie": 0,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc2ffm4h8khlimpg",
+      "timestamp": "2025-10-10T11:22:43.660Z",
+      "userMessage": {
+        "content": "J'ai besoin d'aide pour un événement d'entreprise",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_événement",
+          "confidence": 0.16666666666666666,
+          "keywords": [
+            "événement"
+          ]
+        },
+        "clarity": {
+          "score": 0.55,
+          "factors": {
+            "length": 1,
+            "specificity": 0,
+            "structure": 0.5,
+            "completeness": 0.7
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "test_session",
+        "userId": "ghost_test",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "concierge",
+        "confidence": 0.16666666666666666,
+        "all": {
+          "événement": 0.14285714285714285,
+          "gastronomie": 0,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0.16666666666666666,
+          "bien-être": 0.16666666666666666,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc2k0yvshyoekbq",
+      "timestamp": "2025-10-10T11:22:43.824Z",
+      "userMessage": {
+        "content": "Trouvez-moi une villa de luxe à Marbella",
+        "emotion": {
+          "dominant": "neutre",
+          "confidence": 0,
+          "all": []
+        },
+        "intent": {
+          "intent": "recherche_hébergement",
+          "confidence": 0.2,
+          "keywords": [
+            "villa"
+          ]
+        },
+        "clarity": {
+          "score": 0.65,
+          "factors": {
+            "length": 1,
+            "specificity": 0.1,
+            "structure": 0.5,
+            "completeness": 1
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "test_session",
+        "userId": "ghost_test",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "luxe",
+        "confidence": 0.16666666666666666,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0,
+          "luxe": 0.16666666666666666,
+          "voyage": 0.16666666666666666,
+          "concierge": 0,
+          "bien-être": 0,
+          "sport": 0
+        }
+      }
+    },
+    {
+      "id": "mgkrc2pdpmekvchss",
+      "timestamp": "2025-10-10T11:22:44.017Z",
+      "userMessage": {
+        "content": "Je suis stressé, j'ai besoin de me détendre",
+        "emotion": {
+          "dominant": "stress",
+          "confidence": 0.16666666666666666,
+          "all": [
+            {
+              "emotion": "stress",
+              "confidence": 0.16666666666666666,
+              "keywords": [
+                "stressé"
+              ]
+            }
+          ]
+        },
+        "intent": {
+          "intent": "conversation",
+          "confidence": 0.1
+        },
+        "clarity": {
+          "score": 0.55,
+          "factors": {
+            "length": 1,
+            "specificity": 0,
+            "structure": 0.5,
+            "completeness": 0.7
+          }
+        }
+      },
+      "aiResponse": {
+        "content": "",
+        "tone": [
+          {
+            "tone": "neutre",
+            "confidence": 0.1
+          }
+        ],
+        "structure": {
+          "hasTitle": false,
+          "hasBullets": false,
+          "hasEmojis": false,
+          "hasNumbers": false,
+          "hasQuestions": false,
+          "structureScore": 0
+        },
+        "precision": {
+          "specificDetails": 0,
+          "hasLocation": false,
+          "hasTime": false,
+          "hasPrice": false,
+          "hasContact": false,
+          "precisionScore": 0
+        }
+      },
+      "context": {
+        "sessionId": "test_session",
+        "userId": "ghost_test",
+        "location": "Marbella",
+        "timeOfDay": 13,
+        "conversationHistory": []
+      },
+      "classification": {
+        "primary": "bien-être",
+        "confidence": 0.16666666666666666,
+        "all": {
+          "événement": 0,
+          "gastronomie": 0,
+          "luxe": 0,
+          "voyage": 0,
+          "concierge": 0,
+          "bien-être": 0.16666666666666666,
+          "sport": 0
+        }
+      }
+    }
+  ],
+  "summary": {
+    "emotions": {
+      "neutre": 8,
+      "stress": 2
+    },
+    "intents": {
+      "recherche_restaurant": 2,
+      "conversation": 2,
+      "recherche_événement": 3,
+      "recherche_hébergement": 2,
+      "recherche_activité": 1
+    },
+    "themes": {
+      "gastronomie": 2,
+      "bien-être": 3,
+      "événement": 2,
+      "voyage": 1,
+      "concierge": 1,
+      "luxe": 1
+    },
+    "tones": {
+      "neutre": 10
+    },
+    "averageClarity": 0.6,
+    "averageStructure": 0,
+    "averagePrecision": 0
+  }
+}

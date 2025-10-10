@@ -76,39 +76,7 @@ export default function SocialLinks({ establishment }) {
         })}
       </div>
 
-      {/* Informations de contact rapide */}
-      <div className="p-4 bg-gray-100 rounded-lg border border-gray-200">
-        <h4 className="font-semibold text-gray-800 mb-3">Contact rapide</h4>
-        <div className="space-y-2 text-sm">
-          {/* Téléphone retiré pour confidentialité */}
-          {establishment.whatsapp && (
-            <div className="flex items-center space-x-2">
-              <MessageCircle size={16} className="text-green-500" />
-              <a 
-                href={`https://wa.me/${establishment.whatsapp.replace(/[^0-9]/g, '')}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-green-500 hover:text-green-600 transition-colors"
-              >
-                WhatsApp
-              </a>
-            </div>
-          )}
-          {establishment.website && (
-            <div className="flex items-center space-x-2">
-              <Globe size={16} className="text-text-secondary" />
-              <a 
-                href={establishment.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-primary hover:text-primary-dark transition-colors truncate"
-              >
-                Site web
-              </a>
-            </div>
-          )}
-        </div>
-      </div>
+      {/* Informations de contact - MASQUÉES (numéro de téléphone et site web cachés) */}
     </div>
   )
 }

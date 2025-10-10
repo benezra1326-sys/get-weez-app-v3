@@ -24,7 +24,6 @@ const Home = ({ user, setUser }) => {
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isRecording, setIsRecording] = useState(false)
-  const [showDeleteModal, setShowDeleteModal] = useState(false)
   const [showVoiceToVoice, setShowVoiceToVoice] = useState(false)
   const [playingMessageId, setPlayingMessageId] = useState(null)
   const recognitionRef = useRef(null)
@@ -295,134 +294,7 @@ const Home = ({ user, setUser }) => {
         onRenameConversation={renameConversation}
       />
 
-      {/* Close/Reset Chat Button */}
-      {messages.length > 0 && (
-        <button
-          onClick={() => setShowDeleteModal(true)}
-          className="fixed top-4 right-4 z-50 p-3 rounded-xl transition-all group"
-          style={{
-            background: 'rgba(255, 255, 255, 0.8)',
-            backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(192,192,192,0.3)',
-            boxShadow: '0 4px 15px rgba(192,192,192,0.2)'
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.background = 'rgba(239, 68, 68, 0.9)'
-            e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)'
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'
-            e.currentTarget.style.boxShadow = '0 4px 15px rgba(192,192,192,0.2)'
-          }}
-          title="Fermer la conversation"
-        >
-          <X size={24} className="text-gray-700 group-hover:text-white transition-colors" />
-        </button>
-      )}
 
-      {/* Modal de suppression élégant */}
-      {showDeleteModal && (
-        <div 
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4"
-          style={{ 
-            background: 'rgba(0, 0, 0, 0.6)', 
-            backdropFilter: 'blur(8px)',
-            animation: 'fadeIn 0.3s ease-out'
-          }}
-          onClick={() => setShowDeleteModal(false)}
-        >
-          <div
-            className="glass-live-strong max-w-md w-full p-8 rounded-3xl"
-            style={{
-              animation: 'slideUp 0.3s ease-out'
-            }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Icône */}
-            <div 
-              className="w-16 h-16 mx-auto mb-6 rounded-full flex items-center justify-center"
-              style={{
-                background: 'linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.3))',
-                border: '2px solid rgba(239, 68, 68, 0.5)'
-              }}
-            >
-              <X size={32} style={{ color: '#EF4444' }} />
-            </div>
-
-            {/* Titre */}
-            <h2 
-              className="text-2xl font-bold mb-3 text-center"
-              style={{
-                fontFamily: 'Playfair Display, serif',
-                color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-              }}
-            >
-              Supprimer la conversation ?
-            </h2>
-
-            {/* Description */}
-            <p 
-              className="text-center mb-8"
-              style={{
-                fontFamily: 'Poppins, sans-serif',
-                color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)',
-                fontSize: '15px'
-              }}
-            >
-              Cette action est irréversible. Tous les messages de cette conversation seront définitivement supprimés.
-            </p>
-
-            {/* Boutons */}
-            <div className="flex gap-3">
-              <button
-                onClick={() => setShowDeleteModal(false)}
-                className="flex-1 py-3 rounded-xl font-medium transition-all"
-                style={{
-                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
-                  border: '1px solid rgba(167,199,197,0.3)',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  fontFamily: 'Poppins, sans-serif'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.08)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'
-                }}
-              >
-                Annuler
-              </button>
-              
-              <button
-                onClick={() => {
-                  handleNewChat()
-                  setInput('')
-                  setShowDeleteModal(false)
-                }}
-                className="flex-1 py-3 rounded-xl font-semibold transition-all"
-                style={{
-                  background: 'linear-gradient(135deg, #EF4444, #DC2626)',
-                  color: '#FFFFFF',
-                  fontFamily: 'Poppins, sans-serif',
-                  boxShadow: '0 4px 15px rgba(239, 68, 68, 0.4)'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #DC2626, #B91C1C)'
-                  e.currentTarget.style.transform = 'translateY(-2px)'
-                  e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.5)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'linear-gradient(135deg, #EF4444, #DC2626)'
-                  e.currentTarget.style.transform = 'translateY(0)'
-                  e.currentTarget.style.boxShadow = '0 4px 15px rgba(239, 68, 68, 0.4)'
-                }}
-              >
-                Supprimer
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Main Chat Area */}
       <main className="flex-1 flex flex-col h-screen overflow-hidden" style={{
@@ -550,30 +422,98 @@ const Home = ({ user, setUser }) => {
 
         {/* Messages Area (shown when there are messages) */}
         {messages.length > 0 && (
-          <div className="flex-1 flex flex-col overflow-hidden">
+          <div className="flex-1 flex flex-col overflow-hidden relative">
+            {/* Close/Reset Chat Button */}
+            <button
+              onClick={() => {
+                // Fermer directement sans popup
+                handleNewChat()
+              }}
+              className="absolute top-4 right-4 z-50 p-2.5 rounded-xl transition-all group"
+              style={{
+                background: 'rgba(255, 255, 255, 0.8)',
+                backdropFilter: 'blur(10px)',
+                border: '1px solid rgba(192,192,192,0.3)',
+                boxShadow: '0 4px 15px rgba(192,192,192,0.2)'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.9)'
+                e.currentTarget.style.boxShadow = '0 6px 20px rgba(239, 68, 68, 0.4)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.8)'
+                e.currentTarget.style.boxShadow = '0 4px 15px rgba(192,192,192,0.2)'
+              }}
+              title="Fermer la conversation"
+            >
+              <X size={20} className="text-gray-700 group-hover:text-white transition-colors" />
+            </button>
+            
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto p-4 md:p-6">
+            <div className="flex-1 overflow-y-auto p-4 md:p-6" style={{ paddingTop: '70px' }}>
               {messages.map((message) => (
                 <ReactiveMessage
                   key={message.id}
                   message={message}
                   isUser={message.role === 'user'}
                   isPlaying={playingMessageId === message.id}
-                  onPlayVoice={message.role === 'assistant' ? async () => {
-                    if (playingMessageId === message.id) {
-                      elevenLabs.stop()
-                      setPlayingMessageId(null)
-                    } else {
-                      setPlayingMessageId(message.id)
-                      try {
-                        await elevenLabs.playAudio(message.content)
-                        setPlayingMessageId(null)
-                      } catch (error) {
-                        console.error('Error playing audio:', error)
-                        setPlayingMessageId(null)
-                      }
+                  onSendMessage={(text) => {
+                    // Créer une nouvelle conversation si nécessaire
+                    let conversationId = currentConversationId
+                    if (!conversationId) {
+                      conversationId = createConversation()
                     }
-                  } : undefined}
+
+                    const userMessage = {
+                      id: Date.now(),
+                      role: 'user',
+                      content: text,
+                      timestamp: new Date()
+                    }
+
+                    // Ajouter le message utilisateur via le hook
+                    addMessage(userMessage, conversationId)
+                    setInput('')
+                    setIsLoading(true)
+
+                    // Envoyer à l'API
+                    fetch('/api/chat', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({
+                        messages: [{ role: 'user', content: text }],
+                        userId: user?.id
+                      })
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                      const assistantMessage = {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        content: data.message || "Je suis Gliitz, votre assistant IA de luxe. Comment puis-je sublimer votre expérience à Marbella aujourd'hui ?",
+                        timestamp: new Date()
+                      }
+
+                      // Feedback audio pour la réception
+                      feedbackSystem.receive()
+                      
+                      addMessage(assistantMessage, conversationId)
+                      if (data.message) {
+                        elevenLabs.playAudio(data.message).catch(err => console.log('Audio playback not available:', err))
+                      }
+                    })
+                    .catch(error => {
+                      console.error('Error:', error)
+                      const errorMessage = {
+                        id: Date.now() + 1,
+                        role: 'assistant',
+                        content: "Je suis Gliitz, votre concierge de luxe. Comment puis-je vous aider aujourd'hui ?",
+                        timestamp: new Date()
+                      }
+                      setMessages(prev => [...prev, errorMessage])
+                    })
+                    .finally(() => setIsLoading(false))
+                  }}
                 />
               ))}
               {isLoading && (
@@ -616,87 +556,103 @@ const Home = ({ user, setUser }) => {
         >
           <div className="max-w-4xl mx-auto">
             <div
-              className="flex items-end gap-3 p-2 rounded-2xl"
-        style={{ 
+              className="flex items-center gap-2 p-3 rounded-full"
+              style={{ 
                 background: isDarkMode ? 'rgba(255, 255, 255, 0.08)' : 'rgba(255, 255, 255, 0.9)',
-                border: `1px solid ${isDarkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(192, 192, 192, 0.3)'}`,
-                boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.5)' : '0 4px 20px rgba(192, 192, 192, 0.2)'
+                border: 'none',
+                boxShadow: isDarkMode ? '0 4px 20px rgba(0, 0, 0, 0.3)' : '0 4px 20px rgba(192, 192, 192, 0.15)'
               }}
             >
-              {/* Dictation Button - Simple dictée pour remplir le champ */}
-              <SimpleDictation
-                onTranscript={(text) => {
-                  // Ajouter le texte dicté au champ input
-                  setInput(prev => prev ? `${prev} ${text}` : text)
-                  feedbackSystem.receive()
-                }}
-                isDarkMode={isDarkMode}
-                disabled={isLoading}
-              />
-
-              {/* Voice-to-Voice Button - Conversation vocale complète avec icône onde */}
-              <button
-                onClick={() => {
-                  feedbackSystem.micOn()
-                  setShowVoiceToVoice(true)
-                }}
-                className="p-3 rounded-xl transition-all relative"
-                style={{
-                  color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666',
-                  background: 'transparent'
-                }}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.05)' : 'rgba(0, 0, 0, 0.05)'
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent'
-                }}
-                disabled={isLoading}
-                title="Mode vocal continu (conversation)"
-              >
-                <Radio size={22} className="animate-pulse" />
-              </button>
-
-              {/* Text Input */}
+              {/* Text Input - Prend toute la largeur, s'adapte en hauteur */}
               <textarea
                 ref={inputRef}
                 value={input}
-                onChange={(e) => setInput(e.target.value)}
+                onChange={(e) => {
+                  setInput(e.target.value)
+                  // Auto-resize
+                  e.target.style.height = 'auto'
+                  e.target.style.height = Math.min(e.target.scrollHeight, 200) + 'px'
+                }}
                 onKeyPress={handleKeyPress}
-                placeholder="Demandez-moi n'importe quoi..."
-                className="flex-1 bg-transparent outline-none resize-none px-2 py-3 max-h-32"
+                placeholder="Message Gliitz..."
+                className="flex-1 bg-transparent outline-none resize-none px-3 py-2"
                 style={{ 
                   fontFamily: 'Poppins, sans-serif',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  minHeight: '24px',
+                  maxHeight: '200px'
                 }}
                 rows={1}
                 disabled={isLoading}
               />
 
-              {/* Send Button */}
-              <button
-                onClick={handleSendMessage}
-                disabled={!input.trim() || isLoading}
-                className={`p-3 rounded-xl transition-all ${
-                  input.trim() && !isLoading
-                    ? 'text-white'
-                    : 'text-gray-400 cursor-not-allowed'
-                }`}
-                style={
-                  input.trim() && !isLoading
-                    ? {
-                        background: isDarkMode 
+              {/* Boutons à droite - Dictée + Vocal OU Envoi */}
+              <div className="flex items-center gap-2 ml-auto">
+                {!input.trim() && (
+                  <>
+                    {/* Dictation Button */}
+                    <SimpleDictation
+                      onTranscript={(text) => {
+                        setInput(prev => prev ? `${prev} ${text}` : text)
+                        feedbackSystem.receive()
+                      }}
+                      isDarkMode={isDarkMode}
+                      disabled={isLoading}
+                    />
+
+                    {/* Voice-to-Voice Button */}
+                    <button
+                      onClick={() => {
+                        feedbackSystem.micOn()
+                        setShowVoiceToVoice(true)
+                      }}
+                      className="p-2 rounded-full transition-all"
+                      style={{
+                        color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : '#666666',
+                        background: 'transparent'
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.background = isDarkMode ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.05)'
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.background = 'transparent'
+                      }}
+                      disabled={isLoading}
+                      title="Mode vocal continu"
+                    >
+                      <Sparkles size={20} />
+                    </button>
+                  </>
+                )}
+
+                {/* Send Button - Apparaît seulement avec du texte */}
+                {input.trim() && (
+                  <button
+                    onClick={handleSendMessage}
+                    disabled={isLoading}
+                    className="p-2 rounded-full transition-all"
+                    style={{
+                      background: isLoading 
+                        ? 'rgba(128, 128, 128, 0.2)'
+                        : isDarkMode 
                           ? 'linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 100%)'
                           : 'linear-gradient(135deg, #0B0B0C 0%, #1a1a1a 100%)',
-                        boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)'
+                      color: 'white',
+                      boxShadow: isLoading ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.2)'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isLoading) {
+                        e.currentTarget.style.transform = 'scale(1.05)'
                       }
-                    : {
-                        background: 'rgba(128, 128, 128, 0.2)'
-                      }
-                }
-              >
-                {isLoading ? <Loader className="animate-spin" size={22} /> : <Send size={22} />}
-              </button>
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.transform = 'scale(1)'
+                    }}
+                  >
+                    {isLoading ? <Loader className="animate-spin" size={20} /> : <Send size={20} />}
+                  </button>
+                )}
+              </div>
           </div>
           
           {/* Tagline sous le chat */}

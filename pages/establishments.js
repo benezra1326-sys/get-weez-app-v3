@@ -5,7 +5,7 @@ import V3Sidebar from '../components/layout/V3Sidebar'
 import FiltersBar from '../components/ui/FiltersBar'
 import GliitzLoader from '../components/ui/GliitzLoader'
 import MapView from '../components/map/MapView'
-import { establishments as staticEstablishments } from '../data/marbella-data'
+import { fetchEstablishments } from '../lib/supabaseData'
 import { useTheme } from '../contexts/ThemeContextSimple'
 import { smartSort, getUserPreferences } from '../lib/smartSorting'
 
@@ -20,9 +20,20 @@ export default function Establishments({ user, setUser }) {
   const { isDarkMode } = useTheme()
 
   useEffect(() => {
-    setEstablishments(staticEstablishments)
-    setDisplayedEstablishments(staticEstablishments)
-    setIsLoading(false)
+    // CORRECTION: Charger depuis Supabase (68 établissements réels)
+    async function loadEstablishments() {
+      setIsLoading(true)
+      const data = await fetchEstablishments()
+      console.log('📊 Établissements chargés depuis Supabase:', data.length)
+      
+      // Trier par rating par défaut
+      const sortedData = [...data].sort((a, b) => (b.rating || 0) - (a.rating || 0))
+      
+      setEstablishments(data)
+      setDisplayedEstablishments(sortedData)
+      setIsLoading(false)
+    }
+    loadEstablishments()
   }, [])
 
   const handleFilterChange = (filter) => {
@@ -39,7 +50,7 @@ export default function Establishments({ user, setUser }) {
           sorted.sort((a, b) => (b.rating || 0) - (a.rating || 0))
           break
         case 'reviews':
-          sorted.sort((a, b) => (b.review_count || 0) - (a.review_count || 0))
+          sorted.sort((a, b) => (b.reviews_count || 0) - (a.reviews_count || 0))
           break
         case 'price-asc':
           sorted.sort((a, b) => (a.price_level || 0) - (b.price_level || 0))
@@ -116,7 +127,7 @@ export default function Establishments({ user, setUser }) {
       {/* FILTRES & VIEW TOGGLE */}
       <div className="max-w-7xl mx-auto px-4 md:px-8 -mt-12 relative z-20 mb-8">
         <div 
-          className="p-4 rounded-3xl glass-live flex flex-col md:flex-row gap-4 md:items-end"
+          className="p-4 rounded-3xl glass-live flex flex-col md:flex-row gap-4 md:items-center"
         >
           <div className="flex-1">
             <FiltersBar onFilterChange={handleFilterChange} currentSort={currentSort} user={user} />
@@ -177,14 +188,6 @@ export default function Establishments({ user, setUser }) {
           </div>
         ) : (
           <>
-            <div className="mb-8">
-              <p className="text-lg" style={{ 
-                fontFamily: 'Poppins, sans-serif',
-                color: isDarkMode ? '#E0E0E0' : '#666666'
-              }}>
-                {displayedEstablishments.length} établissements trouvés
-              </p>
-            </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {displayedEstablishments.map((establishment) => (

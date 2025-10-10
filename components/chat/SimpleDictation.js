@@ -114,7 +114,7 @@ export default function SimpleDictation({
     return (
       <button
         disabled
-        className="p-3 rounded-xl opacity-50 cursor-not-allowed"
+        className="p-2 rounded-full opacity-50 cursor-not-allowed"
         title="Reconnaissance vocale non supportée"
         style={{
           color: isDarkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
@@ -131,7 +131,7 @@ export default function SimpleDictation({
       <button
         onClick={toggleDictation}
         disabled={disabled}
-        className="p-3 rounded-xl transition-all relative"
+        className="p-2 rounded-full transition-all relative"
         style={{
           color: isListening 
             ? '#FFFFFF'
@@ -160,7 +160,7 @@ export default function SimpleDictation({
         {isListening && (
           <>
             <span 
-              className="absolute inset-0 rounded-xl animate-ping"
+              className="absolute inset-0 rounded-full animate-ping"
               style={{
                 background: 'rgba(239, 68, 68, 0.3)',
                 animationDuration: '1.5s'

@@ -1,8 +1,18 @@
-import React from 'react'
+import React, { memo } from 'react'
 import { useTranslation } from 'next-i18next'
+import { useTheme } from '../../contexts/ThemeContextSimple'
 
-const GliitzLogo = ({ size = 'text-2xl', compact = false, forHeader = false, isDarkMode = false, showTagline = false }) => {
+const GliitzLogo = memo(({ size = 'text-2xl', compact = false, forHeader = false, showTagline = false }) => {
   const { t } = useTranslation('common')
+  
+  // CORRECTION BUG: Utiliser useTheme directement au lieu d'une prop
+  let isDarkMode = false
+  try {
+    const theme = useTheme()
+    isDarkMode = theme.isDarkMode
+  } catch (error) {
+    console.warn('ThemeProvider not available, using default theme')
+  }
   
   // Bouton avec fond adaptatif selon le mode
   return (
@@ -47,6 +57,8 @@ const GliitzLogo = ({ size = 'text-2xl', compact = false, forHeader = false, isD
       </div>
     </div>
   )
-}
+})
+
+GliitzLogo.displayName = 'GliitzLogo'
 
 export default GliitzLogo

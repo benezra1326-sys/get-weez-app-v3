@@ -1,13 +1,13 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, MapPin, Star, DollarSign, Clock, Calendar, Phone, ExternalLink } from 'lucide-react'
+import { X, MapPin, Star, DollarSign, Clock, Calendar, Phone, ExternalLink, Music, Headphones } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
 /**
  * Popup pour afficher une fiche produit/établissement/événement
  * S'affiche au centre de l'écran quand l'utilisateur clique sur une proposition dans le chat
  */
-export default function ProductPopupChat({ product, onClose }) {
+export default function ProductPopupChat({ product, onClose, onReserve }) {
   const { isDarkMode } = useTheme()
 
   if (!product) return null
@@ -15,6 +15,14 @@ export default function ProductPopupChat({ product, onClose }) {
   const isEstablishment = product.category || product.rating
   const isEvent = product.date
   const isService = !isEstablishment && !isEvent
+  
+  // Détecter si c'est un événement avec DJ
+  const isDJEvent = isEvent && (
+    product.title?.toLowerCase().includes('dj') || 
+    product.description?.toLowerCase().includes('dj') ||
+    product.title?.toLowerCase().includes('soirée') ||
+    product.title?.toLowerCase().includes('night')
+  )
 
   return (
     <AnimatePresence>
@@ -22,20 +30,20 @@ export default function ProductPopupChat({ product, onClose }) {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
-        className="fixed inset-0 z-[100] flex items-center md:items-center justify-center p-0 md:p-4"
+        className="fixed inset-0 z-[100] flex items-start md:items-center justify-center overflow-y-auto"
         style={{
           background: 'rgba(0, 0, 0, 0.7)',
           backdropFilter: 'blur(8px)',
-          overflowY: 'auto'
+          padding: '0'
         }}
         onClick={onClose}
       >
         <motion.div
-          initial={{ scale: 0.9, y: 20 }}
-          animate={{ scale: 1, y: 0 }}
-          exit={{ scale: 0.9, y: 20 }}
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
           transition={{ type: 'spring', damping: 25 }}
-          className="relative max-w-2xl w-full md:max-h-[90vh] overflow-y-auto md:rounded-3xl"
+          className="relative w-full max-w-2xl my-4 md:my-8 mx-4 md:mx-auto overflow-y-auto"
           style={{
             background: isDarkMode 
               ? 'rgba(11, 11, 12, 0.98)' 
@@ -45,19 +53,11 @@ export default function ProductPopupChat({ product, onClose }) {
               : 'rgba(192, 192, 192, 0.3)'}`,
             boxShadow: '0 20px 60px rgba(0, 0, 0, 0.5)',
             backdropFilter: 'blur(20px)',
-            minHeight: '100vh',
-            maxHeight: '100vh'
+            borderRadius: '24px',
+            maxHeight: 'calc(100vh - 32px)'
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          <style jsx>{`
-            @media (min-width: 768px) {
-              .relative {
-                min-height: auto !important;
-                max-height: 90vh !important;
-              }
-            }
-          `}</style>
           {/* Close Button */}
           <button
             onClick={onClose}
@@ -290,36 +290,7 @@ export default function ProductPopupChat({ product, onClose }) {
                 </div>
               )}
 
-              {/* Phone */}
-              {product.phone && (
-                <div className="flex items-start gap-3">
-                  <Phone size={18} style={{ color: '#C0C0C0', marginTop: '2px' }} />
-                  <div>
-                    <p
-                      style={{
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '0.85rem',
-                        color: isDarkMode ? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 0.5)',
-                        marginBottom: '2px'
-                      }}
-                    >
-                      Téléphone
-                    </p>
-                    <a
-                      href={`tel:${product.phone}`}
-                      style={{
-                        fontFamily: 'Poppins, sans-serif',
-                        fontSize: '0.95rem',
-                        color: '#A7C7C5',
-                        fontWeight: '500',
-                        textDecoration: 'none'
-                      }}
-                    >
-                      {product.phone}
-                    </a>
-                  </div>
-                </div>
-              )}
+              {/* Phone - MASQUÉ pour confidentialité */}
             </div>
 
             {/* Action Buttons */}
@@ -327,6 +298,15 @@ export default function ProductPopupChat({ product, onClose }) {
               <motion.button
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
+                onClick={() => {
+                  if (onReserve) {
+                    const message = isEvent 
+                      ? `Je souhaite réserver pour l'événement "${product.title}"`
+                      : `Je souhaite réserver ${product.name || product.title}`
+                    onReserve(message)
+                  }
+                  onClose()
+                }}
                 className="flex-1 py-3 rounded-xl font-semibold transition-all"
                 style={{
                   background: 'linear-gradient(135deg, #A7C7C5, #9DB4C0)',
@@ -335,32 +315,8 @@ export default function ProductPopupChat({ product, onClose }) {
                   boxShadow: '0 4px 15px rgba(167, 199, 197, 0.4)'
                 }}
               >
-                {isEvent ? 'Réserver' : 'Contacter'}
+                Réserver
               </motion.button>
-
-              {product.website && (
-                <motion.a
-                  href={product.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                  className="flex items-center justify-center gap-2 px-6 py-3 rounded-xl font-semibold transition-all"
-                  style={{
-                    background: isDarkMode 
-                      ? 'rgba(255, 255, 255, 0.1)' 
-                      : 'rgba(0, 0, 0, 0.05)',
-                    border: `1px solid ${isDarkMode 
-                      ? 'rgba(192, 192, 192, 0.3)' 
-                      : 'rgba(192, 192, 192, 0.4)'}`,
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                    fontFamily: 'Poppins, sans-serif'
-                  }}
-                >
-                  <ExternalLink size={18} />
-                  <span>Site web</span>
-                </motion.a>
-              )}
             </div>
           </div>
         </motion.div>

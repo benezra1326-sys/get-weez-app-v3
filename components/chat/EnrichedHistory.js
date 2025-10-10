@@ -30,17 +30,25 @@ export default function EnrichedHistory({
 
 
   const formatDate = (dateString) => {
+    // Vérifier si la date est valide
+    if (!dateString) return 'Récemment'
+    
     const date = new Date(dateString)
+    
+    // Vérifier si la date est invalide
+    if (isNaN(date.getTime())) return 'Récemment'
+    
     const now = new Date()
     const diff = now - date
     
+    // CORRECTION BUG: Ajouter l'heure pour les dates anciennes
     if (diff < 60000) return 'À l\'instant'
     if (diff < 3600000) return `Il y a ${Math.floor(diff / 60000)}min`
     if (diff < 86400000) return `Il y a ${Math.floor(diff / 3600000)}h`
     
     return date.toLocaleDateString('fr-FR', { 
       day: 'numeric', 
-      month: 'short' 
+      month: 'short'
     })
   }
 

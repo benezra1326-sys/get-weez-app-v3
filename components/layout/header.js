@@ -160,7 +160,7 @@ const Header = memo(({ user, setUser, toggleMobileMenu, isMobileMenuOpen }) => {
                 boxShadow: '0 2px 8px rgba(192, 192, 192, 0.3)'
               }}
             >
-              <GliitzLogo size="text-lg lg:text-3xl" compact={true} showTagline={true} isDarkMode={isDarkMode} />
+              <GliitzLogo size="text-lg lg:text-3xl" compact={true} showTagline={true} />
             </div>
           </Link>
         </div>

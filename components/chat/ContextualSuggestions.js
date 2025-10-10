@@ -46,7 +46,7 @@ export default function ContextualSuggestions({ onSuggestionClick, isDarkMode })
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto mb-6">
+    <div className="w-full max-w-3xl mx-auto mb-6 relative" style={{ zIndex: 0 }}>
       <div 
         className="flex items-center gap-2 mb-3"
         style={{

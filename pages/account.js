@@ -1,432 +1,410 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { 
-  User, Mail, Phone, MapPin, Calendar, Shield, CreditCard, Bell, 
-  Settings, History, Heart, LogOut, ChevronRight, Award, Package,
-  HelpCircle, MessageSquare, Star, Sparkles
-} from 'lucide-react'
+import { motion } from 'framer-motion'
+import { User, Calendar, Heart, Bell, Settings, TrendingUp, MapPin, Clock } from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
-import PreferencesManager from '../components/preferences/PreferencesManager'
 import { useTheme } from '../contexts/ThemeContextSimple'
-import { supabase } from '../lib/supabase'
 
-export default function Account({ user, setUser }) {
+export default function AccountPage({ user, setUser }) {
   const router = useRouter()
   const { isDarkMode } = useTheme()
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [activeTab, setActiveTab] = useState('profile')
+  const [dashboard, setDashboard] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  // Données utilisateur par défaut
-  const userData = {
-    firstName: user?.first_name || 'Utilisateur',
-    lastName: user?.last_name || 'Gliitz',
-    email: user?.email || 'contact@gliitz.com',
-    phone: user?.phone || '+33 6 12 34 56 78',
-    memberSince: '2024',
-    reservations: 12,
-    favorites: 8,
-    reviews: 5
-  }
-
-  const menuSections = [
-    {
-      id: 'account',
-      title: 'Mon Compte',
-      items: [
-        {
-          icon: User,
-          label: 'Informations personnelles',
-          description: 'Nom, email, téléphone',
-          onClick: () => setActiveTab('profile'),
-          active: activeTab === 'profile'
-        },
-        {
-          icon: Shield,
-          label: 'Sécurité & Connexion',
-          description: 'Mot de passe, authentification 2FA',
-          onClick: () => setActiveTab('security'),
-          active: activeTab === 'security'
-        },
-        {
-          icon: Bell,
-          label: 'Notifications',
-          description: 'Préférences email et push',
-          onClick: () => setActiveTab('notifications'),
-          active: activeTab === 'notifications'
-        }
-      ]
-    },
-    {
-      id: 'bookings',
-      title: 'Réservations & Activité',
-      items: [
-        {
-          icon: Calendar,
-          label: 'Mes Réservations',
-          description: `${userData.reservations} réservations`,
-          badge: userData.reservations,
-          onClick: () => setActiveTab('reservations'),
-          active: activeTab === 'reservations'
-        },
-        {
-          icon: History,
-          label: 'Historique',
-          description: 'Toutes vos anciennes réservations',
-          onClick: () => setActiveTab('history'),
-          active: activeTab === 'history'
-        },
-        {
-          icon: Heart,
-          label: 'Favoris',
-          description: `${userData.favorites} établissements`,
-          badge: userData.favorites,
-          onClick: () => setActiveTab('favorites'),
-          active: activeTab === 'favorites'
-        }
-      ]
-    },
-    {
-      id: 'payment',
-      title: 'Paiement & Abonnement',
-      items: [
-        {
-          icon: CreditCard,
-          label: 'Moyens de paiement',
-          description: 'Cartes et méthodes de paiement',
-          onClick: () => setActiveTab('payment'),
-          active: activeTab === 'payment'
-        },
-        {
-          icon: Package,
-          label: 'Mon Abonnement',
-          description: 'Plan Premium actif',
-          badge: 'Premium',
-          onClick: () => setActiveTab('subscription'),
-          active: activeTab === 'subscription'
-        },
-        {
-          icon: Award,
-          label: 'Programme Fidélité',
-          description: 'Points et récompenses',
-          onClick: () => setActiveTab('loyalty'),
-          active: activeTab === 'loyalty'
-        }
-      ]
-    },
-    {
-      id: 'preferences',
-      title: 'Préférences & Personnalisation',
-      items: [
-        {
-          icon: Sparkles,
-          label: 'Configuration des goûts',
-          description: 'Goûts, interdictions, peurs, alimentation',
-          onClick: () => setActiveTab('preferences'),
-          active: activeTab === 'preferences'
-        }
-      ]
-    },
-    {
-      id: 'support',
-      title: 'Support & Aide',
-      items: [
-        {
-          icon: MessageSquare,
-          label: 'Mes Avis',
-          description: `${userData.reviews} avis publiés`,
-          onClick: () => setActiveTab('reviews'),
-          active: activeTab === 'reviews'
-        },
-        {
-          icon: HelpCircle,
-          label: 'Centre d\'aide',
-          description: 'FAQ et assistance',
-          onClick: () => router.push('/help')
-        },
-        {
-          icon: Settings,
-          label: 'Paramètres',
-          description: 'Préférences générales',
-          onClick: () => setActiveTab('settings'),
-          active: activeTab === 'settings'
-        }
-      ]
+  useEffect(() => {
+    if (!user) {
+      router.push('/login')
+      return
     }
-  ]
 
-  const handleLogout = async () => {
-    await supabase.auth.signOut()
-    setUser(null)
-    router.push('/')
+    loadDashboard()
+  }, [user])
+
+  const loadDashboard = async () => {
+    try {
+      setLoading(true)
+      const response = await fetch(`/api/dashboard/${user.id}`)
+      const data = await response.json()
+
+      if (data.success) {
+        setDashboard(data.dashboard)
+      } else {
+        setError('Erreur de chargement du dashboard')
+      }
+    } catch (error) {
+      console.error('Erreur chargement dashboard:', error)
+      setError('Impossible de charger vos données')
+    } finally {
+      setLoading(false)
+    }
   }
 
-  return (
-    <div className="min-h-screen flex" style={{
-      background: isDarkMode ? '#0B0B0C' : '#FFFFFF'
-    }}>
-      <V3Sidebar 
-        conversations={[]} 
-        onNewChat={() => router.push('/')}
-        isOpen={sidebarOpen}
-        onToggle={setSidebarOpen}
-      />
-      
-      <div className="flex-1 overflow-y-auto">
-        {/* Header Profile Banner */}
-        <div 
-          className="relative h-64 flex items-end"
-          style={{
-            backgroundImage: 'url(https://images.unsplash.com/photo-1566073771259-6a8506099945?w=1920&q=90)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center'
-          }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
-          
-          <div className="relative z-10 max-w-7xl mx-auto w-full px-4 md:px-8 pb-8">
-            <div className="flex items-end gap-6">
-              {/* Avatar */}
-              <div 
-                className="w-32 h-32 rounded-full flex items-center justify-center text-4xl font-bold border-4"
-                style={{
-                  background: 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))',
-                  borderColor: 'rgba(255,255,255,0.3)',
-                  color: '#FFFFFF'
-                }}
-              >
-                {userData.firstName.charAt(0)}{userData.lastName.charAt(0)}
-              </div>
-              
-              {/* Info */}
-              <div className="flex-1 pb-4">
-                <h1 
-                  className="text-3xl md:text-4xl font-bold text-white mb-2"
-                  style={{ fontFamily: 'Playfair Display, serif' }}
-                >
-                  {userData.firstName} {userData.lastName}
-                </h1>
-                <p 
-                  className="text-white/80 mb-3"
-                  style={{ fontFamily: 'Poppins, sans-serif' }}
-                >
-                  {userData.email}
-                </p>
-                <div className="flex gap-4 text-sm text-white/70" style={{ fontFamily: 'Poppins, sans-serif' }}>
-                  <span className="flex items-center gap-1">
-                    <Calendar size={14} /> Membre depuis {userData.memberSince}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Star size={14} /> {userData.reservations} réservations
-                  </span>
-                </div>
-              </div>
-            </div>
+  const getStatusColor = (status) => {
+    const colors = {
+      confirmed: isDarkMode ? '#4ADE80' : '#22C55E',
+      pending: isDarkMode ? '#FBBF24' : '#F59E0B',
+      cancelled: isDarkMode ? '#EF4444' : '#DC2626',
+      completed: isDarkMode ? '#C0C0C0' : '#9CA3AF'
+    }
+    return colors[status] || (isDarkMode ? '#C0C0C0' : '#6B7280')
+  }
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString('fr-FR', { 
+      day: 'numeric', 
+      month: 'short',
+      year: 'numeric'
+    })
+  }
+
+  if (loading) {
+    return (
+      <div className="flex min-h-screen" style={{ background: isDarkMode ? '#0B0B0C' : '#FFFFFF' }}>
+        <V3Sidebar 
+          user={user} 
+          setUser={setUser} 
+          sidebarOpen={sidebarOpen} 
+          setSidebarOpen={setSidebarOpen}
+        />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-t-transparent rounded-full animate-spin mx-auto"
+              style={{ borderColor: isDarkMode ? '#C0C0C0' : '#0B0B0C' }}
+            />
+            <p className="mt-4" style={{ color: isDarkMode ? '#E5E5E5' : '#0B0B0C' }}>
+              Chargement de votre compte...
+            </p>
           </div>
         </div>
+      </div>
+    )
+  }
 
-        {/* Main Content */}
-        <div className="max-w-7xl mx-auto px-4 md:px-8 py-8">
-          <div className="grid grid-cols-1 gap-8">
-            {menuSections.map((section) => (
-              <div key={section.id}>
-                <h2 
-                  className="text-xl font-bold mb-4 px-4"
-                  style={{
-                    fontFamily: 'Playfair Display, serif',
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                  }}
-                >
-                  {section.title}
-                </h2>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {section.items.map((item, idx) => {
-                    const Icon = item.icon
-                    return (
-                      <button
-                        key={idx}
-                        onClick={item.onClick}
-                        className="glass-live p-6 rounded-2xl text-left transition-all group relative overflow-hidden"
-                        style={{
-                          background: item.active 
-                            ? (isDarkMode ? 'rgba(167,199,197,0.15)' : 'rgba(167,199,197,0.1)')
-                            : (isDarkMode ? 'rgba(26,26,28,0.8)' : 'rgba(255,255,255,0.8)'),
-                          border: item.active 
-                            ? '1px solid rgba(167,199,197,0.5)'
-                            : '1px solid rgba(167,199,197,0.2)'
-                        }}
-                        onMouseEnter={(e) => {
-                          if (!item.active) {
-                            e.currentTarget.style.transform = 'translateY(-4px)'
-                            e.currentTarget.style.boxShadow = '0 12px 35px rgba(167,199,197,0.3)'
-                            e.currentTarget.style.borderColor = 'rgba(167,199,197,0.4)'
-                          }
-                        }}
-                        onMouseLeave={(e) => {
-                          if (!item.active) {
-                            e.currentTarget.style.transform = 'translateY(0)'
-                            e.currentTarget.style.boxShadow = 'none'
-                            e.currentTarget.style.borderColor = 'rgba(167,199,197,0.2)'
-                          }
-                        }}
-                      >
-                        {/* Badge */}
-                        {item.badge && (
-                          <div 
-                            className="absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-bold"
-                            style={{
-                              background: 'linear-gradient(135deg, rgba(167,199,197,0.8), rgba(157,180,192,0.8))',
-                              color: '#FFFFFF'
-                            }}
-                          >
-                            {item.badge}
-                          </div>
-                        )}
-
-                        <div className="flex items-start justify-between mb-3">
-                          <div 
-                            className="p-3 rounded-xl"
-                            style={{
-                              background: item.active
-                                ? 'rgba(167,199,197,0.2)'
-                                : (isDarkMode ? 'rgba(167,199,197,0.1)' : 'rgba(167,199,197,0.15)')
-                            }}
-                          >
-                            <Icon 
-                              size={24} 
-                              style={{ color: '#A7C7C5' }}
-                            />
-                          </div>
-                          <ChevronRight 
-                            size={20} 
-                            className="opacity-50 group-hover:opacity-100 transition-opacity"
-                            style={{ color: isDarkMode ? '#FFFFFF' : '#0B0B0C' }}
-                          />
-                        </div>
-
-                        <h3 
-                          className="text-lg font-bold mb-1"
-                          style={{
-                            fontFamily: 'Playfair Display, serif',
-                            color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                          }}
-                        >
-                          {item.label}
-                        </h3>
-                        
-                        <p 
-                          className="text-sm"
-                          style={{
-                            fontFamily: 'Poppins, sans-serif',
-                            color: isDarkMode ? 'rgba(255,255,255,0.7)' : 'rgba(0,0,0,0.7)'
-                          }}
-                        >
-                          {item.description}
-                        </p>
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Logout Button */}
-          <div className="mt-8 flex justify-center">
+  if (error || !dashboard) {
+    return (
+      <div className="flex min-h-screen" style={{ background: isDarkMode ? '#0B0B0C' : '#FFFFFF' }}>
+        <V3Sidebar 
+          user={user} 
+          setUser={setUser} 
+          sidebarOpen={sidebarOpen} 
+          setSidebarOpen={setSidebarOpen}
+        />
+        <div className="flex-1 flex items-center justify-center">
+          <div className="text-center">
+            <p style={{ color: isDarkMode ? '#EF4444' : '#DC2626' }}>{error}</p>
             <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 px-8 py-4 rounded-xl font-semibold transition-all"
+              onClick={loadDashboard}
+              className="mt-4 px-6 py-2 rounded-full"
               style={{
-                background: isDarkMode ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)',
-                border: '1px solid rgba(239, 68, 68, 0.3)',
-                color: '#EF4444',
-                fontFamily: 'Poppins, sans-serif'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(239, 68, 68, 0.9)'
-                e.currentTarget.style.color = '#FFFFFF'
-                e.currentTarget.style.transform = 'translateY(-2px)'
-                e.currentTarget.style.boxShadow = '0 8px 25px rgba(239, 68, 68, 0.4)'
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.background = isDarkMode ? 'rgba(239, 68, 68, 0.1)' : 'rgba(239, 68, 68, 0.05)'
-                e.currentTarget.style.color = '#EF4444'
-                e.currentTarget.style.transform = 'translateY(0)'
-                e.currentTarget.style.boxShadow = 'none'
+                background: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                color: isDarkMode ? '#0B0B0C' : '#FFFFFF'
               }}
             >
-              <LogOut size={20} />
-              <span>Se déconnecter</span>
+              Réessayer
             </button>
           </div>
         </div>
+      </div>
+    )
+  }
 
-        {/* Content Area */}
-        <div className="flex-1 overflow-y-auto">
-          {activeTab === 'preferences' && (
-            <PreferencesManager 
-              user={user} 
-              onSave={(preferences) => {
-                console.log('Préférences sauvegardées:', preferences)
-                // TODO: Sauvegarder dans Supabase
-              }}
-            />
-          )}
+  return (
+    <div className="flex min-h-screen" style={{ background: isDarkMode ? '#0B0B0C' : '#FFFFFF' }}>
+      <V3Sidebar 
+        user={user} 
+        setUser={setUser} 
+        sidebarOpen={sidebarOpen} 
+        setSidebarOpen={setSidebarOpen}
+      />
+
+      <div className="flex-1 p-4 md:p-8 overflow-y-auto">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="mb-8"
+        >
+          <h1 className="text-4xl md:text-5xl font-light mb-2" style={{ 
+            color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+            fontFamily: 'Poppins, sans-serif'
+          }}>
+            Bonjour, {dashboard.user.full_name || 'Utilisateur'} ✨
+          </h1>
+          <p style={{ color: isDarkMode ? 'rgba(229, 229, 229, 0.6)' : 'rgba(11, 11, 12, 0.6)' }}>
+            Bienvenue dans votre espace personnel Gliitz
+          </p>
+        </motion.div>
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+          <StatsCard
+            icon={<Calendar size={24} />}
+            label="Réservations"
+            value={dashboard.stats.bookings.total}
+            subtext={`${dashboard.stats.bookings.confirmed} confirmées`}
+            isDarkMode={isDarkMode}
+          />
+          <StatsCard
+            icon={<Clock size={24} />}
+            label="En attente"
+            value={dashboard.stats.bookings.pending}
+            subtext="À confirmer"
+            isDarkMode={isDarkMode}
+          />
+          <StatsCard
+            icon={<Heart size={24} />}
+            label="Favoris"
+            value={dashboard.stats.favoritesCount}
+            subtext="Établissements aimés"
+            isDarkMode={isDarkMode}
+          />
+          <StatsCard
+            icon={<Bell size={24} />}
+            label="Notifications"
+            value={dashboard.stats.unreadNotifications}
+            subtext="Non lues"
+            isDarkMode={isDarkMode}
+          />
+        </div>
+
+        {/* Recent Bookings */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="mb-8"
+        >
+          <h2 className="text-2xl font-light mb-4" style={{ 
+            color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+            fontFamily: 'Poppins, sans-serif'
+          }}>
+            Vos dernières réservations
+          </h2>
           
-          {activeTab !== 'preferences' && (
-            <div className="p-8">
-              <div 
-                className="text-center py-16 rounded-2xl"
+          {dashboard.recentBookings.length === 0 ? (
+            <div 
+              className="p-8 rounded-3xl text-center"
+              style={{
+                background: isDarkMode ? 'rgba(192, 192, 192, 0.05)' : 'rgba(11, 11, 12, 0.03)',
+                border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(11, 11, 12, 0.1)'}`
+              }}
+            >
+              <p style={{ color: isDarkMode ? 'rgba(229, 229, 229, 0.6)' : 'rgba(11, 11, 12, 0.6)' }}>
+                Vous n'avez pas encore de réservations
+              </p>
+              <button
+                onClick={() => router.push('/')}
+                className="mt-4 px-6 py-3 rounded-full"
                 style={{
-                  background: isDarkMode 
-                    ? 'rgba(255, 255, 255, 0.03)' 
-                    : 'rgba(255, 255, 255, 0.6)',
-                  border: isDarkMode 
-                    ? '1px solid rgba(192, 192, 192, 0.2)' 
-                    : '1px solid rgba(0, 0, 0, 0.1)',
-                  backdropFilter: 'blur(14px)'
+                  background: isDarkMode ? '#C0C0C0' : '#0B0B0C',
+                  color: isDarkMode ? '#0B0B0C' : '#FFFFFF',
+                  fontFamily: 'Poppins, sans-serif'
                 }}
               >
-                <Sparkles 
-                  size={64} 
-                  style={{ 
-                    color: isDarkMode ? 'rgba(192, 192, 192, 0.6)' : 'rgba(0, 0, 0, 0.3)',
-                    margin: '0 auto 1rem'
-                  }} 
+                Faire une réservation
+              </button>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+              {dashboard.recentBookings.map((booking, index) => (
+                <BookingCard
+                  key={booking.id}
+                  booking={booking}
+                  isDarkMode={isDarkMode}
+                  delay={index * 0.1}
+                  getStatusColor={getStatusColor}
+                  formatDate={formatDate}
                 />
-                <h3 
-                  className="text-2xl font-bold mb-2"
+              ))}
+            </div>
+          )}
+        </motion.div>
+
+        {/* Preferences */}
+        {dashboard.preferences.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.4 }}
+            className="mb-8"
+          >
+            <h2 className="text-2xl font-light mb-4" style={{ 
+              color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+              fontFamily: 'Poppins, sans-serif'
+            }}>
+              Vos préférences
+            </h2>
+            
+            <div className="flex flex-wrap gap-2">
+              {dashboard.preferences.map((pref, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: index * 0.05 }}
+                  className="px-4 py-2 rounded-full"
                   style={{
-                    fontFamily: 'Playfair Display, serif',
-                    color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
-                  }}
-                >
-                  {activeTab === 'profile' && 'Informations personnelles'}
-                  {activeTab === 'security' && 'Sécurité & Connexion'}
-                  {activeTab === 'notifications' && 'Notifications'}
-                  {activeTab === 'reservations' && 'Mes Réservations'}
-                  {activeTab === 'history' && 'Historique'}
-                  {activeTab === 'favorites' && 'Favoris'}
-                  {activeTab === 'payment' && 'Moyens de paiement'}
-                  {activeTab === 'subscription' && 'Mon Abonnement'}
-                  {activeTab === 'loyalty' && 'Programme Fidélité'}
-                  {activeTab === 'reviews' && 'Mes Avis'}
-                  {activeTab === 'settings' && 'Paramètres'}
-                </h3>
-                <p 
-                  className="text-lg"
-                  style={{
-                    color: isDarkMode ? 'rgba(255, 255, 255, 0.7)' : 'rgba(0, 0, 0, 0.6)',
+                    background: isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(11, 11, 12, 0.05)',
+                    border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(11, 11, 12, 0.1)'}`,
+                    color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
                     fontFamily: 'Poppins, sans-serif'
                   }}
                 >
-                  Cette section sera bientôt disponible
-                </p>
-              </div>
+                  {pref.preference_value}
+                </motion.div>
+              ))}
             </div>
-          )}
-        </div>
+          </motion.div>
+        )}
+
+        {/* Quick Actions */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6 }}
+        >
+          <h2 className="text-2xl font-light mb-4" style={{ 
+            color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+            fontFamily: 'Poppins, sans-serif'
+          }}>
+            Actions rapides
+          </h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <ActionButton
+              icon={<Calendar size={20} />}
+              label="Nouvelle réservation"
+              onClick={() => router.push('/')}
+              isDarkMode={isDarkMode}
+            />
+            <ActionButton
+              icon={<Settings size={20} />}
+              label="Paramètres"
+              onClick={() => router.push('/settings')}
+              isDarkMode={isDarkMode}
+            />
+            <ActionButton
+              icon={<TrendingUp size={20} />}
+              label="Voir mes statistiques"
+              onClick={() => {}}
+              isDarkMode={isDarkMode}
+            />
+          </div>
+        </motion.div>
       </div>
     </div>
+  )
+}
+
+// Composants auxiliaires
+function StatsCard({ icon, label, value, subtext, isDarkMode }) {
+  return (
+    <motion.div
+      whileHover={{ scale: 1.02 }}
+      className="p-6 rounded-3xl"
+      style={{
+        background: isDarkMode ? 'rgba(192, 192, 192, 0.05)' : 'rgba(11, 11, 12, 0.03)',
+        border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(11, 11, 12, 0.1)'}`,
+        backdropFilter: 'blur(10px)'
+      }}
+    >
+      <div className="flex items-center gap-3 mb-2" style={{ color: isDarkMode ? '#C0C0C0' : '#0B0B0C' }}>
+        {icon}
+        <span className="text-sm opacity-70">{label}</span>
+      </div>
+      <div className="text-3xl font-bold mb-1" style={{ 
+        color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+        fontFamily: 'Poppins, sans-serif'
+      }}>
+        {value}
+      </div>
+      <div className="text-sm" style={{ color: isDarkMode ? 'rgba(229, 229, 229, 0.5)' : 'rgba(11, 11, 12, 0.5)' }}>
+        {subtext}
+      </div>
+    </motion.div>
+  )
+}
+
+function BookingCard({ booking, isDarkMode, delay, getStatusColor, formatDate }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      animate={{ opacity: 1, x: 0 }}
+      transition={{ delay }}
+      whileHover={{ scale: 1.02 }}
+      className="p-6 rounded-3xl cursor-pointer"
+      style={{
+        background: isDarkMode ? 'rgba(192, 192, 192, 0.05)' : 'rgba(11, 11, 12, 0.03)',
+        border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(11, 11, 12, 0.1)'}`,
+        backdropFilter: 'blur(10px)'
+      }}
+    >
+      <div className="flex justify-between items-start mb-3">
+        <div>
+          <div className="text-sm opacity-70 mb-1" style={{ color: isDarkMode ? '#C0C0C0' : '#6B7280' }}>
+            {booking.booking_number}
+          </div>
+          <div className="text-xl font-semibold" style={{ 
+            color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+            fontFamily: 'Poppins, sans-serif'
+          }}>
+            {booking.type.charAt(0).toUpperCase() + booking.type.slice(1)}
+            {booking.sub_type && ` - ${booking.sub_type}`}
+          </div>
+        </div>
+        <div 
+          className="px-3 py-1 rounded-full text-sm"
+          style={{
+            background: getStatusColor(booking.status),
+            color: '#FFFFFF'
+          }}
+        >
+          {booking.status}
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex items-center gap-2 text-sm" style={{ color: isDarkMode ? 'rgba(229, 229, 229, 0.7)' : 'rgba(11, 11, 12, 0.7)' }}>
+          <MapPin size={16} />
+          {booking.location}
+        </div>
+        <div className="flex items-center gap-2 text-sm" style={{ color: isDarkMode ? 'rgba(229, 229, 229, 0.7)' : 'rgba(11, 11, 12, 0.7)' }}>
+          <Calendar size={16} />
+          {formatDate(booking.booking_date)}
+        </div>
+      </div>
+
+      {booking.price && (
+        <div className="mt-4 pt-4 border-t" style={{ borderColor: isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(11, 11, 12, 0.1)' }}>
+          <div className="text-2xl font-bold" style={{ color: isDarkMode ? '#C0C0C0' : '#0B0B0C' }}>
+            {booking.price}€
+          </div>
+        </div>
+      )}
+    </motion.div>
+  )
+}
+
+function ActionButton({ icon, label, onClick, isDarkMode }) {
+  return (
+    <motion.button
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+      onClick={onClick}
+      className="p-4 rounded-2xl flex items-center gap-3"
+      style={{
+        background: isDarkMode ? 'rgba(192, 192, 192, 0.1)' : 'rgba(11, 11, 12, 0.05)',
+        border: `1px solid ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(11, 11, 12, 0.1)'}`,
+        color: isDarkMode ? '#E5E5E5' : '#0B0B0C',
+        fontFamily: 'Poppins, sans-serif'
+      }}
+    >
+      {icon}
+      <span>{label}</span>
+    </motion.button>
   )
 }

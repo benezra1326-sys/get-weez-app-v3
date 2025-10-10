@@ -28,8 +28,17 @@ export function useConversations() {
       try {
         const parsed = JSON.parse(savedConversations)
         
+        // Convertir les timestamps string en objets Date
+        const withDates = parsed.map(conv => ({
+          ...conv,
+          messages: conv.messages?.map(msg => ({
+            ...msg,
+            timestamp: msg.timestamp ? new Date(msg.timestamp) : new Date()
+          })) || []
+        }))
+        
         // Nettoyer les conversations vides au chargement
-        const cleaned = cleanEmptyConversations(parsed)
+        const cleaned = cleanEmptyConversations(withDates)
         
         if (cleaned.length !== parsed.length) {
           console.log('🧹 Conversations vides supprimées au chargement')
@@ -113,7 +122,14 @@ export function useConversations() {
 
   // Sélectionner une conversation
   const selectConversation = (id) => {
-    setCurrentConversationId(id)
+    console.log('📍 selectConversation appelé avec ID:', id)
+    const conv = conversations.find(c => c.id === id)
+    if (conv) {
+      console.log('✅ Conversation trouvée:', conv.name, 'avec', conv.messages?.length || 0, 'messages')
+      setCurrentConversationId(id)
+    } else {
+      console.error('❌ Conversation non trouvée pour ID:', id)
+    }
   }
 
   // Supprimer une conversation
@@ -229,9 +245,7 @@ export function useConversations() {
     } else {
       return date.toLocaleDateString('fr-FR', { 
         day: 'numeric', 
-        month: 'short',
-        hour: '2-digit',
-        minute: '2-digit'
+        month: 'short'
       })
     }
   }

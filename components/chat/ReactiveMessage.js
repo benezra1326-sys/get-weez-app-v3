@@ -8,7 +8,8 @@ export default function ReactiveMessage({
   message, 
   isUser, 
   isPlaying = false,
-  onPlayVoice 
+  onPlayVoice,
+  onSendMessage 
 }) {
   const { isDarkMode } = useTheme()
   const [isHovered, setIsHovered] = useState(false)
@@ -97,7 +98,7 @@ export default function ReactiveMessage({
           {isUser ? (
             <p className="whitespace-pre-wrap">{message.content}</p>
           ) : (
-            <RichMessage content={message.content} isDarkMode={isDarkMode} />
+            <RichMessage content={message.content} isDarkMode={isDarkMode} onSendMessage={onSendMessage} />
           )}
         </div>
 
@@ -129,10 +130,19 @@ export default function ReactiveMessage({
           className="text-xs mt-2 opacity-60"
           style={{ fontFamily: 'Poppins, sans-serif' }}
         >
-          {message.timestamp?.toLocaleTimeString('fr-FR', {
-            hour: '2-digit',
-            minute: '2-digit'
-          })}
+          {message.timestamp ? 
+            (typeof message.timestamp === 'string' 
+              ? new Date(message.timestamp).toLocaleTimeString('fr-FR', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
+              : message.timestamp.toLocaleTimeString('fr-FR', {
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })
+            )
+            : ''
+          }
         </p>
       </motion.div>
     </motion.div>

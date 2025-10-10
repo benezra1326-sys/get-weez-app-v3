@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/router'
 import { Settings as SettingsIcon, Moon, Sun, Globe, Bell, Shield, Volume2 } from 'lucide-react'
 import V3Sidebar from '../components/layout/V3Sidebar'
@@ -11,6 +11,25 @@ export default function Settings({ user }) {
   const [sound, setSound] = useState(true)
   const [language, setLanguage] = useState('fr')
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [selectedVoice, setSelectedVoice] = useState('victoire')
+  
+  // Charger la voix depuis localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const savedVoice = localStorage.getItem('gliitz_voice_preference')
+      if (savedVoice) {
+        setSelectedVoice(savedVoice)
+      }
+    }
+  }, [])
+  
+  // Sauvegarder la voix dans localStorage
+  const handleVoiceChange = (voice) => {
+    setSelectedVoice(voice)
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('gliitz_voice_preference', voice)
+    }
+  }
 
   return (
     <div className="min-h-screen flex" style={{
@@ -272,6 +291,59 @@ export default function Settings({ user }) {
                   }}
                 />
               </button>
+            </div>
+          </div>
+
+          {/* Voice Selection */}
+          <div 
+            className="rounded-3xl p-6"
+            style={{
+              background: isDarkMode 
+                ? 'rgba(26,26,28,0.95)' 
+                : 'rgba(255,255,255,0.95)',
+              backdropFilter: 'blur(12px)',
+              border: '1px solid rgba(192,192,192,0.2)',
+              boxShadow: '0 8px 32px rgba(192,192,192,0.15)'
+            }}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Volume2 size={24} style={{ color: '#C0C0C0' }} />
+                <div>
+                  <h3 
+                    className="text-lg font-bold mb-1"
+                    style={{
+                      fontFamily: 'Playfair Display, serif',
+                      color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
+                    }}
+                  >
+                    Voix de l'assistant
+                  </h3>
+                  <p 
+                    className="text-sm"
+                    style={{
+                      fontFamily: 'Poppins, sans-serif',
+                      color: isDarkMode ? '#E0E0E0' : '#666666'
+                    }}
+                  >
+                    {selectedVoice === 'victoire' ? 'Victoire (Féminine)' : 'Sébas (Masculine)'}
+                  </p>
+                </div>
+              </div>
+              <select
+                value={selectedVoice}
+                onChange={(e) => handleVoiceChange(e.target.value)}
+                className="px-4 py-2 rounded-xl font-semibold"
+                style={{
+                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(192,192,192,0.2)',
+                  border: '1px solid rgba(192,192,192,0.3)',
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  fontFamily: 'Poppins, sans-serif'
+                }}
+              >
+                <option value="victoire">Victoire (Féminine)</option>
+                <option value="sebas">Sébas (Masculine)</option>
+              </select>
             </div>
           </div>
 

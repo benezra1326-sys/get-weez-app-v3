@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRouter } from 'next/router'
-import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User, Sparkles } from 'lucide-react'
+import { Search, Moon, Sun, Building, Calendar, Briefcase, Users, FileText, Mail, Clock, Menu, X, User, Sparkles, BookOpen, Newspaper } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 import { useConversationsContext } from '../../contexts/ConversationsContext'
 import EnrichedHistory from '../chat/EnrichedHistory'
@@ -29,9 +29,9 @@ export default function V3Sidebar({
     { label: 'Établissements', icon: Building, route: '/establishments' },
     { label: 'Services', icon: Briefcase, route: '/services' },
     { label: 'Événements', icon: Calendar, route: '/events' },
-    { label: 'Manifeste', icon: FileText, route: '/manifeste' },
+    { label: 'The Gliitz Way', icon: BookOpen, route: '/manifeste' },
     { label: 'Devenir Partenaire', icon: Users, route: '/partenaires' },
-    { label: 'Presse', icon: FileText, route: '/presse' },
+    { label: 'Presse', icon: Newspaper, route: '/presse' },
     { label: 'Newsletter', icon: Mail, route: '/newsletter' }
   ]
 
@@ -259,8 +259,15 @@ export default function V3Sidebar({
               currentId={currentConversationId}
               onSelect={(id) => {
                 if (selectConversation) {
+                  // CORRECTION BUG: S'assurer que la conversation est sélectionnée d'abord
                   selectConversation(id)
-                  router.push('/') // Retourner au chat
+                  
+                  // Puis rediriger vers le chat après un court délai
+                  setTimeout(() => {
+                    router.push('/').then(() => {
+                      console.log('✅ Conversation chargée:', id)
+                    })
+                  }, 50)
                 }
                 toggle(false)
               }}

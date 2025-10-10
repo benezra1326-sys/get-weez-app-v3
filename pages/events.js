@@ -273,14 +273,6 @@ export default function Events({ user, setUser }) {
           </div>
         ) : (
           <>
-            <div className="mb-8">
-              <p className="text-lg" style={{ 
-                fontFamily: 'Poppins, sans-serif',
-                color: isDarkMode ? '#E0E0E0' : '#666666'
-              }}>
-                {displayedEvents.length} événements à venir
-              </p>
-            </div>
 
             {/* GRILLE D'ÉVÉNEMENTS */}
 

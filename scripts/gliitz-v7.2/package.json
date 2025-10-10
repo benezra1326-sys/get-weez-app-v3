@@ -1,0 +1,34 @@
+{
+  "name": "gliitz-intelligence-core-v72",
+  "version": "7.2.0",
+  "description": "Gliitz Intelligence Core v7.2 - Système fonctionnel avec réservations réelles et dashboard utilisateur",
+  "type": "module",
+  "main": "run-gliitz-reservation-test.js",
+  "scripts": {
+    "test": "node run-gliitz-reservation-test.js",
+    "test:quick": "node run-gliitz-reservation-test.js --quick",
+    "test:voice": "node test-voice-module.js",
+    "deploy": "./deploy-gliitz-v72.sh"
+  },
+  "keywords": [
+    "gliitz",
+    "booking",
+    "reservation",
+    "ai",
+    "voice",
+    "dashboard",
+    "supabase"
+  ],
+  "author": "Gliitz Tech",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.38.0",
+    "chalk": "^5.3.0",
+    "dotenv": "^16.3.1",
+    "node-fetch": "^3.3.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
+

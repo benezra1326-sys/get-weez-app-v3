@@ -1,0 +1,327 @@
+{
+  "timestamp": "2025-10-10T10:43:20.871Z",
+  "overallScore": 38,
+  "categoryScores": {
+    "Intelligence Émotionnelle": 100,
+    "Mémoire Conversationnelle": 30,
+    "Intelligence Géographique": 70,
+    "Personnalisation Avancée": 25,
+    "Compréhension Contextuelle": 35
+  },
+  "detailedResults": [
+    {
+      "category": "Intelligence Émotionnelle",
+      "test": "Stress détecté",
+      "input": "Je suis très stressé par mon travail, j'ai besoin de me détendre",
+      "response": "Je comprends que vous soyez stressé. Voici mes recommandations pour vous détendre :\n\n**Spa Privé**\nMassage relaxant avec vue sur mer 💆‍♀️\n\n**Yoga Méditation**\nSéance privée au coucher du soleil 🧘‍♀️\n\n**Bain Thermal**\nJacuzzi privé avec aromathérapie 🛁",
+      "evaluation": {
+        "passed": true,
+        "score": 100,
+        "details": {
+          "detected": "stress",
+          "expected": "stress"
+        }
+      },
+      "emotion": "stress"
+    },
+    {
+      "category": "Intelligence Émotionnelle",
+      "test": "Joie exprimée",
+      "input": "Je suis tellement heureux ! C'est mon anniversaire de mariage demain !",
+      "response": "Félicitations ! Pour célébrer cette joie, voici mes suggestions :\n\n**Restaurant Gastronomique**\nMenu dégustation avec champagne 🍾\n\n**Expérience Unique**\nVol en hélicoptère au coucher du soleil ✈️\n\n**Soirée Privée**\nDJ et bar à cocktails personnalisé 🎉",
+      "evaluation": {
+        "passed": true,
+        "score": 100,
+        "details": {
+          "detected": "joy",
+          "expected": "joy"
+        }
+      },
+      "emotion": "joy"
+    },
+    {
+      "category": "Intelligence Émotionnelle",
+      "test": "Fatigue ressentie",
+      "input": "Je suis épuisé, j'ai besoin de quelque chose de doux et apaisant",
+      "response": "Je sens votre fatigue. Voici des options apaisantes :\n\n**Massage Doux**\nSoin relaxant aux huiles essentielles 🌿\n\n**Promenade Zen**\nBalade privée dans les jardins botaniques 🌸\n\n**Dîner Calme**\nRestaurant intimiste avec musique douce 🎵",
+      "evaluation": {
+        "passed": true,
+        "score": 100,
+        "details": {
+          "detected": "tiredness",
+          "expected": "tiredness"
+        }
+      },
+      "emotion": "tiredness"
+    },
+    {
+      "category": "Intelligence Émotionnelle",
+      "test": "Excitation",
+      "input": "Waouh ! Je veux quelque chose d'incroyable et d'inoubliable !",
+      "response": "Votre enthousiasme est contagieux ! Voici des expériences inoubliables :\n\n**Aventure Unique**\nParapente au-dessus de la côte 🪂\n\n**Soirée VIP**\nClub privé avec accès exclusif ⭐\n\n**Expérience Gastronomique**\nDîner dans une cave à vin historique 🍷",
+      "evaluation": {
+        "passed": true,
+        "score": 100,
+        "details": {
+          "detected": "excitement",
+          "expected": "excitement"
+        }
+      },
+      "emotion": "excitement"
+    },
+    {
+      "category": "Mémoire Conversationnelle",
+      "test": "Rappel d'anniversaire",
+      "input": [
+        {
+          "role": "user",
+          "content": "C'est l'anniversaire de ma femme demain"
+        },
+        {
+          "role": "assistant",
+          "content": "Félicitations ! Que puis-je organiser pour cet anniversaire ?"
+        },
+        {
+          "role": "user",
+          "content": "Qu'est-ce que tu me proposes pour demain ?"
+        }
+      ],
+      "response": "Comment puis-je vous aider à créer un moment parfait aujourd'hui ? ✨",
+      "evaluation": {
+        "passed": false,
+        "score": 30,
+        "details": {
+          "contextMaintained": false,
+          "expectedContext": "celebration"
+        }
+      },
+      "emotion": "neutral"
+    },
+    {
+      "category": "Mémoire Conversationnelle",
+      "test": "Préférences alimentaires",
+      "input": [
+        {
+          "role": "user",
+          "content": "Je suis végétarien"
+        },
+        {
+          "role": "assistant",
+          "content": "Parfait, je prends note. Que puis-je vous proposer ?"
+        },
+        {
+          "role": "user",
+          "content": "Un bon restaurant pour ce soir"
+        }
+      ],
+      "response": "Comment puis-je vous aider à créer un moment parfait aujourd'hui ? ✨",
+      "evaluation": {
+        "passed": false,
+        "score": 30,
+        "details": {
+          "contextMaintained": false,
+          "expectedContext": "dietary_restrictions"
+        }
+      },
+      "emotion": "neutral"
+    },
+    {
+      "category": "Mémoire Conversationnelle",
+      "test": "Budget mentionné",
+      "input": [
+        {
+          "role": "user",
+          "content": "J'ai un budget de 200€ maximum"
+        },
+        {
+          "role": "assistant",
+          "content": "Compris, je vous proposerai des options dans cette gamme."
+        },
+        {
+          "role": "user",
+          "content": "Qu'est-ce que tu me suggères ?"
+        }
+      ],
+      "response": "Comment puis-je vous aider à créer un moment parfait aujourd'hui ? ✨",
+      "evaluation": {
+        "passed": false,
+        "score": 30,
+        "details": {
+          "contextMaintained": false,
+          "expectedContext": "budget_conscious"
+        }
+      },
+      "emotion": "neutral"
+    },
+    {
+      "category": "Intelligence Géographique",
+      "test": "Localisation implicite",
+      "input": "Je suis à Marbella, que me proposes-tu près de chez moi ?",
+      "response": "À Marbella, voici mes recommandations :\n\n**Puerto Banús**\nRestaurants et boutiques de luxe 🛍️\n\n**Casco Antiguo**\nCharmant centre historique 🏛️\n\n**Golden Mile**\nHôtels et plages exclusives 🏖️",
+      "evaluation": {
+        "passed": true,
+        "score": 85,
+        "details": {
+          "locationDetected": "local",
+          "expectedLocation": "marbella"
+        }
+      },
+      "emotion": "local"
+    },
+    {
+      "category": "Intelligence Géographique",
+      "test": "Distance mentionnée",
+      "input": "Quelque chose à moins de 10 minutes en voiture",
+      "response": "Dans les environs proches :\n\n**À 5 minutes**\nRestaurants et cafés de quartier ☕\n\n**À 10 minutes**\nSpas et centres de bien-être 🧘‍♀️\n\n**À 15 minutes**\nPlages et activités nautiques 🏄‍♂️",
+      "evaluation": {
+        "passed": true,
+        "score": 85,
+        "details": {
+          "locationDetected": "nearby",
+          "expectedLocation": "nearby"
+        }
+      },
+      "emotion": "nearby"
+    },
+    {
+      "category": "Intelligence Géographique",
+      "test": "Zone spécifique",
+      "input": "Un restaurant dans le centre de Marbella",
+      "response": "À Marbella, voici mes recommandations :\n\n**Puerto Banús**\nRestaurants et boutiques de luxe 🛍️\n\n**Casco Antiguo**\nCharmant centre historique 🏛️\n\n**Golden Mile**\nHôtels et plages exclusives 🏖️",
+      "evaluation": {
+        "passed": false,
+        "score": 40,
+        "details": {
+          "locationDetected": "local",
+          "expectedLocation": "marbella_center"
+        }
+      },
+      "emotion": "local"
+    },
+    {
+      "category": "Personnalisation Avancée",
+      "test": "Style de vie luxueux",
+      "input": "Je veux quelque chose de vraiment luxueux et exclusif",
+      "response": "Comment puis-je vous aider à créer un moment parfait aujourd'hui ? ✨",
+      "evaluation": {
+        "passed": false,
+        "score": 25,
+        "details": {
+          "keywordsFound": [],
+          "expectedKeywords": [
+            "exclusive",
+            "premium",
+            "vip",
+            "luxury"
+          ]
+        }
+      },
+      "emotion": "neutral"
+    },
+    {
+      "category": "Personnalisation Avancée",
+      "test": "Tendance éco-responsable",
+      "input": "Je préfère les endroits éco-responsables et locaux",
+      "response": "Comment puis-je vous aider à créer un moment parfait aujourd'hui ? ✨",
+      "evaluation": {
+        "passed": false,
+        "score": 25,
+        "details": {
+          "keywordsFound": [],
+          "expectedKeywords": [
+            "eco",
+            "local",
+            "sustainable",
+            "organic"
+          ]
+        }
+      },
+      "emotion": "neutral"
+    },
+    {
+      "category": "Personnalisation Avancée",
+      "test": "Aventure et découverte",
+      "input": "J'aime découvrir des endroits secrets et insolites",
+      "response": "Comment puis-je vous aider à créer un moment parfait aujourd'hui ? ✨",
+      "evaluation": {
+        "passed": false,
+        "score": 25,
+        "details": {
+          "keywordsFound": [],
+          "expectedKeywords": [
+            "hidden",
+            "secret",
+            "unique",
+            "unusual"
+          ]
+        }
+      },
+      "emotion": "neutral"
+    },
+    {
+      "category": "Compréhension Contextuelle",
+      "test": "Contexte romantique",
+      "input": "Une soirée pour impressionner quelqu'un de spécial",
+      "response": "Pour impressionner quelqu'un de spécial :\n\n**Rooftop Privé**\nTerrasse exclusive avec vue 360° 🌅\n\n**Dîner Gastronomique**\nChef étoilé avec menu sur mesure ⭐\n\n**Expérience Unique**\nCroisière privée au coucher du soleil 🚢",
+      "evaluation": {
+        "passed": false,
+        "score": 35,
+        "details": {
+          "contextKeywords": [],
+          "expectedContext": [
+            "romantic",
+            "special",
+            "impressive",
+            "intimate"
+          ]
+        }
+      },
+      "emotion": "romantic"
+    },
+    {
+      "category": "Compréhension Contextuelle",
+      "test": "Contexte professionnel",
+      "input": "J'ai besoin d'un endroit pour recevoir des clients importants",
+      "response": "Pour recevoir des clients importants :\n\n**Restaurant Prestige**\nSalle privée avec service dédié 👔\n\n**Hôtel de Luxe**\nSuite avec vue panoramique 🏨\n\n**Transport VIP**\nChauffeur privé en Mercedes classe S 🚗",
+      "evaluation": {
+        "passed": false,
+        "score": 35,
+        "details": {
+          "contextKeywords": [],
+          "expectedContext": [
+            "professional",
+            "elegant",
+            "sophisticated",
+            "business"
+          ]
+        }
+      },
+      "emotion": "business"
+    },
+    {
+      "category": "Compréhension Contextuelle",
+      "test": "Contexte familial",
+      "input": "Un endroit où je peux emmener mes enfants",
+      "response": "Pour une sortie en famille :\n\n**Restaurant Familial**\nMenu adapté aux enfants 👶\n\n**Parc d'Attractions**\nEntrées VIP avec accès prioritaire 🎠\n\n**Plage Privée**\nEspace sécurisé avec activités 🏖️",
+      "evaluation": {
+        "passed": false,
+        "score": 35,
+        "details": {
+          "contextKeywords": [],
+          "expectedContext": [
+            "family",
+            "children",
+            "kid-friendly",
+            "safe"
+          ]
+        }
+      },
+      "emotion": "family"
+    }
+  ],
+  "recommendations": [
+    "Renforcer la mémoire conversationnelle et le maintien du contexte",
+    "Développer la personnalisation basée sur les préférences",
+    "Renforcer la compréhension des nuances et sous-entendus"
+  ]
+}

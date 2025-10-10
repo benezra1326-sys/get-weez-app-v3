@@ -1,0 +1,50 @@
+{
+  "timestamp": "2025-10-10T11:22:43.411Z",
+  "error": {
+    "name": "TypeError",
+    "message": "this.analyzeRetainedContext is not a function",
+    "stack": "TypeError: this.analyzeRetainedContext is not a function\n    at SemanticReflectionEngine.analyzeContextualMemory (file:///Users/avishay/Downloads/get%20weez/scripts/gliitz-v7/semantic-reflection-engine.js:134:24)\n    at SemanticReflectionEngine.analyzeConversation (file:///Users/avishay/Downloads/get%20weez/scripts/gliitz-v7/semantic-reflection-engine.js:32:24)\n    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at async GliitzIntelligenceOrchestrator.processConversation (file:///Users/avishay/Downloads/get%20weez/scripts/gliitz-v7/gliitz-intelligence-orchestrator.js:82:32)\n    at async GliitzIntelligenceOrchestrator.runGhostConversationTests (file:///Users/avishay/Downloads/get%20weez/scripts/gliitz-v7/gliitz-intelligence-orchestrator.js:385:26)\n    at async GliitzIntelligenceOrchestrator.runSelfDiagnostics (file:///Users/avishay/Downloads/get%20weez/scripts/gliitz-v7/gliitz-intelligence-orchestrator.js:268:23)\n    at async testGliitzV7System (file:///Users/avishay/Downloads/get%20weez/scripts/gliitz-v7/test-gliitz-v7-system.js:97:27)"
+  },
+  "context": {
+    "userMessage": "Je cherche un restaurant pour ce soir",
+    "context": {
+      "userId": "ghost_test",
+      "sessionId": "test_session",
+      "triggerFeedback": false
+    }
+  },
+  "systemState": {
+    "version": "7.0.1",
+    "performanceMetrics": {
+      "success_rate": 0,
+      "intelligence_score": 0,
+      "emotional_intelligence": 0,
+      "context_understanding": 0,
+      "precision": 0,
+      "memory_conversationnelle": 0,
+      "response_time_ms": 0,
+      "tone_coherence": 0,
+      "targets": {
+        "success_rate": 100,
+        "intelligence_score": 100,
+        "emotional_intelligence": 100,
+        "context_understanding": 100,
+        "precision": 100,
+        "memory_conversationnelle": 100,
+        "response_time_ms": 1200,
+        "tone_coherence": 100
+      },
+      "performanceRatio": {
+        "success_rate": 0,
+        "intelligence_score": 0,
+        "emotional_intelligence": 0,
+        "context_understanding": 0,
+        "precision": 0,
+        "memory_conversationnelle": 0,
+        "response_time_ms": 1,
+        "tone_coherence": 0
+      },
+      "lastUpdated": "2025-10-10T11:22:43.411Z"
+    }
+  }
+}

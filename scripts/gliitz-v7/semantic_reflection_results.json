@@ -1,0 +1,51 @@
+{
+  "timestamp": "2025-10-10T11:22:44.221Z",
+  "globalMetrics": {
+    "semantic_understanding": 0,
+    "contextual_memory": 0,
+    "tonal_coherence": 0,
+    "temporal_awareness": 0,
+    "intent_mapping_accuracy": 0
+  },
+  "totalConversations": 0,
+  "averageIntelligence": null,
+  "recentAnalyses": [],
+  "autoAdjustments": [],
+  "recommendations": [
+    {
+      "metric": "semantic_understanding",
+      "currentScore": 0,
+      "targetScore": 100,
+      "action": "Améliorer semantic understanding",
+      "priority": "critical"
+    },
+    {
+      "metric": "contextual_memory",
+      "currentScore": 0,
+      "targetScore": 100,
+      "action": "Améliorer contextual memory",
+      "priority": "critical"
+    },
+    {
+      "metric": "tonal_coherence",
+      "currentScore": 0,
+      "targetScore": 100,
+      "action": "Améliorer tonal coherence",
+      "priority": "critical"
+    },
+    {
+      "metric": "temporal_awareness",
+      "currentScore": 0,
+      "targetScore": 100,
+      "action": "Améliorer temporal awareness",
+      "priority": "critical"
+    },
+    {
+      "metric": "intent_mapping_accuracy",
+      "currentScore": 0,
+      "targetScore": 100,
+      "action": "Améliorer intent mapping_accuracy",
+      "priority": "critical"
+    }
+  ]
+}

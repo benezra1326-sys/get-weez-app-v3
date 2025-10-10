@@ -1,0 +1,110 @@
+{
+  "timestamp": "2025-10-10T11:22:43.160Z",
+  "checks": [
+    {
+      "name": "API Errors Check",
+      "status": "ok",
+      "message": "APIs fonctionnelles",
+      "timestamp": "2025-10-10T11:22:43.160Z"
+    },
+    {
+      "name": "Pattern Inconsistency Analysis",
+      "status": "ok",
+      "message": "Patterns cohérents",
+      "inconsistencies": [],
+      "timestamp": "2025-10-10T11:22:43.160Z"
+    },
+    {
+      "name": "Ghost Conversation Tests",
+      "status": "warning",
+      "message": "Tests fantômes: 0% de réussite",
+      "results": [
+        {
+          "message": "Je cherche un restaurant pour ce soir",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "Organisez-moi une soirée romantique",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "J'ai besoin d'aide pour un événement d'entreprise",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "Trouvez-moi une villa de luxe à Marbella",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "Je suis stressé, j'ai besoin de me détendre",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        }
+      ],
+      "successRate": 0,
+      "timestamp": "2025-10-10T11:22:44.199Z"
+    },
+    {
+      "name": "Intent Weights Update",
+      "status": "ok",
+      "message": "Poids des intentions mis à jour",
+      "previousWeights": {},
+      "updatedWeights": {
+        "recherche_restaurant": 0.850104063399545,
+        "recherche_événement": 0.9055989907645756,
+        "réservation": 0.8728680301475787,
+        "information": 0.889138027528006,
+        "aide": 0.8605959263519741
+      },
+      "timestamp": "2025-10-10T11:22:44.200Z"
+    }
+  ],
+  "issues": [
+    {
+      "name": "Ghost Conversation Tests",
+      "status": "warning",
+      "message": "Tests fantômes: 0% de réussite",
+      "results": [
+        {
+          "message": "Je cherche un restaurant pour ce soir",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "Organisez-moi une soirée romantique",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "J'ai besoin d'aide pour un événement d'entreprise",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "Trouvez-moi une villa de luxe à Marbella",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        },
+        {
+          "message": "Je suis stressé, j'ai besoin de me détendre",
+          "success": false,
+          "error": "this.analyzeRetainedContext is not a function"
+        }
+      ],
+      "successRate": 0,
+      "timestamp": "2025-10-10T11:22:44.199Z"
+    }
+  ],
+  "repairs": [
+    {
+      "issue": "Ghost Conversation Tests",
+      "action": "optimize_processing_pipeline",
+      "status": "completed",
+      "timestamp": "2025-10-10T11:22:44.200Z"
+    }
+  ]
+}

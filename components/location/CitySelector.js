@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { MapPin, CheckCircle, Clock } from 'lucide-react'
 import { useTheme } from '../../contexts/ThemeContextSimple'
 
@@ -8,7 +9,7 @@ const CITIES = [
     name: 'Marbella',
     country: 'Espagne',
     coordinates: { lat: 36.5098, lng: -4.8826 },
-    image: 'https://images.unsplash.com/photo-1560969184-10fe8719e047?w=600',
+    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop',
     available: true
   },
   {
@@ -16,7 +17,7 @@ const CITIES = [
     name: 'Mykonos',
     country: 'Grèce',
     coordinates: { lat: 37.4467, lng: 25.3289 },
-    image: 'https://images.unsplash.com/photo-1613395877613-b3d8ae281ce5?w=600',
+    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&h=400&fit=crop',
     available: false
   },
   {
@@ -24,7 +25,7 @@ const CITIES = [
     name: 'Saint-Tropez',
     country: 'France',
     coordinates: { lat: 43.2677, lng: 6.6407 },
-    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600',
+    image: 'https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=600&h=400&fit=crop',
     available: false
   },
   {
@@ -32,7 +33,7 @@ const CITIES = [
     name: 'Ibiza',
     country: 'Espagne',
     coordinates: { lat: 38.9067, lng: 1.4206 },
-    image: 'https://images.unsplash.com/photo-1544442186-c24d7b25f0b0?w=600',
+    image: 'https://images.unsplash.com/photo-1570077188670-e3a8d69ac5ff?w=600&h=400&fit=crop',
     available: false
   },
   {
@@ -147,29 +148,50 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
       </button>
 
       {/* Modal */}
-      {isModalOpen && (
+      {isModalOpen && typeof document !== 'undefined' && createPortal(
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-          style={{ background: 'rgba(0, 0, 0, 0.6)', backdropFilter: 'blur(8px)' }}
+          className="fixed inset-0 flex items-center justify-center p-4"
+          style={{ 
+            background: 'rgba(0, 0, 0, 0.6)', 
+            backdropFilter: 'blur(8px)',
+            zIndex: 9999
+          }}
           onClick={() => setIsModalOpen(false)}
         >
           <div
-            className="w-full max-w-4xl rounded-3xl overflow-hidden"
+            className="w-full md:max-w-4xl rounded-3xl overflow-hidden md:mx-auto flex flex-col"
             style={{
               background: isDarkMode ? '#0B0B0C' : '#FFFFFF',
-              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)'
+              boxShadow: '0 20px 60px rgba(0, 0, 0, 0.3)',
+              maxHeight: '75vh'
             }}
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div 
-              className="p-6 border-b"
+              className="p-4 md:p-6 border-b relative"
               style={{
                 borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
               }}
             >
+              {/* Close button */}
+              <button
+                onClick={() => {
+                  console.log('Bouton fermer cliqué')
+                  setIsModalOpen(false)
+                }}
+                className="absolute top-4 right-4 p-2 rounded-full"
+                style={{
+                  background: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)',
+                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
+                  zIndex: 10000
+                }}
+              >
+                ✕
+              </button>
+              
               <h2 
-                className="text-2xl font-bold mb-2"
+                className="text-xl md:text-2xl font-bold mb-2 pr-12 md:pr-0"
                 style={{
                   fontFamily: 'Playfair Display, serif',
                   color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
@@ -189,7 +211,7 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
             </div>
 
             {/* Cities Grid */}
-            <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-h-[60vh] overflow-y-auto">
+            <div className="p-4 md:p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4 overflow-y-auto flex-1">
               {CITIES.map((city) => (
                 <button
                   key={city.id}
@@ -216,7 +238,7 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
                   }}
                 >
                   {/* Image */}
-                  <div className="relative h-40 overflow-hidden">
+                  <div className="relative h-32 md:h-40 overflow-hidden">
                     <img 
                       src={city.image} 
                       alt={city.name}
@@ -257,9 +279,9 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
                   </div>
 
                   {/* Content */}
-                  <div className="p-4">
+                  <div className="p-3 md:p-4">
                     <h3 
-                      className="text-lg font-bold mb-1"
+                      className="text-base md:text-lg font-bold mb-1"
                       style={{
                         fontFamily: 'Playfair Display, serif',
                         color: isDarkMode ? '#FFFFFF' : '#0B0B0C'
@@ -268,7 +290,7 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
                       {city.name}
                     </h3>
                     <p 
-                      className="text-sm"
+                      className="text-xs md:text-sm"
                       style={{
                         fontFamily: 'Poppins, sans-serif',
                         color: isDarkMode ? 'rgba(255,255,255,0.6)' : 'rgba(0,0,0,0.6)'
@@ -281,9 +303,9 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
               ))}
             </div>
 
-            {/* Footer */}
+            {/* Footer - Desktop only */}
             <div 
-              className="p-6 border-t flex justify-end gap-3"
+              className="hidden md:flex p-4 md:p-6 border-t justify-end gap-3"
               style={{
                 borderColor: isDarkMode ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
               }}
@@ -301,7 +323,8 @@ export default function CitySelector({ onCitySelect, initialCity = 'marbella' })
               </button>
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </>
   )

@@ -1,0 +1,28 @@
+{
+  "name": "gliitz-audit-scripts",
+  "version": "1.0.0",
+  "description": "Scripts d'audit pour Gliitz Chat",
+  "type": "module",
+  "main": "gliitz-audit-total.js",
+  "scripts": {
+    "audit": "node gliitz-audit-total.js",
+    "audit-quick": "node run-complete-audit.js --quick",
+    "intelligence": "node gliitz-intelligence-tests.js",
+    "analyze": "node analyze-audit-results.js"
+  },
+  "dependencies": {
+    "chalk": "^5.3.0",
+    "@supabase/supabase-js": "^2.38.0",
+    "dotenv": "^16.3.1"
+  },
+  "keywords": [
+    "chatbot",
+    "audit",
+    "testing",
+    "gliitz",
+    "ai"
+  ],
+  "author": "Gliitz Tech",
+  "license": "MIT"
+}
+

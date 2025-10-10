@@ -151,9 +151,21 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
         onMessage({ user: transcript, assistant: reply })
       }
 
-      // Lire la réponse vocalement si non muted
+      // Lire la réponse vocalement si non muted - UNIQUEMENT ElevenLabs
       if (!isMuted) {
-        await elevenLabs.playAudio(reply)
+        console.log('🔊 Lecture de la réponse vocale avec ElevenLabs...')
+        setIsSpeaking(true)
+        
+        try {
+          await elevenLabs.playAudio(reply)
+          console.log('✅ Audio ElevenLabs joué avec succès')
+        } catch (error) {
+          console.error('❌ Erreur ElevenLabs:', error)
+          // Afficher l'erreur à l'utilisateur mais ne pas utiliser de fallback
+          console.error('Impossible de lire l\'audio. Vérifiez votre clé API ElevenLabs.')
+        }
+        
+        setIsSpeaking(false)
       }
 
       // Réinitialiser et relancer l'écoute
@@ -259,86 +271,94 @@ export default function VoiceToVoiceMode({ isOpen, onClose, onMessage }) {
             </p>
           </motion.div>
 
-          {/* Visual Indicator */}
-          <motion.div
-            className="relative w-32 h-32 mx-auto mb-8"
-            animate={{
-              scale: isListening || isSpeaking ? [1, 1.1, 1] : 1
-            }}
-            transition={{
-              duration: 2,
-              repeat: (isListening || isSpeaking) ? Infinity : 0,
-              ease: "easeInOut"
-            }}
-          >
-            {/* Outer Ring */}
-            <motion.div
-              className="absolute inset-0 rounded-full"
-              style={{
-                border: `2px solid ${isDarkMode ? '#C0C0C0' : '#A7C7C5'}`,
-                opacity: 0.3
-              }}
-              animate={{
-                scale: isListening ? [1, 1.5, 1] : 1,
-                opacity: isListening ? [0.3, 0, 0.3] : 0.3
-              }}
-              transition={{
-                duration: 2,
-                repeat: isListening ? Infinity : 0
-              }}
-            />
+          {/* Visual Indicator - Sparkles avec ondes sonores */}
+          <div className="relative w-64 h-64 mx-auto mb-8">
+            {/* Ondes sonores - 5 cercles concentriques */}
+            {[1, 2, 3, 4, 5].map((i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full border-2"
+                style={{
+                  inset: `${i * 16}px`,
+                  borderColor: isDarkMode ? '#A7C7C5' : '#9DB4C0',
+                  opacity: 0.15
+                }}
+                animate={isListening || isSpeaking ? {
+                  scale: [1, 1.2, 1],
+                  opacity: [0.15, 0.4, 0.15]
+                } : {}}
+                transition={{
+                  duration: 2.5,
+                  delay: i * 0.2,
+                  repeat: (isListening || isSpeaking) ? Infinity : 0,
+                  ease: "easeInOut"
+                }}
+              />
+            ))}
 
-            {/* Inner Circle */}
+            {/* Cercle central avec icône Sparkles */}
             <motion.div
-              className="absolute inset-4 rounded-full flex items-center justify-center"
+              className="absolute inset-16 rounded-full flex items-center justify-center"
               style={{
                 background: isListening 
-                  ? 'linear-gradient(135deg, #EF4444, #DC2626)'
+                  ? 'linear-gradient(135deg, #A7C7C5, #9DB4C0)'
                   : isSpeaking
-                    ? 'linear-gradient(135deg, #A7C7C5, #9DB4C0)'
-                    : `linear-gradient(135deg, ${isDarkMode ? '#C0C0C0' : '#E5E5E5'}, ${isDarkMode ? '#A8A8A8' : '#C0C0C0'})`,
+                    ? 'linear-gradient(135deg, #C0C0C0, #A8A8A8)'
+                    : `linear-gradient(135deg, ${isDarkMode ? 'rgba(192, 192, 192, 0.2)' : 'rgba(192, 192, 192, 0.3)'}, ${isDarkMode ? 'rgba(168, 168, 168, 0.2)' : 'rgba(168, 168, 168, 0.3)'})`,
                 boxShadow: isListening || isSpeaking
-                  ? '0 0 30px rgba(192, 192, 192, 0.5)'
-                  : 'none'
+                  ? '0 0 50px rgba(167, 199, 197, 0.6)'
+                  : 'none',
+                border: `2px solid ${isDarkMode ? '#C0C0C0' : '#A7C7C5'}`
+              }}
+              animate={isListening || isSpeaking ? {
+                scale: [1, 1.05, 1],
+                boxShadow: [
+                  '0 0 50px rgba(167, 199, 197, 0.6)',
+                  '0 0 80px rgba(167, 199, 197, 0.8)',
+                  '0 0 50px rgba(167, 199, 197, 0.6)'
+                ]
+              } : {}}
+              transition={{
+                duration: 1.5,
+                repeat: (isListening || isSpeaking) ? Infinity : 0,
+                ease: "easeInOut"
               }}
             >
-              {isListening ? <Mic size={32} color="#FFFFFF" /> : 
-               isSpeaking ? <Volume2 size={32} color="#FFFFFF" /> :
-               <MicOff size={32} color="#FFFFFF" />}
-            </motion.div>
-          </motion.div>
-
-          {/* Transcript */}
-          {(transcript || interimTranscript) && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="mb-6 p-6 rounded-xl"
-              style={{
-                background: isDarkMode 
-                  ? 'rgba(255, 255, 255, 0.05)' 
-                  : 'rgba(255, 255, 255, 0.8)',
-                border: `1px solid ${isDarkMode 
-                  ? 'rgba(192, 192, 192, 0.2)' 
-                  : 'rgba(192, 192, 192, 0.3)'}`,
-                backdropFilter: 'blur(10px)'
-              }}
-            >
-              <p
+              <Sparkles 
+                size={64} 
+                color="#FFFFFF"
                 style={{
-                  fontFamily: 'Poppins, sans-serif',
-                  fontSize: '1.1rem',
-                  color: isDarkMode ? '#FFFFFF' : '#0B0B0C',
-                  lineHeight: '1.6'
+                  filter: 'drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))'
                 }}
-              >
-                {transcript}
-                {interimTranscript && (
-                  <span style={{ opacity: 0.5 }}>{interimTranscript}</span>
-                )}
-              </p>
+              />
             </motion.div>
-          )}
+
+            {/* Particules animées autour du cercle */}
+            {(isListening || isSpeaking) && [0, 60, 120, 180, 240, 300].map((angle, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-2 h-2 rounded-full"
+                style={{
+                  background: '#C0C0C0',
+                  left: '50%',
+                  top: '50%',
+                  transformOrigin: 'center'
+                }}
+                animate={{
+                  x: [0, Math.cos(angle * Math.PI / 180) * 100],
+                  y: [0, Math.sin(angle * Math.PI / 180) * 100],
+                  opacity: [0.8, 0],
+                  scale: [1, 0.5]
+                }}
+                transition={{
+                  duration: 2,
+                  delay: i * 0.2,
+                  repeat: Infinity,
+                  ease: "easeOut"
+                }}
+              />
+            ))}
+          </div>
 
           {/* Info Text - Simulation appel téléphonique */}
           <p
