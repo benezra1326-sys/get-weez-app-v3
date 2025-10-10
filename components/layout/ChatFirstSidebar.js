@@ -5,7 +5,7 @@ import {
   FiPlus, FiSearch, FiHome, FiCalendar, FiBriefcase, 
   FiMail, FiFileText, FiClock, FiUser, FiSettings,
   FiHelpCircle, FiLogOut, FiSun, FiMoon, FiMenu, FiX,
-  FiMessageSquare, FiBuilding
+  FiMessageSquare
 } from 'react-icons/fi';
 
 const ChatFirstSidebar = ({ 
