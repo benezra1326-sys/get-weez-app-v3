@@ -70,16 +70,7 @@ const nextConfig = {
   
   // Optimisations expérimentales
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ['lucide-react', 'react-icons'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
-      },
-    },
   },
   
   // Optimisation des images
